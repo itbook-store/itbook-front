@@ -8,12 +8,7 @@ public class ItbookFrontApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ItbookFrontApplication.class, args);
-        System.out.println("hi22");
-        System.out.println("gw commit test");
-        System.out.println("gw commit test");
-        System.out.println("gw commit test");
-        System.out.println("gw commit test");
-
+        System.out.println("pull request test");
     }
 
 }
