@@ -11,6 +11,8 @@ public class ItbookFrontApplication {
         System.out.println("hi22");
         System.out.println("gw commit test");
         System.out.println("gw commit test");
+        System.out.println("gw commit test");
+        System.out.println("gw commit test");
 
     }
 
