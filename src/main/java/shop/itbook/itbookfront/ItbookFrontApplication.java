@@ -7,9 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ItbookFrontApplication {
 
     public static void main(String[] args) {
-        System.out.println("hi");
         SpringApplication.run(ItbookFrontApplication.class, args);
-        System.out.println("pull request test");
+        System.out.println("pull request test 22");
     }
 
 }
