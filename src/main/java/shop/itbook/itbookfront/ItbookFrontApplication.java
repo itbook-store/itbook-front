@@ -1,10 +1,15 @@
 package shop.itbook.itbookfront;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import shop.itbook.itbookfront.config.RedisConfig;
 
 
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class ItbookFrontApplication {
 
     /**
@@ -15,11 +20,7 @@ public class ItbookFrontApplication {
      * fgfgfgff
      */
     public static void main(String[] args) {
-
-
-        System.out.println("fytfytfythfy");
         SpringApplication.run(ItbookFrontApplication.class, args);
-        System.out.println("pull request test 22");
     }
 
 }
