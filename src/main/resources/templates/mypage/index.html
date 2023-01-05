@@ -1,226 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel = "stylesheet" href = "/mypage/css/index.css">
-    <link rel="stylesheet" href="/mainpage/css/header.css">
-    <link rel="stylesheet" href="/mainpage/css/logo.css">
-    <link rel="stylesheet" href="/mainpage/css/category.css">
-    <link rel="stylesheet" href="/mypage/css/sidebar.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
-
-    <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <title>마이페이지</title>
 </head>
 <body>
-    <div class="header">
-        <div class="header_columns">
-
-            <div class = "header_columns_column">
-                <a href = "/">메인홈</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="#">관리자 페이지</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="#">마이페이지</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="#">로그아웃</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="">로그인</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="#">회원가입</a>
-            </div>
-
-            <div class="header_columns_column">
-                <a href="#">고객센터</a>
-            </div>
-        </div>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>마이페이지</h2>
+        <hr>
+        <h4>최근 주문내역</h4>
+        <table class="order_table">
+            <tr>
+                <th>주문일자</th>
+                <th>주문내역</th>
+                <th>주문상태</th>
+                <th>배송</th>
+            </tr>
+            <tr>
+                <td>test</td>
+                <td>test</td>
+                <td>test</td>
+                <td>test</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <h4>나의 고객문의</h4>
+        <table>
+            <tr>
+                <td>(고객문의 제목)</td>
+                <td>(고객문의 날짜)</td>
+            </tr>
+        </table>
     </div>
-
-    <div class="logo">
-        <div class="logo_columns">
-            <div class="logo_columns_column">
-                <img src="/mainpage/img/itbook-logo-02.png" class="logo_img">
-            </div>
-        </div>
-
-        <div class="logo_columns searchbar">
-            <div class="logo_columns_column">
-                <select name="" id="">
-                    <option value="">전체</option>
-                    <option value="">상품</option>
-                    <option value="">카테고리</option>
-                </select>
-            </div>
-
-            <div class="logo_columns_column">
-                <input type="text" placeholder="Search Product">
-            </div>
-
-            <div class="logo_columns_column">
-                <button>
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="categoryBar">
-        <div class="categoryBar__columns">
-            <div class="categoryBar__columns__menu">
-                <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
-                <p>카테고리</p>
-            </div>
-            <div class="dropdown">
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                    </div>
-
-                </div>
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                    </div>
-
-                </div>
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div style="">
-        <p>&nbsp;</p>
-    </div>
-    <div id = "mypage">
-        <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-            <ul class="list-unstyled ps-0">
-                <li class="border-top my-3"></li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        회원정보수정
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        등급조회
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        배송지관리
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        주문/배송조회
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        즐겨찾기
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        포인트
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        쿠폰
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        재입고알림신청
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        고객문의
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        고객서비스
-                    </button>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        회원탈퇴
-                    </button>
-                </li>
-                <li class="border-top my-3"></li>
-            </ul>
-        </div>
-        <div class="content">
-            <h2>마이페이지</h2>
-            <hr>
-            <h4>최근 주문내역</h4>
-            <table class = "order_table">
-                <tr>
-                    <th>주문일자</th>
-                    <th>주문내역</th>
-                    <th>주문상태</th>
-                    <th>배송</th>
-                </tr>
-                <tr>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
-                </tr>
-            </table>
-            <br>
-            <br>
-            <h4>나의 고객문의</h4>
-            <table>
-                <tr>
-                    <td>(고객문의 제목)</td>
-                    <td>(고객문의 날짜)</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
+</div>
 </body>
 </html>

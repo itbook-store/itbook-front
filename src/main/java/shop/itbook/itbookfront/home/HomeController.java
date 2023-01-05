@@ -19,4 +19,14 @@ public class HomeController {
     public String mypage() {
         return "mypage/index";
     }
+
+    @GetMapping("/adminpage")
+    public String adminpage() {
+        return "adminpage/index";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "default-layout";
+    }
 }

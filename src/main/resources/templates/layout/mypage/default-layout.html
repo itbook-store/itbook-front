@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="fragment/common/head :: head-fragment"></div>
+    <div th:replace="fragment/mypage/head :: mypage-css-fragment"></div>
+</head>
+<body>
+<div>
+    <th:block th:replace="fragment/mainpage/header :: header-fragment">
+    </th:block>
+    <div class="flex-content">
+        <th:block th:replace="fragment/mypage/side-menu :: side-menu-fragment">
+        </th:block>
+        <div layout:fragment="content" class="main-content">
+        </div>
+    </div>
+</div>
+</body>
+</html>

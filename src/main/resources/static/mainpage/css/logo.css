@@ -1,6 +1,6 @@
 /* layout */
 
-.logo{
+.logo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -9,13 +9,13 @@
 }
 
 
-.logo_columns{
+.logo_columns {
     display: flex;
     align-items: center;
     height: 40px;
 }
 
-.logo_columns.searchbar{
+.logo_columns.searchbar {
     border: solid 1px #666666;
     border-radius: 10px;
     /* padding: 3px; */
@@ -23,27 +23,26 @@
 }
 
 
-
 /* style */
 
-.logo_img{
+.logo_img {
     height: 100px;
 }
 
-.logo_columns_column select{
+.logo_columns_column select {
     border: none;
     border-right: solid 1px #777777;
     width: 100px;
     margin-right: 5px;
 }
 
-.logo_columns_column input{
+.logo_columns_column input {
     border: none;
     width: 300px;
     height: 35px;
 }
 
-.logo_columns_column button{
+.logo_columns_column button {
     border: none;
     background-color: #1869B3;
     color: #fff;

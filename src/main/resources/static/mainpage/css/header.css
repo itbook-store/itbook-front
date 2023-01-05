@@ -11,14 +11,14 @@
 }
 
 
-.header_columns{
+.header_columns {
 
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.header_columns_column{
+.header_columns_column {
     width: 85px;
     height: 50px;
     line-height: 50px;
@@ -27,14 +27,13 @@
 }
 
 
-
 /* style */
 
-.header_columns img{
+.header_columns img {
     height: 120px;
 }
 
-.header_columns_column a{
+.header_columns_column a {
     text-decoration: none;
     color: #99ccff;
     font-size: 12px;
