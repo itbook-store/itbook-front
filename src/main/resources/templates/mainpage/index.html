@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ItBook</title>
+
+    <link rel="stylesheet" href="/mainpage/css/global.css">
+    <link rel="stylesheet" href="/mainpage/css/reset.css">
+
+    <link rel="stylesheet" href="/mainpage/css/rightside.css">
+    <link rel="stylesheet" href="/mainpage/css/slider.css">
+    <link rel="stylesheet" href="/mainpage/css/category.css">
+    <link rel="stylesheet" href="/mainpage/css/logo.css">
+    <link rel="stylesheet" href="/mainpage/css/header.css">
+    <link rel="stylesheet" href="/mainpage/css/index.css">
+
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/1811ec3902.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="container">
+    <div class="header">
+        <div class="header_columns">
+
+            <div class="header_columns_column">
+                <a href="#">관리자 페이지</a>
+            </div>
+
+            <div class="header_columns_column">
+                <a href="#">마이페이지</a>
+            </div>
+
+            <div class="header_columns_column">
+                <a href="#">로그아웃</a>
+            </div>
+
+            <div class="header_columns_column">
+                <a href="">로그인</a>
+            </div>
+
+            <div class="header_columns_column">
+                <a href="#">회원가입</a>
+            </div>
+
+            <div class="header_columns_column">
+                <a href="#">고객센터</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="logo">
+        <div class="logo_columns">
+            <div class="logo_columns_column">
+                <img src="/mainpage/img/itbook-logo-02.png" class="logo_img">
+            </div>
+        </div>
+
+        <div class="logo_columns searchbar">
+            <div class="logo_columns_column">
+                <select name="" id="">
+                    <option value="">전체</option>
+                    <option value="">상품</option>
+                    <option value="">카테고리</option>
+                </select>
+            </div>
+
+            <div class="logo_columns_column">
+                <input type="text" placeholder="Search Product">
+            </div>
+
+            <div class="logo_columns_column">
+                <button>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="categoryBar">
+        <div class="categoryBar__columns">
+            <div class="categoryBar__columns__menu">
+                <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
+                <p>카테고리</p>
+            </div>
+            <div class="dropdown">
+
+                <div class="middle_btn">
+                    <p class="middle_content%">중분류-01</p>
+
+                    <div class="small_content">
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                    </div>
+
+                </div>
+
+                <div class="middle_btn">
+                    <p class="middle_content%">중분류-01</p>
+
+                    <div class="small_content">
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                    </div>
+
+                </div>
+
+                <div class="middle_btn">
+                    <p class="middle_content%">중분류-01</p>
+
+                    <div class="small_content">
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                        <a href="#" class="samll_content_text">소분류-01</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="slider" style="width: 1004px; margin-left: auto; margin-right: auto;">
+
+        <div class="slideshow-container">
+
+            <div class="mySlides fade">
+                <img src="/mainpage/img/slider_img_01.jpg" style="width:100%">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="/mainpage/img/slider_img_02.jpg" style="width:100%">
+            </div>
+
+            <div class="mySlides fade">
+                <img src="/mainpage/img/slider_img_03.jpg" style="width:100%">
+            </div>
+
+        </div>
+        <br>
+
+        <div style="text-align:center">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+
+    </div>
+
+    <div class="main">
+        <div class="main_columns">
+
+            <div class="main_title_box">
+                <p class="main_title">추천 상품</p>
+            </div>
+
+            <div class="main_product_container">
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_columns">
+
+            <div class="main_title_box">
+                <p class="main_title">추천 상품</p>
+            </div>
+
+            <div class="main_product_container">
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_columns">
+
+            <div class="main_title_box">
+                <p class="main_title">추천 상품</p>
+            </div>
+
+            <div class="main_product_container">
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_columns">
+
+            <div class="main_title_box">
+                <p class="main_title">추천 상품</p>
+            </div>
+
+            <div class="main_product_container">
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+
+                <div class="main_product">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
+                    <p class="product_title">객체지향의 사실과 오해</p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price">10,000</p>
+                        <p class="product_sale_percent">10%</p>
+                    </div>
+                    <p class="product_real_price">9,000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rightAside">
+        <div class="rightAside__columns">
+            <div class="rightAside__columns__column textBox">
+                <div class="rightAside__headText">
+                    <p>최근 본 상품</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rightAside__columns border">
+            <div class="rightAside__columns__column">
+                <div class="rightAside__img">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="">
+                </div>
+                <div class="rightAside__img">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="">
+                </div>
+                <div class="rightAside__img">
+                    <img src="/mainpage/img/product_img_01.jpeg" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script src="/mainpage/js/category.js"></script>
+<script src="/mainpage/js/slider.js"></script>
+
+
+
+
+</body>
+</html>
