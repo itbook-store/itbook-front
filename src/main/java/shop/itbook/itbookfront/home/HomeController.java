@@ -14,4 +14,9 @@ public class HomeController {
     public String home() {
         return "mainpage/index";
     }
+
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "mypage/index";
+    }
 }

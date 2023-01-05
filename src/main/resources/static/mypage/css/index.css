@@ -1,0 +1,18 @@
+#mypage {
+    display: flex;
+}
+.content {
+    padding: 1rem;
+    flex: 1;
+}
+* {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+table {
+    width: 100%;
+}
+table, th, td {
+    border : 1px solid black;
+    border-collapse : collapse;
+}
