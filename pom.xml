@@ -61,6 +61,12 @@
             <artifactId>lettuce-core</artifactId>
             <version>6.1.8.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.zhanhb</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

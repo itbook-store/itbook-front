@@ -1,6 +1,6 @@
 /* layout */
 
-.rightAside{
+.rightAside {
     position: fixed;
     top: 570px;
     right: 28px;
@@ -8,7 +8,8 @@
     height: 485px;
     z-index: 1;
 }
-.rightAside__columns{
+
+.rightAside__columns {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,62 +17,62 @@
 
 /* style */
 
-.rightAside__columns__column.textBox{
+.rightAside__columns__column.textBox {
     width: 90px;
     height: 32px;
     background-color: #444444;
     padding-top: 8px;
 }
 
-.rightAside__headText{
+.rightAside__headText {
     font-size: 12px;
     font-family: 'NotoSansKR-Light';
     color: white;
     text-align: center;
 }
 
-.rightAside__columns.border{
+.rightAside__columns.border {
     border: solid 1px #edebe9;
     /* height: 445px */
     height: 280px;
 }
 
 
-.rightAside__img img{
+.rightAside__img img {
     width: 74px;
     height: 74px;
 }
 
-.rightAside__img{
+.rightAside__img {
     margin-top: 11px;
 }
 
 /* shopping basket position */
 
-.rightAside.shopping__basket{
+.rightAside.shopping__basket {
     top: 179px;
 }
 
 /* serch html section position */
 
-.rightAside.serchSection{
+.rightAside.serchSection {
     top: 179px;
 }
 
 /* clientCenter section position */
 
-.rightAside.clientCenter{
+.rightAside.clientCenter {
     top: 179px;
 }
 
 /* membership section position */
 
-.rightAside.membershipSection{
+.rightAside.membershipSection {
     top: 179px;
 }
 
 /* login section position */
 
-.rightAside.loginSection{
+.rightAside.loginSection {
     top: 179px;
 }
