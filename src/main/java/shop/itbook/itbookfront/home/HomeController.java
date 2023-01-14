@@ -16,13 +16,28 @@ public class HomeController {
     }
 
     @GetMapping("/mypage")
-    public String mypage() {
+    public String myPage() {
         return "mypage/index";
     }
 
     @GetMapping("/adminpage")
-    public String adminpage() {
+    public String adminPage() {
         return "adminpage/index";
+    }
+
+    @GetMapping("/adminproduct")
+    public String adminProductPage() {
+        return "adminpage/product/product-management";
+    }
+
+    @GetMapping("/adminmember")
+    public String adminMemberPage() {
+        return "adminpage/member/member-management";
+    }
+
+    @GetMapping("/adminpoint")
+    public String adminPointPage() {
+        return "adminpage/point/point-management";
     }
 
     @GetMapping("/test")
