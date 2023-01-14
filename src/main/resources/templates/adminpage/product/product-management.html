@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content">
+            <table class="table"  style="width: 800px">
+                <colgroup>
+                    <col style="width:auto;"/>
+                </colgroup>
+                <thead>
+                <h3 style="text-align: center" th:text="상품 관리"></h3>
+                </thead>
+
+                <a th:href="@{|/admin/products|}">
+                    <button>등록</button>
+                </a>
+
+                <tbody>
+                <tr>
+                    <th scope="col">상품코드</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">정가</th>
+                    <th scope="col">판매가</th>
+                    <th scope="col">수정</th>
+                    <th scope="col">삭제</th>
+                </tr>
+                <tr th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}" style="text-align: center">
+                    <td>[[ ${product.productNo} ]]</td>
+                    <td>[[ ${product.name} ]]</td>
+                    <td>[[ ${product.fixedPrice} ]]</td>
+                    <td>[[ ${product.selledPrice} ]]</td>
+                    <td><a th:href="@{|/admin/products/{productId}|}">
+                        <button>수정</button>
+                    </a></td>
+                    <td><a th:href="@{|/admin/products/{productId}|}">
+                        <button>삭제</button>
+                    </a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(productList)}">
+                    <td colspan="6" style="text-align: center">
+                        <div>목록이 비었습니다.</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+<!--            <form name="form" method="post" action="/uploadFile" enctype="multipart/form-data">-->
+<!--            <input type="file" name="files" multiple="multiple"/>-->
+<!--            <input type="submit" id="submit" value="전송"/>-->
+        </form>
+        </div>
+    </div>
+</body>
+</html>
