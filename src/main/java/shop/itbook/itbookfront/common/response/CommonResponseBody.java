@@ -17,10 +17,11 @@ public class CommonResponseBody<T> {
     
     private T result;
 
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CommonHeader {
-        private boolean isSuccessful;
+        private Boolean isSuccessful;
         private Integer resultCode;
         private String resultMessage;
     }
