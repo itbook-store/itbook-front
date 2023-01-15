@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>categoryList</title>
+</head>
+
+<div layout:fragment="content">
+
+    <h1 style="text-align: center">전체 카테고리 목록</h1>
+    <div class="container">
+        <table class="table table-striped" style="text-align: center">
+            <thead>
+            <tr>
+                <th style="width: auto">구분</th>
+                <th style="width: auto">카테고리명</th>
+                <th style="width: auto">상품 개수</th>
+                <th style="width: auto">숨김상태</th>
+                <th style="width: auto">숨김상태변경</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categoryList}">
+                <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
+                <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
+                <td th:text="${category.categoryName}"></td>
+                <td th:text="${category.count}"></td>
+                <td th:text="${category.isHidden}"></td>
+                <td>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-danger"
+                            th:value="${category.categoryNo}"
+                            onclick="modifyHidden(this)">숨김여부변경
+                    </button>
+                <td>
+                <td>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-danger"
+                            th:value="${category.categoryNo}"
+                            onclick="deleteCategory(this)">삭제
+                    </button>
+                <td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script th:src="@{/category/js/categoryAdmin.js}"></script>
+</div>
+
+</html>
