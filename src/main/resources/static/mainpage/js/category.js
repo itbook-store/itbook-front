@@ -8,3 +8,4 @@ dropBtn.addEventListener('click', function(){
         menu.classList.add('activeCategory');
     }
 })
+
