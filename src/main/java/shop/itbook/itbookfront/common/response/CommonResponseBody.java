@@ -20,7 +20,6 @@ public class CommonResponseBody<T> {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    @Getter
     public static class CommonHeader {
         private Boolean isSuccessful;
         private Integer resultCode;
