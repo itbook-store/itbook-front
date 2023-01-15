@@ -75,44 +75,13 @@
                 <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
                 <p>카테고리</p>
             </div>
-            <div class="dropdown">
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
+            <div class="dropdown" id = "categoryDiv">
+                <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
+                    <p class="middle_content%" th:text="${mainCategory.mainCategoryName}"></p>
+                    <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
+                        <a th:href="@{/products/category-no/{categoryNo}(categoryNo=${subCategory.categoryNo})}" class="samll_content_text" th:text="${subCategory.categoryName}"></a>
                     </div>
-
                 </div>
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                    </div>
-
-                </div>
-
-                <div class="middle_btn">
-                    <p class="middle_content%">중분류-01</p>
-
-                    <div class="small_content">
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                        <a href="#" class="samll_content_text">소분류-01</a>
-                    </div>
-
-                </div>
-
             </div>
         </div>
     </div>
