@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -21,17 +22,22 @@
                 <a href="/mypage">마이페이지</a>
             </div>
 
+            <th:block sec:authorize="isAuthenticated()">
             <div class="header_columns_column">
-                <a href="#">로그아웃</a>
+                <a href="/logout">로그아웃</a>
             </div>
+            </th:block>
 
+            <th:block sec:authorize="isAnonymous()">
             <div class="header_columns_column">
-                <a href="">로그인</a>
+                <a href="/login">로그인</a>
             </div>
 
             <div class="header_columns_column">
                 <a href="#">회원가입</a>
             </div>
+            </th:block>
+
 
             <div class="header_columns_column">
                 <a href="#">고객센터</a>
