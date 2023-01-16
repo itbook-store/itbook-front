@@ -16,6 +16,7 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col">
         <div class="card card-registration my-4">
+          <form method="post" action="/signup">
           <div class="row g-0">
             <div class="col-xl-6 d-none d-xl-block">
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
@@ -28,27 +29,27 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label">아이디</label>
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" class="form-control form-control-lg" name="id" />
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">닉네임</label>
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" class="form-control form-control-lg" name="nickname"/>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">이름</label>
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" class="form-control form-control-lg" name="name"/>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">비밀번호</label>
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" class="form-control form-control-lg" name="password"/>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">핸드폰번호(-제외)</label>
-                  <input type="text" class="form-control form-control-lg" />
+                  <input type="text" class="form-control form-control-lg" name="phoneNumber"/>
                 </div>
 
                 <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
@@ -56,13 +57,13 @@
                   <h6 class="mb-0 me-4">성별: </h6>
 
                   <div class="form-check form-check-inline mb-0 me-4">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
+                    <input class="form-check-input" type="radio" name="gender" id="femaleGender"
                            value="option1" />
                     <label class="form-check-label" for="femaleGender">Female</label>
                   </div>
 
                   <div class="form-check form-check-inline mb-0 me-4">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
+                    <input class="form-check-input" type="radio" name="gender" id="maleGender"
                            value="option2" />
                     <label class="form-check-label" for="maleGender">Male</label>
                   </div>
@@ -71,21 +72,22 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label">생년월일</label>
-                  <input type="date" class="form-control form-control-lg" />
+                  <input type="date" class="form-control form-control-lg" name="birth"/>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label">이메일</label>
-                  <input type="email" class="form-control form-control-lg" />
+                  <input type="email" class="form-control form-control-lg" name="email" />
                 </div>
 
                 <div class="d-flex justify-content-end pt-3">
-                  <button type="button" class="btn btn-warning btn-lg ms-2">Submit form</button>
+                  <button type="submit" class="btn btn-warning btn-lg ms-2">Submit form</button>
                 </div>
 
               </div>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </div>

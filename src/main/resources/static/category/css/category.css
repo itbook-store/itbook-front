@@ -1,0 +1,28 @@
+
+#cat_all{
+    position:absolute;
+    top:55px;
+    width:1000px;
+    height:300px;
+    background-color:#fff;
+    display:none;
+    z-index:3;
+
+}
+#cat_ul{
+    margin-left:20px;
+    margin-top:10px;
+
+}
+#cat_li{
+    font-size:14px;
+}
+#cat_title{
+    font-size:16px;
+    margin-left:13px;
+    margin-top:13px;
+}
+#cat_box{
+    float:left;
+    margin-right:100px;
+}

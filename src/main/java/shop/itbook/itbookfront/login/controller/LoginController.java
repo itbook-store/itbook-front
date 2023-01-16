@@ -1,7 +1,9 @@
-package shop.itbook.itbookfront.login;
+package shop.itbook.itbookfront.login.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 로그인 폼에 대한 컨트롤러 입니다.
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0
  */
 
-@RestController
+@Slf4j
+@RequiredArgsConstructor
+@Controller
 public class LoginController {
 
     @GetMapping("/login")
