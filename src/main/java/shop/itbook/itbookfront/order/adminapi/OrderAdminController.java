@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 1.0
  */
 @Controller
-@RequestMapping("/api/admin/order")
+@RequestMapping("/admin/orders")
 public class OrderAdminController {
 
     @GetMapping
