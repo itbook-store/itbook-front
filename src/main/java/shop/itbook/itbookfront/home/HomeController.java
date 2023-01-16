@@ -24,11 +24,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-//        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
-//
-//        List<MainCategory> mainCategoryList =
-//            CategoryUtil.getMainCategoryList(categoryList);
-//        model.addAttribute("mainCategoryList", mainCategoryList);
+        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryList);
+        model.addAttribute("mainCategoryList", mainCategoryList);
         return "mainpage/index";
     }
 
