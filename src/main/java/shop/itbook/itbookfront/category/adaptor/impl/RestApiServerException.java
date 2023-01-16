@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.exception;
+package shop.itbook.itbookfront.category.adaptor.impl;
 
 /**
  * @author 최겸준
