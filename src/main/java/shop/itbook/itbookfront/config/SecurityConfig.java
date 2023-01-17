@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests()
-            .antMatchers("/adminpage").hasAuthority("ROLE_ADMIN")
+//            .antMatchers("/adminpage").hasAuthority("ROLE_ADMIN")
             .anyRequest().permitAll()
             .and()
             .csrf()
@@ -47,7 +47,7 @@ public class SecurityConfig {
             .and()
             .logout()
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/")
+            .logoutSuccessUrl("/mypage")
             .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
