@@ -27,7 +27,7 @@ import shop.itbook.itbookfront.product.service.adminapi.ProductAdminService;
 public class ProductAdminController {
     private final ProductAdminService productAdminService;
 
-    @PostMapping("/admin/products")
+    @PostMapping("/admin/products/books")
     public String addBook(@Valid @ModelAttribute AddProductBookRequestDto requestDto,
                           @RequestPart("fileThumbnails") MultipartFile thumbnails,
                           @RequestPart(value = "fileEbook", required = false) MultipartFile ebook) {

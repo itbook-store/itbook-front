@@ -36,11 +36,13 @@ public class FileService {
 
     public String uploadFile(MultipartFile multipartFile, String folderPath) {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
-        String savedName = UUID.randomUUID().toString();
+        String fileName = multipartFile.getOriginalFilename();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String savedName = UUID.randomUUID().toString() + "." + ext;
         try {
-            File objFile = new File(multipartFile.getOriginalFilename());
-            multipartFile.transferTo(objFile);
-            InputStream inputStream = new FileInputStream(objFile);
+//            File objFile = new File(multipartFile.getOriginalFilename());
+//            multipartFile.transferTo(objFile);
+            InputStream inputStream = multipartFile.getInputStream();
             String fileStorageUrl =
                 objectService.uploadObject(containerName, folderPath, savedName, inputStream);
             return fileStorageUrl;

@@ -61,7 +61,7 @@ public class ProductAdaptor {
     public List<GetBookListResponseDto> getBookList() {
 
         URI uri = UriComponentsBuilder.fromHttpUrl(
-                gateway.getGatewayServer() + "/api/admin/books")
+                gateway.getGatewayServer() + "/api/admin/products/books")
             .build().toUri();
 
         CommonResponseBody<List<GetBookListResponseDto>> response =
