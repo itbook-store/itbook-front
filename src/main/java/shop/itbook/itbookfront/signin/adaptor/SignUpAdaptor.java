@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
@@ -14,7 +15,7 @@ import shop.itbook.itbookfront.util.ResponseChecker;
  * @author 노수연
  * @since 1.0
  */
-@Service
+@Component
 @RequiredArgsConstructor
 public class SignUpAdaptor {
 

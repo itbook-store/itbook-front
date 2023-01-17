@@ -35,6 +35,8 @@ public class SignupController{
         System.out.println("실행되었음");
 
         if(errors.hasErrors()) {
+            System.out.println(errors.getAllErrors().get(0));
+
             model.addAttribute("memberRequestDto", memberRequestDto);
 
             Map<String, String> validatorResult = validateHandling(errors);
