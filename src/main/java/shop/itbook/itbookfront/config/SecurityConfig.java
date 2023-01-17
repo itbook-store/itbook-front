@@ -47,7 +47,7 @@ public class SecurityConfig {
             .and()
             .logout()
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/")
+            .logoutSuccessUrl("/mypage")
             .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
