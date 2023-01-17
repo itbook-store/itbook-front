@@ -55,3 +55,6 @@ jobs:
         port: ${{ secrets.SSH_PORT2 }}
         script_stop: true
         script: "./startup.sh"
+
+
+
