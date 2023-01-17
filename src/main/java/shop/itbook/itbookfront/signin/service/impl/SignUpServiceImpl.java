@@ -36,11 +36,13 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public MemberBooleanResponseDto checkPhoneNumberExists(String phoneNumber) {
+
         return signUpAdaptor.phoneNumberExists(phoneNumber);
     }
 
     @Override
     public MemberBooleanResponseDto checkEmailExists(String email) {
+
         return signUpAdaptor.emailExists(email);
     }
 }

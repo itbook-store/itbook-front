@@ -28,17 +28,19 @@ public class SignUpAsyncController {
 
     @GetMapping("/nickname/{nickname}")
     public MemberBooleanResponseDto nickNameExists(@PathVariable("nickname") String nickname) {
-        System.out.println("여기는?");
+
         return signUpService.checkNicknameExists(nickname);
     }
 
     @GetMapping("/phoneNumber/{phoneNumber}")
     public MemberBooleanResponseDto phoneNumberExists(@PathVariable("phoneNumber") String phoneNumber) {
+
         return signUpService.checkPhoneNumberExists(phoneNumber);
     }
 
     @GetMapping("/email/{email}")
     public MemberBooleanResponseDto emailExists(@PathVariable("email") String email) {
+
         return signUpService.checkEmailExists(email);
     }
 }

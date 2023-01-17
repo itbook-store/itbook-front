@@ -43,6 +43,7 @@ public class SignUpAdaptor {
     }
 
     public MemberBooleanResponseDto phoneNumberExists(String phoneNumber) {
+
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
             "http://localhost:8082/api/service/members/sign-up/phoneNumber/" + phoneNumber,
             HttpMethod.GET, null,
@@ -53,6 +54,7 @@ public class SignUpAdaptor {
     }
 
     public MemberBooleanResponseDto emailExists(String email) {
+
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
             "http://localhost:8082/api/service/members/sign-up/email/" + email,
             HttpMethod.GET, null,
@@ -63,6 +65,7 @@ public class SignUpAdaptor {
     }
 
     private MemberBooleanResponseDto getMemberBooleanResponseDto(
+
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject) {
         ResponseChecker.checkFail(restTemplateForObject.getBody().getHeader());
 
