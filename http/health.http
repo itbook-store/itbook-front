@@ -1,0 +1,6 @@
+GET http://localhost:8080/monitor/l7check
+
+###
+
+PUT http://localhost:8080/monitor/l7check
+
