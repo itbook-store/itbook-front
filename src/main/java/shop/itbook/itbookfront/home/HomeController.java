@@ -28,8 +28,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest httpServletRequest) {
+        log.info("############# home controller start!!");
+        log.info("############# home controller start!!");
         List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
 
+        log.info("############# category end");
+        log.info("############# category end");
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);
         model.addAttribute("mainCategoryList", mainCategoryList);
@@ -37,6 +41,7 @@ public class HomeController {
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
+
 
         return "mainpage/index";
     }
