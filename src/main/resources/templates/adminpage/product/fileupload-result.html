@@ -14,7 +14,7 @@
         <h1>업로드 된 파일 목록</h1>
         <ul th:each="file: ${fileList}">
         <li><span th:text="${file.fileName}"></span>
-        <a href = "#" th:href="${'/download?uuid='+file.uuid+'&objectName='+file.fileName}">
+        <a href = "#" th:href="${'/download?objectName='+file.fileName}">
             [download]</a>
         </li>
         </ul>

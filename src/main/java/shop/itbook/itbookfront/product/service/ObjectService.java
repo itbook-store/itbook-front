@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.fileupload;
+package shop.itbook.itbookfront.product.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,9 +24,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @Data
 public class ObjectService {
-
     private String tokenId;
     private String storageUrl;
+
     private RestTemplate restTemplate;
 
     public ObjectService(String storageUrl, String tokenId) {
@@ -38,14 +38,13 @@ public class ObjectService {
 
     private String getUrl(@NonNull String containerName, @NonNull String folderPath,
                           @NonNull String objectName) {
-        return this.getStorageUrl() + "/" + containerName + "/" + folderPath + "/" + objectName;
+        return this.storageUrl + "/" + containerName + "/" + folderPath + "/" + objectName;
     }
 
-    public void uploadObject(String containerName, String folderPath, String objectName,
-                             final InputStream inputStream) {
+    public String uploadObject(String containerName, String folderPath, String objectName,
+                               final InputStream inputStream) {
         String url = this.getUrl(containerName, folderPath, objectName);
 
-        // InputStream을 요청 본문에 추가할 수 있도록 RequestCallback 오버라이드
         final RequestCallback requestCallback = new RequestCallback() {
             public void doWithRequest(final ClientHttpRequest request) throws IOException {
                 request.getHeaders().add("X-Auth-Token", tokenId);
@@ -53,7 +52,6 @@ public class ObjectService {
             }
         };
 
-        // 오버라이드한 RequestCallback을 사용할 수 있도록 설정
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
@@ -62,25 +60,23 @@ public class ObjectService {
             = new HttpMessageConverterExtractor<String>(String.class,
             restTemplate.getMessageConverters());
 
-        // API 호출
         restTemplate.execute(url, HttpMethod.PUT, requestCallback, responseExtractor);
+
+        return url;
     }
 
-    public InputStream downloadObject(String containerName, String folderPath, String objectName) {
-        String url = this.getUrl(containerName, folderPath, objectName);
+    public InputStream downloadObject(String url) {
 
-        // 헤더 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출, 데이터를 바이트 배열로 받음
         ResponseEntity<byte[]> response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
 
-        // 바이트 배열 데이터를 InputStream으로 만들어 반환
         return new ByteArrayInputStream(response.getBody());
     }
+
 }

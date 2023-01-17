@@ -16,10 +16,10 @@
                     <col style="width:auto;"/>
                 </colgroup>
                 <thead>
-                <h3 style="text-align: center" th:text="상품 관리"></h3>
+                <h3 style="text-align: center" text="상품 관리"></h3>
                 </thead>
 
-                <a th:href="@{|/admin/products|}">
+                <a th:href="@{/admin/products}" style="margin-bottom: 20px">
                     <button>등록</button>
                 </a>
 
@@ -34,7 +34,7 @@
                 </tr>
                 <tr th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}" style="text-align: center">
                     <td>[[ ${product.productNo} ]]</td>
-                    <td>[[ ${product.name} ]]</td>
+                    <td>[[ ${product.productName} ]]</td>
                     <td>[[ ${product.fixedPrice} ]]</td>
                     <td>[[ ${product.selledPrice} ]]</td>
                     <td><a th:href="@{|/admin/products/{productId}|}">
@@ -52,10 +52,7 @@
                 </tbody>
             </table>
 
-<!--            <form name="form" method="post" action="/uploadFile" enctype="multipart/form-data">-->
-<!--            <input type="file" name="files" multiple="multiple"/>-->
-<!--            <input type="submit" id="submit" value="전송"/>-->
-        </form>
+
         </div>
     </div>
 </body>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+
+<head>
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="/product/js/admin-product.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta charset="UTF-8">
+    <title>상품 등록</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <h2> 상품 등록 </h2>
+
+    <hr>
+
+    <div class="form-product">
+        <form class="form-horizontal" name="form" method="post" action="/admin/products" enctype="multipart/form-data">
+            <!-- Text input-->
+            <div>
+                <div class="form-group">
+                    <label for="productName">상품명</label>
+                    <input id="productName" name="productName" class="form-control input-md" required=""
+                           type="text">
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="simpleDescription">간단 설명</label>
+                    <input id="simpleDescription" name="simpleDescription"
+                           class="form-control input-md" required="" type="text">
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="detailsDescription">상세 설명</label>
+                    <textarea class="form-control" id="detailsDescription"
+                              name="detailsDescription"></textarea>
+                </div>
+
+                <!-- radio input-->
+                <div class="form-group">
+                    <label>판매 여부</label>
+                    <fieldset>
+                        YES <input type="radio" name="isSelled" value="true" checked/>
+                        NO <input type="radio" name="isSelled" value="false"/>
+                    </fieldset>
+                </div>
+
+                <!-- radio input-->
+                <div class="form-group">
+                    <label>삭제 여부</label>
+                    <div class="col-md-4">
+                        <fieldset>
+                            YES <input type="radio" name="isDeleted" value="true"/>
+                            NO <input type="radio" name="isDeleted" value="false" checked/>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="stock">재고</label>
+                    <input id="stock" name="stock" class="form-control input-md" required=""
+                           type="text">
+                </div>
+
+                <!-- Select Basic -->
+                <!--                <div class="form-group">-->
+                <!--                    <label class="col-md-4 control-label" for="category">카테고리</label>-->
+                <!--                    <div class="col-md-4">-->
+                <!--                        <select id="category" name="category" class="form-control">-->
+                <!--                        </select>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="category">카테고리</label>
+                    <input id="category" name="category" class="form-control input-md" required=""
+                           type="text">
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="increasePointPercent">포인트 적립율</label>
+                    <input id="increasePointPercent" name="increasePointPercent"
+                           class="form-control input-md" required="" type="text">
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="rawPrice">매입 원가</label>
+                    <input id="rawPrice" name="rawPrice"
+                           class="form-control input-md" required="" type="text">
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="fixedPrice">정가</label>
+                    <input id="fixedPrice" name="fixedPrice"
+                           class="form-control input-md" required="" type="text">
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label for="discountPercent">할인율</label>
+                    <input id="discountPercent" name="discountPercent"
+                           class="form-control input-md" required="" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label>썸네일 사진 선택</label>
+                    <input type="file" value="파일 선택" name="fileThumbnails" accept="image/*"/>
+                </div>
+                <div class="form-book">
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label for="isbn">isbn</label>
+                        <input id="isbn" name="isbn" class="form-control input-md" required="" type="text">
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label for="pageCount">page 수</label>
+                        <input id="pageCount" name="pageCount" class="form-control input-md" required=""
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookCreatedAt">발간일</label>
+                        <input type="datetime-local" id="bookCreatedAt"
+                               name="bookCreatedAt" class="form-control input-md" required="">
+                    </div>
+                    <!-- radio input-->
+                    <div class="form-group">
+                        <label>상품 분류</label>
+                        <fieldset>
+                            전자책(e-book) <input type="radio" name="isEbook" value="true" onclick="selectEbook()"/>
+                            종이책 <input type="radio" name="isEbook" value="false" onclick="notSelectEbook()" checked/>
+                        </fieldset>
+                        <!-- File input-->
+                        <div class="form-group" id="selectEbook" style="display: none">
+                            <label class="col-md-4 control-label">ebook 등록</label>
+                            <input type="file" value="파일 선택" name="fileEbook" accept=".pdf"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="publisherName">출판사</label>
+                        <input id="publisherName" name="publisherName" class="form-control input-md" required=""
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="authorName">저자명</label>
+                        <input id="authorName" name="authorName" class="form-control input-md" required=""
+                               type="text">
+                    </div>
+                </div>
+
+                <input type="submit" id="submit" value="전송"/>
+            </div>
+        </form>
+    </div>
+</div>
+<!--<th:div layout:fragment="content-js">-->
+<!--    <script th:src="@{/product/js/admin-product.js}"></script>-->
+<!--</th:div>-->
+</body>
+</html>
