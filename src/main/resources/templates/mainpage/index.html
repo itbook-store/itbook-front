@@ -44,7 +44,9 @@
             <div class="main_product_container">
                 <div class="main_product" th:if="${not #lists.isEmpty(bookList)}" th:each="book : ${bookList}"
                      style="text-align: center">
-                    <img th:src="@{/mainpage/img/download/{filename}(filename=${book.thumbnailsName})}" alt=""
+                    <!--                    <img th:src="@{/mainpage/img/download/{filename}(filename=${book.thumbnailsName})}" alt=""-->
+                    <!--                         class="product_img">-->
+                    <img th:src="${book.fileThumbnailsUrl}" alt=""
                          class="product_img">
                     <p class="product_title" th:text="${book.productName}"></p>
                     <div class="product_price_box">

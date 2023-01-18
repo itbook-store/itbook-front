@@ -54,22 +54,7 @@ public class ProductAdaptor {
                 HttpMethod.POST, uploadEntity,
                 new ParameterizedTypeReference<CommonResponseBody<ProductNoResponseDto>>() {
                 }).getBody();
-
-        CommonResponseBody.CommonHeader header = response.getHeader();
-        if (!header.isSuccessful()) {
-            if (header.getResultCode().equals(400)) {
-                new BadRequestException(header.getResultMessage());
-                throw new BadRequestException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(403)) {
-                throw new MemberForbiddenException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(500)) {
-                throw new RestApiServerException(header.getResultMessage());
-            }
-        }
+        
         return objectMapper.convertValue(response.getResult(), ProductNoResponseDto.class);
     }
 
@@ -81,21 +66,6 @@ public class ProductAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponseBody.CommonHeader header = response.getBody().getHeader();
-        if (!header.isSuccessful()) {
-            if (header.getResultCode().equals(400)) {
-                new BadRequestException(header.getResultMessage());
-                throw new BadRequestException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(403)) {
-                throw new MemberForbiddenException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(500)) {
-                throw new RestApiServerException(header.getResultMessage());
-            }
-        }
         return objectMapper.convertValue(response.getBody().getResult(),
             new TypeReference<>() {
             });
@@ -111,21 +81,6 @@ public class ProductAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponseBody.CommonHeader header = response.getBody().getHeader();
-        if (!header.isSuccessful()) {
-            if (header.getResultCode().equals(400)) {
-                new BadRequestException(header.getResultMessage());
-                throw new BadRequestException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(403)) {
-                throw new MemberForbiddenException(header.getResultMessage());
-            }
-
-            if (header.getResultCode().equals(500)) {
-                throw new RestApiServerException(header.getResultMessage());
-            }
-        }
         return objectMapper.convertValue(response.getBody().getResult(),
             new TypeReference<>() {
             });

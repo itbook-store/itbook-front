@@ -47,7 +47,7 @@ public class ProductAdminService {
         return productAdaptor.getBook(id);
     }
 
-    public byte[] downloadThumbnails(Long id) {
-        return fileService.download(getBook(id).getFileThumbnailsUrl());
+    public void downloadThumbnails(Long id) {
+        fileService.download(getBook(id).getFileThumbnailsUrl());
     }
 }

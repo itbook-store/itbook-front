@@ -2,7 +2,7 @@ package shop.itbook.itbookfront.util;
 
 import org.springframework.http.HttpStatus;
 import shop.itbook.itbookfront.category.adaptor.impl.BadRequestException;
-import shop.itbook.itbookfront.category.adaptor.impl.RestApiServerException;
+import shop.itbook.itbookfront.product.adaptor.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.exception.MemberForbiddenException;
 

@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.home;
 
+import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ public class HomeController {
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest httpServletRequest) {
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+    public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/categories");
 
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);

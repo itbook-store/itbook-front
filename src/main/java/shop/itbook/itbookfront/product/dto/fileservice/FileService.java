@@ -26,23 +26,22 @@ public class FileService {
     @Value("${object.storage.folder-path.download}")
     private String downloadPath;
 
-    public byte[] download(String url) {
+    public void download(String url) {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
         try {
-            InputStream inputStream = objectService.downloadObject(url);
-            byte[] buffer = new byte[inputStream.available()];
-            return buffer;
 //            InputStream inputStream = objectService.downloadObject(url);
 //            byte[] buffer = new byte[inputStream.available()];
-//            inputStream.read(buffer);
-//            String uuid = url.substring(url.lastIndexOf("/") + 1);
-//            File target = new File(downloadPath + "/" + uuid);
-//            OutputStream outputStream = new FileOutputStream(target);
-//            outputStream.write(buffer);
-//            outputStream.close();
+//            return buffer;
+            InputStream inputStream = objectService.downloadObject(url);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            String uuid = url.substring(url.lastIndexOf("/") + 1);
+            File target = new File(downloadPath + "/" + uuid);
+            OutputStream outputStream = new FileOutputStream(target);
+            outputStream.write(buffer);
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
