@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.signin.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,22 +7,14 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author 노수연
  * @since 1.0
  */
-@Setter
 @Getter
-public class MemberRequestDto {
-
-    @NotBlank(message = "멤버쉽 번호는 null값 및 공백을 허용하지 않습니다.")
-    private Integer membershipNo;
-
-    @NotBlank(message = "멤버 상태 번호는 null값 및 공백을 허용하지 않습니다.")
-    private Integer memberStatusNo;
-
+@Setter
+public class MemberInputRequestDto {
     @Length(min = 2, max = 15, message = "아이디는 최소 2자부터 시작하며 최대 15자까지 작성해야합니다.")
     @NotBlank(message = "아이디는 null값 및 공백을 허용하지 않습니다.")
     private String memberId;
@@ -40,7 +31,7 @@ public class MemberRequestDto {
     private Boolean isMan;
 
     @NotNull(message = "생일은 null값을 허용하지 않습니다.")
-    private LocalDateTime birth;
+    private String birth;
 
     @Length(max = 255, message = "비밀번호는 최대 255자까지 허용합니다.")
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")

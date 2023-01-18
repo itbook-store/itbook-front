@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.signin.service;
 
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 
 /**
@@ -14,4 +15,6 @@ public interface SignUpService {
     MemberBooleanResponseDto checkPhoneNumberExists(String phoneNumber);
 
     MemberBooleanResponseDto checkEmailExists(String email);
+
+    void addMember(MemberRequestDto memberRequestDto);
 }

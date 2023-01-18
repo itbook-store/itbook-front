@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -23,52 +25,68 @@ public class SignUpAdaptor {
 
     public MemberBooleanResponseDto memberIdExists(String memberId) {
 
-        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
-            "http://localhost:8082/api/service/members/sign-up/memberId/" + memberId, HttpMethod.GET, null,
-            new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
-            });
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
+            restTemplate.exchange(
+                "http://localhost:8082/api/service/members/sign-up/memberId/" + memberId,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                });
 
-        return getMemberBooleanResponseDto(restTemplateForObject);
+        return getMemberBooleanResponseDto(responseEntity);
     }
 
     public MemberBooleanResponseDto nicknameExists(String nickname) {
 
-        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
-            "http://localhost:8082/api/service/members/sign-up/nickname/" + nickname,
-            HttpMethod.GET, null,
-            new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
-            });
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
+            restTemplate.exchange(
+                "http://localhost:8082/api/service/members/sign-up/nickname/" + nickname,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                });
 
-        return getMemberBooleanResponseDto(restTemplateForObject);
+        return getMemberBooleanResponseDto(responseEntity);
     }
 
     public MemberBooleanResponseDto phoneNumberExists(String phoneNumber) {
 
-        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
-            "http://localhost:8082/api/service/members/sign-up/phoneNumber/" + phoneNumber,
-            HttpMethod.GET, null,
-            new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
-            });
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
+            restTemplate.exchange(
+                "http://localhost:8082/api/service/members/sign-up/phoneNumber/" + phoneNumber,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                });
 
-        return getMemberBooleanResponseDto(restTemplateForObject);
+        return getMemberBooleanResponseDto(responseEntity);
     }
 
     public MemberBooleanResponseDto emailExists(String email) {
 
-        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject = restTemplate.exchange(
-            "http://localhost:8082/api/service/members/sign-up/email/" + email,
-            HttpMethod.GET, null,
-            new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
-            });
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
+            restTemplate.exchange(
+                "http://localhost:8082/api/service/members/sign-up/email/" + email,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                });
 
-        return getMemberBooleanResponseDto(restTemplateForObject);
+        return getMemberBooleanResponseDto(responseEntity);
     }
 
-    private MemberBooleanResponseDto getMemberBooleanResponseDto(
+    public MemberBooleanResponseDto getMemberBooleanResponseDto(
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject) {
         ResponseChecker.checkFail(restTemplateForObject.getBody().getHeader());
 
         return restTemplateForObject.getBody().getResult();
+    }
+
+    public MemberNoResponseDto addMemberIntoDb(
+        MemberRequestDto memberRequestDto) {
+
+        ResponseEntity<MemberNoResponseDto> commonResponseBody = restTemplate.postForEntity("http://localhost:8082/api/service/members/sign-up",
+            memberRequestDto, MemberNoResponseDto.class);
+
+        // TODO NUll 해결하기
+        System.out.println(">>> " + commonResponseBody.getBody().getMemberNo());
+        return null;
     }
 }

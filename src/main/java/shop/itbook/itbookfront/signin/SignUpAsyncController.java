@@ -3,8 +3,11 @@ package shop.itbook.itbookfront.signin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 import shop.itbook.itbookfront.signin.service.SignUpService;
 
@@ -42,5 +45,10 @@ public class SignUpAsyncController {
     public MemberBooleanResponseDto emailExists(@PathVariable("email") String email) {
 
         return signUpService.checkEmailExists(email);
+    }
+
+    @PostMapping("/members")
+    public void memberAdd(@RequestBody MemberRequestDto memberRequestDto) {
+        signUpService.addMember(memberRequestDto);
     }
 }

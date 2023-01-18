@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.signin.adaptor.SignUpAdaptor;
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 import shop.itbook.itbookfront.signin.service.SignUpService;
 
@@ -44,5 +45,10 @@ public class SignUpServiceImpl implements SignUpService {
     public MemberBooleanResponseDto checkEmailExists(String email) {
 
         return signUpAdaptor.emailExists(email);
+    }
+
+    @Override
+    public void addMember(MemberRequestDto memberRequestDto) {
+        signUpAdaptor.addMemberIntoDb(memberRequestDto);
     }
 }
