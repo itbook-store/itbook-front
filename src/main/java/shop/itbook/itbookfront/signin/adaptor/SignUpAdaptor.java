@@ -85,11 +85,11 @@ public class SignUpAdaptor {
     public MemberNoResponseDto addMemberIntoDb(
         MemberRequestDto memberRequestDto) {
 
-        ResponseEntity<MemberNoResponseDto> commonResponseBody = restTemplate.postForEntity(gatewayConfig.getGatewayServer() + "/api/service/members/sign-up",
+        ResponseEntity<MemberNoResponseDto> responseEntity = restTemplate.postForEntity(gatewayConfig.getGatewayServer() + "/api/service/members/sign-up",
             memberRequestDto, MemberNoResponseDto.class);
 
         // TODO NUll 해결하기
-        System.out.println(">>> " + commonResponseBody.getBody().getMemberNo());
+        System.out.println(">>> " + responseEntity.getBody().getMemberNo());
         return null;
     }
 }

@@ -46,9 +46,4 @@ public class SignUpAsyncController {
 
         return signUpService.checkEmailExists(email);
     }
-
-    @PostMapping("/members")
-    public void memberAdd(@RequestBody MemberRequestDto memberRequestDto) {
-        signUpService.addMember(memberRequestDto);
-    }
 }
