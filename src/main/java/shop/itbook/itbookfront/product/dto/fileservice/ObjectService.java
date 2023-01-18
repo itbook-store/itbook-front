@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.product.service;
+package shop.itbook.itbookfront.product.dto.fileservice;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,30 +39,6 @@ public class ObjectService {
     private String getUrl(@NonNull String containerName, @NonNull String folderPath,
                           @NonNull String objectName) {
         return this.storageUrl + "/" + containerName + "/" + folderPath + "/" + objectName;
-    }
-
-    public String uploadObject(String containerName, String folderPath, String objectName,
-                               final InputStream inputStream) {
-        String url = this.getUrl(containerName, folderPath, objectName);
-
-        final RequestCallback requestCallback = new RequestCallback() {
-            public void doWithRequest(final ClientHttpRequest request) throws IOException {
-                request.getHeaders().add("X-Auth-Token", tokenId);
-                IOUtils.copy(inputStream, request.getBody());
-            }
-        };
-
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setBufferRequestBody(false);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-
-        HttpMessageConverterExtractor<String> responseExtractor
-            = new HttpMessageConverterExtractor<String>(String.class,
-            restTemplate.getMessageConverters());
-
-        restTemplate.execute(url, HttpMethod.PUT, requestCallback, responseExtractor);
-
-        return url;
     }
 
     public InputStream downloadObject(String url) {

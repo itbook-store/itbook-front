@@ -1,11 +1,12 @@
 package shop.itbook.itbookfront.home;
 
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import shop.itbook.itbookfront.product.dto.response.GetBookListResponseDto;
+import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
 import shop.itbook.itbookfront.product.service.adminapi.ProductAdminService;
 
 /**
@@ -18,8 +19,8 @@ public class HomeController {
     private final ProductAdminService productAdminService;
 
     @GetMapping("/")
-    public String home(Model model) {
-        List<GetBookListResponseDto> bookList = productAdminService.getBookList();
+    public String home(Model model) throws IOException {
+        List<GetBookResponseDto> bookList = productAdminService.getBookList();
         model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }

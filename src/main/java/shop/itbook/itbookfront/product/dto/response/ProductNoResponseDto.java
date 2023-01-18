@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-public class AddProductResponseDto {
+public class ProductNoResponseDto {
 
     private Long productNo;
 

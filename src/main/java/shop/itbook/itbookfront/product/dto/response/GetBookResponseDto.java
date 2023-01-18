@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.product.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class GetBookListResponseDto {
+public class GetBookResponseDto {
     private Long productNo;
 
     private String productName;
@@ -40,6 +39,7 @@ public class GetBookListResponseDto {
     private Double discountPercent;
 
     private String fileThumbnailsUrl;
+//    private MultipartFile fileThumbnails;
 
     private String isbn;
 
@@ -50,6 +50,7 @@ public class GetBookListResponseDto {
     private Boolean isEbook;
 
     private String fileEbookUrl;
+//    private MultipartFile fileEbook;
 
     private String publisherName;
 
