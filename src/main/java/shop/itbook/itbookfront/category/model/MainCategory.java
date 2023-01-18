@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 /**
  * @author 최겸준
  * @since 1.0

@@ -1,8 +1,8 @@
-package shop.itbook.itbookfront.exception;
+package shop.itbook.itbookfront.common.exception;
 
 public class MemberForbiddenException extends RuntimeException {
 
-        public static final String MESSAGE = "죄송합니다 고객님 ";
+        public static final String MESSAGE = "고객님의 접근 권한이 부족합니다.";
 
         public MemberForbiddenException(String resultMessage) {
             super(MESSAGE);
