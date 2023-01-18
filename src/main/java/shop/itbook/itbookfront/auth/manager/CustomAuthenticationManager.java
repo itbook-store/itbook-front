@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.manager;
+package shop.itbook.itbookfront.auth.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
@@ -60,7 +63,11 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 //        ResponseChecker.checkFail(exchange.getBody().getHeader());
 
         String accessToken = exchange.getHeaders().get("Authorization").get(0);
+        String role1 = exchange.getHeaders().get("Role").get(0);
         log.info("accessToken {}", accessToken);
+        log.info("==========================================");
+        log.info("role {}", role1);
+        log.info("==========================================");
 
         redisTemplate.opsForHash().put("accessToken", authentication.getPrincipal(), accessToken);
 
