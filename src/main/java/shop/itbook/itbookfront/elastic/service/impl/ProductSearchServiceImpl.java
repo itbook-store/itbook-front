@@ -17,6 +17,7 @@ public class ProductSearchServiceImpl implements ProductSearchService {
 
     private final ProductSearchAdaptor productSearchAdaptor;
 
+    @Override
     public List<ProductSampleResponseDto> findProductList(String url) {
         return productSearchAdaptor.findProductList(url);
     }
