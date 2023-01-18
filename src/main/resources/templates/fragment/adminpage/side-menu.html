@@ -12,7 +12,7 @@
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a th:href="@{/adminmember}">회원 관리</a>
+                    회원 관리
                 </button>
             </li>
             <li class="mb-1">
@@ -24,13 +24,13 @@
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/api/admin/order">주문 관리</a>
+                    <a href="/admin/orders">주문 관리</a>
                 </button>
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a th:href="@{/adminpoint}">카테고리 관리</a>
+                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectHowToShowCategories(this)">
+                    카테고리 관리
                 </button>
             </li>
             <li class="mb-1">
@@ -68,11 +68,15 @@
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
                     찜 현황
                 </button>
+
             </li>
 
             <li class="border-top my-3"></li>
         </ul>
     </div>
+    <script th:src="@{/fragment/adminpage/js/sideMenu.js}"></script>
 </div>
+
+
 </body>
 </html>

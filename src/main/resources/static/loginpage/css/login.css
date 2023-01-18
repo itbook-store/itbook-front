@@ -58,3 +58,10 @@ html, body {
 #inputBox button {
     padding: 3px 5px;
 }
+
+#github_login_btn img {
+    width: 283px;
+    height: 42px;
+}
+
+

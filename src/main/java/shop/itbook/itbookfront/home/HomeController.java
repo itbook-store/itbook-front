@@ -1,11 +1,19 @@
 package shop.itbook.itbookfront.home;
 
-import java.io.IOException;
+import java.net.http.HttpRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import shop.itbook.itbookfront.category.model.MainCategory;
+import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
+import shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
 import shop.itbook.itbookfront.product.service.adminapi.ProductAdminService;
 
@@ -15,34 +23,36 @@ import shop.itbook.itbookfront.product.service.adminapi.ProductAdminService;
  */
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class HomeController {
     private final ProductAdminService productAdminService;
 
+    private final CategoryService categoryService;
+
     @GetMapping("/")
-    public String home(Model model) throws IOException {
+    public String home(Model model, HttpServletRequest httpServletRequest) {
+        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryList);
+        model.addAttribute("mainCategoryList", mainCategoryList);
+
+        String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
+        log.info("########## 브라우저 ip : " + remoteAddr);
+
         List<GetBookResponseDto> bookList = productAdminService.getBookList();
         model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }
 
     @GetMapping("/mypage")
-    public String myPage() {
+    public String mypage() {
         return "mypage/index";
     }
 
     @GetMapping("/adminpage")
-    public String adminPage() {
+    public String adminpage() {
         return "adminpage/index";
-    }
-
-    @GetMapping("/adminmember")
-    public String adminMemberPage() {
-        return "adminpage/member/member-management";
-    }
-
-    @GetMapping("/adminpoint")
-    public String adminPointPage() {
-        return "adminpage/point/point-management";
     }
 
     @GetMapping("/test")
