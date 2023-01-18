@@ -34,7 +34,6 @@ public class HomeController {
             CategoryUtil.getMainCategoryList(categoryList);
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
