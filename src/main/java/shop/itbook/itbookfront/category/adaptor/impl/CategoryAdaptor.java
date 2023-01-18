@@ -1,8 +1,5 @@
 package shop.itbook.itbookfront.category.adaptor.impl;
 
-import static shop.itbook.itbookfront.util.ResponseChecker.checkFail;
-
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,7 +24,8 @@ public class CategoryAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public CommonResponseBody<shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto> addCategory(CategoryRequestDto categoryRequestDto) {
+    public CommonResponseBody<shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto> addCategory(
+        CategoryRequestDto categoryRequestDto) {
         return restTemplate.postForEntity(gatewayConfig.getGatewayServer() + "/categories",
             categoryRequestDto, CommonResponseBody.class).getBody();
     }
@@ -40,7 +38,7 @@ public class CategoryAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(exchange.getBody().getHeader());
+//        ResponseChecker.checkFail(exchange.getStatusCode(), exchange.getBody().getHeader());
 
         return exchange.getBody().getResult();
     }
