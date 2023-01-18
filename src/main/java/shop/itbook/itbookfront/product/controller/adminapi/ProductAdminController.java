@@ -56,9 +56,4 @@ public class ProductAdminController {
         return "adminpage/product/product-management";
     }
 
-    @GetMapping("/image/{id}")
-    public void downloadThumbnails(@PathVariable Long id, Model model) {
-        productAdminService.downloadThumbnails(id);
-//        model.addAttribute("img", Base64.getEncoder().encodeToString(s));
-    }
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
-import shop.itbook.itbookfront.product.dto.fileservice.FileService;
 import shop.itbook.itbookfront.product.dto.request.AddProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
@@ -25,9 +24,6 @@ import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
 public class ProductAdminService {
 
     private final ProductAdaptor productAdaptor;
-    @Value("${object.storage.folder-path.download}")
-    private String downloadPath;
-    private final FileService fileService;
 
     @Transactional
     public ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
@@ -47,7 +43,4 @@ public class ProductAdminService {
         return productAdaptor.getBook(id);
     }
 
-    public void downloadThumbnails(Long id) {
-        fileService.download(getBook(id).getFileThumbnailsUrl());
-    }
 }

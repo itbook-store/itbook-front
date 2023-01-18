@@ -15,6 +15,8 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
+import shop.itbook.itbookfront.product.service.adminapi.ProductAdminService;
 
 /**
  * @author gwanii
@@ -29,8 +31,9 @@ public class HomeController {
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest httpServletRequest) {
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+    public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/categories");
 
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);

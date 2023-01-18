@@ -20,9 +20,6 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.request.AddProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
-import shop.itbook.itbookfront.product.exception.BadRequestException;
-import shop.itbook.itbookfront.product.exception.MemberForbiddenException;
-import shop.itbook.itbookfront.product.exception.RestApiServerException;
 
 /**
  * @author 이하늬
@@ -54,7 +51,7 @@ public class ProductAdaptor {
                 HttpMethod.POST, uploadEntity,
                 new ParameterizedTypeReference<CommonResponseBody<ProductNoResponseDto>>() {
                 }).getBody();
-        
+
         return objectMapper.convertValue(response.getResult(), ProductNoResponseDto.class);
     }
 
