@@ -30,15 +30,13 @@
                 <td th:text="${category.count}"></td>
                 <td th:text="${category.isHidden}"></td>
                 <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger"
-                            th:value="${category.categoryNo}"
-                            onclick="modifyHidden(this)">숨김여부변경
+                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
+                        <a th:href="@{/admin/categories/{categoryNo}/category-modify/hidden(categoryNo=${category.categoryNo})}">숨김여부변경</a>
                     </button>
                 <td>
                 <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger"
-                            th:value="${category.categoryNo}"
-                            onclick="deleteCategory(this)">삭제
+                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
+                        <a th:href="@{/admin/categories/{categoryNo}/category-deletion(categoryNo=${category.categoryNo})}">삭제</a>
                     </button>
                 <td>
             </tr>

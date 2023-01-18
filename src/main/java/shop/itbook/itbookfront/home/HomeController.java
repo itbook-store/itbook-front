@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
-import shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 
 /**
  * @author gwanii

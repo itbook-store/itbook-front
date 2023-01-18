@@ -1,4 +1,4 @@
-package shop.itbook.itbookshop.category.dto.response;
+package shop.itbook.itbookfront.category.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
