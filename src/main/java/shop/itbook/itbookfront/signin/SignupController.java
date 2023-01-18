@@ -78,7 +78,7 @@ public class SignupController{
 
         signUpService.addMember(memberRequestDto);
 
-        return "signuppage/signup-success";
+        return "redirect:/";
     }
 
     public Map<String, String> validateHandling(Errors errors) {
