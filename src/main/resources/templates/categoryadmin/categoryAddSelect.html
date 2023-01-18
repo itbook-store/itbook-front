@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>categoryAddForm</title>
+  <link rel="stylesheet" type="text/css" href="/review/css/reviewForm.css">
+</head>
+
+<div layout:fragment="content">
+  <div id="form-main">
+    <div id="form-div">
+      <button><a href="/admin/categories/category-addition/main-category">대분류 추가하기</a></button> <br><br>
+      <button><a href="/admin/categories/category-addition/sub-category">소분류 추가하기</a></button>
+    </div>
+  </div>
+</div>
+
+</html>
