@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.delivery.adminapi.adaptor.DeliveryAdaptor;
-import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryDetailResponseDto;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
 
 /**
@@ -24,14 +24,17 @@ import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatus
 @RequestMapping("/admin/deliveries")
 public class DeliveryAdminController {
 
-    private final String gatewayUri = "http://localhost:8081/api/admin/deliveries";
-
+    private final GatewayConfig gatewayConfig;
     private final DeliveryAdaptor deliveryAdaptor;
+
+    private final String DELIVERY_LIST_PATH = "/api/admin/deliveries";
+    private final String DELIVERY_WAIT_LIST_PATH = "/api/admin/deliveries";
 
     @GetMapping
     public String adminDeliveryListPage(Model model) {
         ResponseEntity<CommonResponseBody<List<DeliveryWithStatusResponseDto>>> deliveryWaitList =
-            deliveryAdaptor.getDeliveryWaitList(gatewayUri);
+            deliveryAdaptor.getDeliveryWaitList(
+                gatewayConfig.getGatewayServer() + DELIVERY_LIST_PATH);
 
         model.addAttribute("deliveryWaitList", deliveryWaitList.getBody().getResult());
 
@@ -41,7 +44,8 @@ public class DeliveryAdminController {
     @GetMapping("/wait")
     public String adminDeliveryWaitListPage(Model model) {
         ResponseEntity<CommonResponseBody<List<DeliveryWithStatusResponseDto>>> deliveryWaitList =
-            deliveryAdaptor.getDeliveryWaitList(gatewayUri + "/wait");
+            deliveryAdaptor.getDeliveryWaitList(
+                gatewayConfig.getGatewayServer() + DELIVERY_WAIT_LIST_PATH);
 
         model.addAttribute("deliveryWaitList", deliveryWaitList.getBody().getResult());
 
@@ -50,7 +54,8 @@ public class DeliveryAdminController {
 
     @GetMapping("/post")
     public String adminDeliveryListPost() {
-        deliveryAdaptor.postDeliveryList(gatewayUri + "/post");
+        deliveryAdaptor.postDeliveryList(
+            gatewayConfig.getGatewayServer() + DELIVERY_WAIT_LIST_PATH + "/post");
 
         return "redirect:/admin/deliveries";
     }
