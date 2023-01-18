@@ -5,29 +5,22 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 페이지 - 배송 목록</title>
+    <title>관리자 페이지 - 주문 목록</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
         <h3>Itbook 주문 관리</h3>
-        <button><a href="/">배송 하기</a></button>
+        <button><a href="/admin/deliveries">배송 관리</a></button>
         <table>
             <thead>
             <tr>
                 <td>주문 번호</td>
                 <td>회원 아이디</td>
+                <td>주문 상태</td>
             </tr>
             </thead>
             <tbody>
-<!--            <tr th:each="order : ${orderList}">-->
-<!--                <td th:text>1</td>-->
-<!--                <td th:text>ㅇㅇ</td>-->
-<!--            </tr>-->
-            <tr>
-                <td>1</td>
-                <td>임시</td>
-            </tr>
             </tbody>
         </table>
     </div>

@@ -15,12 +15,12 @@ import lombok.Setter;
 public class CommonResponseBody<T> {
 
     private CommonHeader header;
-    
+
     private T result;
 
-    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Getter
     public static class CommonHeader {
 
         private String resultMessage;
