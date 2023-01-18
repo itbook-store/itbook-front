@@ -14,15 +14,14 @@ import lombok.NoArgsConstructor;
 public class CommonResponseBody<T> {
 
     private CommonHeader header;
-    
+
     private T result;
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class CommonHeader {
-        private Boolean isSuccessful;
-        private Integer resultCode;
+
         private String resultMessage;
     }
 }
