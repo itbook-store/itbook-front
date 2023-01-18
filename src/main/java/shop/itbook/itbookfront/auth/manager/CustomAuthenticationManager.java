@@ -1,13 +1,7 @@
 package shop.itbook.itbookfront.auth.manager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Base64;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +12,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.exception.LoginFailException;
 import shop.itbook.itbookfront.login.dto.MemberAuthRequestDto;
 
 /**
@@ -47,7 +40,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
      *
      * @param authentication the authentication request object
      * @return 인증이 완료된 AuthenticationToken
-     * @throws AuthenticationException
+     * @throws AuthenticationException AuthenticationException
      */
     @Override
     public Authentication authenticate(Authentication authentication)
@@ -60,80 +53,29 @@ public class CustomAuthenticationManager implements AuthenticationManager {
                     (String) authentication.getCredentials())
             );
 
-//        ResponseChecker.checkFail(exchange.getBody().getHeader());
+//        ResponseChecker.checkFail(
+//            exchange.getStatusCode(),
+//            exchange.getBody().getHeader()
+//        );
 
-        String accessToken = exchange.getHeaders().get("Authorization").get(0);
-        String role1 = exchange.getHeaders().get("Role").get(0);
-        log.info("accessToken {}", accessToken);
-        log.info("==========================================");
-        log.info("role {}", role1);
-        log.info("==========================================");
+        String accessToken = Optional.ofNullable(exchange.getHeaders().get("Authorization"))
+            .orElseThrow(LoginFailException::new)
+            .get(0);
+
+        List<SimpleGrantedAuthority> grantedAuthorities =
+            Optional.ofNullable(exchange.getHeaders().get("Authorities"))
+                .orElseThrow(LoginFailException::new)
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
 
         redisTemplate.opsForHash().put("accessToken", authentication.getPrincipal(), accessToken);
-
-        String payload = getPayloadByAccessToken(accessToken);
-        log.info("payload {}", payload);
-
-        List<SimpleGrantedAuthority> grantedAuthorities = getAuthorityByPayload(payload).stream()
-            .map(role -> new SimpleGrantedAuthority(role.get("authority")))
-            .collect(Collectors.toList());
-
-        log.info("grantedAuthorities {}", grantedAuthorities);
 
         return new UsernamePasswordAuthenticationToken(
             authentication.getPrincipal(),
             null,
             grantedAuthorities
         );
-
-
     }
-
-    /**
-     * json 으로 된 payload 안에 담겨있는 권한 리스트를 가져오는 메서드 입니다.
-     *
-     * @param payload JWT 토큰의 Payload jsonString
-     * @return payload 안에 담겨있는 권한들 리스트 입니다.
-     */
-    private List<LinkedHashMap<String, String>> getAuthorityByPayload(String payload) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> result;
-        List<LinkedHashMap<String, String>> roleList;
-
-        try {
-            result = objectMapper.readValue(payload, Map.class);
-            roleList = (List<LinkedHashMap<String, String>>) result.get("role");
-
-            log.info("role {}", roleList);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return roleList;
-    }
-
-    /**
-     * JWT 토큰의 payload 를 파싱하여 가져오는 메서드 입니다.
-     *
-     * @param accessToken auth 서버로 부터 발급 받은 JWT AccessToken 입니다.
-     * @return Payload Json String
-     */
-    private String getPayloadByAccessToken(String accessToken) {
-        StringTokenizer stringTokenizer = new StringTokenizer(accessToken, ".");
-        stringTokenizer.nextToken();
-
-        return base64Decoding(stringTokenizer.nextToken());
-    }
-
-    /**
-     * Base64로 인코딩된 JWT Payload를 Decoding 하는 메서드 입니다.
-     *
-     * @param payload Base64로 인코딩된 JWT Payload 입니다.
-     * @return Payload Json String
-     */
-    private String base64Decoding(String payload) {
-        return new String(Base64.getDecoder().decode(payload));
-    }
-
-
-
 }
