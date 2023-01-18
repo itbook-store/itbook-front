@@ -1,17 +1,23 @@
 package shop.itbook.itbookfront.category.adaptor.impl;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.util.ResponseChecker;
-import shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 
 /**
  * @author 최겸준
@@ -24,10 +30,25 @@ public class CategoryAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public CommonResponseBody<shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto> addCategory(
-        CategoryRequestDto categoryRequestDto) {
-        return restTemplate.postForEntity(gatewayConfig.getGatewayServer() + "/categories",
-            categoryRequestDto, CommonResponseBody.class).getBody();
+    public Integer addCategory(CategoryRequestDto categoryRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<CategoryRequestDto> httpEntity = new HttpEntity<>(categoryRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<CategoryNoResponseDto>> commonResponseBodyResponseEntity =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody<CategoryNoResponseDto> body = commonResponseBodyResponseEntity.getBody();
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(body).getHeader();
+
+        ResponseChecker.checkFail(commonResponseBodyResponseEntity.getStatusCode(),
+            header.getResultMessage());
+
+        return body.getResult().getCategoryNo();
     }
 
     public List<CategoryListResponseDto> findCategoryList(String url) {
@@ -38,10 +59,33 @@ public class CategoryAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-//        ResponseChecker.checkFail(exchange.getStatusCode(), exchange.getBody().getHeader());
+        ResponseChecker.checkFail(exchange.getStatusCode(),
+            Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
 
-        return exchange.getBody().getResult();
+        return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
+    public void deleteCategory(String categoryNo) {
 
+        ResponseEntity<CommonResponseBody<Void>> exchange = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
+            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
+            });
+
+
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
+
+    public void modifyCategoryHidden(String categoryNo) {
+
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/hidden",
+                HttpMethod.PUT,
+                null, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
 }

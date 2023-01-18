@@ -1,8 +1,8 @@
 package shop.itbook.itbookfront.util;
 
 import org.springframework.http.HttpStatus;
-import shop.itbook.itbookfront.category.adaptor.impl.BadRequestException;
-import shop.itbook.itbookfront.product.adaptor.RestApiServerException;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.exception.MemberForbiddenException;
 
@@ -12,18 +12,18 @@ import shop.itbook.itbookfront.exception.MemberForbiddenException;
  */
 public class ResponseChecker {
 
-    public static void checkFail(HttpStatus statusCode, CommonResponseBody.CommonHeader header) {
+    public static void checkFail(HttpStatus statusCode, String resultMessage) {
 
-        if (statusCode.equals(HttpStatus.OK)) {
-            throw new BadRequestException(header.getResultMessage());
+        if (statusCode.equals(HttpStatus.BAD_REQUEST)) {
+            throw new BadRequestException(resultMessage);
         }
 
         if (statusCode.equals(HttpStatus.FORBIDDEN)) {
-            throw new MemberForbiddenException(header.getResultMessage());
+            throw new MemberForbiddenException(resultMessage);
         }
 
         if (statusCode.equals(HttpStatus.INTERNAL_SERVER_ERROR)) {
-            throw new RestApiServerException(header.getResultMessage());
+            throw new RestApiServerException(resultMessage);
         }
     }
 }
