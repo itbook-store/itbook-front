@@ -17,7 +17,6 @@ public class CommonResponseBody<T> {
     
     private T result;
 
-    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CommonHeader {
