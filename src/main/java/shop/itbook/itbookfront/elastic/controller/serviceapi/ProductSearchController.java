@@ -2,8 +2,6 @@ package shop.itbook.itbookfront.elastic.controller.serviceapi;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +23,7 @@ public class ProductSearchController {
     @GetMapping
     public List<ProductSampleResponseDto> nameList(@RequestParam String name) {
 
-        List<ProductSampleResponseDto> productList = productSearchService.findProductList("/api/admin/products/search?name="+name);
+        List<ProductSampleResponseDto> productList = productSearchService.findProductList("/api/products/search?name="+name);
 
 //        model.addAttribute("productList", productList);
 //        return Strings.concat(DIRECTORY_NAME, "/categoryList");

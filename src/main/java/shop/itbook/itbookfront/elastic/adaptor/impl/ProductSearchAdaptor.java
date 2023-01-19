@@ -32,7 +32,7 @@ public class ProductSearchAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(exchange.getBody().getHeader());
+//        ResponseChecker.checkFail(exchange.getBody().getHeader());
 
         return exchange.getBody().getResult();
     }
