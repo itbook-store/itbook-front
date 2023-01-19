@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import shop.itbook.itbookfront.category.model.MainCategory;
-
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 /**
  * @author 최겸준
  * @since 1.0
@@ -12,13 +12,13 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 public class CategoryUtil {
 
     public static List<MainCategory> getMainCategoryList(
-        List<shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto> categoryList) {
+        List<CategoryListResponseDto> categoryList) {
 
         List<MainCategory> mainCategoryList = new ArrayList<>();
         MainCategory mainCategory = null;
-        List<shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto> tmp = null;
+        List<CategoryListResponseDto> tmp = null;
 
-        for (shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto categoryListResponseDto : categoryList) {
+        for (CategoryListResponseDto categoryListResponseDto : categoryList) {
             if (Objects.equals(categoryListResponseDto.getLevel(), 0)) {
                 if (Objects.nonNull(mainCategory)) {
                     mainCategory.setSubCategoryList(tmp);

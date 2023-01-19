@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>categoryAddForm</title>
+    <link rel="stylesheet" type="text/css" href="/review/css/reviewForm.css">
+</head>
+
+<div layout:fragment="content">
+    <div id="form-main">
+        <div id="form-div">
+            <form class="form" method="post" action="/admin/categories/category-addition">
+                <p class="name">
+                    <input name="categoryName" type="text"
+                           class="validate[required,custom[onlyLetter],length[0,20]] feedback-input" placeholder="Name"/>
+                </p>
+                <p>숨기기 여부 :
+                    <label><input type="radio" name="isHidden" value="true">Yes</label>
+                    <label><input type="radio" name="isHidden" value="false" checked>No</label>
+                </p>
+                <input type="hidden" name="parentCategoryNo" value="0">
+                <input type="submit" value="등록"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
-import shop.itbook.itbookshop.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 
 /**
  * @author 최겸준
