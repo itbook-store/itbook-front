@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.filter;
+package shop.itbook.itbookfront.auth.filter;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
