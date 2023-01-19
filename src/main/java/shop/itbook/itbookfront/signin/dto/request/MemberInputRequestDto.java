@@ -33,7 +33,8 @@ public class MemberInputRequestDto {
     @NotNull(message = "생일은 null값을 허용하지 않습니다.")
     private String birth;
 
-    @Length(max = 255, message = "비밀번호는 최대 255자까지 허용합니다.")
+    // TODO 대소문자 섞어서
+    @Length(min = 8, max = 255, message = "비밀번호는 최대 255자까지 허용합니다.")
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")
     private String password;
 

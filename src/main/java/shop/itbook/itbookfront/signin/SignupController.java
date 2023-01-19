@@ -58,6 +58,7 @@ public class SignupController{
             return "signuppage/signup";
         }
 
+        // TODO 서비스로 옮기기 + set 대신 builder나 생성자로 해보기
         MemberRequestDto memberRequestDto = new MemberRequestDto();
         // TODO 테이블 autoincrement 초기화해야함
         memberRequestDto.setMembershipNo(428);
@@ -68,6 +69,7 @@ public class SignupController{
         memberRequestDto.setName(memberInputRequestDto.getName());
         memberRequestDto.setIsMan(memberInputRequestDto.getIsMan());
 
+        // TODO DateTimeFormat 사용해보기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         memberRequestDto.setBirth(LocalDate.parse(memberInputRequestDto.getBirth(), formatter).atStartOfDay());
         memberRequestDto.setPassword(memberInputRequestDto.getPassword());
