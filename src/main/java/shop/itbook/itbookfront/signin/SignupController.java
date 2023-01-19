@@ -1,15 +1,13 @@
 package shop.itbook.itbookfront.signin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.signin.dto.request.MemberInputRequestDto;
 import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.service.SignUpService;
@@ -35,6 +32,8 @@ import shop.itbook.itbookfront.signin.service.SignUpService;
 public class SignupController{
 
     private final SignUpService signUpService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     public String signupForm(@ModelAttribute("memberInputRequestDto")
@@ -72,7 +71,9 @@ public class SignupController{
         // TODO DateTimeFormat 사용해보기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         memberRequestDto.setBirth(LocalDate.parse(memberInputRequestDto.getBirth(), formatter).atStartOfDay());
-        memberRequestDto.setPassword(memberInputRequestDto.getPassword());
+        memberRequestDto.setPassword(
+            passwordEncoder.encode(memberInputRequestDto.getPassword())
+        );
         memberRequestDto.setPhoneNumber(memberInputRequestDto.getPhoneNumber());
         memberRequestDto.setEmail(memberInputRequestDto.getEmail());
 

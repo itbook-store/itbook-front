@@ -7,10 +7,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
-import shop.itbook.itbookfront.filter.CustomAuthorizationFilter;
-import shop.itbook.itbookfront.manager.CustomAuthenticationManager;
+import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
+//import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
+import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
+import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
+import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
 
 /**
  * 스프링 시큐리티 설정을 위한 클래스 입니다.
@@ -44,11 +48,16 @@ public class SecurityConfig {
             .loginProcessingUrl("/doLogin")
             .usernameParameter("memberId")
             .passwordParameter("password")
+//            .successHandler(customLoginSuceessHandler(null))
             .and()
             .logout()
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/mypage")
+            .addLogoutHandler(customLogoutHandler(null))
+            .logoutSuccessUrl("/")
             .and()
+//            .sessionManagement()
+//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -90,10 +99,31 @@ public class SecurityConfig {
     public CustomAuthorizationFilter customAuthorizationFilter() {
         CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter("/doLogin");
         customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null, null, null));
+//        customAuthorizationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler(null));
         return customAuthorizationFilter;
     }
 
+//    @Bean
+//    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+//        return new SavedRequestAwareAuthenticationSuccessHandler();
+//    }
 
 
+    /**
+     * 로그아웃과 jwt 토큰을 지우기 위한 LogoutHandler 입니다.
+     *
+     * @return CustomLogoutHandler
+     * @author 강명관
+     */
+    @Bean
+    public CustomLogoutHandler customLogoutHandler(RedisTemplate redisTemplate) {
+        return new CustomLogoutHandler(redisTemplate);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customLoginSuccessHandler(
+        RedisTemplate<String, String> redisTemplate) {
+        return new CustomLoginSuccessHandler(redisTemplate);
+    }
 
 }
