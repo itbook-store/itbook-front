@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,8 +9,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
-//import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
-import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
 
 /**
@@ -48,18 +45,11 @@ public class SecurityConfig {
             .usernameParameter("memberId")
             .passwordParameter("password")
             .defaultSuccessUrl("/")
-//            .successHandler(customLoginSuccessHandler(null))
             .and()
             .logout()
             .logoutUrl("/logout")
-//            .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
             .and()
-//            .sessionManagement()
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
-//            .addFilterBefore(customOncePerRequestFilter(null, null, null),
-//                UsernamePasswordAuthenticationFilter.class);
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -79,8 +69,8 @@ public class SecurityConfig {
     /**
      * CustomAuthorizationFilter에 사용할 CustomAuthenticationManager 입니다.
      *
-     * @param authAdaptor
-     * @param gatewayConfig
+     * @param authAdaptor Auth 서버랑 통신하는 RestTemplate Adaptor
+     * @param gatewayConfig Gateway Server IP를 전역으로 사용하기 위한 Config
      * @return customAuthenticationManager
      * @author 강명관
      */
@@ -102,23 +92,5 @@ public class SecurityConfig {
         customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null, null));
         return customAuthorizationFilter;
     }
-
-//    @Bean
-//    public CustomLoginSuccessHandler customLoginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
-//        return new CustomLoginSuccessHandler(redisTemplate);
-//    }
-
-
-    /**
-     * 로그아웃과 jwt 토큰을 지우기 위한 LogoutHandler 입니다.
-     *
-     * @return CustomLogoutHandler
-     * @author 강명관
-     */
-//    @Bean1
-//    public CustomLogoutHandler customLogoutHandler(RedisTemplate redisTemplate) {
-//        return new CustomLogoutHandler(redisTemplate);
-//    }
-
 
 }
