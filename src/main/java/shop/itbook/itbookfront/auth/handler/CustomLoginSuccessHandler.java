@@ -1,10 +1,12 @@
 package shop.itbook.itbookfront.auth.handler;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,8 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.util.StreamUtils;
 
 /**
  * @author 강명관
@@ -25,9 +29,9 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
     private static final String SUCCESS_URL = "/";
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public CustomLoginSuccessHandler(RedisTemplate redisTemplate) {
+    public CustomLoginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -39,22 +43,18 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         HttpSession session = request.getSession(true);
         log.info("session.getId() {}", session.getId());
 
-        String accessToken = response.getHeader("Authorization");
-        String role = response.getHeader("role");
-        log.info("accessToken {}", accessToken);
-        log.info("==========================================");
-        log.info("role {}", role);
-        log.info("==========================================");
+//        String session1 = response.getHeader("Session");
+//        log.info("response Session {}", session1);
+
+        log.info("uuid {}", authentication.getPrincipal());
+        log.info("token details {}", authentication.getDetails());
+        session.setAttribute((String) authentication.getPrincipal(), authentication.getDetails());
 
 
-        String principal = (String) authentication.getPrincipal();
-        List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
+        //        response.sendRedirect(SUCCESS_URL);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        getRedirectStrategy().sendRedirect(request, response, SUCCESS_URL);
 
-//        response.sendRedirect(SUCCESS_URL);
-
-        super.onAuthenticationSuccess(request,response,authentication);
 
     }
 }

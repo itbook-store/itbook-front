@@ -37,12 +37,9 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         session.invalidate();
 
-        redisTemplate.opsForHash().delete("accessToken", authentication.getPrincipal());
-
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
-
 
     }
 }

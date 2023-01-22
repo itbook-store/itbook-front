@@ -7,12 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
+import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
 //import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
-import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
 
@@ -38,6 +36,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests()
 //            .antMatchers("/adminpage").hasAuthority("ROLE_ADMIN")
+//            .antMatchers("/oauth/github").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf()
@@ -48,16 +47,19 @@ public class SecurityConfig {
             .loginProcessingUrl("/doLogin")
             .usernameParameter("memberId")
             .passwordParameter("password")
-//            .successHandler(customLoginSuceessHandler(null))
+            .defaultSuccessUrl("/")
+//            .successHandler(customLoginSuccessHandler(null))
             .and()
             .logout()
             .logoutUrl("/logout")
-            .addLogoutHandler(customLogoutHandler(null))
+//            .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
             .and()
 //            .sessionManagement()
 //            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //            .and()
+//            .addFilterBefore(customOncePerRequestFilter(null, null, null),
+//                UsernamePasswordAuthenticationFilter.class);
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -77,16 +79,15 @@ public class SecurityConfig {
     /**
      * CustomAuthorizationFilter에 사용할 CustomAuthenticationManager 입니다.
      *
-     * @param restTemplateAdaptor
+     * @param authAdaptor
      * @param gatewayConfig
-     * @param redisTemplate
      * @return customAuthenticationManager
      * @author 강명관
      */
     @Bean
     public CustomAuthenticationManager customAuthenticationManager(
-        RestTemplateAdaptor restTemplateAdaptor, GatewayConfig gatewayConfig, RedisTemplate<String, String> redisTemplate) {
-        return new CustomAuthenticationManager(restTemplateAdaptor, gatewayConfig, redisTemplate);
+        AuthAdaptor authAdaptor, GatewayConfig gatewayConfig) {
+        return new CustomAuthenticationManager(authAdaptor, gatewayConfig);
     }
 
     /**
@@ -97,15 +98,14 @@ public class SecurityConfig {
      */
     @Bean
     public CustomAuthorizationFilter customAuthorizationFilter() {
-        CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter("/doLogin");
-        customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null, null, null));
-//        customAuthorizationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler(null));
+        CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter();
+        customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null, null));
         return customAuthorizationFilter;
     }
 
 //    @Bean
-//    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-//        return new SavedRequestAwareAuthenticationSuccessHandler();
+//    public CustomLoginSuccessHandler customLoginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
+//        return new CustomLoginSuccessHandler(redisTemplate);
 //    }
 
 
@@ -115,15 +115,10 @@ public class SecurityConfig {
      * @return CustomLogoutHandler
      * @author 강명관
      */
-    @Bean
-    public CustomLogoutHandler customLogoutHandler(RedisTemplate redisTemplate) {
-        return new CustomLogoutHandler(redisTemplate);
-    }
+//    @Bean1
+//    public CustomLogoutHandler customLogoutHandler(RedisTemplate redisTemplate) {
+//        return new CustomLogoutHandler(redisTemplate);
+//    }
 
-    @Bean
-    public AuthenticationSuccessHandler customLoginSuccessHandler(
-        RedisTemplate<String, String> redisTemplate) {
-        return new CustomLoginSuccessHandler(redisTemplate);
-    }
 
 }

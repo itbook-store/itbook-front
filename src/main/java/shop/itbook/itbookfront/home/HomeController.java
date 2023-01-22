@@ -37,6 +37,8 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
+        log.info("########## Thread {} ", Thread.currentThread().getName());
+
         return "mainpage/index";
     }
 
