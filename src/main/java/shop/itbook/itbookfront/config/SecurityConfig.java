@@ -7,8 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
+import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
 
 /**
@@ -48,6 +50,7 @@ public class SecurityConfig {
             .and()
             .logout()
             .logoutUrl("/logout")
+            .addLogoutHandler(customLogoutHandler())
             .logoutSuccessUrl("/")
             .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -93,4 +96,14 @@ public class SecurityConfig {
         return customAuthorizationFilter;
     }
 
+    /**
+     * 로그아웃과 jwt 토큰을 지우기 위한 LogoutHandler 입니다.
+     *
+     * @return CustomLogoutHandler
+     * @author 강명관
+     */
+    @Bean
+    public CustomLogoutHandler customLogoutHandler() {
+        return new CustomLogoutHandler();
+    }
 }
