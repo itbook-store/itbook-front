@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberInfoAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
+import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
 import shop.itbook.itbookfront.member.service.MemberInfoService;
 
 /**
@@ -19,5 +20,23 @@ public class MemberInfoServiceImpl implements MemberInfoService {
     @Override
     public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
         memberInfoAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
+    }
+
+    @Override
+    public MemberInfoResponseDto findMemberInfo(String memberId) {
+        return memberInfoAdaptor.getMemberInfo(memberId);
+    }
+
+    @Override
+    public MemberUpdateRequestDto fillInUpdateDto(MemberInfoResponseDto memberInfoResponseDto) {
+        MemberUpdateRequestDto memberUpdateRequestDto = new MemberUpdateRequestDto();
+
+        memberUpdateRequestDto.setName(memberUpdateRequestDto.getName());
+        memberUpdateRequestDto.setNickname(memberUpdateRequestDto.getNickname());
+        memberUpdateRequestDto.setPassword(memberUpdateRequestDto.getPassword());
+        memberUpdateRequestDto.setPhoneNumber(memberInfoResponseDto.getPhoneNumber());
+        memberUpdateRequestDto.setEmail(memberUpdateRequestDto.getEmail());
+
+        return memberUpdateRequestDto;
     }
 }

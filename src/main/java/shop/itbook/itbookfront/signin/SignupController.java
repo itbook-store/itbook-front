@@ -42,8 +42,7 @@ public class SignupController{
     }
 
     @PostMapping()
-    public String register(@Valid MemberInputRequestDto memberInputRequestDto, Errors errors, Model model)
-        throws JsonProcessingException {
+    public String register(@Valid MemberInputRequestDto memberInputRequestDto, Errors errors, Model model) {
 
         if(errors.hasErrors()) {
 
