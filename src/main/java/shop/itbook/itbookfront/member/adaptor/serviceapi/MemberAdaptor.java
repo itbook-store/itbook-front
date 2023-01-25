@@ -17,7 +17,7 @@ import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
  */
 @Component
 @RequiredArgsConstructor
-public class MemberInfoAdaptor {
+public class MemberAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 

@@ -1,20 +1,15 @@
-package shop.itbook.itbookfront.member.controller;
+package shop.itbook.itbookfront.member.controller.serviceapi;
 
-import io.lettuce.core.output.ScanOutput;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
-import shop.itbook.itbookfront.member.service.MemberInfoService;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 
 /**
  * @author 노수연
@@ -23,15 +18,15 @@ import shop.itbook.itbookfront.member.service.MemberInfoService;
 @Controller
 @RequestMapping("/mypage/members")
 @RequiredArgsConstructor
-public class MemberInfoController {
+public class MemberController {
 
-    private final MemberInfoService memberInfoService;
+    private final MemberService memberService;
 
 
     @GetMapping("/{memberId}/info")
     public String myMemberInfo(@PathVariable("memberId") String memberId, Model model) {
 
-        MemberInfoResponseDto memberInfoResponseDto = memberInfoService.findMemberInfo(memberId);
+        MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberInfo(memberId);
 
         model.addAttribute("memberInfoResponseDto", memberInfoResponseDto);
 
@@ -46,7 +41,7 @@ public class MemberInfoController {
                                    @RequestParam("phoneNumber")String phoneNumber,
                                    @RequestParam("email") String email) {
 
-        memberInfoService.updateMemberInfo(memberId, name, nickname, password, phoneNumber, email);
+        memberService.updateMemberInfo(memberId, name, nickname, password, phoneNumber, email);
 
         return "redirect:/mypage";
 

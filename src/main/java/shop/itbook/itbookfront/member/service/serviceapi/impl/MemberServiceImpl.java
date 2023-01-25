@@ -1,11 +1,11 @@
-package shop.itbook.itbookfront.member.service.impl;
+package shop.itbook.itbookfront.member.service.serviceapi.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberInfoAdaptor;
+import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
-import shop.itbook.itbookfront.member.service.MemberInfoService;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 
 /**
  * @author 노수연
@@ -13,20 +13,20 @@ import shop.itbook.itbookfront.member.service.MemberInfoService;
  */
 @Service
 @RequiredArgsConstructor
-public class MemberInfoServiceImpl implements MemberInfoService {
+public class MemberServiceImpl implements MemberService {
 
-    private final MemberInfoAdaptor memberInfoAdaptor;
+    private final MemberAdaptor memberAdaptor;
 
     @Override
     public void updateMemberInfo(String memberId, String name, String nickname, String password,
                                  String phoneNumber, String email) {
         MemberUpdateRequestDto memberUpdateRequestDto = new MemberUpdateRequestDto(name, nickname, password, phoneNumber, email);
 
-        memberInfoAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
+        memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
     }
 
     @Override
     public MemberInfoResponseDto findMemberInfo(String memberId) {
-        return memberInfoAdaptor.getMemberInfo(memberId);
+        return memberAdaptor.getMemberInfo(memberId);
     }
 }
