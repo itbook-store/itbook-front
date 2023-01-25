@@ -37,10 +37,10 @@
                     <td>[[ ${product.productName} ]]</td>
                     <td>[[ ${product.fixedPrice} ]]</td>
                     <td>[[ ${product.selledPrice} ]]</td>
-                    <td><a th:href="@{|/admin/products/{productId}|}">
+                    <td><a th:href="@{|/admin/products/${product.productNo}/modify|}">
                         <button>수정</button>
                     </a></td>
-                    <td><a th:href="@{|/admin/products/{productId}|}">
+                    <td><a th:href="@{|/admin/products/${product.productNo}/delete|}">
                         <button>삭제</button>
                     </a></td>
                 </tr>

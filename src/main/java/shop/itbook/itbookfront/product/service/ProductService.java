@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.product.dto.request.AddProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
+import shop.itbook.itbookfront.product.dto.response.GetProductResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 
 /**
@@ -18,5 +19,11 @@ public interface ProductService {
 
     List<GetBookResponseDto> getBookList() throws IOException;
 
+    List<GetProductResponseDto> getProductList();
+
+    void removeProduct(Long productNo);
+
     GetBookResponseDto getBook(Long id);
+
+    void modifyProduct(Long productNo);
 }
