@@ -13,7 +13,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/admin/category-addition").setViewName("categoryadmin/categoryAddSelect");
-        registry.addViewController("/admin/categories/category-addition/main-category").setViewName("categoryadmin/mainCategoryAddForm");
+        registry.addViewController("/admin/category-addition")
+            .setViewName("categoryadmin/categoryAddSelect");
+        registry.addViewController("/admin/categories/category-addition/main-category")
+            .setViewName("categoryadmin/mainCategoryAddForm");
     }
 }

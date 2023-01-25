@@ -46,21 +46,21 @@ public class ProductAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        CommonResponseBody<ProductNoResponseDto> response =
-            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
-                HttpMethod.POST, uploadEntity,
-                new ParameterizedTypeReference<CommonResponseBody<ProductNoResponseDto>>() {
-                }).getBody();
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
+            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
+                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                });
 
-        return objectMapper.convertValue(response.getResult(), ProductNoResponseDto.class);
+        return objectMapper.convertValue(response.getBody().getResult(),
+            ProductNoResponseDto.class);
     }
 
     public List<GetBookResponseDto> getBookList() {
 
         ResponseEntity<CommonResponseBody<List<GetBookResponseDto>>> response =
             restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
-                HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+
                 });
 
         return objectMapper.convertValue(response.getBody().getResult(),

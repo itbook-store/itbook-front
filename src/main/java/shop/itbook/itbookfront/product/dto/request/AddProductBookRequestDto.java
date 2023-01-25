@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.product.dto.request;
 
+import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -7,10 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.util.LinkedMultiValueMap;
 
 /**
  * @author 이하늬
@@ -40,9 +39,8 @@ public class AddProductBookRequestDto {
     @PositiveOrZero(message = "재고는 0개 이상이어야 합니다.")
     private Integer stock;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
-    private String category;
-
+    @NotNull(message = "카테고리를 선택해주세요.")
+    private List<Integer> categoryNoList;
 
     @Min(value = 0, message = "적립율은 0% 이상이어야 합니다.")
     @Max(value = 100, message = "적립율은 최대 100%입니다.")
@@ -60,9 +58,6 @@ public class AddProductBookRequestDto {
     @Max(value = 100, message = "할인율은 최대 100%입니다.")
     private Double discountPercent;
 
-    //    @NotNull(message = "null을 허용하지 않습니다.")
-//    private MultipartFile fileThumbnails;
-
     @NotBlank(message = "공백이 아닌 문자를 하나 이상 포함해야 됩니다.")
     private String isbn;
 
@@ -75,10 +70,6 @@ public class AddProductBookRequestDto {
 
     @NotNull(message = "null을 허용하지 않습니다.")
     private boolean isEbook;
-
-    //    private MultipartFile fileEbook;
-//    @Setter
-//    private LinkedMultiValueMap<String, Object> fileEbookMap;
 
     @NotBlank(message = "공백이 아닌 문자를 하나 이상 포함해야 됩니다.")
     @Length(max = 255, message = "이름 길이는 1자-20자가 되어야 합니다.")
