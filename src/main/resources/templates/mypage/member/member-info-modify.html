@@ -13,16 +13,17 @@
             <h2>회원 정보 수정</h2>
             <hr>
             <form method="post" th:action="@{/mypage/members/modify}" >
+                <input type="hidden" name="memberId" th:value="${memberInfoResponseDto.memberId}">
                 아이디 : <span th:text="${memberInfoResponseDto.memberId}"></span> <br/>
-                이름 : <input type="text" th:field="${memberInfoResponseDto.name}"> <br/>
-                닉네임 : <input type="text" th:field="${memberInfoResponseDto.nickname}"> <br/>
+                이름 : <input type="text" name="name" th:field="${memberInfoResponseDto.name}"> <br/>
+                닉네임 : <input type="text" name="nickname" th:field="${memberInfoResponseDto.nickname}"> <br/>
                 성별 : <span th:if="${memberInfoResponseDto.isMan == true}">남</span>
                 <span th:if="${memberInfoResponseDto.isMan == false}">여</span> <br/>
                 생일 : <span th:text="${#temporals.format(memberInfoResponseDto.birth, 'yyyy년 MM월 dd일')}"></span> <br/>
-                비밀번호 : <input type="password" th:value="${memberInfoResponseDto.password}"><br/>
-                핸드폰번호 : <input type = "text" th:field="${memberInfoResponseDto.phoneNumber}"><br/>
-                이메일 : <input type="text" th:field="${memberInfoResponseDto.email}"><br/>
-                <input type="submit" value="수정하기">
+                비밀번호 : <input type="password" name="password" th:value="${memberInfoResponseDto.password}"><br/>
+                핸드폰번호 : <input type = "text" name="phoneNumber" th:field="${memberInfoResponseDto.phoneNumber}"><br/>
+                이메일 : <input type="text" name="email" th:field="${memberInfoResponseDto.email}"><br/>
+                <input type="submit" onclick="alert('회원님의 정보가 수정되었습니다.')" value="수정하기">
             </form>
 
         </div>

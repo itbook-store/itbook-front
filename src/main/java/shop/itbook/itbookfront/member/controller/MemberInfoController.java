@@ -20,7 +20,6 @@ import shop.itbook.itbookfront.member.service.MemberInfoService;
  * @author 노수연
  * @since 1.0
  */
-@Slf4j
 @Controller
 @RequestMapping("/mypage/members")
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class MemberInfoController {
 
 
     @GetMapping("/{memberId}/info")
-    public String myMemberInfo(@PathVariable("memberId") String memberId, ModelMap model) {
+    public String myMemberInfo(@PathVariable("memberId") String memberId, Model model) {
 
         MemberInfoResponseDto memberInfoResponseDto = memberInfoService.findMemberInfo(memberId);
 
@@ -40,14 +39,16 @@ public class MemberInfoController {
     }
 
     @PostMapping("/modify")
-    public String mypageInfoModify( MemberInfoResponseDto memberInfoResponseDto) {
+    public String mypageInfoModify(@RequestParam("memberId")String memberId,
+                                   @RequestParam("name") String name,
+                                   @RequestParam("nickname") String nickname,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("phoneNumber")String phoneNumber,
+                                   @RequestParam("email") String email) {
 
-        System.out.println(">>>> " + memberInfoResponseDto.getMemberId());
+        memberInfoService.updateMemberInfo(memberId, name, nickname, password, phoneNumber, email);
 
-        MemberUpdateRequestDto memberUpdateRequestDto = memberInfoService.fillInUpdateDto(memberInfoResponseDto);
-        memberInfoService.updateMemberInfo(memberUpdateRequestDto, memberInfoResponseDto.getMemberId());
-
-        return "mypage";
+        return "redirect:/mypage";
 
     }
 }

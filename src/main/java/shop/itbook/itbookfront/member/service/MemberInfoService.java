@@ -8,9 +8,8 @@ import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
  * @since 1.0
  */
 public interface MemberInfoService {
-    void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId);
+    void updateMemberInfo(String memberId, String name, String nickname, String password, String phoneNumber, String email);
 
     MemberInfoResponseDto findMemberInfo(String memberId);
 
-    MemberUpdateRequestDto fillInUpdateDto(MemberInfoResponseDto memberInfoResponseDto);
 }

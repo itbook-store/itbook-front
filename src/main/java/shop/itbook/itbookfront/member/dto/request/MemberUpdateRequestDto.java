@@ -2,8 +2,11 @@ package shop.itbook.itbookfront.member.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -12,15 +15,17 @@ import org.hibernate.validator.constraints.Length;
  */
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class MemberUpdateRequestDto {
-
-    @Length(min = 2, max = 20, message = "닉네임은 최소 2자, 최대 20자까지 허용합니다.")
-    @NotBlank(message = "닉네임은 null값 및 공백을 허용하지 않습니다.")
-    private String nickname;
 
     @Length(max = 20, message = "이름은 최대 20자까지 허용합니다.")
     @NotBlank(message = "이름은 null값 및 공백을 허용하지 않습니다.")
     private String name;
+
+    @Length(min = 2, max = 20, message = "닉네임은 최소 2자, 최대 20자까지 허용합니다.")
+    @NotBlank(message = "닉네임은 null값 및 공백을 허용하지 않습니다.")
+    private String nickname;
 
     @Length(max = 255, message = "비밀번호는 최대 255자까지 허용합니다.")
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")

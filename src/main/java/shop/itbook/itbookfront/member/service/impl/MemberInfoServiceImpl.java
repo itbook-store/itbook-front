@@ -18,25 +18,15 @@ public class MemberInfoServiceImpl implements MemberInfoService {
     private final MemberInfoAdaptor memberInfoAdaptor;
 
     @Override
-    public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
+    public void updateMemberInfo(String memberId, String name, String nickname, String password,
+                                 String phoneNumber, String email) {
+        MemberUpdateRequestDto memberUpdateRequestDto = new MemberUpdateRequestDto(name, nickname, password, phoneNumber, email);
+
         memberInfoAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
     }
 
     @Override
     public MemberInfoResponseDto findMemberInfo(String memberId) {
         return memberInfoAdaptor.getMemberInfo(memberId);
-    }
-
-    @Override
-    public MemberUpdateRequestDto fillInUpdateDto(MemberInfoResponseDto memberInfoResponseDto) {
-        MemberUpdateRequestDto memberUpdateRequestDto = new MemberUpdateRequestDto();
-
-        memberUpdateRequestDto.setName(memberUpdateRequestDto.getName());
-        memberUpdateRequestDto.setNickname(memberUpdateRequestDto.getNickname());
-        memberUpdateRequestDto.setPassword(memberUpdateRequestDto.getPassword());
-        memberUpdateRequestDto.setPhoneNumber(memberInfoResponseDto.getPhoneNumber());
-        memberUpdateRequestDto.setEmail(memberUpdateRequestDto.getEmail());
-
-        return memberUpdateRequestDto;
     }
 }
