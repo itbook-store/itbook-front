@@ -22,9 +22,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
-
     @GetMapping("/{memberId}/info")
-    public String myMemberInfo(@PathVariable("memberId") String memberId, Model model) {
+    public String mypageInfo(@PathVariable("memberId") String memberId, Model model) {
 
         MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberInfo(memberId);
 
