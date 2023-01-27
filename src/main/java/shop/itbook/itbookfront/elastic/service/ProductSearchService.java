@@ -8,5 +8,5 @@ import shop.itbook.itbookfront.elastic.dto.response.ProductSampleResponseDto;
  * @since 1.0
  */
 public interface ProductSearchService {
-    List<ProductSampleResponseDto> findProductList(String url);
+    List<ProductSampleResponseDto> findProductList(String searchProductUrl);
 }
