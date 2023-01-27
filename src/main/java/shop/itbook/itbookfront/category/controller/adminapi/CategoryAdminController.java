@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.category.controller.adminapi;
 
 import java.util.List;
-import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -39,9 +38,9 @@ public class CategoryAdminController {
 
     @GetMapping("/{categoryNo}/category-modification")
     public String categoryModifyForm(@PathVariable Integer categoryNo,
-                                 @RequestParam String categoryName,
-                                 @RequestParam Boolean isHidden,
-                                 Model model) {
+                                     @RequestParam String categoryName,
+                                     @RequestParam Boolean isHidden,
+                                     Model model) {
 
         model.addAttribute("categoryNo", categoryNo);
         model.addAttribute("categoryName", categoryName);
@@ -50,7 +49,8 @@ public class CategoryAdminController {
     }
 
     @PostMapping("/{categoryNo}/category-modify")
-    public String categoryModifyMain(@PathVariable Integer categoryNo, @Valid @ModelAttribute CategoryModifyRequestDto categoryRequestDto) {
+    public String categoryModify(@PathVariable Integer categoryNo, @Valid @ModelAttribute
+    CategoryModifyRequestDto categoryRequestDto) {
 
         categoryService.modifyCategory(categoryNo, categoryRequestDto);
         return "redirect:/admin/categories";
@@ -59,7 +59,7 @@ public class CategoryAdminController {
     @GetMapping("/category-addition/sub-category")
     public String categoryAddSubCategory(Model model) {
 
-         List<CategoryListResponseDto> mainCategoryList =
+        List<CategoryListResponseDto> mainCategoryList =
             categoryService.findCategoryList("/api/admin/categories/main-categories");
 
         model.addAttribute("mainCategoryList", mainCategoryList);
@@ -81,7 +81,8 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{categoryNo}/modify-form/main-category-sequence")
-    public String mainCategorySequenceModifyForm(@PathVariable Integer categoryNo, @RequestParam String categoryName, Model model) {
+    public String mainCategorySequenceModifyForm(@PathVariable Integer categoryNo,
+                                                 @RequestParam String categoryName, Model model) {
 
         List<CategoryListResponseDto> mainCategoryList =
             categoryService.findCategoryList("/api/admin/categories/main-categories");
@@ -93,14 +94,16 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{categoryNo}/category-modify/main-category-sequence")
-    public String mainCategorySequenceModify(@PathVariable Integer categoryNo, @RequestParam Integer sequence) {
+    public String mainCategorySequenceModify(@PathVariable Integer categoryNo,
+                                             @RequestParam Integer sequence) {
 
         categoryService.modifyMainCategorySequence(categoryNo, sequence);
         return "redirect:/admin/categories/";
     }
 
     @GetMapping("/{categoryNo}/modify-form/sub-category-sequence")
-    public String subCategorySequenceModifyForm(@PathVariable Integer categoryNo, @RequestParam String categoryName, Model model) {
+    public String subCategorySequenceModifyForm(@PathVariable Integer categoryNo,
+                                                @RequestParam String categoryName, Model model) {
 
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/admin/categories");
@@ -112,7 +115,8 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{categoryNo}/category-modify/sub-category-sequence")
-    public String subCategorySequenceModify(@PathVariable Integer categoryNo, @RequestParam Integer hopingPositionCategoryNo) {
+    public String subCategorySequenceModify(@PathVariable Integer categoryNo,
+                                            @RequestParam Integer hopingPositionCategoryNo) {
 
         categoryService.modifySubCategorySequence(categoryNo, hopingPositionCategoryNo);
         return "redirect:/admin/categories/";
@@ -122,7 +126,8 @@ public class CategoryAdminController {
     @GetMapping
     public String categoryList(Model model) {
 
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/admin/categories");
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/admin/categories");
 
         model.addAttribute("categoryList", categoryList);
         return Strings.concat(DIRECTORY_NAME, "/categoryList");
@@ -131,7 +136,8 @@ public class CategoryAdminController {
     @GetMapping("/main-categories")
     public String mainCategoryList(Model model) {
 
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/admin/categories/main-categories");
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/admin/categories/main-categories");
 
         model.addAttribute("categoryList", categoryList);
         return Strings.concat(DIRECTORY_NAME, "/mainCategoryList");
@@ -140,7 +146,8 @@ public class CategoryAdminController {
     @GetMapping("/{categoryNo}/sub-categories")
     public String subCategoryList(@PathVariable Integer categoryNo, Model model) {
 
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/admin/categories/" + categoryNo + "/child-categories");
+        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList(
+            "/api/admin/categories/" + categoryNo + "/child-categories");
 
         model.addAttribute("categoryList", categoryList);
         return Strings.concat(DIRECTORY_NAME, "/subCategoryList");
