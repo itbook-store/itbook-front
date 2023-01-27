@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import shop.itbook.itbookfront.auth.interceptor.AuthRestTemplateInterceptor;
 
 @Configuration
 public class RestTemplateConfig {
@@ -13,8 +14,9 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
-//            .setReadTimeout(Duration.ofSeconds(30L))
-//            .setConnectTimeout(Duration.ofSeconds(30L))
+            .additionalInterceptors(new AuthRestTemplateInterceptor())
+            .setReadTimeout(Duration.ofSeconds(30L))
+            .setConnectTimeout(Duration.ofSeconds(30L))
             .build();
     }
 }
