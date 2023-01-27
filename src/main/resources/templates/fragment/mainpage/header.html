@@ -53,26 +53,27 @@
                 <a href="/"><img src="/mainpage/img/itbook-logo-02.png" class="logo_img"></a>
             </div>
         </div>
+        <form action="/product/search" method="get">
+            <div class="logo_columns searchbar">
+                <div class="logo_columns_column">
+                    <select name="" id="">
+                        <option value="">전체</option>
+                        <option value="">상품</option>
+                        <option value="">카테고리</option>
+                    </select>
+                </div>
 
-        <div class="logo_columns searchbar">
-            <div class="logo_columns_column">
-                <select name="" id="">
-                    <option value="">전체</option>
-                    <option value="">상품</option>
-                    <option value="">카테고리</option>
-                </select>
-            </div>
+                <div class="logo_columns_column">
+                    <input type="text" placeholder="Search Product" name="name" value="">
+                </div>
 
-            <div class="logo_columns_column">
-                <input type="text" placeholder="Search Product">
+                <div class="logo_columns_column">
+                    <button>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
             </div>
-
-            <div class="logo_columns_column">
-                <button>
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <div class="categoryBar" th:fragment="categoryBar-fragment">

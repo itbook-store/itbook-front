@@ -5,6 +5,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.category.adaptor.impl.CategoryAdaptor;
+import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
@@ -45,4 +46,18 @@ public class CategoryServiceImpl implements CategoryService {
         categoryAdaptor.modifyCategoryHidden(categoryNo);
     }
 
+    @Override
+    public void modifyMainCategorySequence(Integer categoryNo, Integer sequence) {
+        categoryAdaptor.modifyMainCategorySequence(categoryNo, sequence);
+    }
+
+    @Override
+    public void modifySubCategorySequence(Integer categoryNo, Integer hopingPositionCategoryNo) {
+        categoryAdaptor.modifySubCategorySequence(categoryNo, hopingPositionCategoryNo);
+    }
+
+    @Override
+    public void modifyCategory(Integer categoryNo, CategoryModifyRequestDto categoryRequestDto) {
+        categoryAdaptor.modifyCategory(categoryNo, categoryRequestDto);
+    }
 }

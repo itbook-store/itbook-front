@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>categoryAddForm</title>
+    <link rel="stylesheet" type="text/css" href="/review/css/reviewForm.css">
+</head>
+
+<div layout:fragment="content">
+    <div id="form-main">
+        <div id="form-div">
+            <h1 style="text-align: center" th:text="'[' + ${targetCategoryName} + ' 카테고리 노출순서 변경]'"></h1>
+            <div class="container">
+                <table class="table table-striped" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <th style="width: auto">구분</th>
+                        <th style="width: auto">카테고리명</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category : ${categoryList}">
+                        <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
+                        <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
+                        <td th:text="${category.categoryName}"></a></td>
+                        <td th:unless="${#strings.equals(category.categoryNo, targetCategoryNo) or #strings.equals(category.level, 0)}">
+                            <button style="width: auto; margin-left: 10px" class="btn btn-danger">
+                                <a th:href="@{/admin/categories/{categoryNo}/category-modify/sub-category-sequence(categoryNo=${targetCategoryNo}, categoryName=${targetCategoryName}, hopingPositionCategoryNo=${category.categoryNo})}">해당 카테고리 앞에 삽입</a>
+                            </button>
+                        <td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
