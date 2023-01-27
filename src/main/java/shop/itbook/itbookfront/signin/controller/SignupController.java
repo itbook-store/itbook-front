@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.signin;
+package shop.itbook.itbookfront.signin.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
@@ -56,29 +56,7 @@ public class SignupController{
             return "signuppage/signup";
         }
 
-        // TODO 서비스로 옮기기 + set 대신 builder나 생성자로 해보기
-        MemberRequestDto memberRequestDto = new MemberRequestDto();
-        // TODO 테이블 autoincrement 초기화해야함
-        memberRequestDto.setMembershipNo(428);
-        // TODO 테이블 autoincrement 초기화해야함
-        memberRequestDto.setMemberStatusNo(392);
-        memberRequestDto.setMemberId(memberInputRequestDto.getMemberId());
-        memberRequestDto.setNickname(memberInputRequestDto.getNickname());
-        memberRequestDto.setName(memberInputRequestDto.getName());
-        memberRequestDto.setIsMan(memberInputRequestDto.getIsMan());
-
-        // TODO DateTimeFormat 사용해보기
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        memberRequestDto.setBirth(LocalDate.parse(memberInputRequestDto.getBirth(), formatter).atStartOfDay());
-        memberRequestDto.setPassword(
-            passwordEncoder.encode(memberInputRequestDto.getPassword())
-        );
-        memberRequestDto.setPhoneNumber(memberInputRequestDto.getPhoneNumber());
-        memberRequestDto.setEmail(memberInputRequestDto.getEmail());
-
-        model.addAttribute("memberRequestDto", memberRequestDto);
-
-        signUpService.addMember(memberRequestDto);
+        signUpService.addMember(memberInputRequestDto);
 
         return "redirect:/";
     }

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Setter
 @Getter
+@AllArgsConstructor
 public class MemberRequestDto {
 
     @NotBlank(message = "멤버쉽 번호는 null값 및 공백을 허용하지 않습니다.")
