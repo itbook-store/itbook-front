@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.auth.interceptor;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
