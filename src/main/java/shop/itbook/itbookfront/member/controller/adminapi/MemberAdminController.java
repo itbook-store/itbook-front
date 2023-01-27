@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 
 /**
@@ -14,18 +17,46 @@ import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
  * @since 1.0
  */
 @Controller
-@RequestMapping("/adminpage/members")
+@RequestMapping("/admin/members")
 @RequiredArgsConstructor
 public class MemberAdminController {
 
     private final MemberAdminService memberAdminService;
 
     @GetMapping()
-    public String MemberList(Model model) {
-        List<MemberInfoResponseDto> memberInfoResponseDtoList = memberAdminService.findMembers();
+    public String memberList(Model model) {
 
-        model.addAttribute("memberList", memberInfoResponseDtoList);
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+
+        model.addAttribute("memberList", memberList);
 
         return "adminpage/member/admin-member-list";
+    }
+
+    @GetMapping("/block")
+    public String blockMemberList(Model model) {
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+
+        model.addAttribute("memberList", memberList);
+
+        return "adminpage/member/admin-member-block-list";
+    }
+
+    @GetMapping("/{memberId}/info")
+    public String memberDetails(@PathVariable("memberId")String memberId,
+                                Model model) {
+         MemberAdminResponseDto member = memberAdminService.findMember(memberId);
+
+         model.addAttribute("member", member);
+
+         return "adminpage/member/admin-member-details-form";
+    }
+
+    @PostMapping("/{memberId}/modify/member-status")
+    public String memberStatusModify(@PathVariable("memberId") String memberId, @RequestParam("memberStatusName") String memberStatusName) {
+
+        memberAdminService.updateMemberStatus(memberStatusName, memberId);
+
+        return "redirect:/admin/members";
     }
 }

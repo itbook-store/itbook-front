@@ -1,4 +1,11 @@
-table, tr, td {
+table {
     width: 100%;
+}
+
+table, tr, td {
     text-align: center;
+}
+
+td {
+    cursor: hand;
 }

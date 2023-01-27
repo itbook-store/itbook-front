@@ -29,9 +29,10 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/memberId/" + memberId,
+                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/memberId/" +
+                    memberId,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                new ParameterizedTypeReference<>() {
                 });
 
         return getMemberBooleanResponseDto(responseEntity);
@@ -41,9 +42,10 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/nickname/" + nickname,
+                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/nickname/" +
+                    nickname,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                new ParameterizedTypeReference<>() {
                 });
 
         return getMemberBooleanResponseDto(responseEntity);
@@ -53,9 +55,10 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/phoneNumber/" + phoneNumber,
+                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/phoneNumber/" +
+                    phoneNumber,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                new ParameterizedTypeReference<>() {
                 });
 
         return getMemberBooleanResponseDto(responseEntity);
@@ -67,14 +70,13 @@ public class SignUpAdaptor {
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/email/" + email,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<CommonResponseBody<MemberBooleanResponseDto>>() {
+                new ParameterizedTypeReference<>() {
                 });
 
         return getMemberBooleanResponseDto(responseEntity);
     }
 
     public MemberBooleanResponseDto getMemberBooleanResponseDto(
-
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> restTemplateForObject) {
         // TODO 파라미터 수정
         //ResponseChecker.checkFail(restTemplateForObject.getBody().getHeader());
@@ -85,7 +87,8 @@ public class SignUpAdaptor {
     public MemberNoResponseDto addMemberIntoDb(
         MemberRequestDto memberRequestDto) {
 
-        ResponseEntity<MemberNoResponseDto> responseEntity = restTemplate.postForEntity(gatewayConfig.getGatewayServer() + "/api/service/members/sign-up",
+        ResponseEntity<MemberNoResponseDto> responseEntity = restTemplate.postForEntity(
+            gatewayConfig.getGatewayServer() + "/api/service/members/sign-up",
             memberRequestDto, MemberNoResponseDto.class);
 
         // TODO NUll 해결하기
