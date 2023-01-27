@@ -25,23 +25,22 @@
             회원등급 : <span th:text="${member.membershipGrade}"></span><br />
             회원상태 : <span th:text="${member.memberStatusName}"></span><br />
             <hr>
-            <h3>회원 상태 기록 내역</h3>
-            <hr>
             <div>
                 <button th:if="${member.memberStatusName}=='정상회원'" onclick="selectBlockBtnInMemberDetails()">차단하기</button><br/>
                 <form method="post" id="block_form" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
                     <input type="hidden" name="memberStatusName" value="차단회원">
                     <div>
                         <span style="margin-left: 10%;">차단 사유</span><br/>
-
+                        <input type="text" id="statusChangedReason" th:field="${memberStatusChangeRequestDto.statusChangedReason}">
                     </div>
                     <input type ="submit" value="차단완료">
                 </form>
             </div>
             <div>
                 <button th:if="${member.memberStatusName}=='차단회원'" onclick="selectNormalBtnInMemberDetails()">차단풀기</button><br/>
-                <form method="post" id="normal_form" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
+                <form method="post" id="normal_form" th:object="${memberStatusChangeRequestDto}" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
                     <input type="hidden" name="memberStatusName" value="정상회원">
+                    <input type="hidden" name ="statusChangedReason" value="차단회원에서 정상회원으로 변경">
                     <input type ="submit" value="차단해제">
                 </form>
             </div>

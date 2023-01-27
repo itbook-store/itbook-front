@@ -4,13 +4,18 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateAdminRequestDto;
+import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -30,9 +35,12 @@ public class MemberAdminAdaptor {
         ResponseEntity<CommonResponseBody<List<MemberAdminResponseDto>>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/admin/members", HttpMethod.GET, null,
-                new ParameterizedTypeReference<CommonResponseBody<List<MemberAdminResponseDto>>>() {
+                new ParameterizedTypeReference<>() {
                 }
             );
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -46,19 +54,29 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(), responseEntity.getBody().getHeader().getResultMessage());
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
 
-    public void modifyMemberStatus(MemberUpdateAdminRequestDto memberUpdateAdminRequestDto,
+    public void modifyMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                    String memberId) {
 
-        restTemplate.put(
-            gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberId,
-            memberUpdateAdminRequestDto
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<MemberStatusChangeRequestDto>
+            httpEntity = new HttpEntity<>(memberStatusChangeRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberId, HttpMethod.PUT,
+            httpEntity, new ParameterizedTypeReference<>() {
+            }
         );
 
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
 
     }
 }

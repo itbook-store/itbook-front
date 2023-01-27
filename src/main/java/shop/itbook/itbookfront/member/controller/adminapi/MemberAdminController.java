@@ -1,14 +1,18 @@
 package shop.itbook.itbookfront.member.controller.adminapi;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 
@@ -16,6 +20,7 @@ import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
  * @author 노수연
  * @since 1.0
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/members")
 @RequiredArgsConstructor
@@ -43,19 +48,22 @@ public class MemberAdminController {
     }
 
     @GetMapping("/{memberId}/info")
-    public String memberDetails(@PathVariable("memberId")String memberId,
+    public String memberDetails(@PathVariable("memberId") String memberId,
+                                @ModelAttribute("memberStatusChangeRequestDto")
+                                MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                 Model model) {
-         MemberAdminResponseDto member = memberAdminService.findMember(memberId);
+        MemberAdminResponseDto member = memberAdminService.findMember(memberId);
 
-         model.addAttribute("member", member);
+        model.addAttribute("member", member);
 
-         return "adminpage/member/admin-member-details-form";
+        return "adminpage/member/admin-member-details-form";
     }
 
     @PostMapping("/{memberId}/modify/member-status")
-    public String memberStatusModify(@PathVariable("memberId") String memberId, @RequestParam("memberStatusName") String memberStatusName) {
+    public String memberStatusModify(@PathVariable("memberId") String memberId,
+                                     @Valid MemberStatusChangeRequestDto memberStatusChangeRequestDto) {
 
-        memberAdminService.updateMemberStatus(memberStatusName, memberId);
+        memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberId);
 
         return "redirect:/admin/members";
     }

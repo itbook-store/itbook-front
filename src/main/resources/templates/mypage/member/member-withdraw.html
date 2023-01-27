@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content">
+            <h1>회원 탈퇴</h1>
+            <hr>
+            <form method="post" th:action="@{|/mypage/members/${member.memberId}/withdraw|}">
+                <input type="hidden" name="memberStatusName" value="탈퇴회원">
+                <input type="hidden" name="statusChangedReason" value="탈퇴처리한 회원">
+                <input type="submit" value="탈퇴하기">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
