@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
@@ -54,10 +55,10 @@ public class CategoryAdaptor {
     public List<CategoryListResponseDto> findCategoryList(String url) {
 
         ResponseEntity<CommonResponseBody<List<CategoryListResponseDto>>> exchange =
-            restTemplate.exchange(gatewayConfig.getGatewayServer() + url,
-                HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
-                });
+        restTemplate.exchange(gatewayConfig.getGatewayServer() + url,
+            HttpMethod.GET, null,
+            new ParameterizedTypeReference<>() {
+            });
 
         ResponseChecker.checkFail(exchange.getStatusCode(),
             Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
@@ -83,6 +84,44 @@ public class CategoryAdaptor {
             restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/hidden",
                 HttpMethod.PUT,
                 null, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
+
+    public void modifyMainCategorySequence(Integer categoryNo, Integer sequence) {
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/main-sequence?sequence=" + sequence,
+                HttpMethod.PUT,
+                null, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
+
+    public void modifySubCategorySequence(Integer categoryNo, Integer hopingPositionCategoryNo) {
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/child-sequence?hopingPositionCategoryNo=" + hopingPositionCategoryNo,
+                HttpMethod.PUT,
+                null, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
+
+    public void modifyCategory(Integer categoryNo, CategoryModifyRequestDto categoryRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<CategoryModifyRequestDto> entity = new HttpEntity(categoryRequestDto, headers);
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
+                HttpMethod.PUT,
+                entity, new ParameterizedTypeReference<>() {
                 });
 
         CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
