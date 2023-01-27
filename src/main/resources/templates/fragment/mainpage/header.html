@@ -50,7 +50,7 @@
     <div class="logo" th:fragment="logo-fragment">
         <div class="logo_columns">
             <div class="logo_columns_column">
-                <img src="/mainpage/img/itbook-logo-02.png" class="logo_img">
+                <a href="/"><img src="/mainpage/img/itbook-logo-02.png" class="logo_img"></a>
             </div>
         </div>
 
@@ -85,7 +85,8 @@
                 <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
                     <p class="middle_content%" th:text="${mainCategory.mainCategoryName}"></p>
                     <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
-                        <a th:href="@{/products/category-no/{categoryNo}(categoryNo=${subCategory.categoryNo})}" class="samll_content_text" th:text="${subCategory.categoryName}"></a>
+                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                           class="samll_content_text" th:text="${subCategory.categoryName}"></a>
                     </div>
                 </div>
             </div>

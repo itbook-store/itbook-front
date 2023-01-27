@@ -27,38 +27,40 @@
 <body>
 <div layout:fragment="content">
 
-    <h2> 상품 등록 </h2>
+    <h2> 상품 수정 </h2>
 
     <hr>
 
     <div class="form">
-        <form class="form-horizontal" name="form" method="post" action="/admin/products/add"
-              enctype="multipart/form-data" modelattribute="requestDto">
+        <form class="form-horizontal" name="form" method="post" th:action="@{|/admin/products/${product.productNo}/modify|}"
+              enctype="multipart/form-data" th:object="${product}">
             <div>
                 <div id="form-product">
                     <div class="form-group">
                         <label for="productName">상품명</label>
                         <input id="productName" name="productName" class="form-control input-md" required=""
-                               type="text">
+                               type="text" th:value="${product.productName}">
                     </div>
 
                     <div class="form-group">
                         <label for="simpleDescription">간단 설명</label>
-                        <input id="simpleDescription" name="simpleDescription"
-                               class="form-control input-md" required="" type="text">
+                        <input id="simpleDescription" name="simpleDescription" class="form-control input-md"
+                               th:value="${product.simpleDescription}" required="" type="text">
                     </div>
 
 
                     <div class="form-group">
                         <label for="detailsDescription">상세 설명</label>
-                        <textarea class="form-control" id="detailsDescription" name="detailsDescription"></textarea>
+                        <textarea
+                                class="form-control" id="detailsDescription" name="detailsDescription"
+                                th:text="${product.detailsDescription}"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>상품 노출 여부 (판매 여부)</label>
                         <fieldset>
-                            YES <input type="radio" name="isExposed" value="true" checked/>
-                            NO <input type="radio" name="isExposed" value="false"/>
+                            YES <input type="radio" name="isExposed" value="true" th:checked="${product.isExposed eq true}"/>
+                            NO <input type="radio" name="isExposed" value="false" th:checked="${product.isExposed eq false}"/>
                         </fieldset>
                     </div>
 
@@ -66,26 +68,27 @@
                         <label>품절 설정 여부</label>
                         <div class="col-md-4">
                             <fieldset>
-                                YES <input type="radio" name="isForceSoldOut" value="true"/>
-                                NO <input type="radio" name="isForceSoldOut" value="false" checked/>
+                                YES <input type="radio" name="isForceSoldOut" value="true" th:checked="${product.isForceSoldOut eq true}"/>
+                                NO <input type="radio" name="isForceSoldOut" value="false" th:checked="${product.isForceSoldOut eq false}"/>
                             </fieldset>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="stock">재고</label>
-                        <input id="stock" name="stock" class="form-control input-md" required="" type="text">
+                        <input id="stock" name="stock" class="form-control input-md"
+                               th:value="${product.stock}" required="" type="text">
                     </div>
 
                     <div class="form-group">
                         <label>카테고리</label>
                         <select id="mainCategory" name="mainCategory">
-                            <!--                        <option th:value="select" th:text="선택"></option>-->
                             <option th:each="mainCategory: ${mainCategoryList}"
+                                    th:selected="${productCategoryList.get(0).parentCategoryNo eq mainCategory.categoryNo}"
                                     th:value="${mainCategory.categoryNo}" th:text="${mainCategory.categoryName}">
                             </option>
                         </select>
-                        <button onclick="showSubCategoryAndForm(event)" >하위 카테고리 펼치기</button>
+                        <button onclick="showSubCategoryAndForm(event, productCategoryList)">하위 카테고리 펼치기</button>
                         <div id="categoryCheckBox" style="display:none">
                         </div>
                     </div>
@@ -93,24 +96,26 @@
 
                     <div class="form-group">
                         <label for="increasePointPercent">포인트 적립율</label>
-                        <input id="increasePointPercent" name="increasePointPercent"
-                               class="form-control input-md" required="" type="text">
+                        <input id="increasePointPercent" name="increasePointPercent" class="form-control input-md"
+                               th:value="${product.increasePointPercent}" required="" type="text">
                     </div>
 
                     <div class="form-group">
-                        <label for="rawPrice">매입 원가</label>
-                        <input id="rawPrice" name="rawPrice" class="form-control input-md" required="" type="text">
+                    <label for="rawPrice">매입 원가</label>
+                        <input id="rawPrice" name="rawPrice" class="form-control input-md"
+                               th:value="${product.rawPrice}" required="" type="text">
                     </div>
 
                     <div class="form-group">
                         <label for="fixedPrice">정가</label>
-                        <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required="" type="text">
+                        <input id="fixedPrice" name="fixedPrice" class="form-control input-md"
+                               th:value="${product.fixedPrice}" required="" type="text">
                     </div>
 
                     <div class="form-group">
                         <label for="discountPercent">할인율</label>
-                        <input id="discountPercent" name="discountPercent" class="form-control input-md" required=""
-                               type="text">
+                        <input id="discountPercent" name="discountPercent" class="form-control input-md"
+                               th:value="${product.discountPercent}" required="" type="text">
                     </div>
 
                     <div class="form-group">
@@ -119,42 +124,45 @@
                     </div>
                 </div>
 
-                <div id="form-book">
+                <div id="form-book" th:style="${#strings.equals(parentCategoryName, '도서') ? '':'display:none'}">
                     <div class="form-group">
                         <label for="isbn">isbn</label>
-                        <input id="isbn" name="isbn" class="form-control input-md" type="text">
+                        <input id="isbn" name="isbn" class="form-control input-md" th:value="${product.isbn}" type="text">
                     </div>
                     <div class="form-group">
                         <label for="pageCount">page 수</label>
-                        <input id="pageCount" name="pageCount" class="form-control input-md" type="text">
+                        <input id="pageCount" name="pageCount" class="form-control input-md"
+                               th:value="${product.pageCount}" type="text">
                     </div>
                     <div class="form-group">
                         <label for="bookCreatedAt">발간일</label>
-                        <input type="datetime-local" id="bookCreatedAt" name="bookCreatedAt"
-                               class="form-control input-md">
+                        <input type="datetime-local" id="bookCreatedAt" name="bookCreatedAt" class="form-control input-md"
+                               th:value="${product.bookCreatedAt}">
                     </div>
                     <div class="form-group">
                         <label>상품 분류</label>
                         <fieldset>
-                            전자책(e-book) <input type="radio" name="isEbook" value="true" onclick="selectEbook()"/>
-                            종이책 <input type="radio" name="isEbook" value="false" onclick="notSelectEbook()" checked/>
+                            전자책(e-book) <input type="radio" name="isEbook" value="true" th:checked="${product.isEbook eq true}"/>
+                            종이책 <input type="radio" name="isEbook" value="false" th:checked="${product.isEbook eq false}"/>
                         </fieldset>
-                        <div class="form-group" id="selectEbook" style="display: none">
+                        <div class="form-group" id="selectEbook" th:style="${product.isEbook} eq false ? 'display:none':''">
                             <label class="col-md-4 control-label">ebook 등록</label>
                             <input type="file" value="파일 선택" name="fileEbook" accept=".pdf"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="publisherName">출판사</label>
-                        <input id="publisherName" name="publisherName" class="form-control input-md" type="text">
+                        <input id="publisherName" name="publisherName" class="form-control input-md"
+                               th:value="${product.publisherName}" type="text">
                     </div>
                     <div class="form-group">
                         <label for="authorName">저자명</label>
-                        <input id="authorName" name="authorName" class="form-control input-md" type="text">
+                        <input id="authorName" name="authorName" class="form-control input-md" type="text"
+                               th:value="${product.authorName}">
                     </div>
                 </div>
 
-                <input style="margin-left: 20px" type="submit" id="submit" value="등록하기"/>
+                <input style="margin-left: 20px" type="submit" id="submit" value="수정하기"/>
             </div>
         </form>
     </div>

@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
-import shop.itbook.itbookfront.product.dto.request.AddProductBookRequestDto;
-import shop.itbook.itbookfront.product.dto.response.GetProductResponseDto;
+import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
-import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -28,20 +29,18 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                        AddProductBookRequestDto requestDto) {
+                                        ProductBookRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, ebook, requestDto);
     }
 
     @Override
-    public List<GetBookResponseDto> getBookList() {
-        List<GetBookResponseDto> bookList = productAdaptor.getBookList();
-        return bookList;
+    public List<BookDetailsResponseDto> getBookList() {
+        return productAdaptor.findBookList();
     }
 
     @Override
-    public List<GetProductResponseDto> getProductList() {
-        List<GetProductResponseDto> productList = productAdaptor.getProductList();
-        return productList;
+    public List<ProductDetailsResponseDto> getProductList() {
+        return productAdaptor.findProductList();
     }
 
     @Override
@@ -50,12 +49,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public GetBookResponseDto getBook(Long id) {
-        return productAdaptor.getBook(id);
+    public BookDetailsResponseDto getBook(Long productNo) {
+        return productAdaptor.findBook(productNo);
     }
 
     @Override
-    public void modifyProduct(Long productNo) {
-        productAdaptor.modifyProduct(productNo);
+    public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
+                              ProductBookRequestDto requestDto) {
+        productAdaptor.modifyProduct(productNo, thumbnails, ebook, requestDto);
+    }
+
+    @Override
+    public ProductDetailsResponseDto getProduct(Long productNo) {
+        return productAdaptor.findProduct(productNo);
+    }
+
+    @Override
+    public List<CategoryDetailsResponseDto> getCategoryListFilteredByProductNo(Long productNo) {
+        return productAdaptor.findCategoryListWithProductNo(productNo);
+    }
+
+    @Override
+    public List<ProductDetailsResponseDto> getProductListFilteredByCategoryNo(Integer categoryNo) {
+        return productAdaptor.findProductListWithCategoryNo(categoryNo);
     }
 }

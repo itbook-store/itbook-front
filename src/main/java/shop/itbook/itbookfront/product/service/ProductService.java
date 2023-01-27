@@ -2,11 +2,11 @@ package shop.itbook.itbookfront.product.service;
 
 import java.io.IOException;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import shop.itbook.itbookfront.product.dto.request.AddProductBookRequestDto;
-import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
-import shop.itbook.itbookfront.product.dto.response.GetProductResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 
 /**
@@ -15,15 +15,23 @@ import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
  */
 public interface ProductService {
     ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                 AddProductBookRequestDto requestDto);
+                                 ProductBookRequestDto requestDto);
 
-    List<GetBookResponseDto> getBookList() throws IOException;
+    List<BookDetailsResponseDto> getBookList() throws IOException;
 
-    List<GetProductResponseDto> getProductList();
+    List<ProductDetailsResponseDto> getProductList();
 
     void removeProduct(Long productNo);
 
-    GetBookResponseDto getBook(Long id);
+    BookDetailsResponseDto getBook(Long id);
 
-    void modifyProduct(Long productNo);
+    void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
+                       ProductBookRequestDto requestDto);
+
+    ProductDetailsResponseDto getProduct(Long productNo);
+
+
+    List<CategoryDetailsResponseDto> getCategoryListFilteredByProductNo(Long productNo);
+
+    List<ProductDetailsResponseDto> getProductListFilteredByCategoryNo(Integer categoryNo);
 }

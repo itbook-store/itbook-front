@@ -12,7 +12,7 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
-import shop.itbook.itbookfront.product.dto.response.GetBookResponseDto;
+import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -39,7 +39,7 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
-        List<GetBookResponseDto> bookList = productServiceImpl.getBookList();
+        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList();
         model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }

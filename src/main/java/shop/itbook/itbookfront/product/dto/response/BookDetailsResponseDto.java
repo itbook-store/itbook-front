@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class GetBookResponseDto {
+public class BookDetailsResponseDto {
     private Long productNo;
 
     private String productName;
@@ -22,13 +22,11 @@ public class GetBookResponseDto {
 
     private String detailsDescription;
 
-    private Boolean isSelled;
+    private Boolean isExposed;
 
-    private Boolean isDeleted;
+    private Boolean isForceSoldOut;
 
     private Integer stock;
-
-//    private String category;
 
     private Integer increasePointPercent;
 
@@ -39,7 +37,6 @@ public class GetBookResponseDto {
     private Double discountPercent;
 
     private String fileThumbnailsUrl;
-//    private MultipartFile fileThumbnails;
 
     private String isbn;
 
@@ -50,7 +47,6 @@ public class GetBookResponseDto {
     private Boolean isEbook;
 
     private String fileEbookUrl;
-//    private MultipartFile fileEbook;
 
     private String publisherName;
 

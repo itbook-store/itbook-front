@@ -8,9 +8,11 @@ function notSelectEbook() {
     ebookDiv.style.display = "none";
 }
 
-async function showSubCategoryAndForm(event) {
+async function showSubCategoryAndForm(event, productCategoryList) {
 
     event.preventDefault();
+
+    let categoryNoList = getCategoryNoList(productCategoryList);
 
     let mainCategoryNo = document.getElementById("mainCategory").value;
 
@@ -34,6 +36,9 @@ async function showSubCategoryAndForm(event) {
                     checkBox.type = "checkbox";
                     checkBox.name = "categoryNoList";
                     checkBox.value = checkBoxList.categoryNo;
+                    if(categoryNoList.includes(checkBox.value)) {
+                        checkBox.checked = true;
+                    }
                     checkBoxText.innerText = checkBoxList.categoryName;
                     subCategoryCheckBoxDiv.appendChild(checkBoxText);
                     checkBoxText.appendChild(checkBox);
@@ -51,4 +56,12 @@ function showBookForm(mainCategoryNo) {
     } else {
         bookFormDiv.style.display = "none";
     }
+}
+
+function getCategoryNoList(productCategoryList) {
+    let categoryNoList = [];
+    productCategoryList.forEach(element => {
+        categoryNoList.push(element.categoryNo);
+    })
+    return categoryNoList;
 }
