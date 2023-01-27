@@ -15,4 +15,6 @@ public class OrderProductResponseDto {
     private String productName;
     private Long fixedPrice;
     private Double discountPercent;
+
+    // 배송지 목록 리스트로
 }

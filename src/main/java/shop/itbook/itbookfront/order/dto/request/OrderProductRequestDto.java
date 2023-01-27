@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.dto.request;
 
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderProductRequestDto {
 
-    private Long productNo;
+    private Optional<Long> productNo;
 }

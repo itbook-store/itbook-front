@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.adaptor;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import shop.itbook.itbookfront.order.dto.response.OrderProductResponseDto;
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
 
-    public List<OrderProductResponseDto> findOrderProductList(String uri,
+    public List<OrderProductResponseDto> findOrderProductList(URI uri,
                                                               HttpEntity<OrderProductRequestDto> http) {
         ResponseEntity<CommonResponseBody<List<OrderProductResponseDto>>> exchange =
             restTemplate.exchange(
