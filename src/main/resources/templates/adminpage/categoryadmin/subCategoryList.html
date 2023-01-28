@@ -18,7 +18,6 @@
                 <th style="width: auto">카테고리명</th>
                 <th style="width: auto">상품 개수</th>
                 <th style="width: auto">숨김상태</th>
-                <th style="width: auto">숨김상태변경</th>
             </tr>
             </thead>
             <tbody>
@@ -28,15 +27,8 @@
                     <td th:text="${category.count}"></td>
                     <td th:text="${category.isHidden}"></td>
                     <td>
-                        <button style="width: auto; margin-left: 10px" class="btn btn-danger"
-                                th:value="${category.categoryNo}"
-                                onclick="modifyHidden(this)">숨김여부변경
-                        </button>
-                    <td>
-                    <td>
-                        <button style="width: auto; margin-left: 10px" class="btn btn-danger"
-                                th:value="${category.categoryNo}"
-                                onclick="deleteCategory(this)">삭제
+                        <button style="width: auto; margin-left: 10px" class="btn btn-danger">
+                            <a th:href="@{/admin/categories/{categoryNo}/category-modification(categoryNo=${category.categoryNo}, categoryName=${category.categoryName}, isHidden=${category.isHidden})}">수정</a>
                         </button>
                     <td>
                 </th:block>
