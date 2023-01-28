@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.order.dto.request.OrderProductRequestDto;
-import shop.itbook.itbookfront.order.dto.response.OrderProductResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderPaperResponseDto;
 
 /**
  * shop 서버와 주문 관련 정보를 통신하기 위한 클래스
@@ -25,9 +25,9 @@ import shop.itbook.itbookfront.order.dto.response.OrderProductResponseDto;
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
 
-    public List<OrderProductResponseDto> findOrderProductList(URI uri,
-                                                              HttpEntity<OrderProductRequestDto> http) {
-        ResponseEntity<CommonResponseBody<List<OrderProductResponseDto>>> exchange =
+    public List<OrderPaperResponseDto> findOrderProductList(URI uri,
+                                                            HttpEntity<OrderProductRequestDto> http) {
+        ResponseEntity<CommonResponseBody<List<OrderPaperResponseDto>>> exchange =
             restTemplate.exchange(
                 uri,
                 HttpMethod.GET, http,

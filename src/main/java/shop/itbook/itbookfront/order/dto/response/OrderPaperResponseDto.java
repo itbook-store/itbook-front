@@ -10,7 +10,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
-public class OrderProductResponseDto {
+public class OrderPaperResponseDto {
 
     private String productName;
     private Long fixedPrice;

@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderProductRequestDto {
 
-    private Optional<Long> productNo;
+    private Long productNo;
 }
