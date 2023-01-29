@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import shop.itbook.itbookfront.category.adaptor.impl.CategoryAdaptor;
+import shop.itbook.itbookfront.category.adaptor.CategoryAdaptor;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.service.CategoryService;

@@ -1,9 +1,15 @@
 package shop.itbook.itbookfront.category.controller.adminapi;
 
 import java.util.List;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
+import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 
@@ -66,12 +74,7 @@ public class CategoryAdminController {
         return Strings.concat(DIRECTORY_NAME, "/subCategoryAddForm");
     }
 
-    @GetMapping("/{categoryNo}/category-deletion")
-    public String categoryDelete(@PathVariable String categoryNo) {
 
-        categoryService.deleteCategory(categoryNo);
-        return "redirect:/admin/categories";
-    }
 
     @GetMapping("/{categoryNo}/category-modify/hidden")
     public String categoryModifyHidden(@PathVariable String categoryNo) {
@@ -122,9 +125,44 @@ public class CategoryAdminController {
         return "redirect:/admin/categories/";
     }
 
+    @GetMapping("/{categoryNo}/category-deletion")
+    public String categoryDelete(@PathVariable String categoryNo, RedirectAttributes redirectAttributes) {
+
+        try {
+            categoryService.deleteCategory(categoryNo);
+        } catch (CategoryContainsProductsException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
+        return "redirect:/admin/categories";
+    }
 
     @GetMapping
-    public String categoryList(Model model) {
+    public String categoryList(Model model, HttpServletRequest request, @AuthenticationPrincipal
+    String prin) {
+
+
+        HttpSession session = request.getSession(false);
+        if (Objects.nonNull(session)) {
+            if (Objects.nonNull(session.getAttribute("hi"))) {
+                Object hi = session.getAttribute("hi");
+                CategoryModifyRequestDto ddd =
+                    (CategoryModifyRequestDto) session.getAttribute("modi");
+                System.out.println(hi);
+                System.out.println(ddd);
+            }
+            session.setAttribute("good", "bye");
+            session.setAttribute("hi", "bye");
+            CategoryModifyRequestDto dto = new CategoryModifyRequestDto();
+            dto.setCategoryName("jain");
+            dto.setIsHidden(false);
+            session.setAttribute("modi", dto);
+        }
+
+
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(object);
+//        System.out.println(prin);
 
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/admin/categories");

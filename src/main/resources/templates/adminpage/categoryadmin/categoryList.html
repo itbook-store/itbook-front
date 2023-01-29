@@ -29,23 +29,23 @@
                 <td th:text="${category.count}"></td>
                 <td th:text="${category.isHidden}"></td>
                 <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
-                        <a th:href="@{/admin/categories/{categoryNo}/category-modify/hidden(categoryNo=${category.categoryNo})}">숨김여부변경</a>
-                    </button>
-                </td>
-                <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
-                        <a th:href="@{/admin/categories/{categoryNo}/category-deletion(categoryNo=${category.categoryNo})}">삭제</a>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modify/hidden(categoryNo=${category.categoryNo})}'|">
+                        숨김여부변경
                     </button>
                 </td>
                 <td th:if="${#strings.equals(category.level, 0)}">
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
-                        <a th:href="@{/admin/categories/{categoryNo}/modify-form/main-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}">노출위치변경</a>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/main-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
+                        노출위치변경
                     </button>
                 </td>
                 <td th:unless="${#strings.equals(category.level, 0)}">
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger">
-                        <a th:href="@{/admin/categories/{categoryNo}/modify-form/sub-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}">노출위치변경</a>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/sub-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
+                        노출위치변경
+                    </button>
+                </td>
+                <td>
+                    <button style="width: auto; margin-left: 10px" class="btn btn-danger" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-deletion(categoryNo=${category.categoryNo})}'|">
+                        삭제
                     </button>
                 </td>
             </tr>
@@ -55,6 +55,12 @@
     </div>
 
     <script th:src="@{/category/js/categoryAdmin.js}"></script>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            alert(failMessage);
+        }
+    </script>
 </div>
 
 </html>

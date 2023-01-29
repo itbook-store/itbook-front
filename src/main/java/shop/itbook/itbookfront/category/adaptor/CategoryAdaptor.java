@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.category.adaptor.impl;
+package shop.itbook.itbookfront.category.adaptor;
 
 import java.util.List;
 import java.util.Objects;
@@ -7,14 +7,19 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
+import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.common.handler.RestTemplateResponseErrorHandler;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -68,14 +73,16 @@ public class CategoryAdaptor {
 
     public void deleteCategory(String categoryNo) {
 
-        ResponseEntity<CommonResponseBody<Void>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
-            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
-            });
-
-
-        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
-        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+        try {
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
+                HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
+                });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), CategoryContainsProductsException.MESSAGE)) {
+                throw new CategoryContainsProductsException();
+            }
+        }
     }
 
     public void modifyCategoryHidden(String categoryNo) {
