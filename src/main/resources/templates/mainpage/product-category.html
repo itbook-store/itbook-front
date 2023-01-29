@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
+    <meta charset="UTF-8">
     <title>ItBook</title>
 </head>
 <body>
@@ -27,6 +29,8 @@
                         <p class="product_sale_percent" th:text="|${product.discountPercent}%|"></p>
                     </div>
                     <p class="product_real_price" th:text="${product.selledPrice}"></p>
+                    <span th:if="${product.isForceSoldOut == true or product.stock == 0}"
+                          class="badge badge-danger"> 품절 </span>
                 </div>
                 <div class="main_product" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">
                     <p>해당 카테고리에 속하는 상품이 존재하지 않습니다.</p>
@@ -37,8 +41,8 @@
 
     </div>
 
-<script src="/mainpage/js/category.js"></script>
-<script src="/mainpage/js/slider.js"></script>
+    <script src="/mainpage/js/category.js"></script>
+    <script src="/mainpage/js/slider.js"></script>
 
 </div>
 

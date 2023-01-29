@@ -39,7 +39,7 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
-        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList();
+        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList(true);
         model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }

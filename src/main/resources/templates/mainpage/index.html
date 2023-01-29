@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
+    <meta charset="UTF-8">
     <title>ItBook</title>
 </head>
 <body>
@@ -53,6 +55,7 @@
                         <p class="product_sale_percent" th:text="|${book.discountPercent}%|"></p>
                     </div>
                     <p class="product_real_price" th:text="${book.selledPrice}"></p>
+                    <span th:if="${book.isForceSoldOut == true or book.stock == 0}" class="badge badge-danger"> 품절 </span>
                 </div>
             </div>
 
@@ -176,8 +179,8 @@
         </div>
     </div>
 
-<script src="/mainpage/js/category.js"></script>
-<script src="/mainpage/js/slider.js"></script>
+    <script src="/mainpage/js/category.js"></script>
+    <script src="/mainpage/js/slider.js"></script>
 
 </div>
 

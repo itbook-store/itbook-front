@@ -29,8 +29,9 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @GetMapping(params = {"categoryNo", "categoryName"})
-    public String productList(@RequestParam Integer categoryNo, @RequestParam String categoryName,
-                              Model model) {
+    public String productListByCategory(@RequestParam Integer categoryNo,
+                                        @RequestParam String categoryName,
+                                        Model model) {
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories");
         List<MainCategory> mainCategoryList =
