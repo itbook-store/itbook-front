@@ -1,9 +1,12 @@
 package shop.itbook.itbookfront.auth.interceptor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -11,6 +14,8 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import shop.itbook.itbookfront.auth.dto.TokenDto;
+import shop.itbook.itbookfront.auth.exception.MemberNotFountException;
 
 /**
  * RestTemplate 요청 전에 Request Header에 Authorization을 추가해주는 인터셉터 입니다.
@@ -18,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author 강명관
  * @since 1.0
  */
+@Slf4j
 public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
     private static final String AUTH_HEADER = "Authorization";
@@ -37,16 +43,28 @@ public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor
             return execution.execute(request, body);
         }
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TokenDto tokenDto = (TokenDto) session.getAttribute("tokenDto");
+        String accessToken = tokenDto.getAccessToken();
 
-        if (Objects.isNull(principal)) {
-            return execution.execute(request, body);
-        }
+        log.info("tokenDto {}", tokenDto);
 
-        String accessToken = (String) session.getAttribute(String.valueOf(principal));
+//        TokenDto tokenDto = getTokenDto(session);
+//        String accessToken = tokenDto.getAccessToken();
 
         request.getHeaders().add(AUTH_HEADER, HEADER_PREFIX + accessToken);
 
         return execution.execute(request, body);
     }
+
+//    private TokenDto getTokenDto(HttpSession session) throws JsonProcessingException {
+//        String tokenDtoJsonString = String.valueOf(session.getAttribute("tokenDto"));
+//
+//        if (Objects.isNull(tokenDtoJsonString)) {
+//            throw new MemberNotFountException();
+//        }
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        return objectMapper.readValue(tokenDtoJsonString, TokenDto.class);
+//    }
+
 }

@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,9 +32,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             throw new BadRequestException(MESSAGE);
         }
 
-        session.removeAttribute((String) authentication.getPrincipal());
         session.invalidate();
-
 
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();

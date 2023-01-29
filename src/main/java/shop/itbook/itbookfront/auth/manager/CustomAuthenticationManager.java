@@ -1,5 +1,7 @@
 package shop.itbook.itbookfront.auth.manager;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +19,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
+import shop.itbook.itbookfront.auth.dto.TokenDto;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.exception.LoginFailException;
@@ -72,14 +77,27 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         String authUserDetails = getAuthUserDetails(headers);
         String authToken = getAuthToken(headers);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDetailsDto userDetailsDto;
+        TokenDto tokenDto;
+
+        try {
+            userDetailsDto = objectMapper.readValue(authUserDetails, UserDetailsDto.class);
+            tokenDto = objectMapper.readValue(authToken, TokenDto.class);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Auth서버에서 잘못된 요청이 넘어왔습니다.");
+        }
+
+
+
         HttpServletRequest request =
             ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         HttpSession session = request.getSession(true);
-        session.setAttribute("tokenDto", authToken);
+        session.setAttribute("tokenDto", tokenDto);
 
         return new UsernamePasswordAuthenticationToken(
-            authUserDetails,
+            userDetailsDto,
             null,
             getGrantedAuthoritiesToResponseHeader(headers)
         );

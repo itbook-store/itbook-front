@@ -72,18 +72,6 @@ public class RedisConfig implements BeanClassLoaderAware {
         return serializer;
     }
 
-    @Bean
-    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer(objectMapper());
-    }
-
-    private ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
-
-        return objectMapper;
-    }
-
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
