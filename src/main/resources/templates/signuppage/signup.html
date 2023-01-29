@@ -56,7 +56,7 @@
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label">비밀번호</label>
+                    <label class="form-label">비밀번호(영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다)</label>
                     <input type="password" class="form-control form-control-lg" th:field="${memberInputRequestDto.password}" />
                     <span th:text="${valid_password}" style="color: red"></span>
                   </div>
@@ -106,7 +106,7 @@
                   </div>
 
                   <div class="d-flex justify-content-end pt-3">
-                    <button type="submit" class="btn btn-warning btn-lg ms-2">회원가입</button>
+                    <button type="button" class="btn btn-warning btn-lg ms-2" onclick="signUpSubmit()">회원가입</button>
                   </div>
                 </form>
 
