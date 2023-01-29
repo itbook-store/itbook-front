@@ -8,7 +8,7 @@ function notSelectEbook() {
     ebookDiv.style.display = "none";
 }
 
-async function showSubCategoryAndForm(event) {
+async function showSubCategoryAndForm(event, categoryNoList) {
 
     event.preventDefault();
 
@@ -21,7 +21,7 @@ async function showSubCategoryAndForm(event) {
     subCategoryCheckBoxDiv.style.display = "block";
 
     showBookForm(mainCategoryNo);
-
+    console.log(categoryNoList);
     await fetch(`/async/${mainCategoryNo}/sub-categories`, {
         method: "GET"
     })
@@ -34,12 +34,15 @@ async function showSubCategoryAndForm(event) {
                     checkBox.type = "checkbox";
                     checkBox.name = "categoryNoList";
                     checkBox.value = checkBoxList.categoryNo;
-                    // if(categoryNoList.includes(checkBox.value)) {
-                    //     checkBox.checked = true;
-                    // }
+                    checkBox.style = "margin-right : 4px";
+                    checkBoxText.style = "margin-right : 7px";
+                    if (categoryNoList.length != 0 &&
+                        categoryNoList.some(no => no == checkBoxList.categoryNo)) {
+                        checkBox.checked = true;
+                    }
                     checkBoxText.innerText = checkBoxList.categoryName;
+                    subCategoryCheckBoxDiv.appendChild(checkBox);
                     subCategoryCheckBoxDiv.appendChild(checkBoxText);
-                    checkBoxText.appendChild(checkBox);
                 }
             });
         });
