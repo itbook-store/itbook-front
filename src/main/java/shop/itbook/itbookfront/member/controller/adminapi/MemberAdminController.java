@@ -79,9 +79,37 @@ public class MemberAdminController {
 
     @GetMapping("/search")
     public String memberSearch(@RequestParam("searchRequirement")String searchRequirement,
-                               @RequestParam("searchWord") String searchWord) {
+                               @RequestParam("searchWord") String searchWord,
+                               Model model) {
 
-        // TODO 소셜 로그인 후 다시 작성하기
-        return null;
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+
+        model.addAttribute("memberList", memberList);
+
+        return "adminpage/member/admin-member-list";
+    }
+
+    @GetMapping("withdraw/search")
+    public String withdrawMemberSearch(@RequestParam("searchRequirement")String searchRequirement,
+                               @RequestParam("searchWord") String searchWord,
+                               Model model) {
+
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+
+        model.addAttribute("memberList", memberList);
+
+        return "adminpage/member/admin-member-withdraw-list";
+    }
+
+    @GetMapping("block/search")
+    public String blockMemberSearch(@RequestParam("searchRequirement")String searchRequirement,
+                               @RequestParam("searchWord") String searchWord,
+                               Model model) {
+
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+
+        model.addAttribute("memberList", memberList);
+
+        return "adminpage/member/admin-member-block-list";
     }
 }

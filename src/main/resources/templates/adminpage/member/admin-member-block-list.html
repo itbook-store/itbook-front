@@ -14,6 +14,21 @@
         <div class="content">
             <h2>차단회원 목록</h2>
             <hr>
+            <div style="float: right;">
+                <form method="get" th:action="@{/admin/members/block/search}">
+                    <select name="searchRequirement">
+                        <option value="everything">전체</option>
+                        <option value="memberId">아이디</option>
+                        <option value="nickname">닉네임</option>
+                        <option value="name">이름</option>
+                        <option value="phoneNumber">전화번호</option>
+                        <option value="dateOfJoining">가입일</option>
+                        <!--TODO 가입일 누르면 날짜 선택하는 칸 추가 -->
+                    </select>
+                    <input type="text" name="searchWord">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
             <table class="table">
                 <tr>
                     <td>회원 번호</td>

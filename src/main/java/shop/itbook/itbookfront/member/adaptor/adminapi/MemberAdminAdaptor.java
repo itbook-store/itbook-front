@@ -79,4 +79,18 @@ public class MemberAdminAdaptor {
             responseEntity.getBody().getHeader().getResultMessage());
 
     }
+
+    public List<MemberAdminResponseDto> getMembersBySearch(String searchRequirement, String searchWord) {
+        ResponseEntity<CommonResponseBody<List<MemberAdminResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/members/search/" + searchRequirement + "/" + searchWord, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
 }
