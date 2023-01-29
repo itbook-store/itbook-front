@@ -26,7 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
         Integer categoryNo = categoryAdaptor.addCategory(categoryRequestDto);
 
         if (Objects.isNull(categoryNo)) {
-            throw new RestApiServerException("해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
+            throw new RestApiServerException(
+                "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
         }
     }
 

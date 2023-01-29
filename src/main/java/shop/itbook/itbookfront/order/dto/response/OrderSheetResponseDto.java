@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.order.dto.response;
 
 import java.util.List;
 import lombok.Getter;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * 주문에 필요한 정보를 가지고 있는 Dto
@@ -12,6 +13,6 @@ import lombok.Getter;
  */
 @Getter
 public class OrderSheetResponseDto {
-    private List<OrderSheetProductResponseDto> orderSheetProductResponseDtoList;
+    private List<ProductDetailsResponseDto> productDetailsResponseDtoList;
     private List<MemberDestinationResponseDto> memberDestinationResponseDtoList;
 }

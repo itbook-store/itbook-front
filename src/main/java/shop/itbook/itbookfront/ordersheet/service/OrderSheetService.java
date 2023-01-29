@@ -1,6 +1,6 @@
 package shop.itbook.itbookfront.ordersheet.service;
 
-import shop.itbook.itbookfront.order.dto.response.OrderSheetDetailResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 
 /**
  * 주문서 작성 로직을 처리하는 클래스
@@ -18,6 +18,6 @@ public interface OrderSheetService {
      * @param memberNo   the member no
      * @return 백 서버로부터 받아온 주문서의 정보
      */
-    OrderSheetDetailResponseDto findOrderSheetOneProduct(Long productNo, Integer productCnt,
-                                                         Long memberNo);
+    OrderSheetResponseDto findOrderSheetOneProduct(Long productNo, Integer productCnt,
+                                                   Long memberNo);
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainpage/default-layout}">
+<head>
+    <title>ItBook</title>
+</head>
+<body>
+<div id="container" layout:fragment="content">
+
+
+    <div class="main">
+        <div class="main_columns">
+
+            <div class="main_title_box">
+                <p class="main_title">[[${categoryName}]]</p>
+            </div>
+
+            <div class="main_product_container">
+                <div class="main_product" th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}"
+                     style="text-align: center">
+                    <img th:src="${product.fileThumbnailsUrl}" alt=""
+                         class="product_img">
+                    <p class="product_title" th:text="${product.productName}"></p>
+                    <div class="product_price_box">
+                        <p class="product_origin_price" th:text="${product.fixedPrice}"></p>
+                        <p class="product_sale_percent" th:text="|${product.discountPercent}%|"></p>
+                    </div>
+                    <p class="product_real_price" th:text="${product.selledPrice}"></p>
+                </div>
+                <div class="main_product" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">
+                    <p>해당 카테고리에 속하는 상품이 존재하지 않습니다.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<script src="/mainpage/js/category.js"></script>
+<script src="/mainpage/js/slider.js"></script>
+
+</div>
+
+</body>
+</html>

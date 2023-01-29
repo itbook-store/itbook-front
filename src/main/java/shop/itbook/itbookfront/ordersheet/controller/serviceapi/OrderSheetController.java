@@ -2,12 +2,12 @@ package shop.itbook.itbookfront.ordersheet.controller.serviceapi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import shop.itbook.itbookfront.order.dto.response.OrderSheetDetailResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
 
@@ -38,11 +38,12 @@ public class OrderSheetController {
                                @RequestParam("memberNo") Long memberNo,
                                Model model) {
 
-        OrderSheetDetailResponseDto orderSheet =
+        OrderSheetResponseDto orderSheet =
             orderSheetService.findOrderSheetOneProduct(productNo, productCnt, memberNo);
 
-        model.addAttribute("orderSheetProductDetailList",
-            orderSheet.getOrderSheetProductDetailResponseDtoList());
+        model.addAttribute("productDetailsList",
+            orderSheet.getProductDetailsResponseDtoList());
+        model.addAttribute("productCnt", productCnt);
         model.addAttribute("memberDestinationList",
             orderSheet.getMemberDestinationResponseDtoList());
 

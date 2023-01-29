@@ -30,16 +30,16 @@
                         합계
                     </th>
                 </tr>
-                <tr th:each="product : ${orderSheetProductDetailList}">
+                <tr th:each="product : ${productDetailsList}">
                     <td th:text="${product.getProductName()}">
                     </td>
                     <td th:text="${product.getFixedPrice()}">
                     </td>
-                    <td th:text="${product.getDiscountedPrice()}">
+                    <td th:text="${product.getSelledPrice()}">
                     </td>
-                    <td th:text="${product.getProductCount()}">
+                    <td th:text="${productCnt}">
                     </td>
-                    <td th:text="${product.getTotalPrice()}">
+                    <td th:text="${product.getSelledPrice()} * ${productCnt}">
                     </td>
                 </tr>
             </table>
