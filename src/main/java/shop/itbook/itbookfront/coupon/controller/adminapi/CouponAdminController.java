@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.coupon.controller.adminapi;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
+import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 
 /**
  * @author 송다혜
@@ -24,7 +27,8 @@ import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 @RequiredArgsConstructor
 public class CouponAdminController {
 
-    private static final String DIRECTORY_NAME = "couponadmin";
+    private final CouponService couponService;
+    private static final String DIRECTORY_NAME = "adminpage/couponadmin";
 
     @GetMapping("/coupon-addition")
     public String couponAddPage(@ModelAttribute("couponInputRequestDto")
@@ -48,11 +52,21 @@ public class CouponAdminController {
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
         model.addAttribute("string", couponInputRequestDto.toString());
+        couponInputRequestDto.setReserved(false);
 
+        couponService.addCoupon(couponInputRequestDto);
 
         return Strings.concat(DIRECTORY_NAME, "/test");
     }
 
+    @GetMapping
+    public String couponList(Model model){
+
+        List<CouponListResponseDto> couponList = couponService.findCouponList("/api/admin/coupon");
+
+        model.addAttribute("couponList", couponList);
+        return Strings.concat(DIRECTORY_NAME, "/couponList");
+    }
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 

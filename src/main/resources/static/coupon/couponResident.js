@@ -1,46 +1,55 @@
 
-// function selectPoint(eventTarget) {
-//
-//     eventTarget.show() =
-//         `<input class="form-control" type="text" placeholder="Default input">
-//
-//         `;
-// }
+function divBlock(name){
+    document.getElementById(name+'Div').style.display = 'block';
+    document.getElementById(name).value = null;
+}
 
+function divNone(name){
+    document.getElementById(name+'Div').style.display = 'none';
+    document.getElementById(name).value = 0;
+}
+
+function divNull(name){
+    document.getElementById(name+'Div').style.display = 'none';
+    document.getElementById(name).value = null;
+}
+function radioCheck(name) {
+    return document.getElementById(name + 'Radio').checked === true;
+}
 function selectCouponOption(){
-    if(document.getElementById('pointRadio').checked === true){
-        document.getElementById('pointDiv').style.display = 'block';
+    if(radioCheck('point')) {
+        divBlock('point');
 
-        document.getElementById('minDiv').style.display = 'none';
-        document.getElementById('maxDiv').style.display = 'none';
-        document.getElementById('amountDiv').style.display = 'none';
-        document.getElementById('percentDiv').style.display = 'none';
+        divNull('min');
+        divNull('max');
+        divNone('amount');
+        divNone('percent');
 
-    } else if(document.getElementById('percentRadio').checked === true){
-        document.getElementById('percentDiv').style.display = 'block';
-        document.getElementById('minDiv').style.display = 'block';
-        document.getElementById('maxDiv').style.display = 'block';
+    }else if(radioCheck('percent')){
+        divBlock('percent');
+        divBlock('min');
+        divBlock('max');
 
-        document.getElementById('pointDiv').style.display = 'none';
-        document.getElementById('amountDiv').style.display = 'none';
+        divNone('point');
+        divNone('amount');
 
     } else {
-        document.getElementById('amountDiv').style.display = 'block';
-        document.getElementById('minDiv').style.display = 'block';
+        divBlock('amount');
+        divBlock('min');
 
-        document.getElementById('pointDiv').style.display = 'none';
-        document.getElementById('percentDiv').style.display = 'none';
-        document.getElementById('maxDiv').style.display = 'none';
+        divNone('point');
+        divNone('percent');
+        divNull('max');
 
     }
 }
 
 function selectCouponCoverage(){
-    if(document.getElementById("allProductRadio").checked === true){
+    if(radioCheck('allProduct')) {
 
         document.getElementById("selectCategoryDiv").style.display = 'none';
         document.getElementById("selectProductDiv").style.display = 'none';
-    } else if(document.getElementById("categoryRadio").checked === true){
+    } else if(radioCheck('category')){
 
         document.getElementById("selectCategoryDiv").style.display = 'block';
         document.getElementById("selectProductDiv").style.display = 'none';
