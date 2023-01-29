@@ -46,6 +46,7 @@
 
             <div class="main_product_container">
                 <div class="main_product" th:if="${not #lists.isEmpty(bookList)}" th:each="book : ${bookList}"
+                     th:onclick="|location.href= '@{|/products/${book.productNo}|}'|"
                      style="text-align: center">
                     <img th:src="${book.fileThumbnailsUrl}" alt=""
                          class="product_img">
@@ -55,7 +56,8 @@
                         <p class="product_sale_percent" th:text="|${book.discountPercent}%|"></p>
                     </div>
                     <p class="product_real_price" th:text="${book.selledPrice}"></p>
-                    <span th:if="${book.isForceSoldOut == true or book.stock == 0}" class="badge badge-danger"> 품절 </span>
+                    <span th:if="${book.isForceSoldOut == true or book.stock == 0}"
+                          class="badge badge-danger"> 품절 </span>
                 </div>
             </div>
 

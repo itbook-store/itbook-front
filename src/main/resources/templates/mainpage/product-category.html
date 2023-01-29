@@ -20,8 +20,9 @@
 
             <div class="main_product_container">
                 <div class="main_product" th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}"
-                     style="text-align: center">
-                    <img th:src="${product.fileThumbnailsUrl}" alt=""
+                     style="text-align: center" th:onclick="|location.href= '@{|/products/${product.productNo}|}'|"
+
+                <img th:src="${product.fileThumbnailsUrl}" alt=""
                          class="product_img">
                     <p class="product_title" th:text="${product.productName}"></p>
                     <div class="product_price_box">
