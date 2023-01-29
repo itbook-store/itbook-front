@@ -1,9 +1,7 @@
 package shop.itbook.itbookfront.home;
 
-import java.net.http.HttpRequest;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +12,8 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
  * @author gwanii
@@ -23,12 +23,14 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
+    private final ProductServiceImpl productServiceImpl;
 
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest httpServletRequest) {
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+    public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/categories");
 
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);
@@ -37,6 +39,8 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
+        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList();
+        model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }
 
