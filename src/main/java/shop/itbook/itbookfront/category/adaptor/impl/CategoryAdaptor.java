@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
-import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -74,19 +73,23 @@ public class CategoryAdaptor {
             });
 
 
-        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        CommonResponseBody.CommonHeader header =
+            Objects.requireNonNull(exchange.getBody()).getHeader();
         ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
     }
 
     public void modifyCategoryHidden(String categoryNo) {
 
         ResponseEntity<CommonResponseBody<Void>> exchange =
-            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/hidden",
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo +
+                    "/hidden",
                 HttpMethod.PUT,
                 null, new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
+        CommonResponseBody.CommonHeader header =
+            Objects.requireNonNull(exchange.getBody()).getHeader();
         ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
     }
 
