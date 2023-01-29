@@ -146,3 +146,13 @@ function signUpSubmit() {
         document.getElementById("signupForm").submit();
     }
 }
+
+function socialLoginSubmit() {
+    if (document.getElementById("nicknameCheckBtn").disabled == false
+        || document.getElementById("phoneNumberCheckBtn").disabled == false) {
+        alert("중복체크가 되지 않은 곳이 있습니다.");
+        return false;
+    } else {
+        document.getElementById("socialLoginForm").submit();
+    }
+}
