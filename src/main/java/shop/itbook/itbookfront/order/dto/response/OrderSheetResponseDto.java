@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.dto.response;
 
+import java.util.List;
 import lombok.Getter;
 
 /**
@@ -10,11 +11,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
-public class OrderPaperResponseDto {
-
-    private String productName;
-    private Long fixedPrice;
-    private Double discountPercent;
-
-    // 배송지 목록 리스트로
+public class OrderSheetResponseDto {
+    private List<OrderSheetProductResponseDto> orderSheetProductResponseDtoList;
+    private List<MemberDestinationResponseDto> memberDestinationResponseDtoList;
 }

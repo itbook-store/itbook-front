@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.order.adaptor;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.order.dto.request.OrderProductRequestDto;
-import shop.itbook.itbookfront.order.dto.response.OrderPaperResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 
 /**
  * shop 서버와 주문 관련 정보를 통신하기 위한 클래스
@@ -25,9 +24,9 @@ import shop.itbook.itbookfront.order.dto.response.OrderPaperResponseDto;
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
 
-    public List<OrderPaperResponseDto> findOrderProductList(URI uri,
-                                                            HttpEntity<OrderProductRequestDto> http) {
-        ResponseEntity<CommonResponseBody<List<OrderPaperResponseDto>>> exchange =
+    public <T> OrderSheetResponseDto findOrderSheet(URI uri,
+                                                    HttpEntity<T> http) {
+        ResponseEntity<CommonResponseBody<OrderSheetResponseDto>> exchange =
             restTemplate.exchange(
                 uri,
                 HttpMethod.GET, http,
