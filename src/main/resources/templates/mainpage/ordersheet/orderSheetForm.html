@@ -7,8 +7,8 @@
     <title>주문 페이지</title>
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="order-write">
+<div class="order-write" layout:fragment="content">
+    <div>
         <div class="order-title"><b>주 문</b> 하 기</div>
         <div class="box">
             <table>
@@ -132,6 +132,8 @@
             document.getElementById('currentDate').min = currentDate.toISOString().slice(0, 10);
             document.getElementById('currentDate').max = maxDate.toISOString().slice(0, 10);
         </script>
+        <script src="/mainpage/js/category.js"></script>
+        <script src="/mainpage/js/slider.js"></script>
     </div>
 </body>
 </html>

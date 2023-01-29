@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.ordersheet.controller.serviceapi;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.model.MainCategory;
+import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
 
@@ -24,6 +29,8 @@ import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
 public class OrderSheetController {
 
     private final OrderSheetService orderSheetService;
+    private final CategoryService categoryService;
+
 
     /**
      * 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
@@ -37,6 +44,13 @@ public class OrderSheetController {
                                // TODO: 2023/01/28 회원 번호 param 빼고 함수 내에서 가져올 방법 찾기
                                @RequestParam("memberNo") Long memberNo,
                                Model model) {
+
+        List<CategoryListResponseDto> categoryList =
+            categoryService.findCategoryList("/api/categories");
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryList);
+        model.addAttribute("mainCategoryList", mainCategoryList);
 
         OrderSheetResponseDto orderSheet =
             orderSheetService.findOrderSheetOneProduct(productNo, productCnt, memberNo);
