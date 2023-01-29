@@ -33,7 +33,7 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/memberId/" +
+                gatewayConfig.getGatewayServer() + "/api/members/sign-up-check/memberId/" +
                     memberId,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
@@ -46,7 +46,7 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/nickname/" +
+                gatewayConfig.getGatewayServer() + "/api/members/sign-up-check/nickname/" +
                     nickname,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
@@ -59,7 +59,7 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/phoneNumber/" +
+                gatewayConfig.getGatewayServer() + "/api/members/sign-up-check/phoneNumber/" +
                     phoneNumber,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
@@ -72,7 +72,7 @@ public class SignUpAdaptor {
 
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/sign-up/email/" + email,
+                gatewayConfig.getGatewayServer() + "/api/members/sign-up-check/email/" + email,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
@@ -99,7 +99,7 @@ public class SignUpAdaptor {
             httpEntity = new HttpEntity<>(memberRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<MemberNoResponseDto>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/service/members/sign-up", HttpMethod.POST,
+            gatewayConfig.getGatewayServer() + "/api/members/sign-up", HttpMethod.POST,
             httpEntity, new ParameterizedTypeReference<>() {
             });
 

@@ -34,7 +34,7 @@ public class MemberAdaptor {
         HttpEntity<MemberUpdateRequestDto> httpEntity = new HttpEntity<>(memberUpdateRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/service/members/" + memberId + "/info",
+            gatewayConfig.getGatewayServer() + "/api/members/" + memberId + "/info",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
@@ -46,7 +46,7 @@ public class MemberAdaptor {
     public MemberInfoResponseDto getMemberInfo(String memberId) {
         ResponseEntity<CommonResponseBody<MemberInfoResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/service/members/" + memberId + "/all",
+                gatewayConfig.getGatewayServer() + "/api/members/" + memberId,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
@@ -64,7 +64,7 @@ public class MemberAdaptor {
         HttpEntity<MemberStatusChangeRequestDto> httpEntity = new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/service/members/" + memberId + "/withdraw",
+            gatewayConfig.getGatewayServer() + "/api/members/" + memberId + "/withdraw",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
