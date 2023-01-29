@@ -61,7 +61,7 @@ public class SignUpServiceImpl implements SignUpService {
             LocalDate.parse(memberInputRequestDto.getBirth(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay(),
             passwordEncoder.encode(memberInputRequestDto.getPassword()),
-            memberInputRequestDto.getPhoneNumber(), memberInputRequestDto.getEmail());
+            memberInputRequestDto.getPhoneNumber(), memberInputRequestDto.getEmail(), memberInputRequestDto.getIsSocial());
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
     }

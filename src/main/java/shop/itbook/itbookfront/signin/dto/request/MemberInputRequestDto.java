@@ -47,4 +47,7 @@ public class MemberInputRequestDto {
     @NotBlank(message = "이메일은 null값 및 공백을 허용하지 않습니다.")
     @Email(message = "이메일 형식을 갖춰야 합니다.")
     private String email;
+
+    @NotNull(message = "소셜여부는 null값을 허용하지 않습니다.")
+    private Boolean isSocial;
 }
