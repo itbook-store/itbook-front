@@ -14,7 +14,7 @@
         <div class="content">
             <h2>차단회원 목록</h2>
             <hr>
-            <table>
+            <table class="table">
                 <tr>
                     <td>회원 번호</td>
                     <td>회원 아이디</td>
@@ -24,12 +24,16 @@
                     <td></td>
                 </tr>
                 <tr th:each="member : ${memberList}" th:if="${member.memberStatusName} == '차단회원'">
-                    <td th:text="${member.memberNo}"></td>
+                    <td class="table-light" th:text="${member.memberNo}"></td>
                     <td th:text="${member.memberId}"></td>
                     <td th:text="${member.nickname}"></td>
                     <td th:text="${member.membershipGrade}"></td>
                     <td th:text="${member.memberStatusName}"></td>
-                    <td><a th:href="@{|/admin/members/${member.memberId}/info|}">상세정보</a></td>
+                    <td>
+                        <button class="btn btn-light">
+                            <a th:href="@{|/admin/members/${member.memberId}/info|}" style="text-decoration-line: none; color: black;">상세정보</a>
+                        </button>
+                    </td>
                 </tr>
             </table>
         </div>

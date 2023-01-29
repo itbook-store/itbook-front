@@ -17,4 +17,6 @@ public interface MemberAdminService {
     MemberAdminResponseDto findMember(String memberId);
 
     void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto, String memberId);
+
+    List<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord);
 }

@@ -47,6 +47,15 @@ public class MemberAdminController {
         return "adminpage/member/admin-member-block-list";
     }
 
+    @GetMapping("/withdraw")
+    public String withdrawMemberList(Model model) {
+        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+
+        model.addAttribute("memberList", memberList);
+
+        return "adminpage/member/admin-member-withdraw-list";
+    }
+
     @GetMapping("/{memberId}/info")
     public String memberDetails(@PathVariable("memberId") String memberId,
                                 @ModelAttribute("memberStatusChangeRequestDto")
@@ -66,5 +75,13 @@ public class MemberAdminController {
         memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberId);
 
         return "redirect:/admin/members";
+    }
+
+    @GetMapping("/search")
+    public String memberSearch(@RequestParam("searchRequirement")String searchRequirement,
+                               @RequestParam("searchWord") String searchWord) {
+
+        // TODO 소셜 로그인 후 다시 작성하기
+        return null;
     }
 }

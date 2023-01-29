@@ -33,6 +33,13 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
+    public List<MemberAdminResponseDto> findMembersBySearch(String searchRequirement,
+                                                            String searchWord) {
+        // TODO 소셜 로그인 후 다시 작성하기
+        return null;
+    }
+
+    @Override
     public List<MemberAdminResponseDto> findMembers() {
         return memberAdminAdaptor.getMembers();
     }
