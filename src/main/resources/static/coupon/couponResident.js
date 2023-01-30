@@ -59,3 +59,43 @@ function selectCouponCoverage(){
         document.getElementById("selectProductDiv").style.display = 'block';
     }
 }
+
+function selectCheck(name){
+    let select = document.getElementById('selectCoupon');
+    return select.options[select.selectedIndex].value === name;
+}
+
+function selectCoupon(){
+    if(selectCheck("일반쿠폰")){
+        document.getElementById("normalCouponDiv").style.display = 'block';
+    }else{
+
+    }
+}
+async function checkMemberId() {
+    let memberId = document.getElementById('memberId').value;
+    let isExists = false;
+
+    const request = {
+        method : "GET"
+    };
+
+    await fetch(`/async/signup/memberId/${memberId}`, request)
+        .then(response => response.json())
+        .then(data => {
+            isExists = data.isExists;
+        });
+
+    console.log(isExists);
+
+    if(!isExists) {
+        document.getElementById('memberIdExists').style.display = 'none';
+        document.getElementById('memberIdNotExists').style.display = 'block';
+        document.getElementById('memberIdCheckBtn').disabled = true;
+        document.getElementById('memberId').readonly = true;
+        document.getElementById('memberIdRetypeBtn').style.visibility = 'visible';
+    } else {
+        document.getElementById('memberId').value = '';
+        document.getElementById('memberIdExists').style.display = 'block';
+    }
+}
