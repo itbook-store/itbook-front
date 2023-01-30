@@ -12,9 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryDetailResponseDto;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
+import shop.itbook.itbookfront.delivery.adminapi.exception.DeliveryNoWaitStatusException;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -43,25 +45,28 @@ public class DeliveryAdaptor {
     }
 
     /**
-     * 배송 상태가 배송 대기중인 상품들의 배송 등록을 요청합~니다.
+     * 배송 상태가 배송 대기중인 상품들의 배송 등록을 요청합니다.
      *
      * @param uri 게이트웨이 uri
-     * @return 등록 성공
      */
-    public ResponseEntity<CommonResponseBody<List<DeliveryDetailResponseDto>>> postDeliveryList(
+    public void postDeliveryList(
         URI uri) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<CommonResponseBody<List<DeliveryDetailResponseDto>>> exchange =
-            restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(null, headers),
-                new ParameterizedTypeReference<>() {
-                });
+        try {
+            ResponseEntity<CommonResponseBody<List<DeliveryDetailResponseDto>>> exchange =
+                restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(null, headers),
+                    new ParameterizedTypeReference<>() {
+                    });
 
-        ResponseChecker.checkFail(exchange.getStatusCode(),
-            Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
-
-        return exchange;
+            ResponseChecker.checkFail(exchange.getStatusCode(),
+                Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), DeliveryNoWaitStatusException.MESSAGE)) {
+                throw new DeliveryNoWaitStatusException();
+            }
+        }
     }
 }

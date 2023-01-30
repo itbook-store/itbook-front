@@ -11,9 +11,13 @@
 <div layout:fragment="content">
     <div class="content">
         <h3>Itbook 배송 관리</h3>
-        <button><a href="/admin/deliveries/post">일괄 배송</a></button>
-        <button><a href="/admin/deliveries">전체 보기</a></button>
-        <button><a href="/admin/deliveries/wait">대기 상태</a></button>
+        <div class="btn-box">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries}'|">전체 보기</button>
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries/wait-list}'|">대기 상태
+            </button>
+            <button class="btn btn-danger right-btn" th:onclick="|location.href='@{/admin/deliveries/registration}'|">일괄 배송
+            </button>
+        </div>
         <table class="table table-striped">
             <thead>
             <tr class="thead-light">
@@ -33,6 +37,12 @@
             </tbody>
         </table>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            alert(failMessage);
+        }
+    </script>
 </div>
 </body>
 </html>
