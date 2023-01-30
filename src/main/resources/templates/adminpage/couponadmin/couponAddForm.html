@@ -12,8 +12,9 @@
     <div class="flex-shrink-0 p-3 bg-white">
 
         <div id="form-main">
-            <div id="form-div">
-                <form id="couponAddForm" th:action="@{/admin/coupon/coupon-addition}" method="post">
+            <form id="couponAddForm" th:action="@{/admin/coupon/coupon-addition}" method="post">
+
+                <div id="form-div">
 
                     <h3>쿠폰 생성</h3>
                     <div class="border-top my-3"></div>
@@ -21,7 +22,8 @@
                         <h4>쿠폰 발급</h4>
                         <div class="border-top my-3"></div>
                         <div class="form-group">
-                            <select id='selectCoupon' onchange="selectCoupon()">
+                            <label for='selectCoupon'>쿠폰 종류</label>
+                            <select id='selectCoupon' onchange="selectCouponDiv(this)">
                                 <option>쿠폰의 종류를 선택해주세요.</option>
                                 <option value="일반쿠폰">일반쿠폰</option>
                                 <option value="웰컴쿠폰">웰컴 쿠폰</option>
@@ -30,28 +32,25 @@
                                 <option value="생일쿠폰">생일 쿠폰</option>
                             </select>
                         </div>
-                        <div class="alert alert-light" id="normalCouponDiv" style="display:block;">
-                            일반쿠폰
-                                <input type="text" class="form-control form-control-lg" id = "memberId"/>
-                                <button type="button" onclick="checkMemberId()" id = "memberIdCheckBtn">아이디 확인</button>
-                                <button type="button" onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')" id = "memberIdRetypeBtn" style="visibility:hidden;">다시 입력</button>
-                                <div id = "memberIdNotExists" style = "display:none;">등록 가능한 아이디입니다.</div>
-                                <div id = "memberIdExists" style = "display:none;">이미 존재하는 아이디입니다.</div>
-                            멤버 아이디 찾는 기능 추가
-                        </div>
-                        <div class="alert alert-light" style="display:none;">
-                        </div>
-                        <div class="alert alert-light" style="display:none;">
-                        </div>
-                        <div class="alert alert-light" style="display:none;">
-                        </div>
-                        <div class="alert alert-light" style="display:none;">
+                        <div class="alert alert-light">
+                            <div id="normalCouponDiv" style="display:none;">
+                                일반쿠폰
+                                <input type="text" class="form-control form-control-lg" id="memberId"/>
+                                <button type="button" onclick="checkMemberId()" id="memberIdCheckBtn">아이디 확인</button>
+                                <button type="button"
+                                        onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')"
+                                        id="memberIdRetypeBtn" style="visibility:hidden;">다시 입력
+                                </button>
+                                <div id="memberIdNotExists" style="display:none;">등록 가능한 아이디입니다.</div>
+                                <div id="memberIdExists" style="display:none;">이미 존재하는 아이디입니다.</div>
+                                멤버 아이디 찾는 기능 추가
+                            </div>
                         </div>
 
                     </div>
 
 
-                    <div v>
+                    <div>
                         <h4>쿠폰 정보</h4>
                         <div class="border-top my-3"></div>
                         <div class="form-group">
@@ -142,10 +141,27 @@
                             <div id="selectCategoryDiv" style="display:none;">
                                 <label for="selectCategory">카테고리 선택</label>
                                 <input class="form-control" type="text" id="selectCategory" placeholder="카테고리를 선택해주세요.">
+                                <div class="col-md-8">
+                                    <label style="margin-right: 5px">카테고리</label>
+                                    <select id="mainCategory" name="mainCategory">
+                                        <option th:each="mainCategory: ${mainCategoryList}"
+                                                th:value="${mainCategory.categoryNo}"
+                                                th:text="${mainCategory.categoryName}">
+                                        </option>
+                                    </select>
+                                    <button type="button" style="margin-left: 5px" class="btn btn-light btn-sm"
+                                            onclick="showSubCategory()">하위 카테고리 펼치기
+                                    </button>
+                                    <div id="categoryCheckBox" style="display:none">
+                                    </div>
+                                </div>
                             </div>
                             <div id="selectProductDiv" style="display:none;">
                                 <label for="selectProduct">상품 선택</label>
                                 <input class="form-control" type="text" id="selectProduct" placeholder="상품을 선택해주세요.">
+                                <button type="button" style="margin-left: 5px" class="btn btn-light btn-sm"
+                                                             onclick="showSearchProductList()">상품 검색 결과 리스트
+                            </button>
                             </div>
                         </div>
 
@@ -171,16 +187,13 @@
                         </div>
 
 
-                        <div class="d-flex justify-content-end pt-3">
-                            <button type="submit" class="btn btn-warning btn-lg ms-2">Submit form</button>
-                        </div>
                     </div>
-                </form>
-            </div>
+                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit" value="등록하기"/>
+                </div>
+            </form>
         </div>
     </div>
     <script th:src="@{/coupon/couponResident.js}"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </div>
 </html>
