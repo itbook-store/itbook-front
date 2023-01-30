@@ -18,7 +18,8 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 public class MemberInputRequestDto {
-    @Length(min = 2, max = 15, message = "아이디는 최소 2자부터 시작하며 최대 15자까지 작성해야합니다.")
+
+    @Pattern(regexp = "^[a-z0-9-_]{2,15}$", message = "아이디는 특수문자를 제외한 2 ~ 15자리여야 합니다.")
     @NotBlank(message = "아이디는 null값 및 공백을 허용하지 않습니다.")
     private String memberId;
 
