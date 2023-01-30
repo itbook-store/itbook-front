@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
@@ -29,8 +30,9 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @GetMapping(params = {"categoryNo", "categoryName"})
-    public String productList(@RequestParam Integer categoryNo, @RequestParam String categoryName,
-                              Model model) {
+    public String productListByCategory(@RequestParam Integer categoryNo,
+                                        @RequestParam String categoryName,
+                                        Model model) {
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories");
         List<MainCategory> mainCategoryList =
@@ -43,5 +45,11 @@ public class ProductController {
         return "mainpage/product-category";
     }
 
+    @GetMapping("/{productNo}")
+    public String getAddProductForm(@PathVariable Long productNo, Model model) {
+        model.addAttribute("product",
+            productService.getProduct(productNo));
+        return "mainpage/product-details";
+    }
 
 }
