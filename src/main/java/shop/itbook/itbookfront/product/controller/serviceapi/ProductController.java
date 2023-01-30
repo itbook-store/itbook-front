@@ -33,26 +33,23 @@ public class ProductController {
     public String productListByCategory(@RequestParam Integer categoryNo,
                                         @RequestParam String categoryName,
                                         Model model) {
-
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories").getContent();
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);
-
         model.addAttribute("mainCategoryList", mainCategoryList);
-
         List<ProductDetailsResponseDto> productList =
             productService.getProductListFilteredByCategoryNo(categoryNo);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("productList", productList);
-
-        return "mainpage/product-category";
+        return "mainpage/product/product-category";
     }
 
     @GetMapping("/{productNo}")
     public String getAddProductForm(@PathVariable Long productNo, Model model) {
         model.addAttribute("product",
             productService.getProduct(productNo));
-        return "mainpage/product-details";
+        return "mainpage/product/product-details";
     }
+
 }
