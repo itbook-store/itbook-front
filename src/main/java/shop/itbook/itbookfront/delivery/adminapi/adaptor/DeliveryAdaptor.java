@@ -1,6 +1,8 @@
 package shop.itbook.itbookfront.delivery.adminapi.adaptor;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryDetailResponseDto;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
+import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
  * The type Delivery adaptor.
@@ -33,7 +36,7 @@ public class DeliveryAdaptor {
      * @return 배송 상태가 배송 대기중인 배송 정보 리스트
      */
     public ResponseEntity<CommonResponseBody<List<DeliveryWithStatusResponseDto>>> getDeliveryWaitList(
-        String uri) {
+        URI uri) {
         return restTemplate.exchange(uri, HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
             });
@@ -46,13 +49,19 @@ public class DeliveryAdaptor {
      * @return 등록 성공
      */
     public ResponseEntity<CommonResponseBody<List<DeliveryDetailResponseDto>>> postDeliveryList(
-        String uri) {
+        URI uri) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(null, headers),
-            new ParameterizedTypeReference<>() {
-            });
+        ResponseEntity<CommonResponseBody<List<DeliveryDetailResponseDto>>> exchange =
+            restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(null, headers),
+                new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(exchange.getStatusCode(),
+            Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
+
+        return exchange;
     }
 }

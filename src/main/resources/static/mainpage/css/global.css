@@ -8,3 +8,10 @@
     margin: 0;
     font-family: 'Noto Sans KR', sans-serif;
 }
+
+.itbook-container {
+    margin: 10%;
+
+    width: 80%;
+    height: 100%;
+}
