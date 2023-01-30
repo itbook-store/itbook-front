@@ -23,6 +23,6 @@ public class CategoryAsyncController {
     public List<CategoryListResponseDto> subCategoryList(@PathVariable Integer categoryNo) {
         
         return categoryService.findCategoryList(
-            "/api/admin/categories/" + categoryNo + "/child-categories");
+            "/api/admin/categories/" + categoryNo + "/child-categories").getContent();
     }
 }

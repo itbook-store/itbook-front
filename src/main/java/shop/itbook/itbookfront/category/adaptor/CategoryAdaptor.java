@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.category.adaptor.impl;
+package shop.itbook.itbookfront.category.adaptor;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +14,10 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
+import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.util.ResponseChecker;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
@@ -51,45 +54,45 @@ public class CategoryAdaptor {
         return body.getResult().getCategoryNo();
     }
 
-    public List<CategoryListResponseDto> findCategoryList(String url) {
+    public PageResponse<CategoryListResponseDto> findCategoryList(String url) {
 
-        ResponseEntity<CommonResponseBody<List<CategoryListResponseDto>>> exchange =
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<CommonResponseBody<PageResponse<CategoryListResponseDto>>> exchange =
         restTemplate.exchange(gatewayConfig.getGatewayServer() + url,
-            HttpMethod.GET, null,
+            HttpMethod.GET, entity,
             new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(exchange.getStatusCode(),
-            Objects.requireNonNull(exchange.getBody()).getHeader().getResultMessage());
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
     public void deleteCategory(String categoryNo) {
 
-        ResponseEntity<CommonResponseBody<Void>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
-            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
-            });
-
-
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(exchange.getBody()).getHeader();
-        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+        try {
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo,
+                HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
+                });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), CategoryContainsProductsException.MESSAGE)) {
+                throw new CategoryContainsProductsException();
+            }
+        }
     }
 
     public void modifyCategoryHidden(String categoryNo) {
 
         ResponseEntity<CommonResponseBody<Void>> exchange =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo +
-                    "/hidden",
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories/" + categoryNo + "/hidden",
                 HttpMethod.PUT,
                 null, new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(exchange.getBody()).getHeader();
+        CommonResponseBody.CommonHeader header = Objects.requireNonNull(exchange.getBody()).getHeader();
         ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
     }
 
