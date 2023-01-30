@@ -27,11 +27,13 @@
               <div class="card-body p-md-5 text-black">
                 <h3 class="mb-5 text-uppercase">ITBOOK REGISTRATION FORM</h3>
 
-                <form id = "signupForm" th:action="@{/signup}" method="post">
+                <form id = "signupForm" th:object="${memberInputRequestDto}" th:action="@{/signup}" method="post">
+
+                  <input type="hidden" name="isSocial" value="false">
 
                   <div class="form-outline mb-4">
                     <label class="form-label">아이디</label>
-                    <input type="text" class="form-control form-control-lg" id = "memberId" th:field="${memberInputRequestDto.memberId}" />
+                    <input type="text" class="form-control form-control-lg" id = "memberId" name="memberId" />
                     <span th:text="${valid_memberId}" style="color: red"></span>
                     <button type="button" onclick="checkMemberIdDuplicate()" id = "memberIdCheckBtn">중복 확인</button>
                     <button type="button" onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')" id = "memberIdRetypeBtn" style="visibility:hidden;">다시 입력</button>
@@ -41,7 +43,7 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">닉네임</label>
-                    <input type="text" class="form-control form-control-lg" id = "nickname" th:field="${memberInputRequestDto.nickname}" />
+                    <input type="text" class="form-control form-control-lg" id = "nickname" name="nickname" />
                     <span th:text="${valid_nickname}" style="color: red"></span>
                     <button type="button" onclick="checkNicknameDuplicate()" id = "nicknameCheckBtn">중복 확인</button>
                     <button type="button" onclick="retypeFn('nickname', 'nicknameExists', 'nicknameNotExists', 'nicknameCheckBtn', 'nicknameRetypeBtn')" id = "nicknameRetypeBtn" style="visibility:hidden;">다시 입력</button>
@@ -51,19 +53,19 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">이름</label>
-                    <input type="text" class="form-control form-control-lg" th:field="${memberInputRequestDto.name}" />
+                    <input type="text" class="form-control form-control-lg" name="name" />
                     <span th:text="${valid_name}" style="color: red"></span>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label">비밀번호</label>
-                    <input type="password" class="form-control form-control-lg" th:field="${memberInputRequestDto.password}" />
+                    <label class="form-label">비밀번호(영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다)</label>
+                    <input type="password" class="form-control form-control-lg" name="password" />
                     <span th:text="${valid_password}" style="color: red"></span>
                   </div>
 
                   <div class="form-outline mb-4">
                     <label class="form-label">핸드폰번호(-포함)</label>
-                    <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="010-0000-0000" th:field="${memberInputRequestDto.phoneNumber}" />
+                    <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="010-0000-0000" name="phoneNumber" />
                     <span th:text="${valid_phoneNumber}" style="color: red"></span>
                     <button type="button" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
                     <button type="button" onclick="retypeFn('phoneNumber', 'phoneNumberExists', 'phoneNumberNotExists', 'phoneNumberCheckBtn', 'phoneNumberRetypeBtn')" id = "phoneNumberRetypeBtn" style="visibility:hidden;">다시 입력</button>
@@ -92,12 +94,12 @@
                   <div class="form-outline mb-4">
                     <label class="form-label">생년월일</label>
                     <span th:text="${valid_birth}" style="color: red"></span>
-                    <input type="date" class="form-control form-control-lg" th:field="${memberInputRequestDto.birth}" />
+                    <input type="date" class="form-control form-control-lg" name="birth" />
                   </div>
 
                   <div class="form-outline mb-4">
                     <label class="form-label">이메일</label>
-                    <input type="email" class="form-control form-control-lg" id = "email" th:field="${memberInputRequestDto.email}" />
+                    <input type="email" class="form-control form-control-lg" id = "email" name="email" />
                     <span th:text="${valid_email}" style="color: red"></span>
                     <button type="button" onclick="checkEmailDuplicate()" id = "emailCheckBtn">중복 확인</button>
                     <button type="button" onclick="retypeFn('email', 'emailExists', 'emailNotExists', 'emailCheckBtn', 'emailRetypeBtn')" id = "emailRetypeBtn" style="visibility:hidden;">다시 입력</button>
@@ -106,7 +108,7 @@
                   </div>
 
                   <div class="d-flex justify-content-end pt-3">
-                    <button type="submit" class="btn btn-warning btn-lg ms-2">Submit form</button>
+                    <button type="button" class="btn btn-warning btn-lg ms-2" onclick="signUpSubmit()">회원가입</button>
                   </div>
                 </form>
 
@@ -118,7 +120,7 @@
     </div>
   </div>
 </section>
-<script src = "/memberpage/js/signup.js"></script>
+<script src = "/mypage/member/js/signup.js"></script>
 </body>
 </html>
 
