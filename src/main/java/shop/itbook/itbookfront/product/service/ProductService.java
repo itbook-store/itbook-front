@@ -17,9 +17,9 @@ public interface ProductService {
     ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
                                  ProductBookRequestDto requestDto);
 
-    List<BookDetailsResponseDto> getBookList() throws IOException;
+    List<BookDetailsResponseDto> getBookList(boolean isFiltered) throws IOException;
 
-    List<ProductDetailsResponseDto> getProductList();
+    List<ProductDetailsResponseDto> getProductList(boolean isFiltered);
 
     void removeProduct(Long productNo);
 
