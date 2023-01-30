@@ -34,13 +34,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<BookDetailsResponseDto> getBookList() {
-        return productAdaptor.findBookList();
+    public List<BookDetailsResponseDto> getBookList(boolean isFiltered) {
+        return productAdaptor.findBookList(isFiltered);
     }
 
     @Override
-    public List<ProductDetailsResponseDto> getProductList() {
-        return productAdaptor.findProductList();
+    public List<ProductDetailsResponseDto> getProductList(boolean isFiltered) {
+        return productAdaptor.findProductList(isFiltered);
     }
 
     @Override
