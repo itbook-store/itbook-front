@@ -22,18 +22,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="category : ${categoryList}">
+                    <tr th:each="category : ${pageResponse.content}">
                         <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
                         <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
                         <td th:text="${category.categoryName}"></a></td>
                         <td th:unless="${#strings.equals(category.categoryNo, targetCategoryNo) or #strings.equals(category.level, 0)}">
-                            <button style="width: auto; margin-left: 10px" class="btn btn-danger">
-                                <a th:href="@{/admin/categories/{categoryNo}/category-modify/sub-category-sequence(categoryNo=${targetCategoryNo}, categoryName=${targetCategoryName}, hopingPositionCategoryNo=${category.categoryNo})}">해당 카테고리 앞에 삽입</a>
+                            <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modify/sub-category-sequence(categoryNo=${targetCategoryNo}, categoryName=${targetCategoryName}, hopingPositionCategoryNo=${category.categoryNo})}'|">
+                                해당 카테고리 앞에 삽입
                             </button>
                         <td>
                     </tr>
                     </tbody>
                 </table>
+                <th:block th:include="component/pageFooter"></th:block>
             </div>
         </div>
     </div>

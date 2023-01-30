@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>categoryAddForm</title>
+    <link rel="stylesheet" type="text/css" href="/review/css/reviewForm.css">
+</head>
+
+<div layout:fragment="content">
+    <div id="form-main">
+        <div id="form-div">
+                [적용될 대분류 카테고리 선택]
+                <p th:each="mainCategory : ${pageResponse.content}">
+                    <button class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/category-addition/sub-category/{mainCategoryNo}(mainCategoryNo=${mainCategory.categoryNo})}'|">선택</button> &nbsp;&nbsp;
+                    <span th:text="${mainCategory.categoryName}"></span>
+                </p>
+                <th:block th:include="component/pageFooter"></th:block><br>
+        </div>
+    </div>
+</div>
+
+</html>

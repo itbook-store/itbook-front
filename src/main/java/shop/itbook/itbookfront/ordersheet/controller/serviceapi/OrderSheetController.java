@@ -46,7 +46,7 @@ public class OrderSheetController {
                                Model model) {
 
         List<CategoryListResponseDto> categoryList =
-            categoryService.findCategoryList("/api/categories");
+            categoryService.findCategoryList("/api/categories").getContent();
 
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);

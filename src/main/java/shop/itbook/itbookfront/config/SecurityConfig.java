@@ -4,10 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
@@ -22,7 +24,7 @@ import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
  * @author 강명관
  * @since 1.0
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     /**
@@ -55,9 +57,9 @@ public class SecurityConfig {
             .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
             .and()
-//            .sessionManagement()
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -103,10 +105,10 @@ public class SecurityConfig {
         return customAuthorizationFilter;
     }
 
-//    @Bean
-//    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-//        return new SavedRequestAwareAuthenticationSuccessHandler();
-//    }
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new SavedRequestAwareAuthenticationSuccessHandler();
+    }
 
 
     /**
