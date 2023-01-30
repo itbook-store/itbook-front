@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>categoryList</title>
+</head>
+
+<div layout:fragment="content">
+
+    <h1 style="text-align: center">전체 쿠폰 목록</h1>
+    <div class="container">
+        <table class="table table-striped" style="text-align: center">
+            <thead>
+            <tr>
+                <th style="width: auto">이름</th>
+                <th style="width: auto">코드</th>
+                <th style="width: auto">생성가능일</th>
+                <th style="width: auto">만료일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="coupon : ${couponList}">
+                <td th:text="${coupon.name}"></td>
+                <td th:text="${coupon.code}"></td>
+                <td th:text="${coupon.couponCreatedAt}"></td>
+                <td th:text="${coupon.couponExpiredAt}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</html>

@@ -5,7 +5,11 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +20,9 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberRequestDto {
 
     @NotBlank(message = "멤버쉽 번호는 null값 및 공백을 허용하지 않습니다.")
@@ -42,7 +49,8 @@ public class MemberRequestDto {
     @NotNull(message = "생일은 null값을 허용하지 않습니다.")
     private LocalDateTime birth;
 
-    @Length(max = 255, message = "비밀번호는 최대 255자까지 허용합니다.")
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
+        message = "비밀번호는 영문 대소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함되어야하고 길이는 8자 이상이어야 합니다.")
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")
     private String password;
 
@@ -52,4 +60,7 @@ public class MemberRequestDto {
     @NotBlank(message = "이메일은 null값 및 공백을 허용하지 않습니다.")
     @Email(message = "이메일 형식을 갖춰야 합니다.")
     private String email;
+
+    @NotNull(message = "소셜여부는 null값을 허용하지 않습니다.")
+    private Boolean isSocial;
 }

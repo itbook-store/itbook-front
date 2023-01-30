@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
- <title>ItBook</title>
+    <title>ItBook</title>
 </head>
 <body>
 <div id="container" layout:fragment="content">
@@ -39,40 +39,23 @@
         <div class="main_columns">
 
             <div class="main_title_box">
-                <p class="main_title">추천 상품</p>
+                <p class="main_title">이달의 도서</p>
             </div>
 
             <div class="main_product_container">
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
+                <div class="main_product" th:if="${not #lists.isEmpty(bookList)}" th:each="book : ${bookList}"
+                     style="text-align: center">
+                    <img th:src="${book.fileThumbnailsUrl}" alt=""
+                         class="product_img">
+                    <p class="product_title" th:text="${book.productName}"></p>
                     <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
+                        <p class="product_origin_price" th:text="${book.fixedPrice}"></p>
+                        <p class="product_sale_percent" th:text="|${book.discountPercent}%|"></p>
                     </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
+                    <p class="product_real_price" th:text="${book.selledPrice}"></p>
                 </div>
             </div>
+
         </div>
 
         <div class="main_columns">
@@ -193,6 +176,7 @@
         </div>
     </div>
 
+    <div th:replace="fragment/mainpage/side-bar :: right-side-bar-fragment"></div>
 
     <script src="/mainpage/js/category.js"></script>
     <script src="/mainpage/js/slider.js"></script>

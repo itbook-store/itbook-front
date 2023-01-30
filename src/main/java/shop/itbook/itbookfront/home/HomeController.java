@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.home;
 
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
  * @author gwanii
@@ -21,6 +24,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
+    private final ProductServiceImpl productServiceImpl;
 
     private final CategoryService categoryService;
     public static final Integer CATEGORY_ALL_RECEIVE_SIZE = Integer.MAX_VALUE;
@@ -28,7 +32,7 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String home(Model model, HttpServletRequest httpServletRequest) {
+    public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
 
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
@@ -41,6 +45,8 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
+        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList(true);
+        model.addAttribute("bookList", bookList);
         return "mainpage/index";
     }
 
@@ -57,5 +63,10 @@ public class HomeController {
     @GetMapping("/test")
     public String test() {
         return "default-layout";
+    }
+
+    @GetMapping("/template")
+    public String template() {
+        return "mainpage/template/index";
     }
 }

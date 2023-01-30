@@ -15,4 +15,15 @@ function selectHowToShowCategories(eventTarget) {
         `;
 }
 
+function selectHowToShowCoupon(eventTarget) {
 
+    eventTarget.outerHTML =
+        `                     
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        쿠폰 관리
+                    </button>
+                    <button class="btn btn-toggle" style="margin-left: 20%" onclick="location.href='/admin/coupon';">쿠폰 전체 조회</a></button>
+                    <button class="btn btn-toggle" style="margin-left: 20%" onclick="location.href='/admin/coupon/coupon-addition';">쿠폰 추가</a></button>
+        `;
+}

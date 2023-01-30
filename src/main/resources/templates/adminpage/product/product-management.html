@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <button style="width: auto;" class="btn btn-secondary mt-3"
+            onclick="location.href='/admin/products/add'">상품 등록
+    </button>
+    <div class="content">
+        <table class="table" style="width: 800px">
+            <colgroup>
+                <col style="width:auto;"/>
+            </colgroup>
+            <tbody>
+            <tr class="thead-light">
+                <th scope="col">상품코드</th>
+                <th scope="col">상품명</th>
+                <th scope="col">정가</th>
+                <th scope="col">판매가</th>
+                <th scope="col">수정</th>
+                <th scope="col">삭제</th>
+            </tr>
+            <tr th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}"
+                style="text-align: center">
+                <td class="table-light">[[ ${product.productNo} ]]</td>
+                <td>[[ ${product.productName} ]]</td>
+                <td>[[ ${product.fixedPrice} ]]</td>
+                <td>[[ ${product.selledPrice} ]]</td>
+                <td>
+                    <a th:href="@{|/admin/products/${product.productNo}/modify|}">
+                        <button style="width: auto;" class="btn btn-primary ml-1">수정
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{|/admin/products/${product.productNo}/delete|}">
+                    <button style="width: auto" class="btn btn-danger ml-1">
+                        삭제
+                    </button>
+                    </a>
+
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(productList)}">
+                <td colspan="6" style="text-align: center">
+                    <div>목록이 비었습니다.</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+</body>
+</html>
