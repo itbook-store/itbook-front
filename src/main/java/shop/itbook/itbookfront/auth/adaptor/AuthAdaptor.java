@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import shop.itbook.itbookfront.auth.dto.request.MemberOAuthRequestDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
 
@@ -39,6 +40,17 @@ public class AuthAdaptor {
             new HttpEntity<>(memberAuthRequestDto, new HttpHeaders()),
             new ParameterizedTypeReference<>() {
             });
+    }
+
+    public ResponseEntity<CommonResponseBody<Boolean>> postShopServerOAuthUserSignUp(String url, MemberOAuthRequestDto memberOAuthRequestDto) {
+
+        return restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            new HttpEntity<>(memberOAuthRequestDto, new HttpHeaders()),
+            new ParameterizedTypeReference<>() {
+            }
+        );
     }
 }
 

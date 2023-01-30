@@ -34,6 +34,8 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         session.invalidate();
 
+        /* TODO -> Auth Server 요청 JWT Token 블랙 리스트 관리 */
+
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
