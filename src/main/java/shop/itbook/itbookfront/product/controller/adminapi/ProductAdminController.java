@@ -35,7 +35,7 @@ public class ProductAdminController {
 
     @GetMapping
     public String getAdminProductPage(Model model) {
-        List<ProductDetailsResponseDto> productList = productService.getProductList();
+        List<ProductDetailsResponseDto> productList = productService.getProductList(false);
         model.addAttribute("productList", productList);
         return "adminpage/product/product-management";
     }
