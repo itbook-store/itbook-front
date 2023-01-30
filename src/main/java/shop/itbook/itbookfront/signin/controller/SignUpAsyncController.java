@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.signin;
+package shop.itbook.itbookfront.signin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +45,5 @@ public class SignUpAsyncController {
     public MemberBooleanResponseDto emailExists(@PathVariable("email") String email) {
 
         return signUpService.checkEmailExists(email);
-    }
-
-    @PostMapping("/members")
-    public void memberAdd(@RequestBody MemberRequestDto memberRequestDto) {
-        signUpService.addMember(memberRequestDto);
     }
 }

@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.signin;
+package shop.itbook.itbookfront.signin.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
@@ -42,8 +42,7 @@ public class SignupController{
     }
 
     @PostMapping()
-    public String register(@Valid MemberInputRequestDto memberInputRequestDto, Errors errors, Model model)
-        throws JsonProcessingException {
+    public String register(@Valid MemberInputRequestDto memberInputRequestDto, Errors errors, Model model) {
 
         if(errors.hasErrors()) {
 
@@ -57,27 +56,7 @@ public class SignupController{
             return "signuppage/signup";
         }
 
-        MemberRequestDto memberRequestDto = new MemberRequestDto();
-        // TODO 테이블 autoincrement 초기화해야함
-        memberRequestDto.setMembershipNo(428);
-        // TODO 테이블 autoincrement 초기화해야함
-        memberRequestDto.setMemberStatusNo(392);
-        memberRequestDto.setMemberId(memberInputRequestDto.getMemberId());
-        memberRequestDto.setNickname(memberInputRequestDto.getNickname());
-        memberRequestDto.setName(memberInputRequestDto.getName());
-        memberRequestDto.setIsMan(memberInputRequestDto.getIsMan());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        memberRequestDto.setBirth(LocalDate.parse(memberInputRequestDto.getBirth(), formatter).atStartOfDay());
-        memberRequestDto.setPassword(
-            passwordEncoder.encode(memberInputRequestDto.getPassword())
-        );
-        memberRequestDto.setPhoneNumber(memberInputRequestDto.getPhoneNumber());
-        memberRequestDto.setEmail(memberInputRequestDto.getEmail());
-
-        model.addAttribute("memberRequestDto", memberRequestDto);
-
-        signUpService.addMember(memberRequestDto);
+        signUpService.addMember(memberInputRequestDto);
 
         return "redirect:/";
     }
