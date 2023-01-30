@@ -55,13 +55,16 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public void addMember(MemberInputRequestDto memberInputRequestDto) {
 
-        MemberRequestDto memberRequestDto = new MemberRequestDto(428, 392,
-            memberInputRequestDto.getMemberId(), memberInputRequestDto.getNickname(),
-            memberInputRequestDto.getName(), memberInputRequestDto.getIsMan(),
-            LocalDate.parse(memberInputRequestDto.getBirth(),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay(),
-            passwordEncoder.encode(memberInputRequestDto.getPassword()),
-            memberInputRequestDto.getPhoneNumber(), memberInputRequestDto.getEmail(), memberInputRequestDto.getIsSocial());
+        MemberRequestDto memberRequestDto =
+            MemberRequestDto.builder().membershipNo(428).memberStatusNo(392).memberId(
+                    memberInputRequestDto.getMemberId()).nickname(memberInputRequestDto.getNickname())
+                .name(
+                    memberInputRequestDto.getName()).isMan(memberInputRequestDto.getIsMan())
+                .birth(LocalDate.parse(memberInputRequestDto.getBirth(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay())
+                .password(passwordEncoder.encode(memberInputRequestDto.getPassword())).phoneNumber(
+                    memberInputRequestDto.getPhoneNumber()).email(memberInputRequestDto.getEmail())
+                .isSocial(memberInputRequestDto.getIsSocial()).build();
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
     }

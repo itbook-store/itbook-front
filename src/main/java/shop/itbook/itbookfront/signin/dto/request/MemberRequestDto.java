@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
 

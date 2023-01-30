@@ -21,7 +21,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMemberInfo(String memberId, String name, String nickname, String password,
                                  String phoneNumber, String email) {
-        MemberUpdateRequestDto memberUpdateRequestDto = new MemberUpdateRequestDto(name, nickname, password, phoneNumber, email);
+        MemberUpdateRequestDto memberUpdateRequestDto =
+            MemberUpdateRequestDto.builder().name(name).nickname(nickname).password(password)
+                .phoneNumber(phoneNumber).email(email).build();
 
         memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
     }
