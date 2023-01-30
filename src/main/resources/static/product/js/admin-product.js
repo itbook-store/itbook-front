@@ -36,8 +36,8 @@ async function showSubCategoryAndForm(event, categoryNoList) {
                     checkBox.value = checkBoxList.categoryNo;
                     checkBox.style = "margin-right : 4px";
                     checkBoxText.style = "margin-right : 7px";
-                    if (categoryNoList.length != 0 &&
-                        categoryNoList.some(no => no == checkBoxList.categoryNo)) {
+                    if(categoryNoList && categoryNoList.length !=0)
+                    if (categoryNoList.some(no => no == checkBoxList.categoryNo)) {
                         checkBox.checked = true;
                     }
                     checkBoxText.innerText = checkBoxList.categoryName;
