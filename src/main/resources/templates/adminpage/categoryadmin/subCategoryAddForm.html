@@ -21,12 +21,10 @@
                     <label><input type="radio" name="isHidden" value="true">Yes</label>
                     <label><input type="radio" name="isHidden" value="false" checked>No</label>
                 </p>
-                [적용될 대분류 카테고리 선택]
-                <p th:each="mainCategory : ${mainCategoryList}">
-                    <label><input type="radio" name="parentCategoryNo" th:value="${mainCategory.categoryNo}"><span th:text="${mainCategory.categoryName}"></span></label><br>
-                </p>
+                <input type="hidden" name="parentCategoryNo" th:value="${mainCategoryNo}">
                 <input type="submit" value="등록"/>
             </form>
+
         </div>
     </div>
 </div>
