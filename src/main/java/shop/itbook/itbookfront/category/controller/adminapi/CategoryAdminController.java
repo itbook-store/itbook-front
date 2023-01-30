@@ -1,18 +1,10 @@
 package shop.itbook.itbookfront.category.controller.adminapi;
 
-import java.util.List;
-import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
+import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
@@ -42,12 +35,16 @@ public class CategoryAdminController {
     private static final String DIRECTORY_NAME = "adminpage/categoryadmin";
 
     @PostMapping("/category-addition")
-    public String categoryAdd(@ModelAttribute CategoryRequestDto categoryRequestDto) {
+    public String categoryAdd(@ModelAttribute CategoryRequestDto categoryRequestDto, RedirectAttributes redirectAttributes) {
 
-        categoryService.addCategory(categoryRequestDto);
+        try {
+            categoryService.addCategory(categoryRequestDto);
+        } catch (AlreadyAddedCategoryNameException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
         return "redirect:/admin/categories";
     }
-
 
     @GetMapping("/category-addition/sub-category/select-form")
     public String categoryAddSubCategorySelectForm(Model model, @PageableDefault Pageable pageable) {

@@ -33,15 +33,19 @@ public class ProductController {
     public String productListByCategory(@RequestParam Integer categoryNo,
                                         @RequestParam String categoryName,
                                         Model model) {
+
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories").getContent();
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);
+
         model.addAttribute("mainCategoryList", mainCategoryList);
+
         List<ProductDetailsResponseDto> productList =
             productService.getProductListFilteredByCategoryNo(categoryNo);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("productList", productList);
+
         return "mainpage/product-category";
     }
 
@@ -51,5 +55,4 @@ public class ProductController {
             productService.getProduct(productNo));
         return "mainpage/product-details";
     }
-
 }
