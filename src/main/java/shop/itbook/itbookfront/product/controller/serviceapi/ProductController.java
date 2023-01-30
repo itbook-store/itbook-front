@@ -34,7 +34,7 @@ public class ProductController {
                                         @RequestParam String categoryName,
                                         Model model) {
         List<CategoryListResponseDto> categoryList =
-            categoryService.findCategoryList("/api/categories");
+            categoryService.findCategoryList("/api/categories").getContent();
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryList);
         model.addAttribute("mainCategoryList", mainCategoryList);

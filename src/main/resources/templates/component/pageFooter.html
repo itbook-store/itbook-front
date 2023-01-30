@@ -1,0 +1,5 @@
+<th:block th:if="${!#lists.isEmpty(pageResponse.content)}">
+    <button th:if="${pageResponse.previous}" class="btn btn-primary" th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number - 1})}'|" > < </button>
+    <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"/>
+    <button th:if="${pageResponse.next}" class="btn btn-primary" th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number + 1})}'|" > > </button>
+</th:block>

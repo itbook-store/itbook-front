@@ -22,9 +22,10 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
-@EnableRedisHttpSession
+
 @Configuration
 @ConfigurationProperties(prefix = "redis")
+@EnableRedisHttpSession
 public class RedisConfig implements BeanClassLoaderAware {
     private String host;
     private int port;
@@ -59,6 +60,7 @@ public class RedisConfig implements BeanClassLoaderAware {
         return redisTemplate;
     }
 
+
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
@@ -72,17 +74,17 @@ public class RedisConfig implements BeanClassLoaderAware {
         return serializer;
     }
 
-    @Bean
-    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer(objectMapper());
-    }
-
-    private ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
-
-        return objectMapper;
-    }
+//    @Bean
+//    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+//        return new GenericJackson2JsonRedisSerializer(objectMapper());
+//    }
+//
+//    private ObjectMapper objectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
+//
+//        return objectMapper;
+//    }
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {

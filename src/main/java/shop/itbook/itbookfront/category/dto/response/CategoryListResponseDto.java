@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.category.dto.response;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
