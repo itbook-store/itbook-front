@@ -42,14 +42,14 @@ public class ProductController {
             productService.getProductListFilteredByCategoryNo(categoryNo);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("productList", productList);
-        return "mainpage/product-category";
+        return "mainpage/product/product-category";
     }
 
     @GetMapping("/{productNo}")
     public String getAddProductForm(@PathVariable Long productNo, Model model) {
         model.addAttribute("product",
             productService.getProduct(productNo));
-        return "mainpage/product-details";
+        return "mainpage/product/product-details";
     }
 
 }

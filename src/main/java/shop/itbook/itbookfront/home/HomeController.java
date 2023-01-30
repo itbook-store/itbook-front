@@ -40,7 +40,7 @@ public class HomeController {
         log.info("########## 브라우저 ip : " + remoteAddr);
 
         List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList(true);
-        model.addAttribute("bookList", bookList);
+        model.addAttribute("productList", bookList);
         return "mainpage/index";
     }
 
