@@ -22,7 +22,7 @@ import shop.itbook.itbookfront.auth.util.AuthUtil;
  * @author 강명관
  * @since 1.0
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     /**
@@ -138,4 +138,5 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil) {
         return new CustomOAuthSuccessHandler(authUtil);
     }
+
 }

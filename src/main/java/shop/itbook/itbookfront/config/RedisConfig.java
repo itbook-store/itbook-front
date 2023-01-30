@@ -1,11 +1,10 @@
 package shop.itbook.itbookfront.config;
 
 /**
- * @author
+ * @author 이하늬
  * @since 1.0
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,16 +14,15 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
-@EnableRedisHttpSession
+
 @Configuration
 @ConfigurationProperties(prefix = "redis")
+@EnableRedisHttpSession
 public class RedisConfig implements BeanClassLoaderAware {
     private String host;
     private int port;

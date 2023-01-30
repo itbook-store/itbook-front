@@ -50,7 +50,7 @@
     <div class="logo" th:fragment="logo-fragment">
         <div class="logo_columns">
             <div class="logo_columns_column">
-                <img src="/mainpage/img/itbook-logo-02.png" class="logo_img">
+                <a href="/"><img src="/mainpage/img/itbook-logo-02.png" class="logo_img"></a>
             </div>
         </div>
         <form action="/product/search" method="get">
@@ -80,13 +80,16 @@
         <div class="categoryBar__columns">
             <div class="categoryBar__columns__menu">
                 <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
-                <p>카테고리</p>
+                <div>카테고리</div>
             </div>
             <div class="dropdown" id = "categoryDiv">
                 <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
-                    <p class="middle_content%" th:text="${mainCategory.mainCategoryName}"></p>
+                    <div class="middle_content" th:text="${mainCategory.mainCategoryName}"></div>
                     <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
-                        <a th:href="@{/products/category-no/{categoryNo}(categoryNo=${subCategory.categoryNo})}" class="samll_content_text" th:text="${subCategory.categoryName}"></a>
+                        <div>
+                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                           class="samll_content_text" th:text="${subCategory.categoryName}"></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,4 +97,5 @@
     </div>
 </th:block>
 </body>
+<script src="/mainpage/js/category.js"></script>
 </html>

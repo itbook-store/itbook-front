@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지 - 회원 목록</title>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>회원 목록</h2>
+        <hr>
+        <div style="float: right;">
+            <form method="get" th:action="@{/admin/members/search}">
+                <select name="searchRequirement">
+                    <option value="everything">전체</option>
+                    <option value="memberId">아이디</option>
+                    <option value="nickname">닉네임</option>
+                    <option value="name">이름</option>
+                    <option value="phoneNumber">전화번호</option>
+                    <option value="dateOfJoining">가입일</option>
+                    <!--TODO 가입일 누르면 날짜 선택하는 칸 추가 -->
+                </select>
+                <input type="text" name="searchWord">
+                <input type="submit" value="검색">
+            </form>
+        </div>
+        <table class="table">
+            <tr>
+                <td>회원 번호</td>
+                <td>회원 아이디</td>
+                <td>닉네임</td>
+                <td>멤버등급</td>
+                <td>멤버상태</td>
+                <td></td>
+            </tr>
+            <tr th:each="member : ${memberList}" th:if="${member.memberStatusName} == '정상회원'">
+                <td class="table-light" th:text="${member.memberNo}"></td>
+                <td th:text="${member.memberId}"></td>
+                <td th:text="${member.nickname}"></td>
+                <td th:text="${member.membershipGrade}"></td>
+                <td th:text="${member.memberStatusName}"></td>
+                <td>
+                    <button class="btn btn-light">
+                        <a th:href="@{|/admin/members/${member.memberId}/info|}" style="text-decoration-line: none; color: black;">상세정보</a>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

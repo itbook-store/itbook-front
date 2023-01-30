@@ -1,9 +1,9 @@
 package shop.itbook.itbookfront.category.service;
 
-import java.util.List;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.common.response.PageResponse;
 
 /**
  * @author 최겸준
@@ -13,7 +13,7 @@ public interface CategoryService {
 
     void addCategory(CategoryRequestDto categoryRequestDto);
 
-    List<CategoryListResponseDto> findCategoryList(String url);
+    PageResponse<CategoryListResponseDto> findCategoryList(String url);
 
     void deleteCategory(String categoryNo);
 

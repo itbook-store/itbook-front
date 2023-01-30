@@ -11,14 +11,14 @@
             <li class="border-top my-3"></li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectMemberSideMenu(this)">
                     회원 관리
                 </button>
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    상품(도서) 관리
+                    <a th:href="@{/admin/products}">상품(도서) 관리</a>
                 </button>
             </li>
             <li class="mb-1">
@@ -41,7 +41,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectHowToShowCoupon(this)">
                     쿠폰 관리
                 </button>
             </li>
@@ -75,6 +75,7 @@
         </ul>
     </div>
     <script th:src="@{/fragment/adminpage/js/sideMenu.js}"></script>
+    <script th:src="@{/adminpage/member/js/memberSideMenuList.js}"></script>
 </div>
 
 
