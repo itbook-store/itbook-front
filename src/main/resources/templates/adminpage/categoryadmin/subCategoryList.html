@@ -10,7 +10,7 @@
 
 <div layout:fragment="content">
 
-    <h1 style="text-align: center" th:text="${categoryList[0].categoryName}"></h1>
+    <h1 style="text-align: center" th:text="${parentCategoryName}"></h1>
     <div class="container">
         <table class="table table-striped" style="text-align: center">
             <thead>
@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="category : ${categoryList}">
+            <tr th:each="category : ${pageResponse.content}">
                 <th:block th:unless="${#strings.equals(category.level, 0)}">
                     <td th:text="${category.categoryName}"></td>
                     <td th:text="${category.count}"></td>
@@ -35,10 +35,8 @@
             </tr>
             </tbody>
         </table>
-
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
-
-    <script th:src="@{/category/js/categoryAdmin.js}"></script>
 </div>
 
 </html>

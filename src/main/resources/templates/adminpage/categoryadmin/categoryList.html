@@ -22,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="category : ${categoryList}">
+            <tr th:each="category : ${pageResponse.content}">
                 <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
                 <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
                 <td th:text="${category.categoryName}"></td>
@@ -52,9 +52,9 @@
             </tbody>
         </table>
 
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
 
-    <script th:src="@{/category/js/categoryAdmin.js}"></script>
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
         if (failMessage) {

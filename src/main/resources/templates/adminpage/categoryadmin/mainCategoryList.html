@@ -21,8 +21,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="category : ${categoryList}">
-                <td><a th:href="@{/admin/categories/{categoryNo}/sub-categories(categoryNo = ${category.categoryNo})}" th:text="${category.categoryName}"></a></td>
+            <tr th:each="category : ${pageResponse.content}">
+                <td><a th:href="@{/admin/categories/{categoryNo}/sub-categories(categoryNo = ${category.categoryNo}, parentCategoryName=${category.categoryName})}" th:text="${category.categoryName}"></a></td>
                 <td th:text="${category.count}"></td>
                 <td th:text="${category.isHidden}"></td>
                 <td>
@@ -34,9 +34,8 @@
             </tbody>
         </table>
 
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
-
-    <script th:src="@{/category/js/categoryAdmin.js}"></script>
 </div>
 
 </html>

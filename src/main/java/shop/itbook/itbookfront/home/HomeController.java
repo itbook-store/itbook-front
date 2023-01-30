@@ -1,9 +1,6 @@
 package shop.itbook.itbookfront.home;
 
-import java.net.http.HttpRequest;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +11,7 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.common.response.PageResponse;
 
 /**
  * @author gwanii
@@ -25,13 +23,19 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 public class HomeController {
 
     private final CategoryService categoryService;
+    public static final Integer CATEGORY_ALL_RECEIVE_SIZE = Integer.MAX_VALUE;
+    public static final Integer CATEGORY_ALL_RECEIVE_PAGE = 0;
+
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest httpServletRequest) {
-        List<CategoryListResponseDto> categoryList = categoryService.findCategoryList("/api/categories");
+
+        PageResponse<CategoryListResponseDto> pageResponse =
+            categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
+                CATEGORY_ALL_RECEIVE_PAGE, CATEGORY_ALL_RECEIVE_SIZE));
 
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(categoryList);
+            CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");

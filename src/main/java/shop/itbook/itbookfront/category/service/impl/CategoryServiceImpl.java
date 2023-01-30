@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.category.service.impl;
 
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.common.response.PageResponse;
 
 /**
  * @author 최겸준
@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryListResponseDto> findCategoryList(String url) {
+    public PageResponse<CategoryListResponseDto> findCategoryList(String url) {
         return categoryAdaptor.findCategoryList(url);
     }
 
