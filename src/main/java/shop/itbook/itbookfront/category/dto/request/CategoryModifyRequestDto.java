@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.category.dto.request;
 
+import java.io.Serializable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
  */
 @Getter
 @Setter
-public class CategoryModifyRequestDto {
+public class CategoryModifyRequestDto implements Serializable {
 
     @Length(min = 1, max = 20, message = "카테고리 명은 최소 한자 이상 스무자 이하여야합니다.")
     @NotBlank(message = "카테고리 명은 null 일수 없으며 빈문자열이나 공백하나만 들어올 수 없습니다.")
