@@ -80,14 +80,16 @@
         <div class="categoryBar__columns">
             <div class="categoryBar__columns__menu">
                 <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
-                <p>카테고리</p>
+                <div>카테고리</div>
             </div>
             <div class="dropdown" id = "categoryDiv">
                 <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
-                    <p class="middle_content%" th:text="${mainCategory.mainCategoryName}"></p>
+                    <div class="middle_content" th:text="${mainCategory.mainCategoryName}"></div>
                     <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
+                        <div>
                         <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
                            class="samll_content_text" th:text="${subCategory.categoryName}"></a>
+                        </div>
                     </div>
                 </div>
             </div>

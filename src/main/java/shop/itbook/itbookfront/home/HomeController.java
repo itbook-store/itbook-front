@@ -58,4 +58,9 @@ public class HomeController {
     public String test() {
         return "default-layout";
     }
+
+    @GetMapping("/template")
+    public String template() {
+        return "mainpage/template/index";
+    }
 }
