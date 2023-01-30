@@ -18,6 +18,7 @@ import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.dto.request.MemberOAuthRequestDto;
 import shop.itbook.itbookfront.auth.exception.MemberNotFountException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.config.GatewayConfig;
 
 /**
  * OAuth Login 에서 받아온 유저정보를 컨트롤하기 위한 클래스 입니다.
@@ -30,6 +31,8 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 public class CustomOauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final AuthAdaptor authAdaptor;
+
+    private final GatewayConfig gatewayConfig;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -64,7 +67,7 @@ public class CustomOauthService implements OAuth2UserService<OAuth2UserRequest, 
 
         ResponseEntity<CommonResponseBody<Boolean>> userExistResult =
             authAdaptor.postShopServerOAuthUserSignUp(
-                SHOP_API_URL,
+                gatewayConfig.getGatewayServer() + SHOP_API_URL,
                 new MemberOAuthRequestDto(
                     email,
                     passwordEncoder.encode(email)

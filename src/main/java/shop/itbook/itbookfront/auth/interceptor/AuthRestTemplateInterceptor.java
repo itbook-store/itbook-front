@@ -26,11 +26,13 @@ public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor
     private static final String AUTH_HEADER = "Authorization";
     private static final String HEADER_PREFIX = "Bearer ";
 
-    private final List<String> loginPath = List.of("/login", "/auth/login");
+    private final List<String> loginPath = List.of("/login", "/auth/login", "/api/members/oauth/login/find");
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body,
                                         ClientHttpRequestExecution execution) throws IOException {
+
+        log.error("request.getURI().getPath {}", request.getURI().getPath());
 
         if (loginPath.contains(request.getURI().getPath())) {
             return execution.execute(request, body);

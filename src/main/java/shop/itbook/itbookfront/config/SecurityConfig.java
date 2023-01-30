@@ -63,7 +63,7 @@ public class SecurityConfig {
             .loginPage("/login").permitAll()
             .successHandler(customOAuthSuccessHandler(null))
             .userInfoEndpoint()
-            .userService(customOAuth2UserService(null));
+            .userService(customOAuth2UserService(null, null));
 
         return http.build();
     }
@@ -122,8 +122,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public CustomOauthService customOAuth2UserService(AuthAdaptor authAdaptor) {
-        return new CustomOauthService(authAdaptor, passwordEncoder());
+    public CustomOauthService customOAuth2UserService(AuthAdaptor authAdaptor, GatewayConfig gatewayConfig) {
+        return new CustomOauthService(authAdaptor, gatewayConfig, passwordEncoder());
     }
 
     /**
