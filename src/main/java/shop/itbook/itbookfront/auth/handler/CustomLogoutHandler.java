@@ -32,6 +32,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             throw new BadRequestException(MESSAGE);
         }
 
+        session.removeAttribute("ITBOOK_SESSIONID");
         session.invalidate();
 
         /* TODO -> Auth Server 요청 JWT Token 블랙 리스트 관리 */
