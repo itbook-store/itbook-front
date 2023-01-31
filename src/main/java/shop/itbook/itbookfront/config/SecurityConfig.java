@@ -37,8 +37,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests()
-//            .antMatchers("/adminpage").hasAuthority("ROLE_ADMIN")
-//            .antMatchers("/oauth/github").authenticated()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/adminpage").hasAuthority("ADMIN")
+            .antMatchers("/mypage").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf()
