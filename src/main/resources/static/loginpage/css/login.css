@@ -60,7 +60,18 @@ html, body {
 }
 
 #github_login_btn img {
-    width: 283px;
+    width: 285px;
+    height: 48.5px;
+    margin-bottom: 10px;
+}
+
+#naver_login_btn img {
+    height: 42px;
+    width: 280px;
+    margin-bottom: 10px;
+}
+
+#kakao_login_btn img {
     height: 42px;
 }
 
