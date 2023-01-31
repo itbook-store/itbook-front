@@ -2,6 +2,8 @@ package shop.itbook.itbookfront.elastic.controller.serviceapi;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +17,7 @@ import shop.itbook.itbookfront.elastic.service.ProductSearchService;
  * @author 송다혜
  * @since 1.0
  */
-@RestController
+@Controller
 @RequestMapping("/product/search")
 @RequiredArgsConstructor
 public class ProductSearchServiceController {
@@ -28,10 +30,12 @@ public class ProductSearchServiceController {
      * @return 상품정보를 반환해줍니다.
      */
     @GetMapping
-    public List<ProductSampleResponseDto> searchProductByName(@RequestParam String name) {
+    public String searchProductByName(@RequestParam String name, Model model) {
 
         List<ProductSampleResponseDto> productList =
             productSearchService.findProductList("/api/products/search?name="+name);
-        return productList;
+        model.addAttribute("productList", productList);
+        model.addAttribute("keyword", name);
+        return "mainpage/product/product-search";
     }
 }
