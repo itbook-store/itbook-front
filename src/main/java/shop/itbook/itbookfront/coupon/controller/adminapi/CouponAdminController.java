@@ -36,7 +36,7 @@ public class CouponAdminController {
     public String couponAddPage(@ModelAttribute("couponInputRequestDto")
                                     CouponInputRequestDto couponInputRequestDto, Model model){
         model.addAttribute("mainCategoryList",
-            categoryService.findCategoryList("/api/admin/categories/main-categories"));
+            categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
         return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
     }
 

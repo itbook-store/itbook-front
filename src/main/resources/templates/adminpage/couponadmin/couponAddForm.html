@@ -5,7 +5,9 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>categoryList</title>
+    <script th:src="@{/coupon/couponResident.js}"></script>
+
+    <title>쿠폰 등록</title>
 </head>
 
 <div layout:fragment="content">
@@ -23,8 +25,8 @@
                         <div class="border-top my-3"></div>
                         <div class="form-group">
                             <label for='selectCoupon'>쿠폰 종류</label>
-                            <select id='selectCoupon' onchange="selectCouponDiv(this)">
-                                <option>쿠폰의 종류를 선택해주세요.</option>
+                            <select id='selectCoupon' th:field="${couponInputRequestDto.couponType}" onchange="selectCouponDiv(this)">
+                                <option value="">쿠폰의 종류를 선택해주세요.</option>
                                 <option value="일반쿠폰">일반쿠폰</option>
                                 <option value="웰컴쿠폰">웰컴 쿠폰</option>
                                 <option value="이달의쿠폰예약형">이달의 쿠폰 -예약형-</option>
@@ -35,14 +37,15 @@
                         <div class="alert alert-light">
                             <div id="normalCouponDiv" style="display:none;">
                                 일반쿠폰
-                                <input type="text" class="form-control form-control-lg" id="memberId"/>
+                                <input type="text" class="form-control form-control-lg" id="memberId"
+                                       th:field="${couponInputRequestDto.userId}"/>
                                 <button type="button" onclick="checkMemberId()" id="memberIdCheckBtn">아이디 확인</button>
                                 <button type="button"
                                         onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')"
                                         id="memberIdRetypeBtn" style="visibility:hidden;">다시 입력
                                 </button>
-                                <div id="memberIdNotExists" style="display:none;">등록 가능한 아이디입니다.</div>
-                                <div id="memberIdExists" style="display:none;">이미 존재하는 아이디입니다.</div>
+                                <div id="memberIdNotExists" style="display:none;">존재하지 않는 아이디입니다.</div>
+                                <div id="memberIdExists" style="display:none;">존재하는 아이디입니다.</div>
                                 멤버 아이디 찾는 기능 추가
                             </div>
                         </div>
@@ -111,60 +114,61 @@
                             </div>
                         </div>
 
-
-                        <div class="alert alert-light">
-                            쿠폰 적용범위
-                            <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                       id="allProductRadio"
-                                       onclick="selectCouponCoverage()">
-                                <label class="form-check-label" for="allProductRadio">
-                                    전체
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                       id="categoryRadio"
-                                       onclick="selectCouponCoverage()">
-                                <label class="form-check-label" for="categoryRadio">
-                                    카테고리
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                       id="oneProductRadio"
-                                       onclick="selectCouponCoverage()">
-                                <label class="form-check-label" for="oneProductRadio">
-                                    상품
-                                </label>
-                            </div>
-                            <div id="selectCategoryDiv" style="display:none;">
-                                <label for="selectCategory">카테고리 선택</label>
-                                <input class="form-control" type="text" id="selectCategory" placeholder="카테고리를 선택해주세요.">
-                                <div class="col-md-8">
-                                    <label style="margin-right: 5px">카테고리</label>
-                                    <select id="mainCategory" name="mainCategory">
-                                        <option th:each="mainCategory: ${mainCategoryList}"
-                                                th:value="${mainCategory.categoryNo}"
-                                                th:text="${mainCategory.categoryName}">
-                                        </option>
-                                    </select>
+                        <div id="couponCoverageDiv" style="display:none;">
+                            <div class="alert alert-light">
+                                쿠폰 적용범위
+                                <div class="form-check">
+                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                           id="allProductRadio"
+                                           onclick="selectCouponCoverage()">
+                                    <label class="form-check-label" for="allProductRadio">
+                                        전체
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                           id="categoryRadio"
+                                           onclick="selectCouponCoverage()">
+                                    <label class="form-check-label" for="categoryRadio">
+                                        카테고리
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                           id="oneProductRadio"
+                                           onclick="selectCouponCoverage()">
+                                    <label class="form-check-label" for="oneProductRadio">
+                                        상품
+                                    </label>
+                                </div>
+                                <div id="selectCategoryDiv" style="display:none;">
+                                    <div class="col-md-8">
+                                        <label style="margin-right: 5px">카테고리</label>
+                                        <select id="mainCategory" name="mainCategory">
+                                            <option th:each="mainCategory: ${mainCategoryList}"
+                                                    th:value="${mainCategory.categoryNo}"
+                                                    th:text="${mainCategory.categoryName}">
+                                            </option>
+                                        </select>
+                                        <button type="button" style="margin-left: 5px" class="btn btn-light btn-sm"
+                                                onclick="showSubCategory(event)">하위 카테고리 펼치기
+                                        </button>
+                                        <div id="categoryCheckBox" style="display:none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="selectProductDiv" style="display:none;">
+                                    <label for="selectProduct">상품 선택</label>
+                                    <input class="form-control" type="text" id="selectProduct"
+                                           placeholder="상품을 선택해주세요.">
                                     <button type="button" style="margin-left: 5px" class="btn btn-light btn-sm"
-                                            onclick="showSubCategory()">하위 카테고리 펼치기
+                                            onclick="showSearchProductList(event)">상품 검색 결과 리스트
                                     </button>
-                                    <div id="categoryCheckBox" style="display:none">
+                                    <div id="productRadioBox" style="display:none">
                                     </div>
                                 </div>
                             </div>
-                            <div id="selectProductDiv" style="display:none;">
-                                <label for="selectProduct">상품 선택</label>
-                                <input class="form-control" type="text" id="selectProduct" placeholder="상품을 선택해주세요.">
-                                <button type="button" style="margin-left: 5px" class="btn btn-light btn-sm"
-                                                             onclick="showSearchProductList()">상품 검색 결과 리스트
-                            </button>
-                            </div>
                         </div>
-
 
                         <div class="alert alert-light">
                             <label for="quantity">수량</label>
@@ -193,7 +197,6 @@
             </form>
         </div>
     </div>
-    <script th:src="@{/coupon/couponResident.js}"></script>
 
 </div>
 </html>
