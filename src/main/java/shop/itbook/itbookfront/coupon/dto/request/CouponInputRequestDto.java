@@ -18,6 +18,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @ToString
 public class CouponInputRequestDto {
+    @NotNull
+    private String couponType;
+
+    private String userId;
+
+    private Long categoryNo;
+    private Long searchResult;
     @NotNull(message = "쿠폰 이름을 입력해 주세요.")
     @Length(min = 1, max = 20, message = "이름의 길이는 20자를 넘을수 없습니다.")
     private String name;
