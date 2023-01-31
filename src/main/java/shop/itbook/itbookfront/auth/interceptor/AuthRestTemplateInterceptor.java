@@ -32,8 +32,6 @@ public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor
     public ClientHttpResponse intercept(HttpRequest request, byte[] body,
                                         ClientHttpRequestExecution execution) throws IOException {
 
-        log.error("request.getURI().getPath {}", request.getURI().getPath());
-
         if (loginPath.contains(request.getURI().getPath())) {
             return execution.execute(request, body);
         }

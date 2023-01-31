@@ -43,24 +43,14 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         throws IOException {
 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        log.info("OAuth2User {}", oAuth2User);
-
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        log.info("attributes {}", attributes);
-
         String email = (String) attributes.get("email");
-        log.info("email {}", email);
 
         authUtil.requestAuthorization(email, email);
 
         UserDetailsDto userDetailsDto = authUtil.getUserDetailsDto();
-        log.info("userDetailsDto {}", userDetailsDto);
-
         TokenDto tokenDto = authUtil.getTokenDto();
-        log.info("tokenDto {}", tokenDto);
-
         List<SimpleGrantedAuthority> authorities = authUtil.getAuthorities();
-        log.info("authorities {}", authorities);
 
         HttpSession session = request.getSession(true);
         session.setAttribute("tokenDto", tokenDto);
