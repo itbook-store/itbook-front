@@ -2,10 +2,12 @@ package shop.itbook.itbookfront.auth.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.StringTokenizer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +27,7 @@ import shop.itbook.itbookfront.exception.LoginFailException;
  * @author 강명관
  * @since 1.0
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthUtil {
@@ -105,11 +108,18 @@ public class AuthUtil {
      * @return Authentication 객체의 Authorities 입니다
      */
     private List<SimpleGrantedAuthority> getGrantedAuthoritiesToResponseHeader(HttpHeaders headers) {
-        return Optional.ofNullable(headers.get(HEADER_AUTHORITIES))
+
+        String role = Optional.ofNullable(headers.get(HEADER_AUTHORITIES))
             .orElseThrow(LoginFailException::new)
-            .stream()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+            .get(0);
+
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(role, "[,] ");
+        while (st.hasMoreTokens()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(st.nextToken()));
+        }
+
+        return grantedAuthorities;
     }
 
     public UserDetailsDto getUserDetailsDto() {
