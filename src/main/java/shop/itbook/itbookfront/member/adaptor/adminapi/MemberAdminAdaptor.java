@@ -2,7 +2,6 @@ package shop.itbook.itbookfront.member.adaptor.adminapi;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,10 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberUpdateAdminRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
-import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -32,6 +29,7 @@ public class MemberAdminAdaptor {
     private final GatewayConfig gatewayConfig;
 
     public List<MemberAdminResponseDto> getMembers() {
+
         ResponseEntity<CommonResponseBody<List<MemberAdminResponseDto>>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/admin/members", HttpMethod.GET, null,
@@ -93,4 +91,19 @@ public class MemberAdminAdaptor {
 
         return responseEntity.getBody().getResult();
     }
+
+    public MemberBlockInfoResponseDto getBlockMember(String memberId) {
+        ResponseEntity<CommonResponseBody<MemberBlockInfoResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/members/"+ memberId +"/block", HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
 }

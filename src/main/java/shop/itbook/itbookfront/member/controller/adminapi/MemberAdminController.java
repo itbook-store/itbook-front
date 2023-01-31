@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 
 /**
@@ -66,6 +67,18 @@ public class MemberAdminController {
         model.addAttribute("member", member);
 
         return "adminpage/member/admin-member-details-form";
+    }
+
+    @GetMapping("/block/{memberId}/info")
+    public String blockMemberDetails(@PathVariable("memberId") String memberId,
+                                     @ModelAttribute("memberStatusChangeRequestDto")
+                                     MemberStatusChangeRequestDto memberStatusChangeRequestDto,
+                                     Model model) {
+        MemberBlockInfoResponseDto member = memberAdminService.findBlockMember(memberId);
+
+        model.addAttribute("member", member);
+
+        return "adminpage/member/admin-block-member-details-form";
     }
 
     @PostMapping("/{memberId}/modify/member-status")

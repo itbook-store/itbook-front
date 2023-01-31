@@ -1,8 +1,13 @@
 package shop.itbook.itbookfront.product.controller.serviceapi;
 
+import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
+import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +18,7 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
@@ -32,16 +38,27 @@ public class ProductController {
     @GetMapping(params = {"categoryNo", "categoryName"})
     public String productListByCategory(@RequestParam Integer categoryNo,
                                         @RequestParam String categoryName,
-                                        Model model) {
-        List<CategoryListResponseDto> categoryList =
-            categoryService.findCategoryList("/api/categories").getContent();
+                                        Model model, @PageableDefault Pageable pageable) {
+        
+        PageResponse<CategoryListResponseDto> pageResponse =
+            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(categoryList);
+            CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
-        List<ProductDetailsResponseDto> productList =
-            productService.getProductListFilteredByCategoryNo(categoryNo);
+
+        PageResponse<ProductDetailsResponseDto> productList =
+            productService.getProductList(
+                String.format("/api/admin/products?page=%d&size=%d&categoryNo=%d",
+                    pageable.getPageNumber(), pageable.getPageSize(), categoryNo));
+        model.addAttribute("pageResponse", productList);
+
         model.addAttribute("categoryName", categoryName);
-        model.addAttribute("productList", productList);
+
+        model.addAttribute("paginationUrl",
+            String.format("/admin/products?categoryNo=%d&categoryName=%s", categoryNo,
+                categoryName));
+
         return "mainpage/product/product-category";
     }
 
