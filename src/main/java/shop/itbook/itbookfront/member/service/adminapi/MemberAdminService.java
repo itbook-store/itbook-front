@@ -2,9 +2,8 @@ package shop.itbook.itbookfront.member.service.adminapi;
 
 import java.util.List;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberUpdateAdminRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
-import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 
 /**
  * @author 노수연
@@ -19,4 +18,6 @@ public interface MemberAdminService {
     void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto, String memberId);
 
     List<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord);
+
+    MemberBlockInfoResponseDto findBlockMember(String memberId);
 }
