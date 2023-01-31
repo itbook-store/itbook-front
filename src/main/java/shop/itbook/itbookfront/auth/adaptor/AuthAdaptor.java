@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.adaptor;
+package shop.itbook.itbookfront.auth.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -8,8 +8,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import shop.itbook.itbookfront.auth.dto.request.MemberOAuthRequestDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
-import shop.itbook.itbookfront.login.dto.MemberAuthRequestDto;
+import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
 
 /**
  * RestTemplate 통신 메서드를 제공해주는 클래스 입니다.
@@ -19,7 +20,7 @@ import shop.itbook.itbookfront.login.dto.MemberAuthRequestDto;
  */
 @RequiredArgsConstructor
 @Component
-public class RestTemplateAdaptor {
+public class AuthAdaptor {
 
     private final RestTemplate restTemplate;
 
@@ -39,6 +40,17 @@ public class RestTemplateAdaptor {
             new HttpEntity<>(memberAuthRequestDto, new HttpHeaders()),
             new ParameterizedTypeReference<>() {
             });
+    }
+
+    public ResponseEntity<CommonResponseBody<Boolean>> postShopServerOAuthUserSignUp(String url, MemberOAuthRequestDto memberOAuthRequestDto) {
+
+        return restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            new HttpEntity<>(memberOAuthRequestDto, new HttpHeaders()),
+            new ParameterizedTypeReference<>() {
+            }
+        );
     }
 }
 
