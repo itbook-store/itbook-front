@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="deliveryWait : ${deliveryWaitList}">
+            <tr th:each="deliveryWait : ${pageResponse.content}">
                 <td th:text="${deliveryWait.deliveryNo}"></td>
                 <td th:text="${deliveryWait.orderNo}"></td>
                 <td th:text="${deliveryWait.trackingNo}"></td>
@@ -36,6 +36,9 @@
             </tr>
             </tbody>
         </table>
+
+        <th:block th:include="component/pageFooter"></th:block>
+
     </div>
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];

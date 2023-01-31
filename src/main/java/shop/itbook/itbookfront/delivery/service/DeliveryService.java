@@ -2,7 +2,9 @@ package shop.itbook.itbookfront.delivery.service;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
 
 /**
@@ -15,8 +17,8 @@ public interface DeliveryService {
 
     void postDeliveryList(RedirectAttributes redirectAttributes);
 
-    List<DeliveryWithStatusResponseDto> getDeliveryList();
+    PageResponse<DeliveryWithStatusResponseDto> getDeliveryList(Pageable pageable);
 
-    List<DeliveryWithStatusResponseDto> getDeliveryWaitList();
+    PageResponse<DeliveryWithStatusResponseDto> getDeliveryWaitList(Pageable pageable);
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryDetailResponseDto;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
 import shop.itbook.itbookfront.delivery.adminapi.exception.DeliveryNoWaitStatusException;
@@ -37,7 +38,7 @@ public class DeliveryAdaptor {
      * @param uri 게이트웨이 uri
      * @return 배송 상태가 배송 대기중인 배송 정보 리스트
      */
-    public ResponseEntity<CommonResponseBody<List<DeliveryWithStatusResponseDto>>> getDeliveryWaitList(
+    public ResponseEntity<CommonResponseBody<PageResponse<DeliveryWithStatusResponseDto>>> getDeliveryWaitList(
         URI uri) {
         return restTemplate.exchange(uri, HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {

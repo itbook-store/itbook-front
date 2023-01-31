@@ -3,6 +3,8 @@ package shop.itbook.itbookfront.delivery.adminapi.controller;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.delivery.adminapi.adaptor.DeliveryAdaptor;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
@@ -38,11 +41,11 @@ public class DeliveryAdminController {
      * @return 관리자 모든 배송 정보 페이지.
      */
     @GetMapping
-    public String adminDeliveryListPage(Model model) {
-        List<DeliveryWithStatusResponseDto> deliveryWaitList =
-            deliveryService.getDeliveryList();
+    public String adminDeliveryListPage(Model model, @PageableDefault Pageable pageable) {
+        PageResponse<DeliveryWithStatusResponseDto> deliveryWaitListPageResponse =
+            deliveryService.getDeliveryList(pageable);
 
-        model.addAttribute("deliveryWaitList", deliveryWaitList);
+        model.addAttribute("pageResponse", deliveryWaitListPageResponse);
 
         return "adminpage/delivery/admin-delivery-list";
     }
@@ -54,11 +57,11 @@ public class DeliveryAdminController {
      * @return 배송 상태가 배송 대기중인 것만을 보여주는 페이지.
      */
     @GetMapping("/wait-list")
-    public String adminDeliveryWaitListPage(Model model) {
-        List<DeliveryWithStatusResponseDto> deliveryWaitList =
-            deliveryService.getDeliveryWaitList();
+    public String adminDeliveryWaitListPage(Model model, Pageable pageable) {
+        PageResponse<DeliveryWithStatusResponseDto> deliveryWaitListPageResponse =
+            deliveryService.getDeliveryWaitList(pageable);
 
-        model.addAttribute("deliveryWaitList", deliveryWaitList);
+        model.addAttribute("pageResponse", deliveryWaitListPageResponse);
 
         return "adminpage/delivery/admin-delivery-list";
     }
