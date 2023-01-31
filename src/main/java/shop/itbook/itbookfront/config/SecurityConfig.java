@@ -1,22 +1,20 @@
 package shop.itbook.itbookfront.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shop.itbook.itbookfront.adaptor.RestTemplateAdaptor;
+import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
-//import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
-import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
+import shop.itbook.itbookfront.auth.handler.CustomOAuthSuccessHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
+import shop.itbook.itbookfront.auth.service.CustomOauthService;
+import shop.itbook.itbookfront.auth.util.AuthUtil;
 
 /**
  * 스프링 시큐리티 설정을 위한 클래스 입니다.
@@ -39,7 +37,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests()
-//            .antMatchers("/adminpage").hasAuthority("ROLE_ADMIN")
+            .antMatchers("/login").permitAll()
+            .antMatchers("/adminpage").hasAuthority("ADMIN")
+            .antMatchers("/mypage").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf()
@@ -50,17 +50,21 @@ public class SecurityConfig {
             .loginProcessingUrl("/doLogin")
             .usernameParameter("memberId")
             .passwordParameter("password")
-//            .successHandler(customLoginSuceessHandler(null))
+            .defaultSuccessUrl("/")
             .and()
             .logout()
             .logoutUrl("/logout")
-            .addLogoutHandler(customLogoutHandler(null))
+            .addLogoutHandler(customLogoutHandler())
             .logoutSuccessUrl("/")
             .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+            .oauth2Login()
+            .loginPage("/login").permitAll()
+            .successHandler(customOAuthSuccessHandler(null))
+            .userInfoEndpoint()
+            .userService(customOAuth2UserService(null, null));
 
         return http.build();
     }
@@ -75,20 +79,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     /**
      * CustomAuthorizationFilter에 사용할 CustomAuthenticationManager 입니다.
      *
-     * @param restTemplateAdaptor
-     * @param gatewayConfig
-     * @param redisTemplate
+     * @param authUtil 인증에 대한 공통 로직을 담당하는 클래스 입니다.
      * @return customAuthenticationManager
      * @author 강명관
      */
     @Bean
-    public CustomAuthenticationManager customAuthenticationManager(
-        RestTemplateAdaptor restTemplateAdaptor, GatewayConfig gatewayConfig, RedisTemplate<String, String> redisTemplate) {
-        return new CustomAuthenticationManager(restTemplateAdaptor, gatewayConfig, redisTemplate);
+    public CustomAuthenticationManager customAuthenticationManager(AuthUtil authUtil) {
+        return new CustomAuthenticationManager(authUtil);
     }
 
     /**
@@ -99,17 +99,10 @@ public class SecurityConfig {
      */
     @Bean
     public CustomAuthorizationFilter customAuthorizationFilter() {
-        CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter("/doLogin");
-        customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null, null, null));
-//        customAuthorizationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler(null));
+        CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter();
+        customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null));
         return customAuthorizationFilter;
     }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new SavedRequestAwareAuthenticationSuccessHandler();
-    }
-
 
     /**
      * 로그아웃과 jwt 토큰을 지우기 위한 LogoutHandler 입니다.
@@ -118,14 +111,33 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public CustomLogoutHandler customLogoutHandler(RedisTemplate redisTemplate) {
-        return new CustomLogoutHandler(redisTemplate);
+    public CustomLogoutHandler customLogoutHandler() {
+        return new CustomLogoutHandler();
     }
 
+    /**
+     * OAuth2 Login 시, OAuth 서버에서 가져온 유저 정보를 컨트롤하기 위한 Custom OAuth2UserService 입니다.
+     *
+     * @param authAdaptor Shop server 해당 유저에 대한 정보가 존재하는지를 요청하기 위한 adaptor 클래스 입니다.
+     * @return CsutomOAuth2UserService
+     * @author 강명관
+     */
     @Bean
-    public AuthenticationSuccessHandler customLoginSuccessHandler(
-        RedisTemplate<String, String> redisTemplate) {
-        return new CustomLoginSuccessHandler(redisTemplate);
+    public CustomOauthService customOAuth2UserService(AuthAdaptor authAdaptor, GatewayConfig gatewayConfig) {
+        return new CustomOauthService(authAdaptor, gatewayConfig, passwordEncoder());
+    }
+
+    /**
+     * OAuth2 로그인이 성공적으로 된 후, OAuth2 Server 에서 받은 정보를 통해 Auth서버로 보내 인가를 요청하기위한
+     * CustomSuccessHandler 입니다.
+     *
+     * @param authUtil 인증에 대한 공통 로직을 담당하는 클래스 입니다.
+     * @return CustomOAuthSuccessHandler
+     * @author 강명관
+     */
+    @Bean
+    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil) {
+        return new CustomOAuthSuccessHandler(authUtil);
     }
 
 }

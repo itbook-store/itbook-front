@@ -1,6 +1,9 @@
 package shop.itbook.itbookfront.home;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -45,7 +49,7 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
-        List<BookDetailsResponseDto> bookList = productServiceImpl.getBookList(true);
+        List<ProductDetailsResponseDto> bookList = productServiceImpl.getProductList(true);
         model.addAttribute("productList", bookList);
         return "mainpage/index";
     }
