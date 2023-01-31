@@ -38,7 +38,7 @@
                     <td>멤버상태</td>
                     <td></td>
                 </tr>
-                <tr th:each="member : ${memberList}" th:if="${member.memberStatusName} == '차단회원'">
+                <tr th:each="member : ${pageResponse.getContent()}" th:if="${member.memberStatusName} == '차단회원'">
                     <td class="table-light" th:text="${member.memberNo}"></td>
                     <td th:text="${member.memberId}"></td>
                     <td th:text="${member.nickname}"></td>
@@ -51,6 +51,7 @@
                     </td>
                 </tr>
             </table>
+            <th:block th:include="component/pageFooter"></th:block>
         </div>
     </div>
 </body>

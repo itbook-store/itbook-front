@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.member.service.adminapi.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
@@ -39,13 +40,27 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
-    public List<MemberAdminResponseDto> findMembers() {
-        return memberAdminAdaptor.getMembers();
+    public PageResponse<MemberAdminResponseDto> findMembers(String url) {
+        return memberAdminAdaptor.getMembers(url);
+    }
+
+    @Override
+    public PageResponse<MemberAdminResponseDto> findNormalMembers(String url) {
+        return memberAdminAdaptor.getNormalMembers(url);
+    }
+
+    @Override
+    public PageResponse<MemberAdminResponseDto> findBlockMembers(String url) {
+        return memberAdminAdaptor.getBlockMembers(url);
+    }
+
+    @Override
+    public PageResponse<MemberAdminResponseDto> findWithdrawMembers(String url) {
+        return memberAdminAdaptor.getWithdrawMembers(url);
     }
 
     @Override
     public MemberBlockInfoResponseDto findBlockMember(String memberId) {
-
         return memberAdminAdaptor.getBlockMember(memberId);
     }
 }

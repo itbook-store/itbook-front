@@ -4,6 +4,9 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
@@ -30,29 +34,35 @@ public class MemberAdminController {
     private final MemberAdminService memberAdminService;
 
     @GetMapping()
-    public String memberList(Model model) {
+    public String memberList(Model model, @PageableDefault Pageable pageable) {
 
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+        PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findNormalMembers(
+            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/members");
 
         return "adminpage/member/admin-member-list";
     }
 
     @GetMapping("/block")
-    public String blockMemberList(Model model) {
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+    public String blockMemberList(Model model, @PageableDefault Pageable pageable) {
+        PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findBlockMembers(
+            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/members/block");
 
         return "adminpage/member/admin-member-block-list";
     }
 
     @GetMapping("/withdraw")
-    public String withdrawMemberList(Model model) {
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembers();
+    public String withdrawMemberList(Model model, @PageableDefault Pageable pageable) {
+        PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findWithdrawMembers(
+            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/members/withdraw");
 
         return "adminpage/member/admin-member-withdraw-list";
     }
@@ -91,11 +101,12 @@ public class MemberAdminController {
     }
 
     @GetMapping("/search")
-    public String memberSearch(@RequestParam("searchRequirement")String searchRequirement,
+    public String memberSearch(@RequestParam("searchRequirement") String searchRequirement,
                                @RequestParam("searchWord") String searchWord,
                                Model model) {
 
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        List<MemberAdminResponseDto> memberList =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
 
         model.addAttribute("memberList", memberList);
 
@@ -103,11 +114,12 @@ public class MemberAdminController {
     }
 
     @GetMapping("withdraw/search")
-    public String withdrawMemberSearch(@RequestParam("searchRequirement")String searchRequirement,
-                               @RequestParam("searchWord") String searchWord,
-                               Model model) {
+    public String withdrawMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
+                                       @RequestParam("searchWord") String searchWord,
+                                       Model model) {
 
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        List<MemberAdminResponseDto> memberList =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
 
         model.addAttribute("memberList", memberList);
 
@@ -115,11 +127,12 @@ public class MemberAdminController {
     }
 
     @GetMapping("block/search")
-    public String blockMemberSearch(@RequestParam("searchRequirement")String searchRequirement,
-                               @RequestParam("searchWord") String searchWord,
-                               Model model) {
+    public String blockMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
+                                    @RequestParam("searchWord") String searchWord,
+                                    Model model) {
 
-        List<MemberAdminResponseDto> memberList = memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        List<MemberAdminResponseDto> memberList =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
 
         model.addAttribute("memberList", memberList);
 
