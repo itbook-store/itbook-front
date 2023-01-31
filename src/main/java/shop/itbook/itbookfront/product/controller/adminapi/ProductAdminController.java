@@ -79,7 +79,7 @@ public class ProductAdminController {
     public String getAddProductForm(Model model) {
         model.addAttribute("mainCategoryList",
             categoryService.findCategoryList(
-                String.format("/api/admin/categories?page=%d&size=%d",
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
                     PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
         return "adminpage/product/product-add";
     }
@@ -95,8 +95,9 @@ public class ProductAdminController {
         model.addAttribute("productCategoryList", categoryListByProductNo);
 
         model.addAttribute("mainCategoryList",
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
 
         model.addAttribute("parentCategoryName",
             categoryListByProductNo.get(0).getParentCategoryName());
