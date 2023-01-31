@@ -33,10 +33,11 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
-    public List<MemberAdminResponseDto> findMembersBySearch(String searchRequirement,
-                                                            String searchWord) {
+    public PageResponse<MemberAdminResponseDto> findMembersBySearch(String searchRequirement,
+                                                            String searchWord,
+                                                            String memberStatusName, String url) {
 
-        return memberAdminAdaptor.getMembersBySearch(searchRequirement, searchWord);
+        return memberAdminAdaptor.getMembersBySearch(searchRequirement, searchWord, memberStatusName, url);
     }
 
     @Override

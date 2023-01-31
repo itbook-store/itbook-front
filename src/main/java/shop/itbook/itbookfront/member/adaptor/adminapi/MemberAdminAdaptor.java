@@ -134,20 +134,22 @@ public class MemberAdminAdaptor {
 
     }
 
-    public List<MemberAdminResponseDto> getMembersBySearch(String searchRequirement,
-                                                           String searchWord) {
-        ResponseEntity<CommonResponseBody<List<MemberAdminResponseDto>>> responseEntity =
+    public PageResponse<MemberAdminResponseDto> getMembersBySearch(String searchRequirement,
+                                                           String searchWord, String memberStatusName, String url) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<CommonResponseBody<PageResponse<MemberAdminResponseDto>>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/members/search/" +
-                    searchRequirement + "/" + searchWord, HttpMethod.GET, null,
+                gatewayConfig.getGatewayServer() + "/api/admin/members/search/" + memberStatusName + "/" +
+                    searchRequirement + "/" + searchWord + url, HttpMethod.GET, entity,
                 new ParameterizedTypeReference<>() {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
-        return responseEntity.getBody().getResult();
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
     }
 
     public MemberBlockInfoResponseDto getBlockMember(String memberId) {

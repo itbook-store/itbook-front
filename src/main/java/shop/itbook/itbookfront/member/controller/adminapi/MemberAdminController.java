@@ -103,12 +103,15 @@ public class MemberAdminController {
     @GetMapping("/search")
     public String memberSearch(@RequestParam("searchRequirement") String searchRequirement,
                                @RequestParam("searchWord") String searchWord,
-                               Model model) {
+                               Model model, @PageableDefault Pageable pageable) {
 
-        List<MemberAdminResponseDto> memberList =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        PageResponse<MemberAdminResponseDto> pageResponse =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "정상회원",
+                String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                    pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/members/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
 
         return "adminpage/member/admin-member-list";
     }
@@ -116,12 +119,16 @@ public class MemberAdminController {
     @GetMapping("withdraw/search")
     public String withdrawMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
                                        @RequestParam("searchWord") String searchWord,
-                                       Model model) {
+                                       Model model, @PageableDefault Pageable pageable) {
 
-        List<MemberAdminResponseDto> memberList =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        PageResponse<MemberAdminResponseDto> memberList =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "탈퇴회원",
+                String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                    pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", memberList);
+        model.addAttribute("paginationUrl", "/admin/members/withdraw/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
+
 
         return "adminpage/member/admin-member-withdraw-list";
     }
@@ -129,12 +136,16 @@ public class MemberAdminController {
     @GetMapping("block/search")
     public String blockMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
                                     @RequestParam("searchWord") String searchWord,
-                                    Model model) {
+                                    Model model, @PageableDefault Pageable pageable) {
 
-        List<MemberAdminResponseDto> memberList =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord);
+        PageResponse<MemberAdminResponseDto> memberList =
+            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "차단회원",
+                String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                    pageable.getPageSize()));
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("pageResponse", memberList);
+        model.addAttribute("paginationUrl", "/admin/members/block/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
+
 
         return "adminpage/member/admin-member-block-list";
     }

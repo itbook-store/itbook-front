@@ -24,7 +24,8 @@ public interface MemberAdminService {
 
     void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto, String memberId);
 
-    List<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord);
+    PageResponse<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord,
+                                                     String memberStatusName, String url);
 
     MemberBlockInfoResponseDto findBlockMember(String memberId);
 }
