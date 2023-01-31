@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import shop.itbook.itbookfront.common.handler.RestTemplateResponseErrorHandler;
+import shop.itbook.itbookfront.auth.interceptor.AuthRestTemplateInterceptor;
 
 @Configuration
 public class RestTemplateConfig {
@@ -17,11 +18,13 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
 
         RestTemplate restTemplate = builder
+            .additionalInterceptors(new AuthRestTemplateInterceptor())
 //            .setReadTimeout(Duration.ofSeconds(30L))
 //            .setConnectTimeout(Duration.ofSeconds(30L))
             .build();
 
         restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler(new ObjectMapper()));
+
         return restTemplate;
     }
 }
