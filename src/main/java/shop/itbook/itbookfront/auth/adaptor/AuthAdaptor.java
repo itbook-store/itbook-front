@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.auth.dto.request.MemberOAuthRequestDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 
 /**
  * RestTemplate 통신 메서드를 제공해주는 클래스 입니다.
@@ -42,7 +43,7 @@ public class AuthAdaptor {
             });
     }
 
-    public ResponseEntity<CommonResponseBody<Boolean>> postShopServerOAuthUserSignUp(String url, MemberOAuthRequestDto memberOAuthRequestDto) {
+    public ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> postShopServerCheckValidAuthUser(String url, MemberOAuthRequestDto memberOAuthRequestDto) {
 
         return restTemplate.exchange(
             url,

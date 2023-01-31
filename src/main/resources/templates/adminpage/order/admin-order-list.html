@@ -11,7 +11,7 @@
 <div layout:fragment="content">
     <div class="content">
         <h3>Itbook 주문 관리</h3>
-        <button><a href="/admin/deliveries">배송 관리</a></button>
+        <button class="btn btn-primary" th:onclick="|location.href='@{/admin/deliveries}'|">배송 관리</button>
         <table>
             <thead>
             <tr>
