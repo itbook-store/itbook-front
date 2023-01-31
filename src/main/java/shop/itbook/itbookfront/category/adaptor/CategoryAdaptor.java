@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
+import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
@@ -39,18 +40,19 @@ public class CategoryAdaptor {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<CategoryRequestDto> httpEntity = new HttpEntity<>(categoryRequestDto, headers);
-
-        ResponseEntity<CommonResponseBody<CategoryNoResponseDto>> commonResponseBodyResponseEntity =
-            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories",
-                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-                });
+        ResponseEntity<CommonResponseBody<CategoryNoResponseDto>> commonResponseBodyResponseEntity = null;
+        try {
+            commonResponseBodyResponseEntity =
+                restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/categories",
+                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                    });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), AlreadyAddedCategoryNameException.MESSAGE)) {
+                throw new AlreadyAddedCategoryNameException();
+            }
+        }
 
         CommonResponseBody<CategoryNoResponseDto> body = commonResponseBodyResponseEntity.getBody();
-        CommonResponseBody.CommonHeader header = Objects.requireNonNull(body).getHeader();
-
-        ResponseChecker.checkFail(commonResponseBodyResponseEntity.getStatusCode(),
-            header.getResultMessage());
-
         return body.getResult().getCategoryNo();
     }
 
