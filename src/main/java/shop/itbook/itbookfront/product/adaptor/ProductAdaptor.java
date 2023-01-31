@@ -1,7 +1,5 @@
 package shop.itbook.itbookfront.product.adaptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,11 +15,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
-import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -59,35 +57,6 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
-    public List<BookDetailsResponseDto> findBookList(boolean isFiltered) {
-
-        ResponseEntity<CommonResponseBody<List<BookDetailsResponseDto>>> response =
-            restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/products/books?isFiltered=" + isFiltered,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
-    }
-
-    public BookDetailsResponseDto findBook(Long productNo) {
-
-        ResponseEntity<CommonResponseBody<BookDetailsResponseDto>> response =
-            restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
-    }
-
     public void removeProduct(Long productNo) {
         ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
             gateway.getGatewayServer() + "/api/admin/products/" + productNo,
@@ -99,10 +68,10 @@ public class ProductAdaptor {
         ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
 
-    public List<ProductDetailsResponseDto> findProductList(boolean isFiltered) {
-        ResponseEntity<CommonResponseBody<List<ProductDetailsResponseDto>>> response =
+    public PageResponse<ProductDetailsResponseDto> findProductList(String url) {
+        ResponseEntity<CommonResponseBody<PageResponse<ProductDetailsResponseDto>>> response =
             restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/products?isFiltered=" + isFiltered,
+                gateway.getGatewayServer() + url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
 
                 });
@@ -148,10 +117,10 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
-    public List<CategoryDetailsResponseDto> findCategoryListWithProductNo(Long productNo) {
-        ResponseEntity<CommonResponseBody<List<CategoryDetailsResponseDto>>> response =
+    public PageResponse<CategoryDetailsResponseDto> findCategoryList(String url) {
+        ResponseEntity<CommonResponseBody<PageResponse<CategoryDetailsResponseDto>>> response =
             restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/products?productNo=" + productNo,
+                gateway.getGatewayServer() + url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
 
                 });
@@ -162,18 +131,5 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
-    public List<ProductDetailsResponseDto> findProductListWithCategoryNo(Integer categoryNo) {
-        ResponseEntity<CommonResponseBody<List<ProductDetailsResponseDto>>> response =
-            restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/products?categoryNo=" + categoryNo,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
-    }
 
 }

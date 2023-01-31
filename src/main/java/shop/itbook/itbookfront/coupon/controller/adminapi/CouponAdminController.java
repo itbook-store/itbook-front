@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -28,12 +29,14 @@ import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 public class CouponAdminController {
 
     private final CouponService couponService;
+    private final CategoryService categoryService;
     private static final String DIRECTORY_NAME = "adminpage/couponadmin";
 
     @GetMapping("/coupon-addition")
     public String couponAddPage(@ModelAttribute("couponInputRequestDto")
-                                    CouponInputRequestDto couponInputRequestDto){
-
+                                    CouponInputRequestDto couponInputRequestDto, Model model){
+        model.addAttribute("mainCategoryList",
+            categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
         return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
     }
 

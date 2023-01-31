@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.elastic.controller.serviceapi;
+package shop.itbook.itbookfront.elastic.controller.adminapi;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import shop.itbook.itbookfront.elastic.service.ProductSearchService;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/product/search")
+@RequestMapping("/async/product/search")
 @RequiredArgsConstructor
 public class ProductSearchController {
     private final ProductSearchService productSearchService;

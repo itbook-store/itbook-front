@@ -788,7 +788,7 @@ body {
 }
 
 .product-grid4:hover .pic-1 {
-    opacity: 0
+    opacity: 20%;
 }
 
 .product-grid4 .pic-2 {

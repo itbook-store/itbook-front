@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.member.controller.serviceapi;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
@@ -26,10 +28,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{memberId}/info")
-    public String mypageInfo(@PathVariable("memberId") String memberId, Model model) {
+    @GetMapping("/me/info")
+    public String mypageInfo(Model model,
+                             @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberInfo(memberId);
+        MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberInfo(userDetailsDto.getMemberId());
 
         model.addAttribute("memberInfoResponseDto", memberInfoResponseDto);
 
@@ -50,12 +53,12 @@ public class MemberController {
 
     }
 
-    @GetMapping("/{memberId}/withdraw")
-    public String memberStatusModifyToWithdraw(@PathVariable("memberId") String memberId,
-                                               @ModelAttribute("memberStatusChangeRequestDto")
+    @GetMapping("/withdraw")
+    public String memberStatusModifyToWithdraw(@ModelAttribute("memberStatusChangeRequestDto")
                                                MemberStatusChangeRequestDto memberStatusChangeRequestDto,
+                                               @AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                                Model model) {
-        MemberInfoResponseDto member = memberService.findMemberInfo(memberId);
+        MemberInfoResponseDto member = memberService.findMemberInfo(userDetailsDto.getMemberId());
         model.addAttribute("member", member);
 
         return "mypage/member/member-withdraw";
