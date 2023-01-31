@@ -127,39 +127,40 @@
                 <li><a href="#">할인</a></li>
             </ul>
 
-            <div class="row product-grid4" th:if="${not #lists.isEmpty(productList)}">
-                    <div class="col-md-2" th:each="product : ${productList}" style="text-align: center">
-                        <div class="product-image4">
-                            <a href="#">
-                                <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
-                            </a>
-<!--                            <ul class="social">-->
-<!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-<!--                                <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>-->
-<!--                                <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>-->
-<!--                            </ul>-->
-                            <span class="product-discount-label"
-                                  th:if="${product.isForceSoldOut == true or product.stock == 0}">
+            <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse)}">
+                <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
+                    <div class="product-image4">
+                        <a href="#">
+                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                        </a>
+                        <!--                            <ul class="social">-->
+                        <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <!--                                <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>-->
+                        <!--                                <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>-->
+                        <!--                            </ul>-->
+                        <span class="product-discount-label"
+                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                            <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                        <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                    </div>
+                    <ul class="rating">
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                        <li class="fa fa-star"></li>
+                    </ul>
+                    <div class="product-content">
+                        <h3 class="title"><a
+                                th:href="@{|/products/${product.productNo}|}">[[${product.productName}]]</a></h3>
+                        <div class="price">[[${product.selledPrice}]]
+                            <span>[[${product.fixedPrice}]]</span>
                         </div>
-                        <ul class="rating">
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                            <li class="fa fa-star"></li>
-                        </ul>
-                        <div class="product-content">
-                            <h3 class="title"><a th:href="@{|/products/${product.productNo}|}">[[${product.productName}]]</a></h3>
-                            <div class="price">[[${product.selledPrice}]]
-                                <span>[[${product.fixedPrice}]]</span>
-                            </div>
-                            <a class="add-to-cart" href="">+ Add To Cart</a>
-                        </div>
+                        <a class="add-to-cart" href="">+ Add To Cart</a>
+                    </div>
                 </div>
             </div>
-            <div class="row" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">
+            <div class="row" th:unless="${not #lists.isEmpty(pageResponse)}" style="text-align: center">
                 <p>해당 카테고리에 속하는 상품이 존재하지 않습니다.</p>
             </div>
 
@@ -167,19 +168,21 @@
         </div> <!-- / .row -->
 
         <!-- Pagination -->
-        <div class="row">
-            <div class="col-sm-12">
+        <th:block th:include="component/pageFooter"></th:block>
 
-                <ul class="pagination pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><a href="#">»</a></li>
-                </ul>
+        <!--        <div class="row">-->
+        <!--            <div class="col-sm-12">-->
 
-            </div>
-        </div>
+        <!--                <ul class="pagination pull-right">-->
+        <!--                    <li><a href="#">«</a></li>-->
+        <!--                    <li><a href="#">»</a></li>-->
+        <!--                </ul>-->
+
+        <!--            </div>-->
+        <!--        </div>-->
 
     </div>
+    <script src="/mainpage/js/category.js"></script>
 </div>
-
 </body>
 </html>

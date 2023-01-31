@@ -1,14 +1,13 @@
 package shop.itbook.itbookfront.product.service.impl;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
-import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
@@ -34,23 +33,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<BookDetailsResponseDto> getBookList(boolean isFiltered) {
-        return productAdaptor.findBookList(isFiltered);
+    public PageResponse<ProductDetailsResponseDto> getProductList(String url) {
+        return productAdaptor.findProductList(url);
     }
 
     @Override
-    public List<ProductDetailsResponseDto> getProductList(boolean isFiltered) {
-        return productAdaptor.findProductList(isFiltered);
+    public PageResponse<CategoryDetailsResponseDto> getCategoryList(String url) {
+        return productAdaptor.findCategoryList(url);
     }
 
     @Override
     public void removeProduct(Long productNo) {
         productAdaptor.removeProduct(productNo);
-    }
-
-    @Override
-    public BookDetailsResponseDto getBook(Long productNo) {
-        return productAdaptor.findBook(productNo);
     }
 
     @Override
@@ -64,13 +58,4 @@ public class ProductServiceImpl implements ProductService {
         return productAdaptor.findProduct(productNo);
     }
 
-    @Override
-    public List<CategoryDetailsResponseDto> getCategoryListFilteredByProductNo(Long productNo) {
-        return productAdaptor.findCategoryListWithProductNo(productNo);
-    }
-
-    @Override
-    public List<ProductDetailsResponseDto> getProductListFilteredByCategoryNo(Integer categoryNo) {
-        return productAdaptor.findProductListWithCategoryNo(categoryNo);
-    }
 }

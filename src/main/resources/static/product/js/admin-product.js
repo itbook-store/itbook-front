@@ -13,6 +13,8 @@ async function showSubCategoryAndForm(event, categoryNoList) {
     event.preventDefault();
 
     let mainCategoryNo = document.getElementById("mainCategory").value;
+    let target = document.getElementById("mainCategory");
+    let mainCategoryName = target.options[target.selectedIndex].text;
 
     let subCategoryCheckBoxDiv = document.getElementById("categoryCheckBox");
     while (subCategoryCheckBoxDiv.hasChildNodes()) {
@@ -20,8 +22,7 @@ async function showSubCategoryAndForm(event, categoryNoList) {
     }
     subCategoryCheckBoxDiv.style.display = "block";
 
-    showBookForm(mainCategoryNo);
-    console.log(categoryNoList);
+    showBookForm(mainCategoryName);
     await fetch(`/async/${mainCategoryNo}/sub-categories`, {
         method: "GET"
     })
@@ -49,10 +50,9 @@ async function showSubCategoryAndForm(event, categoryNoList) {
 
 }
 
-function showBookForm(mainCategoryNo) {
+function showBookForm(mainCategoryName) {
     let bookFormDiv = document.getElementById("form-book");
-
-    if (mainCategoryNo == 2) {
+    if (mainCategoryName.includes("도서")) {
         bookFormDiv.style.display = "block";
     } else {
         bookFormDiv.style.display = "none";
