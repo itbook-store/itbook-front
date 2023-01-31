@@ -2,8 +2,11 @@ package shop.itbook.itbookfront.product.service;
 
 import java.io.IOException;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
@@ -17,13 +20,9 @@ public interface ProductService {
     ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
                                  ProductBookRequestDto requestDto);
 
-    List<BookDetailsResponseDto> getBookList(boolean isFiltered) throws IOException;
-
-    List<ProductDetailsResponseDto> getProductList(boolean isFiltered);
+    PageResponse<ProductDetailsResponseDto> getProductList(String url);
 
     void removeProduct(Long productNo);
-
-    BookDetailsResponseDto getBook(Long id);
 
     void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
                        ProductBookRequestDto requestDto);
@@ -31,7 +30,6 @@ public interface ProductService {
     ProductDetailsResponseDto getProduct(Long productNo);
 
 
-    List<CategoryDetailsResponseDto> getCategoryListFilteredByProductNo(Long productNo);
+    PageResponse<CategoryDetailsResponseDto> getCategoryList(String url);
 
-    List<ProductDetailsResponseDto> getProductListFilteredByCategoryNo(Integer categoryNo);
 }
