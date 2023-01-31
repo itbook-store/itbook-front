@@ -48,6 +48,11 @@ public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor
         }
 
         TokenDto tokenDto = (TokenDto) session.getAttribute("tokenDto");
+
+        if (Objects.isNull(tokenDto)) {
+            return execution.execute(request, body);
+        }
+
         String accessToken = tokenDto.getAccessToken();
 
         request.getHeaders().add(AUTH_HEADER, HEADER_PREFIX + accessToken);
