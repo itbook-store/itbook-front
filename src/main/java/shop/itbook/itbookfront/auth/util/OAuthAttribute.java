@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import shop.itbook.itbookfront.auth.exception.InvalidOAuthServerException;
 
 /**
@@ -14,6 +15,7 @@ import shop.itbook.itbookfront.auth.exception.InvalidOAuthServerException;
  * @author 강명관
  * @since 1.0
  */
+@Slf4j
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -95,10 +97,11 @@ public class OAuthAttribute {
                                           String userNameAttributeName) {
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+//        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+//        log.info("profile {}", profile);
 
         return OAuthAttribute.builder()
-            .name((String) profile.get(AuthConstant.NICKNAME))
+//            .name((String) profile.get(AuthConstant.NICKNAME))
             .email((String) kakaoAccount.get(AuthConstant.EMAIL))
             .attributes(attributes)
             .userNameAttributeName(userNameAttributeName)
