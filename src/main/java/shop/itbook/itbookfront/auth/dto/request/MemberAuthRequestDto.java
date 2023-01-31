@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.login.dto;
+package shop.itbook.itbookfront.auth.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -5,7 +5,6 @@ package shop.itbook.itbookfront.config;
  * @since 1.0
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +14,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
@@ -60,7 +57,6 @@ public class RedisConfig implements BeanClassLoaderAware {
         return redisTemplate;
     }
 
-
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
@@ -73,18 +69,6 @@ public class RedisConfig implements BeanClassLoaderAware {
 
         return serializer;
     }
-
-    //    @Bean
-//    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-//        return new GenericJackson2JsonRedisSerializer(objectMapper());
-//    }
-//
-//    private ObjectMapper objectMapper() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
-//
-//        return objectMapper;
-//    }
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
