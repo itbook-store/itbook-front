@@ -17,7 +17,7 @@
         <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
             <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">
                 <span class="product-type-label">신간 도서</span>
-                <div class="col-md-8 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
+                <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
                     <h1 class="display-4 fw-normal" th:text="${productList.get(num).productName}"></h1>
                     <p class="lead fw-normal" th:text="${productList.get(num).simpleDescription}"></p>
                     <a class="btn btn-outline-secondary" th:href="@{|/products/${productList.get(num).productNo}|}"
