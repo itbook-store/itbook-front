@@ -38,7 +38,7 @@ public class HomeController {
     public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+            categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
                 PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
 
         List<MainCategory> mainCategoryList =
