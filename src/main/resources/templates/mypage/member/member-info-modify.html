@@ -6,6 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>마이페이지-회원정보수정</title>
+    <script type="text/javascript">
+
+        let openWin;
+
+        function openPasswordModifyWindow() {
+            window.name="memberModify";
+            openWin = window.open("modify/password", "passwordModify", "width=570, height=350, resizable = no, scrollbars = no");
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -42,10 +51,15 @@
                     <span class="form-control" th:text="${#temporals.format(memberInfoResponseDto.birth, 'yyyy년 MM월 dd일')}" id="showBirth">
                 </div>
                 <div class="mb-3">
+                    <label for="showPassword" class="form-label">비밀번호</label><br/>
+                    <input type="button" class="btn btn-dark" value="비밀번호 수정하기" onclick="openPasswordModifyWindow()" id="showPassword">
+                    <input type="hidden" name="password" id="memberPassword">
+                </div>
+                <!--<div class="mb-3">
                     <label for="showPassword" class="form-label">비밀번호</label>
                     <input type="password" class="form-control" name="password" th:value="${memberInfoResponseDto.password}" id="showPassword" aria-describedby="pwdHelp">
                     <div id="pwdHelp" class="form-text">영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다</div>
-                </div>
+                </div>-->
                 <div class="mb-3">
                     <label for="showPhoneNumber" class="form-label">핸드폰번호</label>
                     <input type="text" name="phoneNumber" class="form-control" th:field="${memberInfoResponseDto.phoneNumber}" id="showPhoneNumber">

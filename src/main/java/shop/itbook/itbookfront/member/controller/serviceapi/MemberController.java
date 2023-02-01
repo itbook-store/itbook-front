@@ -72,4 +72,9 @@ public class MemberController {
 
         return "redirect:/logout";
     }
+
+    @GetMapping("/me/modify/password")
+    public String memberPwdModify() {
+        return "mypage/member/member-password-modify";
+    }
 }
