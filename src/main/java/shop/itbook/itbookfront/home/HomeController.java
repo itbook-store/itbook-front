@@ -16,7 +16,6 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
@@ -39,7 +38,7 @@ public class HomeController {
     public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+            categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
                 PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
 
         List<MainCategory> mainCategoryList =
