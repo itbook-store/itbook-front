@@ -13,7 +13,6 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
