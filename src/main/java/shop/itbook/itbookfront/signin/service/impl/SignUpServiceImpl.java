@@ -55,6 +55,11 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public void addMember(MemberInputRequestDto memberInputRequestDto) {
 
+        StringBuffer sb = new StringBuffer();
+        sb.append(memberInputRequestDto.getPhoneNumber());
+        sb.insert(3, "-");
+        sb.insert(8, "-");
+
         MemberRequestDto memberRequestDto =
             MemberRequestDto.builder().membershipNo(428).memberStatusNo(392).memberId(
                     memberInputRequestDto.getMemberId()).nickname(memberInputRequestDto.getNickname())
@@ -63,7 +68,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .birth(LocalDate.parse(memberInputRequestDto.getBirth(),
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay())
                 .password(passwordEncoder.encode(memberInputRequestDto.getPassword())).phoneNumber(
-                    memberInputRequestDto.getPhoneNumber()).email(memberInputRequestDto.getEmail())
+                    sb.toString()).email(memberInputRequestDto.getEmail())
                 .isSocial(memberInputRequestDto.getIsSocial()).build();
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
