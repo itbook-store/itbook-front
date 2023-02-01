@@ -1,0 +1,101 @@
+/*
+ * Dummy devices (replace them with your own or something else entirely!)
+ */
+
+.product-type-label {
+    color: #fff;
+    background-color: #343930;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 45px;
+    height: 45px;
+    width: auto;
+    padding-inline: 10px;
+    border-radius: 10%;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    transition: all .3s;
+    z-index: 1;
+}
+
+.product-thumbnails {
+    position: absolute;
+    right: 5%;
+    bottom: -30%;
+    width: 300px;
+    height: 540px;
+    background-color: #333;
+    border-radius: 21px;
+    transform: rotate(30deg);
+}
+
+.product-thumbnails::before {
+    position: absolute;
+    top: 10%;
+    right: 5px;
+    bottom: 20%;
+    left: 10px;
+    content: "";
+    border-radius: 5px;
+}
+
+.product-thumbnails-2 {
+    top: -35%;
+    right: auto;
+    bottom: 0;
+    left: 5%;
+}
+
+
+/*
+ * Extra utilities
+ */
+
+.flex-equal > * {
+    flex: 1;
+}
+@media (min-width: 768px) {
+    .flex-md-equal > * {
+        flex: 1;
+    }
+}
+
+
+
+/* Caption text */
+.text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.active {
+    background-color: #717171;
+}
+
+/* Fading animation */
+.fade-custom {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+    .text {
+        font-size: 11px
+    }
+}
