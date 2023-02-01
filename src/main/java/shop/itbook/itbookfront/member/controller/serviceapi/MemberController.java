@@ -70,6 +70,6 @@ public class MemberController {
 
         memberService.withdrawMember(memberId, memberStatusChangeRequestDto);
 
-        return "redirect:/mypage";
+        return "redirect:/logout";
     }
 }
