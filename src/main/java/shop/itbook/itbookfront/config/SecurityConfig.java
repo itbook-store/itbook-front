@@ -6,10 +6,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
+import shop.itbook.itbookfront.auth.filter.CustomExceptionFilter;
+import shop.itbook.itbookfront.auth.handler.CustomAccessDeniedHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.handler.CustomOAuthSuccessHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
@@ -43,7 +47,9 @@ public class SecurityConfig {
             .anyRequest().permitAll()
             .and()
             .csrf()
-            .disable()
+            .disable();
+
+        http
             .formLogin()
             .loginPage("/login")
             .permitAll()
@@ -51,12 +57,15 @@ public class SecurityConfig {
             .usernameParameter("memberId")
             .passwordParameter("password")
             .defaultSuccessUrl("/")
-            .and()
+            .failureUrl("/login");
+
+        http
             .logout()
             .logoutUrl("/logout")
             .addLogoutHandler(customLogoutHandler())
             .logoutSuccessUrl("/")
             .and()
+            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
@@ -65,6 +74,10 @@ public class SecurityConfig {
             .successHandler(customOAuthSuccessHandler(null))
             .userInfoEndpoint()
             .userService(customOAuth2UserService(null, null));
+
+        http
+            .exceptionHandling()
+            .accessDeniedHandler(customAccessDeniedHandler());
 
         return http.build();
     }
@@ -138,6 +151,28 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil) {
         return new CustomOAuthSuccessHandler(authUtil);
+    }
+
+    /**
+     * 시큐리티에서 발생하는 에러를 try catch로 잡아 처리하는 필터 입니다.
+     *
+     * @return customExceptionFilter
+     * @author 강명관
+     */
+    @Bean
+    public OncePerRequestFilter customExceptionFilter() {
+        return new CustomExceptionFilter();
+    }
+
+    /**
+     * AccessDenied 에 대한 처리를 위한 핸들러 입니다.
+     *
+     * @return CustomAccessDeniedHandler
+     * @author 강명관
+     */
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
 }

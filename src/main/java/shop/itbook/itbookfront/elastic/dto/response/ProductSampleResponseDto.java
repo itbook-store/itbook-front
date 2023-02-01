@@ -17,5 +17,8 @@ public class ProductSampleResponseDto {
     private Integer increasePointPercent;
     private Double discountPercent;
     private Long rawPrice;
+    private Boolean isSelled;
+    private Integer stock;
+    private Long selledPrice;
 
 }
