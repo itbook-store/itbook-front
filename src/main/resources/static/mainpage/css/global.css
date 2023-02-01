@@ -1,17 +1,17 @@
-#container {
-    height: 100vh;
-    box-sizing: border-box;
-
-}
-
 * {
     margin: 0;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
-.itbook-container {
-    margin: 10%;
+body {
+    margin:0;
+}
 
-    width: 80%;
+.itbook-container{
+    /*margin: 10%;*/
+
+    margin-left: 10%;
+    margin-right: 10%;
+
     height: 100%;
 }
