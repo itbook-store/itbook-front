@@ -55,18 +55,6 @@ body {
     height: 600px;
 }
 
-.shop__slideshow .carousel-inner .item_1 {
-    background: url(../img/home_11.jpg) no-repeat center center / cover;
-}
-
-.shop__slideshow .carousel-inner .item_2 {
-    background: url(../img/home_12.jpg) no-repeat center center / cover;
-}
-
-.shop__slideshow .carousel-inner .item_3 {
-    background: url(../img/home_14.jpg) no-repeat center center / cover;
-}
-
 .shop-slideshow__heading {
     margin: 0 0 20px 0;
     font-family: 'Questrial', sans-serif;
@@ -149,18 +137,6 @@ body {
     text-align: center;
 }
 
-.shop-index-features__icon {
-    margin-bottom: 20px;
-    width: 90px;
-    height: 100px;
-    background: url(../img/hexagon.svg) no-repeat center center / cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 100px;
-    text-align: center;
-    font-size: 24px;
-}
 
 .shop-index-features__heading {
     margin-bottom: 15px;
@@ -198,15 +174,6 @@ body {
     overflow: hidden;
 }
 
-.shop-index-blog__img:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: url(../img/hexagon_reversed.svg) no-repeat top left / 100% 100%;
-}
 
 .shop-index-blog__img > img {
     height: 100%;
@@ -978,9 +945,3 @@ body {
         margin-bottom: 30px
     }
 }
-
-<style>
- a:link { color: black; text-decoration: none;}
-a:visited { color: black; text-decoration: none;}
-a:hover { color: blue; text-decoration: underline;}
-</style>
