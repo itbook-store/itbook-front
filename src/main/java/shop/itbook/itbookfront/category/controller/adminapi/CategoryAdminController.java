@@ -172,14 +172,15 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{categoryNo}/sub-categories")
-    public String subCategoryList(@PathVariable Integer categoryNo, @RequestParam String parentCategoryName, Model model) {
+    public String subCategoryList(@PathVariable Integer categoryNo, @RequestParam String parentCategoryName, Model model, @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse = categoryService.findCategoryList(
-            "/api/admin/categories/" + categoryNo + "/child-categories");
+            String.format("/api/admin/categories/%d/child-categories?page=%d&size=%d", categoryNo, pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("parentCategoryName", parentCategoryName);
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", String.format("/api/admin/categories/%d/sub-categories", categoryNo));
+        model.addAttribute("paginationUrl",
+            String.format("/admin/categories/%d/sub-categories?parentCategoryName=%s", categoryNo, parentCategoryName));
         return Strings.concat(DIRECTORY_NAME, "/subCategoryList");
     }
 }

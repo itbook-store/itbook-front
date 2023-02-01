@@ -21,8 +21,9 @@ public class CategoryAsyncController {
 
     @GetMapping("/async/{categoryNo}/sub-categories")
     public List<CategoryListResponseDto> subCategoryList(@PathVariable Integer categoryNo) {
-        
+
         return categoryService.findCategoryList(
-            "/api/admin/categories/" + categoryNo + "/child-categories").getContent();
+            "/api/admin/categories/" + categoryNo + "/child-categories?page=0&size=" +
+                Integer.MAX_VALUE).getContent();
     }
 }
