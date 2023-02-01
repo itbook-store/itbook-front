@@ -1,11 +1,13 @@
 package shop.itbook.itbookfront.elastic.controller.adminapi;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.elastic.dto.response.ProductSampleResponseDto;
 import shop.itbook.itbookfront.elastic.service.ProductSearchService;
 
@@ -28,10 +30,14 @@ public class ProductSearchController {
      * @return 상품정보를 반환해줍니다.
      */
     @GetMapping
-    public List<ProductSampleResponseDto> searchProductByName(@RequestParam String name) {
+    public PageResponse<ProductSampleResponseDto> searchProductByName(@RequestParam String name,
+                                                                      @PageableDefault Pageable pageable) {
 
-        List<ProductSampleResponseDto> productList =
-            productSearchService.findProductList("/api/products/search?name="+name);
+        PageResponse<ProductSampleResponseDto> productList =
+            productSearchService.findProductList(
+                String.format("/async/products/search?page=%d&size=%d&name=%s",
+                    pageable.getPageNumber(), pageable.getPageSize(), name));
+
         return productList;
     }
 }
