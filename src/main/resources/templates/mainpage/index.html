@@ -42,6 +42,7 @@
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(productList)}">
             <div class="col-md-2" th:each="product : ${productList}" style="text-align: center">
+                <a th:href="@{|/products/${product.productNo}|}">
                 <div class="product-image4">
                     <a href="#">
                         <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
@@ -63,6 +64,7 @@
                         <span>[[${product.fixedPrice}]]</span>
                     </div>
                 </div>
+                </a>
             </div>
         </div>
         <div class="row" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">

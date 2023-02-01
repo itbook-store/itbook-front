@@ -978,3 +978,9 @@ body {
         margin-bottom: 30px
     }
 }
+
+<style>
+ a:link { color: black; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: blue; text-decoration: underline;}
+</style>
