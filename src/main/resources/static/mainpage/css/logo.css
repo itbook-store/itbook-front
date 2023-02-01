@@ -72,11 +72,11 @@
     padding: 0;
 }
 
-#category_btn {
-    padding: 0 20px !important;
-    height: 40px !important;
-}
+/*#category_btn {*/
+/*    padding: 0 20px !important;*/
+/*    !*height: 40px !important;*!*/
+/*}*/
 
 .py-3.mb-4.border-bottom{
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
