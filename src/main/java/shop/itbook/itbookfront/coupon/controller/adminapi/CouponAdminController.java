@@ -7,6 +7,8 @@ import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -67,21 +70,27 @@ public class CouponAdminController {
     }
 
     @GetMapping
-    public String couponList(Model model, @RequestParam(required = false) String coverage)
+    public String couponList(Model model, @RequestParam(required = false) String coverage,
+                             @PageableDefault Pageable pageable)
         throws InvalidPathRequestCouponList {
-        List<CouponListResponseDto> couponList = null;
+        PageResponse<CouponListResponseDto> couponList = null;
         if(Objects.isNull(coverage)) {
             couponList =
-                couponService.findCouponList("/api/admin/coupon");
+                couponService.findCouponList(
+                    String.format("/api/admin/coupon?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
         }
         else if(coverage.equals("카테고리쿠폰")){
             couponList =
-                couponService.findCouponList("/api/admin/coupon/category-coupon");
+                couponService.findCouponList(
+                    String.format("/api/admin/coupon/category-coupon?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
         }
         else{
             throw new InvalidPathRequestCouponList();
         }
         model.addAttribute("couponList", couponList);
+
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 
