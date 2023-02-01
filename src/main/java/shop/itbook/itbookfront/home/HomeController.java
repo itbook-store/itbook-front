@@ -1,6 +1,9 @@
 package shop.itbook.itbookfront.home;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
@@ -27,16 +31,15 @@ public class HomeController {
     private final ProductServiceImpl productServiceImpl;
 
     private final CategoryService categoryService;
-    public static final Integer CATEGORY_ALL_RECEIVE_SIZE = Integer.MAX_VALUE;
-    public static final Integer CATEGORY_ALL_RECEIVE_PAGE = 0;
-
+    public static final Integer SIZE_OF_ALL_CONTENT = Integer.MAX_VALUE;
+    public static final Integer PAGE_OF_ALL_CONTENT = 0;
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest httpServletRequest) throws IOException {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
-                CATEGORY_ALL_RECEIVE_PAGE, CATEGORY_ALL_RECEIVE_SIZE));
+            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
 
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
@@ -45,8 +48,10 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
-        List<ProductDetailsResponseDto> bookList = productServiceImpl.getProductList(true);
-        model.addAttribute("productList", bookList);
+        List<ProductDetailsResponseDto> productList = productServiceImpl
+            .getProductList(String.format("/api/products?page=%d&size=%d", PAGE_OF_ALL_CONTENT,
+                SIZE_OF_ALL_CONTENT)).getContent();
+        model.addAttribute("productList", productList);
         return "mainpage/index";
     }
 

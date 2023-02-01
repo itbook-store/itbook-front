@@ -1,8 +1,13 @@
 package shop.itbook.itbookfront.product.controller.adminapi;
 
+import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
+import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
@@ -33,10 +39,14 @@ public class ProductAdminController {
     private final CategoryService categoryService;
     private static final String PRODUCT_REDIRECT_URL = "redirect:/admin/products";
 
+
     @GetMapping
-    public String getAdminProductPage(Model model) {
-        List<ProductDetailsResponseDto> productList = productService.getProductList(false);
-        model.addAttribute("productList", productList);
+    public String getAdminProductPage(Model model, @PageableDefault Pageable pageable) {
+        PageResponse<ProductDetailsResponseDto> pageResponse
+            = productService.getProductList(String.format("/api/admin/products?page=%d&size=%d",
+            pageable.getPageNumber(), pageable.getPageSize()));
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/products");
         return "adminpage/product/product-management";
     }
 
@@ -68,20 +78,30 @@ public class ProductAdminController {
     @GetMapping("/add")
     public String getAddProductForm(Model model) {
         model.addAttribute("mainCategoryList",
-            categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
         return "adminpage/product/product-add";
     }
 
     @GetMapping("/{productNo}/modify")
     public String getModifyProductForm(Model model, @PathVariable Long productNo) {
         model.addAttribute("product", productService.getProduct(productNo));
+
         List<CategoryDetailsResponseDto> categoryListByProductNo =
-            productService.getCategoryListFilteredByProductNo(productNo);
+            productService.getCategoryList(
+                String.format("/api/admin/products?page=%d&size=%d&productNo=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, productNo)).getContent();
         model.addAttribute("productCategoryList", categoryListByProductNo);
+
         model.addAttribute("mainCategoryList",
-            categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
+
         model.addAttribute("parentCategoryName",
             categoryListByProductNo.get(0).getParentCategoryName());
+
         return "adminpage/product/product-modify";
     }
 

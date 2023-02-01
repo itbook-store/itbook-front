@@ -10,11 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductSampleResponseDto {
+    private Long productNo;
     private String name;
     private String thumbnailUrl;
     private Long fixedPrice;
     private Integer increasePointPercent;
     private Double discountPercent;
     private Long rawPrice;
+    private Boolean isSelled;
+    private Integer stock;
+    private Long selledPrice;
 
 }

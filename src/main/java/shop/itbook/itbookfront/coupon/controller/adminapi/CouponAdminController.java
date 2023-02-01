@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.coupon.controller.adminapi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -12,11 +13,15 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
+import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
 
 /**
  * @author 송다혜
@@ -28,12 +33,14 @@ import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 public class CouponAdminController {
 
     private final CouponService couponService;
+    private final CategoryService categoryService;
     private static final String DIRECTORY_NAME = "adminpage/couponadmin";
 
     @GetMapping("/coupon-addition")
     public String couponAddPage(@ModelAttribute("couponInputRequestDto")
-                                    CouponInputRequestDto couponInputRequestDto){
-
+                                    CouponInputRequestDto couponInputRequestDto, Model model){
+        model.addAttribute("mainCategoryList",
+            categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
         return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
     }
 
@@ -60,13 +67,24 @@ public class CouponAdminController {
     }
 
     @GetMapping
-    public String couponList(Model model){
-
-        List<CouponListResponseDto> couponList = couponService.findCouponList("/api/admin/coupon");
-
+    public String couponList(Model model, @RequestParam(required = false) String coverage)
+        throws InvalidPathRequestCouponList {
+        List<CouponListResponseDto> couponList = null;
+        if(Objects.isNull(coverage)) {
+            couponList =
+                couponService.findCouponList("/api/admin/coupon");
+        }
+        else if(coverage.equals("카테고리쿠폰")){
+            couponList =
+                couponService.findCouponList("/api/admin/coupon/category-coupon");
+        }
+        else{
+            throw new InvalidPathRequestCouponList();
+        }
         model.addAttribute("couponList", couponList);
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
+
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 

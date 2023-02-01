@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>차단 회원 정보</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="content">
+    <h2 th:text="${member.memberId}"></h2>
+    <hr>
+    회원번호 : <span th:text="${member.memberNo}"></span><br />
+    가입날짜 : <span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span><br />
+    아이디 : <span th:text="${member.memberId}"></span><br />
+    닉네임 : <span th:text="${member.nickname}"></span><br />
+    이름 : <span th:text="${member.name}"></span><br />
+    성별 : <span th:if="${member.isMan == true}">남</span>
+    <span th:if="${member.isMan == false}">여</span> <br/>
+    생일 : <span th:text="${#temporals.format(member.birth, 'yyyy년 MM월 dd일')}"></span><br />
+    핸드폰번호 : <span th:text="${member.phoneNumber}"></span><br />
+    이메일 : <span th:text="${member.email}"></span><br />
+    회원등급 : <span th:text="${member.membershipGrade}"></span><br />
+    회원상태 : <span th:text="${member.memberStatusName}"></span><br />
+    회원차단사유 : <span th:text="${member.statusChangedReason}"></span><br/>
+    회원차단일자 : <span th:text="${#temporals.format(member.memberStatusHistoryCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span><br/>
+    <hr>
+    <div>
+      <button onclick="selectNormalBtnInMemberDetails()">차단풀기</button><br/>
+      <form method="post" id="normal_form" th:object="${memberStatusChangeRequestDto}" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
+        <input type="hidden" name="memberStatusName" value="정상회원">
+        <input type="hidden" name ="statusChangedReason" value="차단회원에서 정상회원으로 변경">
+        <input type ="submit" value="차단해제">
+      </form>
+    </div>
+  </div>
+  <script th:src="@{/adminpage/member/js/MemberStatusBtnSelect.js}"></script>
+</div>
+</body>
+</html>

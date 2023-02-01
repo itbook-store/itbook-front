@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>상품</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -27,7 +27,7 @@
                 <th scope="col">수정</th>
                 <th scope="col">삭제</th>
             </tr>
-            <tr th:if="${not #lists.isEmpty(productList)}" th:each="product : ${productList}"
+            <tr th:if="${not #lists.isEmpty(pageResponse)}" th:each="product : ${pageResponse.content}"
                 style="text-align: center">
                 <td class="table-light">[[ ${product.productNo} ]]</td>
                 <td>[[ ${product.productName} ]]</td>
@@ -41,22 +41,21 @@
                 </td>
                 <td>
                     <a th:href="@{|/admin/products/${product.productNo}/delete|}">
-                    <button style="width: auto" class="btn btn-danger ml-1">
-                        삭제
-                    </button>
+                        <button style="width: auto" class="btn btn-danger ml-1">
+                            삭제
+                        </button>
                     </a>
 
                 </td>
             </tr>
-            <tr th:if="${#lists.isEmpty(productList)}">
+            <tr th:if="${#lists.isEmpty(pageResponse)}">
                 <td colspan="6" style="text-align: center">
                     <div>목록이 비었습니다.</div>
                 </td>
             </tr>
             </tbody>
         </table>
-
-
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
 </div>
 </body>

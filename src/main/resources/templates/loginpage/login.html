@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="UTF-8">
@@ -27,10 +27,20 @@
             <div class="button-login-box" >
                 <button type="submit" class="btn btn-primary btn-xs" style="width:100%; height: 42px">로그인</button>
             </div>
+        </div>
         </form>
-            
-            <a href="#" id="github_login_btn">
+
+
+            <a id="github_login_btn" href="/oauth2/authorization/github">
                 <img src="/loginpage/img/github_login_img.png">
+            </a>
+
+            <a id="naver_login_btn" href="/oauth2/authorization/naver">
+                <img src="loginpage/img/naver_login_img.png" width="280px">
+            </a>
+
+            <a id="kakao_login_btn" href="/oauth2/authorization/kakao">
+                <img src="loginpage/img/kakao_login_img.png">
             </a>
         </div>
 
