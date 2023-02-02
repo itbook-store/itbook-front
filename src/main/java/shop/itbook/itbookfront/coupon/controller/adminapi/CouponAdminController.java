@@ -89,8 +89,9 @@ public class CouponAdminController {
         else{
             throw new InvalidPathRequestCouponList();
         }
-        model.addAttribute("couponList", couponList);
-
+        model.addAttribute("pageResponse", couponList);
+        model.addAttribute("paginationUrl",
+            String.format("/admin/products?coverage=%s", coverage));
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 
