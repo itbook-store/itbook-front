@@ -28,25 +28,25 @@
     </header>
 </div>
 
-<div class="categoryBar" th:fragment="categoryBar-fragment">
-    <div class="categoryBar__columns">
-        <div class="categoryBar__columns__menu">
-            <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
-            <div>카테고리</div>
-        </div>
-        <div class="dropdown" id="categoryDiv">
-            <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
-                <div class="middle_content" th:text="${mainCategory.mainCategoryName}"></div>
-                <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
-                    <div>
-                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
-                           class="samll_content_text" th:text="${subCategory.categoryName}"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="categoryBar" th:fragment="categoryBar-fragment">-->
+<!--    <div class="categoryBar__columns">-->
+<!--        <div class="categoryBar__columns__menu">-->
+<!--            <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">-->
+<!--            <div>카테고리</div>-->
+<!--        </div>-->
+<!--        <div class="dropdown" id="categoryDiv">-->
+<!--            <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">-->
+<!--                <div class="middle_content" th:text="${mainCategory.mainCategoryName}"></div>-->
+<!--                <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">-->
+<!--                    <div>-->
+<!--                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"-->
+<!--                           class="samll_content_text" th:text="${subCategory.categoryName}"></a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div class="category-box" style="width: 100%; padding: 0 10%; background-color: black" th:fragment="category-fragment">
     <div id="category" class="category col-lg-3 d-lg-block">
@@ -58,24 +58,13 @@
         <nav class="collapse position-absolute navbar-vertical navbar-light align-items-start p-0 bg-light"
              id="navbar-vertical" style="width: 100%; z-index: 999;">
             <div class="navbar-nav w-100">
-                <div class="nav-item dropdown dropright">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
+                <div class="nav-item dropdown dropright" th:each="mainCategory : ${mainCategoryList}">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span th:text="${mainCategory.mainCategoryName}"/><i
                             class="fa fa-angle-right float-right mt-1"></i></a>
                     <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                        <a href="" class="dropdown-item">Men's Dresses</a>
-                        <a href="" class="dropdown-item">Women's Dresses</a>
-                        <a href="" class="dropdown-item">Baby's Dresses</a>
+                        <a th:each="subCategory : ${mainCategory.subCategoryList}" th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}" class="dropdown-item" th:text="${subCategory.categoryName}"/>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link">Shirts</a>
-                <a href="" class="nav-item nav-link">Jeans</a>
-                <a href="" class="nav-item nav-link">Swimwear</a>
-                <a href="" class="nav-item nav-link">Sleepwear</a>
-                <a href="" class="nav-item nav-link">Sportswear</a>
-                <a href="" class="nav-item nav-link">Jumpsuits</a>
-                <a href="" class="nav-item nav-link">Blazers</a>
-                <a href="" class="nav-item nav-link">Jackets</a>
-                <a href="" class="nav-item nav-link">Shoes</a>
             </div>
         </nav>
     </div>
