@@ -11,9 +11,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -70,5 +73,19 @@ public class MemberAdaptor {
 
         ResponseChecker.checkFail(responseEntity.getStatusCode(),
             responseEntity.getBody().getHeader().getResultMessage());
+    }
+
+    public MemberNoResponseDto addSocialMember(MemberSocialRequestDto memberSocialRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<MemberSocialRequestDto>
+            httpEntity = new HttpEntity<>(memberSocialRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<MemberNoResponseDto>> responseEntity = restTemplate.exchange(
+
+        )
+
     }
 }

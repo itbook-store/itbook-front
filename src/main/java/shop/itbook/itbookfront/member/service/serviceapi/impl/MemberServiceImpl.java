@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberAdaptor;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
@@ -36,4 +37,5 @@ public class MemberServiceImpl implements MemberService {
     public void withdrawMember(String memberId, MemberStatusChangeRequestDto requestDto) {
         memberAdaptor.modifyMemberStatusToWithDraw(memberId, requestDto);
     }
+
 }

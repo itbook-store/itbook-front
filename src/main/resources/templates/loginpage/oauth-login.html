@@ -58,8 +58,8 @@
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <label class="form-label">핸드폰번호(-포함)</label>
-                                        <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="010-0000-0000" name="phoneNumber" />
+                                        <label class="form-label">핸드폰번호(-미포함)</label>
+                                        <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="01000000000" name="phoneNumber" />
                                         <span th:text="${valid_phoneNumber}" style="color: red"></span>
                                         <button type="button" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
                                         <button type="button" onclick="retypeFn('phoneNumber', 'phoneNumberExists', 'phoneNumberNotExists', 'phoneNumberCheckBtn', 'phoneNumberRetypeBtn')" id = "phoneNumberRetypeBtn" style="visibility:hidden;">다시 입력</button>
