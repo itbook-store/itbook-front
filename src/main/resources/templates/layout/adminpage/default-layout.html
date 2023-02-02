@@ -15,7 +15,11 @@
     <div class="flex-content">
         <th:block th:replace="fragment/adminpage/side-menu :: side-menu-fragment">
         </th:block>
-        <th:block layout:fragment="content" th:class="main-content"></th:block>
+        <div class="wrapper w-100">
+            <th:block layout:fragment="content" th:class="main-content">
+            </th:block>
+            <div th:replace="fragment/common/footer :: footer-fragment"></div>
+        </div>
     </div>
 </div>
 
