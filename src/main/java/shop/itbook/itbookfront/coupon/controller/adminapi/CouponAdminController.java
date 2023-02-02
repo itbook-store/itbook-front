@@ -62,7 +62,7 @@ public class CouponAdminController {
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
         model.addAttribute("string", couponInputRequestDto.toString());
-        couponInputRequestDto.setReserved(false);
+        couponInputRequestDto.setDuplicateUse(false);
 
         couponService.addCoupon(couponInputRequestDto);
 
