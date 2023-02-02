@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
+import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
@@ -40,14 +41,10 @@ public class MemberController {
     }
 
     @PostMapping("/modify")
-    public String mypageInfoModify(@RequestParam("memberId") String memberId,
-                                   @RequestParam("name") String name,
-                                   @RequestParam("nickname") String nickname,
-                                   @RequestParam("password") String password,
-                                   @RequestParam("phoneNumber") String phoneNumber,
-                                   @RequestParam("email") String email) {
+    public String mypageInfoModify(@Valid MemberUpdateRequestDto memberUpdateRequestDto,
+                                   @RequestParam("memberId") String memberId) {
 
-        memberService.updateMemberInfo(memberId, name, nickname, password, phoneNumber, email);
+        memberService.updateMemberInfo(memberUpdateRequestDto, memberId);
 
         return "redirect:/mypage";
 

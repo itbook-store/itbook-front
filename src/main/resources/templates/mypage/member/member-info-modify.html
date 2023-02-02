@@ -7,14 +7,15 @@
     <meta charset="UTF-8">
     <title>마이페이지-회원정보수정</title>
     <script type="text/javascript">
-
         let openWin;
 
         function openPasswordModifyWindow() {
             window.name="memberModify";
             openWin = window.open("modify/password", "passwordModify", "width=570, height=350, resizable = no, scrollbars = no");
         }
+
     </script>
+    <script src = "/mypage/member/js/signup.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,8 +34,12 @@
                     <input type="text" name="name" class="form-control" th:field="${memberInfoResponseDto.name}" id="showName">
                 </div>
                 <div class="mb-3">
-                    <label for="showNickname" class="form-label">닉네임</label>
-                    <input type="text" name="nickname" class="form-control" th:field="${memberInfoResponseDto.nickname}" id="showNickname">
+                    <label for="nickname" class="form-label">닉네임</label>
+                    <input type="text" name="nickname" class="form-control" th:field="${memberInfoResponseDto.nickname}" id="nickname">
+                    <button type="button" class="btn btn-light" style="margin-top: 10px; display: none;" onclick="checkNicknameDuplicate()" id = "nicknameCheckBtn">중복 확인</button>
+                    <button type="button" class="btn btn-secondary" onclick="retypeFn('nickname', 'nicknameExists', 'nicknameNotExists', 'nicknameCheckBtn', 'nicknameRetypeBtn')" id = "nicknameRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
+                    <div id = "nicknameNotExists" style = "display:none;">등록 가능한 닉네임입니다.</div>
+                    <div id = "nicknameExists" style = "display:none;">이미 존재하는 닉네임입니다.</div>
                 </div>
                 <div class="mb-3">
                     <label for="showGender" class="form-label">성별</label>
@@ -53,26 +58,28 @@
                 <div class="mb-3">
                     <label for="showPassword" class="form-label">비밀번호</label><br/>
                     <input type="button" class="btn btn-dark" value="비밀번호 수정하기" onclick="openPasswordModifyWindow()" id="showPassword">
-                    <input type="hidden" name="password" id="memberPassword">
-                </div>
-                <!--<div class="mb-3">
-                    <label for="showPassword" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" name="password" th:value="${memberInfoResponseDto.password}" id="showPassword" aria-describedby="pwdHelp">
-                    <div id="pwdHelp" class="form-text">영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다</div>
-                </div>-->
-                <div class="mb-3">
-                    <label for="showPhoneNumber" class="form-label">핸드폰번호</label>
-                    <input type="text" name="phoneNumber" class="form-control" th:field="${memberInfoResponseDto.phoneNumber}" id="showPhoneNumber">
+                    <input type="hidden" name="password" id="memberPassword" th:value="${memberInfoResponseDto.password}">
                 </div>
                 <div class="mb-3">
-                    <label for="showEmail" class="form-label">이메일</label>
-                    <input type="email" class="form-control" id="showEmail" th:field="${memberInfoResponseDto.email}">
+                    <label for="phoneNumber" class="form-label">핸드폰번호</label>
+                    <input type="text" name="phoneNumber" class="form-control" th:field="${memberInfoResponseDto.phoneNumber}" id="phoneNumber">
+                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
+                    <button type="button" class="btn btn-secondary" onclick="retypeFn('phoneNumber', 'phoneNumberExists', 'phoneNumberNotExists', 'phoneNumberCheckBtn', 'phoneNumberRetypeBtn')" id = "phoneNumberRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
+                    <div id = "phoneNumberNotExists" style = "display:none;">등록 가능한 핸드폰 번호입니다.</div>
+                    <div id = "phoneNumberExists" style = "display:none;">이미 존재하는 핸드폰 번호입니다.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">이메일</label>
+                    <input type="email" name="email" class="form-control" id="email" th:field="${memberInfoResponseDto.email}">
+                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkEmailDuplicate()" id = "emailCheckBtn">중복 확인</button>
+                    <button type="button" class="btn btn-secondary" onclick="retypeFn('email', 'emailExists', 'emailNotExists', 'emailCheckBtn', 'emailRetypeBtn')" id = "emailRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
+                    <div id = "emailNotExists" style = "display:none;">등록 가능한 이메일입니다.</div>
+                    <div id = "emailExists" style = "display:none;">이미 존재하는 이메일입니다.</div>
                 </div>
                 <button type="submit" class="btn btn-primary" onclick="alert('회원님의 정보가 수정되었습니다.')">수정하기</button>
             </form>
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -22,11 +22,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void updateMemberInfo(String memberId, String name, String nickname, String password,
-                                 String phoneNumber, String email) {
-        MemberUpdateRequestDto memberUpdateRequestDto =
-            MemberUpdateRequestDto.builder().name(name).nickname(nickname).password(passwordEncoder.encode(password))
-                .phoneNumber(phoneNumber).email(email).build();
+    public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
 
         memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
     }
