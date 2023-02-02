@@ -1,12 +1,3 @@
-.main {
-    width: 1004px;
-    margin: 30px auto 0;
-}
-
-.main_columns {
-    margin-top: 30px;
-}
-
 .main_product_container {
     display: flex;
     align-items: center;
@@ -20,47 +11,7 @@
     margin-right: 0;
 }
 
-
-.main_title_box {
-    border-bottom: solid 4px black;
-    margin-bottom: 30px;
-    padding-bottom: 10px;
-}
-
 .main_title {
     font-size: 30px;
     font-weight: bold;
-}
-
-
-.product_price_box {
-    display: flex;
-}
-
-.product_img {
-    width: 180px;
-    height: 250px;
-    margin-bottom: 3px;
-}
-
-.product_title {
-
-}
-
-.product_origin_price {
-    margin-right: 10px;
-    text-decoration: line-through;
-    color: #777777;
-}
-
-.product_sale_percent {
-    color: red;
-    font-weight: bold;
-}
-
-
-.product_real_price {
-    font-size: 17px;
-    font-weight: bold;
-    color: blue;
 }

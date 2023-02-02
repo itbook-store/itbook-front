@@ -5,6 +5,7 @@
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
 
+
     <meta charset="UTF-8">
     <title>ItBook</title>
 </head>
@@ -129,35 +130,34 @@
 
             <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse)}">
                 <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
-                    <div class="product-image4">
-                        <a href="#">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <div class="product-image4">
                             <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
-                        </a>
-                        <!--                            <ul class="social">-->
-                        <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <!--                                <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>-->
-                        <!--                                <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>-->
-                        <!--                            </ul>-->
-                        <span class="product-discount-label"
-                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                            <!--                            <ul class="social">-->
+                            <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                            <!--                                <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>-->
+                            <!--                                <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>-->
+                            <!--                            </ul>-->
+                            <span class="product-discount-label"
+                                  th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                        <span class="product-new-label">[[${product.discountPercent}]]%</span>
-                    </div>
-                    <ul class="rating">
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                    </ul>
-                    <div class="product-content">
-                        <h3 class="title"><a
-                                th:href="@{|/products/${product.productNo}|}">[[${product.productName}]]</a></h3>
-                        <div class="price">[[${product.selledPrice}]]
-                            <span>[[${product.fixedPrice}]]</span>
+                            <span class="product-new-label">[[${product.discountPercent}]]%</span>
                         </div>
-                        <a class="add-to-cart" href="">+ Add To Cart</a>
-                    </div>
+                        <ul class="rating">
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                            <li class="fa fa-star"></li>
+                        </ul>
+                        <div class="product-content">
+                            <h3 class="title">[[${product.productName}]]</h3>
+                            <div class="price">[[${product.selledPrice}]]
+                                <span>[[${product.fixedPrice}]]</span>
+                            </div>
+                            <a class="add-to-cart" href="">+ Add To Cart</a>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="row" th:unless="${not #lists.isEmpty(pageResponse)}" style="text-align: center">

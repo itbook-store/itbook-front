@@ -4,55 +4,53 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
+    <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/product/css/product.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="slider" style="width: 1004px; margin-left: auto; margin-right: auto;">
+<div layout:fragment="content" style="width: 100%!important; margin-inline: 0!important">
+    <div th:if="${not #lists.isEmpty(productList)}" style="height: 548px; margin: 0">
 
-        <div class="slideshow-container">
-
-            <div class="mySlides fade">
-                <img src="/mainpage/img/slider_img_01.jpg" style="width:100%">
+        <div class="position-relative overflow-hidden p-md-5 text-center bg-light" style="height: 88%">
+            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">
+                <span class="product-type-label">신간 도서</span>
+                <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
+                    <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal" th:text="${productList.get(num).productName}"></h1>
+                    <p class="lead fw-normal" th:text="${productList.get(num).simpleDescription}"></p>
+                    <a class="btn btn-outline-secondary" th:href="@{|/products/${productList.get(num).productNo}|}"
+                    >바로가기</a>
+                </div>
+                <img class="product-thumbnails shadow-sm d-none d-md-block"
+                     th:src="${productList.get(num).fileThumbnailsUrl}">
+                <img class="product-thumbnails product-thumbnails-2 shadow-sm d-none d-md-block"
+                     th:src="${productList.get(num).fileThumbnailsUrl}">
             </div>
-
-            <div class="mySlides fade">
-                <img src="/mainpage/img/slider_img_02.jpg" style="width:100%">
-            </div>
-
-            <div class="mySlides fade">
-                <img src="/mainpage/img/slider_img_03.jpg" style="width:100%">
-            </div>
-
         </div>
         <br>
 
-        <div style="text-align:center">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-
     </div>
 
-    <div class="main">
+    <div class="main" style="margin-inline: 10%;">
 
         <h2>이달의 도서 </h2>
         <hr>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(productList)}">
             <div class="col-md-2" th:each="product : ${productList}" style="text-align: center">
-                <div class="product-image4">
-                    <a href="#">
-                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
-                    </a>
-                    <ul class="social">
-                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
-                    </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                <a th:href="@{|/products/${product.productNo}|}">
+                    <div class="product-image4">
+                        <a href="#">
+                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                        </a>
+                        <ul class="social">
+                            <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                            <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                            <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                        <span class="product-discount-label"
+                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
                     <span class="product-new-label">[[${product.discountPercent}]]%</span>
                 </div>
@@ -70,129 +68,9 @@
         </div>
 
 
-        <div class="main_columns">
-
-            <div class="main_title_box">
-                <p class="main_title">추천 상품</p>
-            </div>
-
-            <div class="main_product_container">
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="main_columns">
-
-            <div class="main_title_box">
-                <p class="main_title">추천 상품</p>
-            </div>
-
-            <div class="main_product_container">
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="main_columns">
-
-            <div class="main_title_box">
-                <p class="main_title">추천 상품</p>
-            </div>
-
-            <div class="main_product_container">
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-
-                <div class="main_product">
-                    <img src="/mainpage/img/product_img_01.jpeg" alt="" class="product_img">
-                    <p class="product_title">객체지향의 사실과 오해</p>
-                    <div class="product_price_box">
-                        <p class="product_origin_price">10,000</p>
-                        <p class="product_sale_percent">10%</p>
-                    </div>
-                    <p class="product_real_price">9,000</p>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <div th:replace="fragment/mainpage/side-bar :: right-side-bar-fragment"></div>
-
-    <script src="/mainpage/js/category.js"></script>
     <script src="/mainpage/js/slider.js"></script>
-
 </div>
 
 </body>
