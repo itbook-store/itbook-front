@@ -2,6 +2,10 @@ async function checkMemberIdDuplicate() {
     let memberId = document.getElementById('memberId').value;
     let isExists = false;
 
+
+    if(!checkKor(memberId)) {
+        return false;
+    }
     blankCheck(memberId);
 
     const request = {
@@ -58,6 +62,16 @@ async function checkPhoneNumberDuplicate() {
     let phoneNumber = document.getElementById('phoneNumber').value;
     let isExists = false;
 
+    if(!checkSpecial(phoneNumber)) {
+        return false;
+    }
+
+    phoneNumber = phoneNumber.slice(0, 3) + "-" + phoneNumber.slice(3, 7) + "-" + phoneNumber.slice(7, 11);
+
+    if(!checkKorEng(phoneNumber)) {
+        return false;
+    }
+
     blankCheck(phoneNumber);
 
     const request = {
@@ -84,6 +98,14 @@ async function checkPhoneNumberDuplicate() {
 async function checkEmailDuplicate() {
     let email = document.getElementById('email').value;
     let isExists = false;
+
+    if(!checkKor(email)) {
+        return false;
+    }
+
+    if(!checkEmail(email)) {
+        return false;
+    }
 
     blankCheck(email);
 
@@ -141,7 +163,6 @@ function signUpSubmit() {
         || document.getElementById("phoneNumberCheckBtn").disabled == false
         || document.getElementById("emailCheckBtn").disabled == false) {
         alert("중복체크가 되지 않은 곳이 있습니다.");
-        return false;
     } else {
         document.getElementById("signupForm").submit();
     }
@@ -151,8 +172,45 @@ function socialLoginSubmit() {
     if (document.getElementById("nicknameCheckBtn").disabled == false
         || document.getElementById("phoneNumberCheckBtn").disabled == false) {
         alert("중복체크가 되지 않은 곳이 있습니다.");
-        return false;
     } else {
         document.getElementById("socialLoginForm").submit();
     }
+}
+
+function checkKor(str) {
+    const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+    if(regExp.test(str)){
+        alert("한글이 입력되었습니다.");
+        return false;
+    }
+    return true;
+}
+
+function checkKorEng(str) {
+    const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/g;
+    if(regExp.test(str)){
+        alert("전화번호 형식으로 입력해야 합니다.");
+        return false;
+    }
+    return true;
+}
+
+function checkSpecial(str) {
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    if(regExp.test(str)) {
+        alert("특수문자가 입력되었습니다.");
+        return false;
+    }
+
+    return true;
+}
+
+function checkEmail(str) {
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    if(!regExp.test(str)) {
+        alert("이메일 형식이 아닙니다.");
+        return false;
+    }
+
+    return true;
 }
