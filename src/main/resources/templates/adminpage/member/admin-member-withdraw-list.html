@@ -14,7 +14,7 @@
         <div class="content">
           <h2>탈퇴회원 목록</h2>
           <hr>
-            <div style="float: right;">
+            <div>
                 <form method="get" th:action="@{/admin/members/withdraw/search}">
                     <select name="searchRequirement">
                         <option value="everything">전체</option>
@@ -26,31 +26,63 @@
                         <!--TODO 가입일 누르면 날짜 선택하는 칸 추가 -->
                     </select>
                     <input type="text" name="searchWord">
-                    <input type="submit" value="검색">
+                    <button class="btn btn-secondary" type="submit">검색</button>
                 </form>
             </div>
-          <table class="table">
-            <tr>
-              <td>회원 번호</td>
-              <td>회원 아이디</td>
-              <td>닉네임</td>
-              <td>멤버등급</td>
-              <td>멤버상태</td>
-              <td></td>
-            </tr>
-            <tr th:each="member : ${memberList}" th:if="${member.memberStatusName} == '탈퇴회원'">
-              <td class="table-light" th:text="${member.memberNo}"></td>
-              <td th:text="${member.memberId}"></td>
-              <td th:text="${member.nickname}"></td>
-              <td th:text="${member.membershipGrade}"></td>
-              <td th:text="${member.memberStatusName}"></td>
-              <td>
-                  <button class="btn btn-light">
-                      <a th:href="@{|/admin/members/${member.memberId}/info|}" style="text-decoration-line: none; color: black;">상세정보</a>
-                  </button>
-              </td>
-            </tr>
-          </table>
+            <div class="container bootstrap snippets bootdey">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="main-box no-header clearfix">
+                            <div class="main-box-body clearfix">
+                                <div class="table-responsive">
+                                    <table class="table user-list">
+                                        <thead>
+                                        <tr>
+                                            <th><span>회원번호</span></th>
+                                            <th><span>회원이름</span></th>
+                                            <th><span>가입날짜</span></th>
+                                            <th class="text-center"><span>회원상태</span></th>
+                                            <th><span>이메일</span></th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="member : ${pageResponse.getContent()}">
+                                            <td th:text="${member.memberNo}"></td>
+                                            <td>
+                                                <span th:text="${member.name}"></span>
+                                            </td>
+                                            <td><span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일')}"></span></td>
+                                            <td class="text-center">
+                                                <span class="label label-default" th:text="${member.memberStatusName}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${member.email}"></span>
+                                            </td>
+                                            <td style="width: 20%;">
+                                                <a th:href="@{|/admin/members/${member.memberId}/info|}" style="text-decoration-line: none; color: black;" class="table-link text-warning">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                                </a>
+                                                <a href="#" class="table-link text-info">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <th:block th:include="component/pageFooter"></th:block>
         </div>
     </div>
 
