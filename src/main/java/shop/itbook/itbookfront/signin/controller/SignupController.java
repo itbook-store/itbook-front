@@ -33,8 +33,6 @@ public class SignupController{
 
     private final SignUpService signUpService;
 
-    private final PasswordEncoder passwordEncoder;
-
     @GetMapping()
     public String signupForm(@ModelAttribute("memberInputRequestDto")
                              MemberInputRequestDto memberInputRequestDto) {
