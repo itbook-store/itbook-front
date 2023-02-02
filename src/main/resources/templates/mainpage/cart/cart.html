@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         <div class="product_priceBox">
-                            <p class="offical_price">10,000</p>
+                            <p class="fixed_price">10,000</p>
                             <p class="discount_price">9,000</p>
                         </div>
 
@@ -108,7 +108,7 @@
                     </td>
                     <td>
                         <div class="product_priceBox">
-                            <p class="offical_price">10,000</p>
+                            <p class="fixed_price">10,000</p>
                             <p class="discount_price">9,000</p>
                         </div>
 
@@ -120,7 +120,7 @@
                             </button>
 
                             <div class="form-outline">
-                                <input min="1" name="quantity" value="1"  class="quantity" type="number" />
+                                <input min="1" max="10" maxlength="1" name="quantity" value="1"  class="quantity" type="number" />
                             </div>
 
                             <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -151,7 +151,7 @@
 
     </div>
 
-    <script src="/cart/js/cart.js"></script>
+    <script src="/cart/js/cartForm.js"></script>
 
 </div>
 

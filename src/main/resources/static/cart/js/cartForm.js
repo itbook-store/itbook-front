@@ -26,3 +26,4 @@ subscriptionBtn.addEventListener("click", function() {
     subscriptionProduct.style.display = "block";
     generalProduct.style.display = "none";
 })
+
