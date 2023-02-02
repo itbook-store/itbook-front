@@ -11,9 +11,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**

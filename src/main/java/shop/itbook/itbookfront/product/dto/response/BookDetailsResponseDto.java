@@ -24,7 +24,7 @@ public class BookDetailsResponseDto {
 
     private Boolean isExposed;
 
-    private Boolean isForceSoldOut;
+    private Boolean isDeleted;
 
     private Integer stock;
 
