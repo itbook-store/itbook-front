@@ -1,3 +1,9 @@
+.mb-1 button a {
+    text-decoration: none;
+    color: #212529;
+}
+
 .mb-1:hover {
     background-color: aliceblue;
 }
+

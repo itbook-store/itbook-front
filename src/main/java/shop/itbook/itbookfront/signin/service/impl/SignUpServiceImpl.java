@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.signin.adaptor.SignUpAdaptor;
 import shop.itbook.itbookfront.signin.dto.request.MemberInputRequestDto;
 import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
@@ -55,6 +56,11 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public void addMember(MemberInputRequestDto memberInputRequestDto) {
 
+        StringBuffer sb = new StringBuffer();
+        sb.append(memberInputRequestDto.getPhoneNumber());
+        sb.insert(3, "-");
+        sb.insert(8, "-");
+
         MemberRequestDto memberRequestDto =
             MemberRequestDto.builder().membershipNo(428).memberStatusNo(392).memberId(
                     memberInputRequestDto.getMemberId()).nickname(memberInputRequestDto.getNickname())
@@ -63,9 +69,21 @@ public class SignUpServiceImpl implements SignUpService {
                 .birth(LocalDate.parse(memberInputRequestDto.getBirth(),
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay())
                 .password(passwordEncoder.encode(memberInputRequestDto.getPassword())).phoneNumber(
-                    memberInputRequestDto.getPhoneNumber()).email(memberInputRequestDto.getEmail())
+                    sb.toString()).email(memberInputRequestDto.getEmail())
                 .isSocial(memberInputRequestDto.getIsSocial()).build();
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
+    }
+
+    @Override
+    public void addSocialMember(MemberSocialRequestDto memberSocialRequestDto) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(memberSocialRequestDto.getPhoneNumber());
+        sb.insert(3, "-");
+        sb.insert(8, "-");
+
+        memberSocialRequestDto.setPhoneNumber(sb.toString());
+
+        signUpAdaptor.addSocialMember(memberSocialRequestDto);
     }
 }

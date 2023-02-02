@@ -44,7 +44,7 @@
             <div class="col-md-2" th:each="product : ${newBookList}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}"
+                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->

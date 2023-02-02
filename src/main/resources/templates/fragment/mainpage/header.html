@@ -30,32 +30,11 @@
     </header>
 </div>
 
-
-
-
-<div class="categoryBar" th:fragment="categoryBar-fragment">
-    <div class="categoryBar__columns">
-        <div class="categoryBar__columns__menu">
-            <img src="/mainpage/img/ic_menu_24px_2 copy.png" alt="menu">
-            <div>카테고리</div>
-        </div>
-        <div class="dropdown" id="categoryDiv">
-            <div class="middle_btn" th:each="mainCategory : ${mainCategoryList}">
-                <div class="middle_content" th:text="${mainCategory.mainCategoryName}"></div>
-                <div class="small_content" th:each="subCategory : ${mainCategory.subCategoryList}">
-                    <div>
-                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
-                           class="samll_content_text" th:text="${subCategory.categoryName}"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--카테고리바-->
 
 <nav class="navbar navbar-dark bg-dark" style="width: 100%;" th:fragment="category-fragment">
-    <div id="category" class="category col-lg-3 d-lg-block">
-        <button id = "category_btn" class="navbar-toggler" type="button"
+    <div id="category" class="category col-lg-2 d-lg-block">
+        <button id="category_btn" class="navbar-toggler" type="button"
                 data-toggle="collapse" data-target="#navbar-vertical"
                 aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span><span style="margin-left: 5px" class="text-white">카테고리</span>
@@ -63,36 +42,38 @@
         <nav class="collapse position-absolute navbar-vertical navbar-dark align-items-start p-0 bg-dark"
              id="navbar-vertical" style="width: 100%; z-index: 999;">
             <div class="navbar-nav w-100">
-                <div class="nav-item dropdown dropright">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
-                            class="fa fa-angle-right float-right mt-1"></i></a>
-                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                        <a href="" class="dropdown-item">Men's Dresses</a>
-                        <a href="" class="dropdown-item">Women's Dresses</a>
-                        <a href="" class="dropdown-item">Baby's Dresses</a>
+                <div class="nav-item dropdown dropright" th:each="mainCategory : ${mainCategoryList}">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                       th:text="${mainCategory.mainCategoryName}">
+                        <i class="fa fa-angle-right float-right mt-1"></i></a>
+                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0"
+                         th:each="subCategory : ${mainCategory.subCategoryList}">
+                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                           th:text="${subCategory.categoryName}"
+                           class="dropdown-item"></a>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link">Shirts</a>
-                <a href="" class="nav-item nav-link">Jeans</a>
-                <a href="" class="nav-item nav-link">Swimwear</a>
-                <a href="" class="nav-item nav-link">Sleepwear</a>
-                <a href="" class="nav-item nav-link">Sportswear</a>
-                <a href="" class="nav-item nav-link">Jumpsuits</a>
-                <a href="" class="nav-item nav-link">Blazers</a>
-                <a href="" class="nav-item nav-link">Jackets</a>
-                <a href="" class="nav-item nav-link">Shoes</a>
-            </div>
-        </nav>
-        <a th:href="@{/products?productTypeNo=1}">
-            <button style="margin-left: 15px" class="navbar-toggler text-white" >
-            신간
-        </button></a>
-        <a th:href="@{/products?productTypeNo=2}">
-            <button style="margin-left: 15px" class="navbar-toggler text-white" >
-                할인
-            </button></a>
-    </div>
 
+            </div>
+
+        </nav>
+    </div>
+    <div class="col-lg-2">
+    <!--            신간-->
+    <a th:href="@{/products?productTypeNo=1}">
+        <button style="margin-left: 15px" class="navbar-toggler text-white">
+            신간
+        </button>
+    </a>
+
+    <!--        할인-->
+
+    <a th:href="@{/products?productTypeNo=2}">
+        <button style="margin-left: 15px" class="navbar-toggler text-white">
+            할인
+        </button>
+    </a>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
