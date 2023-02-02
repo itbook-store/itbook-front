@@ -79,9 +79,8 @@ public class ProductController {
                     pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
         model.addAttribute("pageResponse", productList);
 
-//        model.addAttribute("paginationUrl",
-//            String.format("/admin/products?categoryNo=%d&categoryName=%s", categoryNo,
-//                categoryName));
+        model.addAttribute("paginationUrl",
+            String.format("/products?productTypeNo=%d", productTypeNo));
 
         return "mainpage/product/product-producttype";
     }
