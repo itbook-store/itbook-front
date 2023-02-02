@@ -18,14 +18,14 @@
     <div class="row">
 
         <div class="col-sm-8 col-md-12">
-            <div class="row product-grid4" th:if="${not #lists.isEmpty(productList)}">
-                <div class="col-md-2" th:each="product : ${productList}" style="text-align: center">
+            <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse.getContent())}">
+                <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
                     <div class="product-image4">
                         <a href="#">
                             <img class="pic-1" th:src="${product.thumbnailUrl}">
                         </a>
                         <span class="product-discount-label"
-                              th:if="${product.isSelled == true or product.stock == 0}">
+                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
                         <span class="product-new-label">[[${product.discountPercent}]]%</span>
                     </div>
@@ -46,11 +46,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">
+            <div class="row" th:unless="${not #lists.isEmpty(pageResponse.getContent())}" style="text-align: center">
                 <p>검색결과가 존재하지 않습니다.</p>
             </div>
 
         </div>
+        <th:block th:include="component/pageFooter"></th:block>
 
     </div>
     <script src="/mainpage/js/category.js"></script>

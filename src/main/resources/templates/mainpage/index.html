@@ -11,53 +11,88 @@
 </head>
 <body>
 <div layout:fragment="content" style="width: 100%!important; margin-inline: 0!important">
-    <div th:if="${not #lists.isEmpty(productList)}" style="height: 548px; margin: 0">
+    <div th:if="${not #lists.isEmpty(newBookList)}" style="height: 548px; margin: 0">
 
         <div class="position-relative overflow-hidden p-md-5 text-center bg-light" style="height: 88%">
-            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">
-                <span class="product-type-label">신간 도서</span>
+            <!--            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">-->
+            <div class="fade-custom" th:each="product : ${newBookList}">
+                <span class="product-type-label">NEW</span>
                 <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
-                    <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal" th:text="${productList.get(num).productName}"></h1>
-                    <p class="lead fw-normal" th:text="${productList.get(num).simpleDescription}"></p>
-                    <a class="btn btn-outline-secondary" th:href="@{|/products/${productList.get(num).productNo}|}"
+                    <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal"
+                        th:text="${product.productName}"></h1>
+                    <p class="lead fw-normal" th:text="${product.simpleDescription}"></p>
+                    <a class="btn btn-outline-dark" th:href="@{|/products/${product.productNo}|}"
                     >바로가기</a>
                 </div>
                 <img class="product-thumbnails shadow-sm d-none d-md-block"
-                     th:src="${productList.get(num).fileThumbnailsUrl}">
+                     th:src="${product.fileThumbnailsUrl}">
                 <img class="product-thumbnails product-thumbnails-2 shadow-sm d-none d-md-block"
-                     th:src="${productList.get(num).fileThumbnailsUrl}">
+                     th:src="${product.fileThumbnailsUrl}">
             </div>
         </div>
         <br>
 
     </div>
 
+    <!--    헤더 및 메인-->
+
     <div class="main" style="margin-inline: 10%;">
 
-        <h2>이달의 도서 </h2>
-        <hr>
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(newBookList)}">
+            <h2 style="text-align: left">신간 도서 </h2>
+            <hr>
+            <div class="col-md-2" th:each="product : ${newBookList}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${product.selledPrice}]]
+                        <span>[[${product.fixedPrice}]]</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:unless="${not #lists.isEmpty(newBookList)}" style="text-align: center">
+                <p>상품이 존재하지 않습니다.</p>
+            </div>
+        </div>
 
-        <div class="row product-grid4" th:if="${not #lists.isEmpty(productList)}">
-            <div class="col-md-2" th:each="product : ${productList}" style="text-align: center">
-                <a th:href="@{|/products/${product.productNo}|}">
-                    <div class="product-image4">
-                        <a href="#">
-                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
-                        </a>
-                        <ul class="social">
-                            <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                            <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                            <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
-                                <a><i class="fa fa-shopping-cart"></i></a>
-                            </li>
-                        </ul>
-                        <span class="product-discount-label"
-                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBookList)}" data-spy="scroll">
+            <h2 style="text-align: left">할인 도서 </h2>
+            <hr>
+            <div class="col-md-2" th:each="product : ${discountBookList}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
                     <span class="product-new-label">[[${product.discountPercent}]]%</span>
                 </div>
                 <div class="product-content">
-                    <h3 class="title"><a th:href="@{|/products/${product.productNo}|}">[[${product.productName}]]</a>
+                    <h3 class="title"><a
+                    >[[${product.productName}]]</a>
                     </h3>
                     <div class="price">[[${product.selledPrice}]]
                         <span>[[${product.fixedPrice}]]</span>
@@ -65,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" th:unless="${not #lists.isEmpty(productList)}" style="text-align: center">
+        <div class="row" th:unless="${not #lists.isEmpty(discountBookList)}" style="text-align: center">
             <p>상품이 존재하지 않습니다.</p>
         </div>
 
