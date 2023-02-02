@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -50,9 +51,9 @@ public class CouponAdaptor {
         return body.getResult().getCouponNo();
     }
 
-    public List<CouponListResponseDto> findCouponList(String couponListUrl){
+    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
 
-        ResponseEntity<CommonResponseBody<List<CouponListResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<PageResponse<CouponListResponseDto>>> exchange =
         restTemplate.exchange(gatewayConfig.getGatewayServer() + couponListUrl,
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
