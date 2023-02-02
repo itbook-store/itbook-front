@@ -6,111 +6,150 @@
     <meta charset="UTF-8">
     <title>장바구니</title>
 
-    <style>
-        @media (min-width: 1025px) {
-            .h-custom {
-                height: 100vh !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/cart/css/cart.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 
 <div layout:fragment="content">
 
-    <section class="h-100 h-custom">
-        <div class="container h-100 py-5">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col">
+    <div class="section" style="width: 90%; margin: 100px auto;">
+        <h1 style="padding-bottom: 10px; border-bottom: solid 1px blud;">장바구니</h1>
+    </div>
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col" class="h5">Shopping Bag</th>
-                                <th scope="col">Format</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://i.imgur.com/2DsA49b.webp" class="img-fluid rounded-3"
-                                             style="width: 120px;" alt="Book">
-                                        <div class="flex-column ms-4">
-                                            <p class="mb-2">Thinking, Fast and Slow</p>
-                                            <p class="mb-0">Daniel Kahneman</p>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">Digital</p>
-                                </td>
-                                <td class="align-middle">
-                                    <div class="d-flex flex-row">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
 
-                                        <input id="form1" min="0" name="quantity" value="2" type="number"
-                                               class="form-control form-control-sm" style="width: 50px;"/>
 
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">$9.99</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="border-bottom-0">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://i.imgur.com/Oj1iQUX.webp" class="img-fluid rounded-3"
-                                             style="width: 120px;" alt="Book">
-                                        <div class="flex-column ms-4">
-                                            <p class="mb-2">Homo Deus: A Brief History of Tomorrow</p>
-                                            <p class="mb-0">Yuval Noah Harari</p>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="align-middle border-bottom-0">
-                                    <p class="mb-0" style="font-weight: 500;">Paperback</p>
-                                </td>
-                                <td class="align-middle border-bottom-0">
-                                    <div class="d-flex flex-row">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
+    <div class="cart">
+        <div class="cart_type_bntBox">
+            <button class="cart_type_general btn btn-primary">일반 상품</button>
+            <button class="cart_type_subscription btn btn-light">구독 상품</button>
 
-                                        <input id="form2" min="0" name="quantity" value="1" type="number"
-                                               class="form-control form-control-sm" style="width: 50px;"/>
+        </div>
 
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="align-middle border-bottom-0">
-                                    <p class="mb-0" style="font-weight: 500;">$13.50</p>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="table-responsive general_product">
+            <table class="table table-hover table-md align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 100px;">
+                        <p>전채 <span></span> 개</p>
+                    </th>
+                    <th style="min-width: 80px;"><input type="checkbox"></th>
+                    <th style="min-width: 350px;">상품명</th>
+                    <th style="min-width: 150px;">판매가</th>
+                    <th style="min-width: 250px;">수량</th>
+                    <th style="min-width: 110px;">주문 금액</th>
+                </tr>
 
-                </div>
+                </thead>
+                <tbody class="table_body">
+                <tr class="table_line">
+                    <td>1</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td>
+                        <div class="product_titleBox">
+                            <img class="product_img" src="" alt="" >
+                            <p class="product_title">객체 지향 오해와 사실</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product_priceBox">
+                            <p class="offical_price">10,000</p>
+                            <p class="discount_price">9,000</p>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
+                            <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                <i class="fa fa-minus"></i>
+                            </button>
+
+                            <div class="form-outline">
+                                <input min="1" name="quantity" value="1"  class="quantity" type="number" />
+                            </div>
+
+                            <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <p class="total_price">10,000,000</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive subscription_product">
+            <table class="table table-hover table-md align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 100px;">
+                        <p>전채 <span></span> 개</p>
+                    </th>
+                    <th style="min-width: 80px;"><input type="checkbox"></th>
+                    <th style="min-width: 350px;">상품명</th>
+                    <th style="min-width: 150px;">판매가</th>
+                    <th style="min-width: 250px;">수량</th>
+                    <th style="min-width: 110px;">주문 금액</th>
+                </tr>
+
+                </thead>
+                <tbody class="table_body">
+                <tr class="table_line">
+                    <td>1</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td>
+                        <div class="product_titleBox">
+                            <img class="product_img" src="" alt="" >
+                            <p class="product_title">[구독 상품] 객체 지향 오해와 사실</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product_priceBox">
+                            <p class="offical_price">10,000</p>
+                            <p class="discount_price">9,000</p>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
+                            <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                <i class="fa fa-minus"></i>
+                            </button>
+
+                            <div class="form-outline">
+                                <input min="1" name="quantity" value="1"  class="quantity" type="number" />
+                            </div>
+
+                            <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <p class="total_price">10,000,000</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="btn_container">
+            <div class="deleteBtn_box">
+                <button class="all_delete_btn btn btn-danger">전체삭제</button>
+                <button class="select_delete_btn btn btn-warning">선택삭제</button>
+            </div>
+            <div class="movementBtn_box">
+                <button class="go_shopping btn btn-secondary">쇼핑 하러가기</button>
+                <button class="go_payment btn btn-success">결제하기</button>
             </div>
         </div>
-    </section>
 
+    </div>
 
 </div>
 

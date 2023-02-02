@@ -38,13 +38,6 @@ public class ControllerAdvisor {
         return "/error/403error";
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {NoHandlerFoundException.class, NotFoundException.class})
-    public String notFoundException404(Exception e) {
-        log.error("notFoundException404 {}", e);
-        return "/error/404error";
-    }
-
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = {
         RestApiServerException.class,
