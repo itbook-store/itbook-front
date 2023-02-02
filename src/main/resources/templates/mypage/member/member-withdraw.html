@@ -6,16 +6,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src = "/mypage/member/js/withdraw.js"></script>
 </head>
 <body>
     <div layout:fragment="content">
         <div class="content">
             <h1>회원 탈퇴</h1>
             <hr>
-            <form method="post" th:action="@{|/mypage/members/${member.memberId}/withdraw|}">
+            <form method="post" id="memberWithdraw" th:action="@{|/mypage/members/${member.memberId}/withdraw|}">
                 <input type="hidden" name="memberStatusName" value="탈퇴회원">
                 <input type="hidden" name="statusChangedReason" value="탈퇴처리한 회원">
-                <input type="submit" value="탈퇴하기">
+                <button type="button" class="btn btn-danger" onclick="withdrawSelect()">탈퇴하기</button>
             </form>
         </div>
     </div>
