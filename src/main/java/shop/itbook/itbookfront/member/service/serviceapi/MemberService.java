@@ -17,6 +17,4 @@ public interface MemberService {
 
     void withdrawMember(String memberId, MemberStatusChangeRequestDto requestDto);
 
-    void updateSocialMember(MemberSocialRequestDto memberSocialRequestDto);
-    
 }

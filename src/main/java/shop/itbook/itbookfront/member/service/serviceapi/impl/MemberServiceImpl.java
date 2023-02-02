@@ -37,5 +37,4 @@ public class MemberServiceImpl implements MemberService {
     public void withdrawMember(String memberId, MemberStatusChangeRequestDto requestDto) {
         memberAdaptor.modifyMemberStatusToWithDraw(memberId, requestDto);
     }
-
 }

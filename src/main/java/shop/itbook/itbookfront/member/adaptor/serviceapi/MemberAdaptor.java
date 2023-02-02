@@ -74,18 +74,4 @@ public class MemberAdaptor {
         ResponseChecker.checkFail(responseEntity.getStatusCode(),
             responseEntity.getBody().getHeader().getResultMessage());
     }
-
-    public MemberNoResponseDto addSocialMember(MemberSocialRequestDto memberSocialRequestDto) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<MemberSocialRequestDto>
-            httpEntity = new HttpEntity<>(memberSocialRequestDto, headers);
-
-        ResponseEntity<CommonResponseBody<MemberNoResponseDto>> responseEntity = restTemplate.exchange(
-
-        )
-
-    }
 }

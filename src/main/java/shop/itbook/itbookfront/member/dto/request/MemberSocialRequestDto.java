@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -19,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberSocialRequestDto {
@@ -35,8 +37,11 @@ public class MemberSocialRequestDto {
     @NotBlank(message = "이름은 null값 및 공백을 허용하지 않습니다.")
     private String name;
 
+    @NotNull(message = "성별은 null값을 허용하지 않습니다.")
+    private Boolean isMan;
+
     @NotNull(message = "생일은 null값을 허용하지 않습니다.")
-    private LocalDateTime birth;
+    private String birth;
 
     @NotBlank(message = "핸드폰 번호는 null값 및 공백을 허용하지 않습니다.")
     private String phoneNumber;
