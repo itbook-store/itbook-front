@@ -1,25 +1,50 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en"-->
+<!--      xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
+
+<!--<head>-->
+<!--    <div th:replace="fragment/common/head :: bootstrap-head-fragment"></div>-->
+<!--    <div th:replace="fragment/mainpage/head :: main-head-fragment"></div>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    <th:block th:replace="fragment/mainpage/header :: header-fragment">-->
+<!--    </th:block>-->
+<!--    <th:block th:replace="fragment/mainpage/header :: logo-fragment">-->
+<!--    </th:block>-->
+<!--    <th:block th:replace="fragment/mainpage/header :: categoryBar-fragment">-->
+<!--    </th:block>-->
+
+<!--    <div class="itbook-container" layout:fragment="content"></div>-->
+<!--</div>-->
+<!--<script src="/mainpage/js/category.js"></script>-->
+<!--<script src="/mainpage/js/slider.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
 <head>
-    <div th:replace="fragment/common/head :: head-fragment"></div>
-    <div th:replace="fragment/mainpage/head :: head-fragment"></div>
+    <div th:replace="fragment/common/head :: bootstrap-head-fragment"></div>
+    <div th:replace="fragment/mainpage/head :: main-head-fragment"></div>
 </head>
 <body>
 <div>
     <th:block th:replace="fragment/mainpage/header :: header-fragment">
     </th:block>
-    <th:block th:replace="fragment/mainpage/header :: logo-fragment">
+    <th:block th:replace="fragment/mainpage/header :: category-fragment">
     </th:block>
-    <th:block th:replace="fragment/mainpage/header :: categoryBar-fragment">
-    </th:block>
+<!--    <th:block th:replace="fragment/mainpage/header :: categoryBar-fragment">-->
+<!--    </th:block>-->
 
     <div class="itbook-container" layout:fragment="content"></div>
+
 </div>
-<script src="/mainpage/js/category.js"></script>
-<script src="/mainpage/js/slider.js"></script>
 </body>
 </html>
