@@ -25,7 +25,7 @@
                             <img class="pic-1" th:src="${product.thumbnailUrl}">
                         </a>
                         <span class="product-discount-label"
-                              th:if="${product.isSelled == true or product.stock == 0}">
+                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
                         <span class="product-new-label">[[${product.discountPercent}]]%</span>
                     </div>
