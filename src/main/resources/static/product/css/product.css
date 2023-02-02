@@ -19,12 +19,19 @@
     z-index: 1;
 }
 
+#itbook-title {
+    color: #2c2c2c;
+    font-size: 40px;
+    font-weight: 600!important;
+    z-index: 1;
+}
+
 .product-thumbnails {
     position: absolute;
     right: 5%;
     bottom: -30%;
-    width: 330px;
-    height: 540px;
+    width: 370px;
+    height: 530px;
     background-color: #333;
     border-radius: 21px;
     transform: rotate(30deg);

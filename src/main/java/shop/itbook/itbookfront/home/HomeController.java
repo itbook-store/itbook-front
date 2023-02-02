@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -30,7 +31,7 @@ import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
-    private final ProductServiceImpl productServiceImpl;
+    private final ProductService productService;
 
     private final CategoryService categoryService;
 
@@ -67,10 +68,18 @@ public class HomeController {
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
 
-        List<ProductDetailsResponseDto> productList = productServiceImpl
-            .getProductList(String.format("/api/products?page=%d&size=%d", PAGE_OF_ALL_CONTENT,
-                SIZE_OF_ALL_CONTENT)).getContent();
-        model.addAttribute("productList", productList);
+        List<ProductDetailsResponseDto> newBookList =
+            productService.getProductList(
+                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 1)).getContent();
+        model.addAttribute("newBookList", newBookList);
+
+        List<ProductDetailsResponseDto> discountBookList =
+            productService.getProductList(
+                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 2)).getContent();
+        model.addAttribute("discountBookList", discountBookList);
+
         return "mainpage/index";
     }
 
