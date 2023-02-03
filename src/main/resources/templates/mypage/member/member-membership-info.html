@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function showMembershipList() {
+
+            const url = "/mypage/membership";
+
+            window.open(url, "memberList");
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>나의 등급 조회</h2>
+        <hr>
+        회원님의 등급은 <span th:text="${myMembership}"></span> 등급입니다.<br/>
+        <button onclick="showMembershipList()">등급 리스트 확인</button>
+        <hr>
+        <br>
+        <h3>나의 다음 예상 등급</h3>
+            이번달 총 주문 금액은 <span></span>원으로 다음 등급은 <span></span> 등급 예정입니다.<br>
+            <table class="table">
+                <tr>
+                    <th>주문 번호</th>
+                    <th>주문 금액</th>
+                    <th>차감 금액</th>
+                    <th>순수 주문 금액</th>
+                    <th>이번달 총 주문금액</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        <hr>
+        <br>
+        <h3>나의 등급 이력</h3>
+        <table class="table">
+            <tr>
+                <th>월</th>
+                <th>등급</th>
+                <th>전월사용금액</th>
+                <th>다음등급기준금액</th>
+                <th>등급생성일자</th>
+            </tr>
+            <tr th:each="membershipHistory : ${membershipHistoryList}">
+                <td th:text="${#temporals.format(membershipHistory.membershipHistoryCreatedAt, 'yyyy년 MM월')}"></td>
+                <td th:text="${membershipHistory.membershipGrade}"></td>
+                <td th:text="${membershipHistory.monthlyUsageAmount}"></td>
+                <td th:text="${#numbers.formatInteger(amountBasedOnNextLevel, 0, 'COMMA')}"></td>
+                <td th:text="${#temporals.format(membershipHistory.membershipHistoryCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
