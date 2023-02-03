@@ -19,6 +19,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 
 /**
@@ -73,10 +74,29 @@ public class MemberAdminController {
                                 MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                 Model model) {
         MemberAdminResponseDto member = memberAdminService.findMember(memberId);
+        List<MemberRoleResponseDto> memberRoleList =
+            memberAdminService.findMemberRoles(member.getMemberNo());
 
         model.addAttribute("member", member);
+        model.addAttribute("memberRoles", memberRoleList);
 
         return "adminpage/member/admin-member-details-form";
+    }
+
+    @PostMapping("/{memberId}/member-role/add")
+    public String memberRoleAdd(@PathVariable("memberId") String memberId,
+                                @RequestParam("roleName") String roleName) {
+        memberAdminService.addMemberRole(memberId, roleName);
+
+        return "redirect:/admin/members/" + memberId + "/info";
+    }
+
+    @PostMapping("/{memberNo}/{roleNo}/member-role/delete")
+    public String memberRoleDelete(@PathVariable("memberNo") Long memberNo,
+                                   @PathVariable("roleNo") Integer roleNo) {
+        memberAdminService.deleteMemberRole(memberNo, roleNo);
+
+        return "redirect:/admin/members";
     }
 
     @GetMapping("/block/{memberId}/info")
@@ -85,8 +105,11 @@ public class MemberAdminController {
                                      MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                      Model model) {
         MemberBlockInfoResponseDto member = memberAdminService.findBlockMember(memberId);
+        List<MemberRoleResponseDto> memberRoleList =
+            memberAdminService.findMemberRoles(member.getMemberNo());
 
         model.addAttribute("member", member);
+        model.addAttribute("memberRoles", memberRoleList);
 
         return "adminpage/member/admin-block-member-details-form";
     }
@@ -111,7 +134,9 @@ public class MemberAdminController {
                     pageable.getPageSize()));
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/admin/members/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
+        model.addAttribute("paginationUrl",
+            "/admin/members/search?searchRequirement=" + searchRequirement + "&searchWord=" +
+                searchWord);
 
         return "adminpage/member/admin-member-list";
     }
@@ -127,7 +152,9 @@ public class MemberAdminController {
                     pageable.getPageSize()));
 
         model.addAttribute("pageResponse", memberList);
-        model.addAttribute("paginationUrl", "/admin/members/withdraw/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
+        model.addAttribute("paginationUrl",
+            "/admin/members/withdraw/search?searchRequirement=" + searchRequirement +
+                "&searchWord=" + searchWord);
 
 
         return "adminpage/member/admin-member-withdraw-list";
@@ -144,7 +171,9 @@ public class MemberAdminController {
                     pageable.getPageSize()));
 
         model.addAttribute("pageResponse", memberList);
-        model.addAttribute("paginationUrl", "/admin/members/block/search?searchRequirement="+searchRequirement+"&searchWord="+searchWord);
+        model.addAttribute("paginationUrl",
+            "/admin/members/block/search?searchRequirement=" + searchRequirement + "&searchWord=" +
+                searchWord);
 
 
         return "adminpage/member/admin-member-block-list";
