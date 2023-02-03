@@ -15,5 +15,4 @@ public class MemberDestinationResponseDto {
     Integer postcode;
     String address;
     String detailAddress;
-    Boolean isOk;
 }
