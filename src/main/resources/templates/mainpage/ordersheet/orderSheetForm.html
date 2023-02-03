@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 페이지</title>
+
+    <link rel="stylesheet" href="/mainpage/css/order-write.css">
 </head>
 <body>
 
@@ -50,12 +52,11 @@
         <div class="address-box">
             <div class="box-title">배송지 정보 입력</div>
             <div class="box-content">
-                <button>회원 배송지</button>
-                <button>직접 입력</button>
+                <button class="btn btn-primary">배송지 선택</button>
                 <br/>
                 <div th:each="dst : ${memberDestinationList}">
                     <input type="text" id="sample4_postcode" readonly placeholder="우편번호" th:value="${dst.getPostcode()}">
-                    <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+                    <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
                     <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소" th:value="${dst.getAddress()}">
                     <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소" th:value="${dst.getDetailAddress()}">
                 </div>
