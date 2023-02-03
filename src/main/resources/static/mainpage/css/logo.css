@@ -57,25 +57,10 @@
     height: 100%;
 }
 
-/*.category {*/
-/*    width: 155px;*/
-/*    padding: 0;*/
-/*}*/
-
-/*.category .category-btn {*/
-/*    padding: 0 20px;*/
-/*    height: 40px;*/
-/*}*/
-
 #category {
     width: 155px;
     padding: 0;
 }
-
-/*#category_btn {*/
-/*    padding: 0 20px !important;*/
-/*    !*height: 40px !important;*!*/
-/*}*/
 
 .py-3.mb-4.border-bottom{
     margin-bottom: 0 !important;

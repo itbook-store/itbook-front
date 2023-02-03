@@ -11,12 +11,10 @@
     <div class="flex-content">
         <th:block th:replace="fragment/mypage/side-menu :: side-menu-fragment">
         </th:block>
-        <div class="w-100 h-100">
-            <div layout:fragment="content" class="main-content h-75">
-            </div>
-            <div th:replace="fragment/common/footer :: footer-fragment"></div>
+        <div layout:fragment="content" class="main-content w-100">
         </div>
     </div>
+    <div th:replace="fragment/common/footer :: footer-fragment"></div>
 </div>
 </body>
 </html>
