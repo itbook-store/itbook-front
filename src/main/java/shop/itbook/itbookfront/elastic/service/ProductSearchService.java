@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.elastic.service;
 
 import java.util.List;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.elastic.dto.response.ProductSampleResponseDto;
 
 /**
@@ -8,5 +9,5 @@ import shop.itbook.itbookfront.elastic.dto.response.ProductSampleResponseDto;
  * @since 1.0
  */
 public interface ProductSearchService {
-    List<ProductSampleResponseDto> findProductList(String searchProductUrl);
+    PageResponse<ProductSampleResponseDto> findProductList(String searchProductUrl);
 }

@@ -59,4 +59,10 @@ public class ProductDetailsResponseDto {
     private Long selledPrice;
 
     private String thumbnailsName;
+
+    private Boolean isPointApplyingBasedSellingPrice;
+
+    private Boolean isPointApplying;
+
+    private Boolean isSubscription;
 }

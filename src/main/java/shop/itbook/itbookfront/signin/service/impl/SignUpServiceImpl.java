@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.signin.adaptor.SignUpAdaptor;
 import shop.itbook.itbookfront.signin.dto.request.MemberInputRequestDto;
 import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
@@ -72,5 +73,17 @@ public class SignUpServiceImpl implements SignUpService {
                 .isSocial(memberInputRequestDto.getIsSocial()).build();
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
+    }
+
+    @Override
+    public void addSocialMember(MemberSocialRequestDto memberSocialRequestDto) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(memberSocialRequestDto.getPhoneNumber());
+        sb.insert(3, "-");
+        sb.insert(8, "-");
+
+        memberSocialRequestDto.setPhoneNumber(sb.toString());
+
+        signUpAdaptor.addSocialMember(memberSocialRequestDto);
     }
 }

@@ -39,7 +39,7 @@ public class ProductController {
     public String productListByCategory(@RequestParam Integer categoryNo,
                                         @RequestParam String categoryName,
                                         Model model, @PageableDefault Pageable pageable) {
-        
+
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
                 PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
@@ -60,6 +60,29 @@ public class ProductController {
                 categoryName));
 
         return "mainpage/product/product-category";
+    }
+
+    @GetMapping(params = {"productTypeNo"})
+    public String productListByProductType(@RequestParam Integer productTypeNo,
+                                           Model model, @PageableDefault Pageable pageable) {
+
+        PageResponse<CategoryListResponseDto> pageResponse =
+            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+        model.addAttribute("mainCategoryList", mainCategoryList);
+
+        PageResponse<ProductDetailsResponseDto> productList =
+            productService.getProductList(
+                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                    pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
+        model.addAttribute("pageResponse", productList);
+
+        model.addAttribute("paginationUrl",
+            String.format("/products?productTypeNo=%d", productTypeNo));
+
+        return "mainpage/product/product-producttype";
     }
 
     @GetMapping("/{productNo}")

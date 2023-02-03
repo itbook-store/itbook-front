@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="coupon : ${couponList}">
+            <tr th:each="coupon : ${pageResponse.content}">
                 <td th:text="${coupon.name}"></td>
                 <td th:text="${coupon.code}"></td>
                 <td th:text="${coupon.couponCreatedAt}"></td>
@@ -37,6 +37,7 @@
             </tr>
             </tbody>
         </table>
+        <th:block th:include="component/pageFooter"></th:block>
 
     </div>
 
