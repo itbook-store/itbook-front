@@ -46,11 +46,10 @@
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
                        th:text="${mainCategory.mainCategoryName}">
                         <i class="fa fa-angle-right float-right mt-1"></i></a>
-                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0"
-                         th:each="subCategory : ${mainCategory.subCategoryList}">
-                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
-                           th:text="${subCategory.categoryName}"
-                           class="dropdown-item"></a>
+                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                        <a th:each="subCategory : ${mainCategory.subCategoryList}"
+                           th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                           class="dropdown-item" th:text="${subCategory.categoryName}"/>
                     </div>
                 </div>
 
@@ -59,20 +58,20 @@
         </nav>
     </div>
     <div class="col-lg-2">
-    <!--            신간-->
-    <a th:href="@{/products?productTypeNo=1}">
-        <button style="margin-left: 15px" class="navbar-toggler text-white">
-            신간
-        </button>
-    </a>
+        <!--            신간-->
+        <a th:href="@{/products?productTypeNo=1}">
+            <button style="margin-left: 15px" class="navbar-toggler text-white">
+                신간
+            </button>
+        </a>
 
-    <!--        할인-->
+        <!--        할인-->
 
-    <a th:href="@{/products?productTypeNo=2}">
-        <button style="margin-left: 15px" class="navbar-toggler text-white">
-            할인
-        </button>
-    </a>
+        <a th:href="@{/products?productTypeNo=2}">
+            <button style="margin-left: 15px" class="navbar-toggler text-white">
+                할인
+            </button>
+        </a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
