@@ -5,6 +5,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.adaptor.impl.CouponAdaptor;
 import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
@@ -30,7 +31,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponListResponseDto> findCouponList(String couponListUrl){
+    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
 
         return couponAdaptor.findCouponList(couponListUrl);
     }

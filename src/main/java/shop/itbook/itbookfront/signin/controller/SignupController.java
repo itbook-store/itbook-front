@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.signin.dto.request.MemberInputRequestDto;
 import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
 import shop.itbook.itbookfront.signin.service.SignUpService;
@@ -26,6 +28,7 @@ import shop.itbook.itbookfront.signin.service.SignUpService;
  * @author 강명관
  * @since 1.0
  */
+@Slf4j
 @Controller
 @RequestMapping("/signup")
 @RequiredArgsConstructor
@@ -69,5 +72,25 @@ public class SignupController{
         }
 
         return validatorResult;
+    }
+
+    @PostMapping("/social")
+    public String socialRegister(@Valid MemberSocialRequestDto memberSocialRequestDto, Errors errors, Model model) {
+
+        /*if(errors.hasErrors()) {
+
+            model.addAttribute("memberSocialRequestDto", memberSocialRequestDto);
+
+            Map<String, String> validatorResult = validateHandling(errors);
+            for(String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+
+            return "loginpage/oauth-login";
+        }*/
+
+        signUpService.addSocialMember(memberSocialRequestDto);
+
+        return "redirect:/";
     }
 }
