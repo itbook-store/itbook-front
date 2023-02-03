@@ -2,7 +2,7 @@
     <nav class="py-2 bg-light border-bottom">
         <div class="container d-flex flex-wrap">
             <ul class="nav me-auto">
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2" aria-current="page">Home</a>
+                <li class="nav-item"><a href="/" class="nav-link link-dark px-2" aria-current="page">Home</a>
                 </li>
                 <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
                 <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
@@ -21,8 +21,8 @@
                 <img class="logo-img" src="/mainpage/img/itbooklogo.png"/>
                 <h1 id="itbook-title">ITBOOK</h1>
             </a>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline" method="GET" action="/product/search">
+                <input class="form-control mr-sm-2" type="search" name = "name" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
             </form>
             </nav>
