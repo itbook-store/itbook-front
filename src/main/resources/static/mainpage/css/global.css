@@ -15,3 +15,8 @@ body {
 
     height: 100%;
 }
+
+footer {
+    position : relative;
+    transform : translateY(-100%);
+}

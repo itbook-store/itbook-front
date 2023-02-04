@@ -10,6 +10,7 @@ import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -58,4 +59,8 @@ public class ProductServiceImpl implements ProductService {
         return productAdaptor.findProduct(productNo);
     }
 
+    @Override
+    public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
+        return productAdaptor.findProductTypeList(url);
+    }
 }

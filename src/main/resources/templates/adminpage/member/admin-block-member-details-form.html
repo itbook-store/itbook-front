@@ -26,6 +26,19 @@
     회원상태 : <span th:text="${member.memberStatusName}"></span><br />
     회원차단사유 : <span th:text="${member.statusChangedReason}"></span><br/>
     회원차단일자 : <span th:text="${#temporals.format(member.memberStatusHistoryCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span><br/>
+    회원 권한
+    <table>
+      <thead>
+      <tr>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="memberRole : ${memberRoles}">
+        <td th:text="${memberRole.getRole()}"></td>
+      </tr>
+      </tbody>
+    </table>
     <hr>
     <div>
       <button onclick="selectNormalBtnInMemberDetails()">차단풀기</button><br/>

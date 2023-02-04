@@ -54,7 +54,7 @@
                                         </td>
                                         <td><span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일')}"></span></td>
                                         <td class="text-center">
-                                            <span class="label label-default" th:text="${member.memberStatusName}"></span>
+                                            <span class="badge text-bg-primary" th:text="${member.memberStatusName}"></span>
                                         </td>
                                         <td>
                                             <span th:text="${member.email}"></span>
@@ -66,10 +66,10 @@
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                             </span>
                                             </a>
-                                            <a href="#" class="table-link text-info">
+                                            <a href="#" class="table-link danger">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
                                             </span>
                                             </a>
                                         </td>

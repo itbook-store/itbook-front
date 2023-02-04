@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -131,5 +132,18 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
+    public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
+        ResponseEntity<CommonResponseBody<PageResponse<ProductTypeResponseDto>>> response =
+            restTemplate.exchange(
+                gateway.getGatewayServer() + url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+
+                });
+
+        ResponseChecker.checkFail(response.getStatusCode(),
+            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(response.getBody()).getResult();
+    }
 
 }

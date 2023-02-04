@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>회원 등급별 회원 통계</h2>
+        <hr>
+        일반<br>
+        <span th:text="${count.getCommonCnt()}"></span><br>
+        화이트<br>
+        <span th:text="${count.getWhiteCnt()}"></span><br>
+        실버<br>
+        <span th:text="${count.getSilverCnt()}"></span><br>
+        골드<br>
+        <span th:text="${count.getGoldCnt()}"></span><br>
+        플래티넘<br>
+        <span th:text="${count.getPlatinumCnt()}"></span><br>
+    </div>
+</div>
+</body>
+</html>

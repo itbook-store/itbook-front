@@ -1,15 +1,10 @@
 package shop.itbook.itbookfront.signin.service.impl;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.signin.adaptor.SignUpAdaptor;
 import shop.itbook.itbookfront.signin.dto.request.MemberInputRequestDto;
@@ -62,7 +57,7 @@ public class SignUpServiceImpl implements SignUpService {
         sb.insert(8, "-");
 
         MemberRequestDto memberRequestDto =
-            MemberRequestDto.builder().membershipNo(428).memberStatusNo(392).memberId(
+            MemberRequestDto.builder().membershipName("일반").memberStatusName("정상회원").memberId(
                     memberInputRequestDto.getMemberId()).nickname(memberInputRequestDto.getNickname())
                 .name(
                     memberInputRequestDto.getName()).isMan(memberInputRequestDto.getIsMan())

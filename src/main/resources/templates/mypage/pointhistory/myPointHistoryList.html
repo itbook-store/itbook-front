@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 - 포인트 내역 조회</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>포인트 내역 조회</h2>
+        <hr>
+        <div>
+            <select name="searchRequirement" onchange="window.open(this.value)">
+                <option value="/point-histories/show-content/my-point-list">전체</option>
+                <option value="/point-histories/show-content/my-point-list?content=쿠폰" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '쿠폰')}">쿠폰</option>
+                <option value="/point-histories/show-content/my-point-list?content=주문" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '주문')}">주문</option>
+                <option value="/point-histories/show-content/my-point-list?content=주문취소" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '주문취소')}">주문취소</option>
+                <option value="/point-histories/show-content/my-point-list?content=등급" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '등급')}">등급</option>
+                <option value="/point-histories/show-content/my-point-list?content=선물" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '선물')}">선물</option>
+                <option value="/point-histories/show-content/my-point-list?content=리뷰" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '리뷰')}">리뷰</option>
+            </select>
+        </div>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                    <tr>
+                                        <th><span>종류</span></th>
+                                        <th><span>적용포인트</span></th>
+                                        <th><span>내용</span></th>
+                                        <th><span>잔여포인트</span></th>
+                                        <th><span>생성일자</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="pointHistory : ${pageResponse.content}">
+                                        <td th:if="${pointHistory.isDecrease}">차감</td>
+                                        <td th:unless="${pointHistory.isDecrease}">적립</td>
+                                        <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
+                                        <td><span th:text="${pointHistory.content}"/></td>
+                                        <td><span th:text="${pointHistory.remainedPoint}"/></td>
+                                        <td><span th:text="${pointHistory.historyCreatedAt}"/></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="component/pageFooter"></th:block>
+    </div>
+</div>
+</body>
+</html>

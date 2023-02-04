@@ -5,7 +5,7 @@
 <body>
 
 <div th:fragment="side-menu-fragment">
-    <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+    <div class="h-100 flex-shrink-0 p-3" style="width: 280px;">
         <h3>Itbook 관리자 페이지</h3>
         <ul class="list-unstyled ps-0">
             <li class="border-top my-3"></li>
@@ -47,7 +47,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="location.href='/admin/point-histories/show-content/admin-point-list'">
                     포인트 관리
                 </button>
             </li>
