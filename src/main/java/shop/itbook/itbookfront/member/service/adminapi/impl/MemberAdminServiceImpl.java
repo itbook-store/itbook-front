@@ -8,6 +8,7 @@ import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 
 /**
@@ -63,5 +64,20 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     @Override
     public MemberBlockInfoResponseDto findBlockMember(String memberId) {
         return memberAdminAdaptor.getBlockMember(memberId);
+    }
+
+    @Override
+    public List<MemberRoleResponseDto> findMemberRoles(Long memberNo) {
+        return memberAdminAdaptor.getMemberRoles(memberNo);
+    }
+
+    @Override
+    public void addMemberRole(String memberId, String roleName) {
+        memberAdminAdaptor.addMemberRole(memberId, roleName);
+    }
+
+    @Override
+    public void deleteMemberRole(Long memberNo, Integer roleNo) {
+        memberAdminAdaptor.deleteMemberRole(memberNo, roleNo);
     }
 }
