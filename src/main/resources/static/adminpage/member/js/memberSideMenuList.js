@@ -29,7 +29,7 @@ function selectMemberSideMenu(eventTarget) {
             </button>
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="#" style="text-decoration: none; color:inherit;">
+                <a href="/admin/members/count" style="text-decoration: none; color:inherit;">
                     회원통계
                 </a>
             </button>

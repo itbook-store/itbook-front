@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>회원 통계 페이지</h2>
+        <hr>
+        정상회원<br>
+        <span th:text="${normalCount}"></span><br>
+        차단회원<br>
+        <span th:text="${count.getBlockMemberCount()}"></span><br>
+        탈퇴회원<br>
+        <span th:text="${count.getWithdrawMemberCount()}"></span><br>
+
+    </div>
+</div>
+</body>
+</html>
