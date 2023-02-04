@@ -20,7 +20,6 @@
                         <option value="everything">전체</option>
                         <option value="notuse">사용전</option>
                         <option value="alreadyuse">사용완료</option>
-                        <option value="overdate">기간만료</option>
                     </select>
                 </form>
             </div>
@@ -33,29 +32,56 @@
                                     <table class="table user-list">
                                         <thead>
                                         <tr>
-                                            <th><span>쿠폰번호</span></th>
-                                            <th><span>쿠폰날짜</span></th>
-                                            <th><span>쿠폰혜택</span></th>
-                                            <th class="text-center"><span>쿠폰상태</span></th>
+                                            <th><span>쿠폰이름</span></th>
                                             <th><span>쿠폰타입</span></th>
+                                            <th><span>쿠폰혜택</span></th>
                                             <th><span>사용처</span></th>
+                                            <th><span>쿠폰사용기간</span></th>
+                                            <th class="text-center"><span>쿠폰상태</span></th>
+                                            <th><span>쿠폰사용</span></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="couponIssue : ${pageResponse.getContent()}">
-                                            <td th:text="${couponIssue.couponIssueNo}"></td>
-                                            <td>
+                                            <td style="width: 20%;">
                                                 <span th:text="${couponIssue.name}"></span>
                                             </td>
-                                            <td><span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일')}"></span></td>
-                                            <td class="text-center">
-                                                <span class="badge text-bg-danger" th:text="${couponIssue.usageStatus}"></span>
+                                            <td>
+                                                <span th:text="${couponIssue.couponTypeName}"></span>
+                                            </td>
+                                            <td th:if="${couponIssue.amount!=0}">
+                                                <span th:text="${couponIssue.amount} + '원 할인'"></span>
+                                            </td>
+                                            <td th:if="${couponIssue.percent!=0}">
+                                                <span th:text="${couponIssue.percent} +'% 할인'"></span>
+                                            </td>
+                                            <td th:if="${couponIssue.point!=0}">
+                                                <span th:text="${couponIssue.point} + ' 포인트 적립'"></span>
+                                            </td>
+                                            <td th:if="${not #strings.isEmpty(couponIssue.categoryName)}">
+                                                <span th:text="${couponIssue.categoryName}"></span>
+                                            </td>
+                                            <td th:if="${not #strings.isEmpty(couponIssue.productName)}">
+                                                <span th:text="${couponIssue.productName}"></span>
+                                            </td>
+                                            <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName)}">
+                                                전체 상품
                                             </td>
                                             <td>
-                                                <span th:text="${couponIssue.couponType}"></span>
+                                                <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
+                                                <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
                                             </td>
-                                            <td style="width: 20%;">
-                                                <span th:text="${couponIssue.couponType}"></span>
+                                            <td th:if="${couponIssue.point!=0}" class="text-center">
+                                                <span class="badge text-bg-primary" th:text="사용하기" onclick="location.href='/coupon/coupon-issue/point-coupon'" style="cursor:pointer"></span>
+                                            </td>
+                                            <td th:unless="${couponIssue.point!=0}" class="text-center">
+                                                <span class="badge text-bg-danger" th:text="${couponIssue.usageStatusName}"></span>
+                                            </td>
+                                            <td style="width: 20%;" th:if="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
+                                                <span th:text="${#temporals.format(couponIssue.couponUsageCreatedAt, 'yyyy년 MM월 dd일')}"></span>
+                                            </td>
+                                            <td style="width: 20%;" th:unless="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
+                                                -
                                             </td>
                                         </tr>
                                         </tbody>

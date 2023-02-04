@@ -46,10 +46,22 @@
                                 </button>
                                 <div id="memberIdNotExists" style="display:none;">존재하지 않는 아이디입니다.</div>
                                 <div id="memberIdExists" style="display:none;">존재하는 아이디입니다.</div>
-                                멤버 아이디 찾는 기능 추가
                             </div>
                         </div>
-
+                        <div class="alert alert-light">
+                            <div id="membershipMonthlyCouponDiv" style="display:none;">
+                                이달의 쿠폰 -등급형-
+                                <label for='selectMembership'>쿠폰 종류</label>
+                                <select id='selectMembership' th:field="${couponInputRequestDto.membershipGrade}" onchange="selectMembershipDiv(this)">
+                                    <option value="">쿠폰의 종류를 선택해주세요.</option>
+                                    <option value="일반쿠폰">일반쿠폰</option>
+                                    <option value="웰컴쿠폰">웰컴 쿠폰</option>
+                                    <option value="이달의쿠폰예약형">이달의 쿠폰 -예약형-</option>
+                                    <option value="이달의쿠폰등급형">이달의 쿠폰 -등급형-</option>
+                                    <option value="생일쿠폰">생일 쿠폰</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
 
