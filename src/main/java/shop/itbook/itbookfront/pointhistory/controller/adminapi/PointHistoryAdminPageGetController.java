@@ -7,13 +7,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.pointhistory.dto.response.PointHistoryListDto;
-import shop.itbook.itbookfront.pointhistory.dto.request.PointHistorySearchRequestDto;
 import shop.itbook.itbookfront.pointhistory.service.serviceapi.PointHistoryMyPageGetService;
 
 /**
@@ -46,7 +43,8 @@ public class PointHistoryAdminPageGetController {
 
     @GetMapping("/show-content/admin-point-list/search")
     public String pointHistoryList(@PageableDefault Pageable pageable,
-                                   @RequestParam(required = false) String content, @RequestParam(required = false) String searchWord, Model model) {
+                                   @RequestParam(required = false) String content, @RequestParam(required = false) String searchWord,
+                                   Model model) {
 
         String urlFormat = String.format("/api/admin/point-histories/search?page=%d&size=%d&content=%s&searchWord=%s", pageable.getPageNumber(),
             pageable.getPageSize(), content, searchWord);
