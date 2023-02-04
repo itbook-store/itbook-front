@@ -56,9 +56,9 @@ public class CouponInputRequestDto {
     private String image;
 
     @Positive(message = "쿠폰 발급수량이 음수 일 수는 없습니다.")
-    private Long quantity;
+    private Long totalQuantity;
 
 //    @NotNull(message = "")
-    private boolean isReserved;
+    private boolean isDuplicateUse;
 
 }

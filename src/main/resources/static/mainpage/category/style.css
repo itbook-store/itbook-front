@@ -36,27 +36,6 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-pre {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  overflow: auto;
-  -ms-overflow-style: scrollbar;
-}
-
-figure {
-  margin: 0 0 1rem;
-}
-
-img {
-  vertical-align: middle;
-  border-style: none;
-}
 
 svg {
   overflow: hidden;
