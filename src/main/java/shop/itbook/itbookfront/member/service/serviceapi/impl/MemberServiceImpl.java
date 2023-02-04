@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
 
+        memberUpdateRequestDto.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
         memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
     }
 
