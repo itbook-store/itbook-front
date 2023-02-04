@@ -4,16 +4,19 @@ import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
 import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
@@ -64,7 +67,8 @@ public class ProductController {
     }
 
     @GetMapping(params = {"productTypeNo", "productTypeName"})
-    public String productListByProductType(@RequestParam Integer productTypeNo,
+    public String productListByProductType(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                           @RequestParam Integer productTypeNo,
                                            @RequestParam String productTypeName,
                                            Model model, @PageableDefault Pageable pageable) {
 
@@ -75,11 +79,21 @@ public class ProductController {
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-        PageResponse<ProductDetailsResponseDto> productList =
-            productService.getProductList(
-                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
-        model.addAttribute("pageResponse", productList);
+        if(Optional.ofNullable(userDetailsDto).isPresent()) {
+            PageResponse<ProductDetailsResponseDto> productList =
+                productService.getProductList(
+                    String.format("/api/products?page=%d&size=%d&productTypeNo=%d&memberNo=%d",
+                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo, userDetailsDto.getMemberNo()));
+            model.addAttribute("pageResponse", productList);
+        } else {
+            PageResponse<ProductDetailsResponseDto> productList =
+                productService.getProductList(
+                    String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
+            model.addAttribute("pageResponse", productList);
+        }
+
+
 
         model.addAttribute("productTypeName", productTypeName);
 
