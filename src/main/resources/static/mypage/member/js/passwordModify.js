@@ -11,6 +11,7 @@ function sendPassword() {
 
     opener.document.getElementById("memberPassword").value = document.getElementById("modifiedPassword").value;
 
+    alert("회원님의 비밀번호가 수정되었습니다.");
     window.close();
 }
 

@@ -233,3 +233,7 @@ function checkPassword(str) {
 
     return true;
 }
+
+function inputDetection(id) {
+    document.getElementById(id).style.visibility ='visible';
+}
