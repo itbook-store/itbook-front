@@ -11,77 +11,74 @@
 <body>
 
 <div layout:fragment="content">
-
-<div class="order-write">
-    <div>
-        <div class="order-title"><b>주 문</b> 하 기</div>
-        <div class="box">
-            <table>
-                <div class="box-title">주문 상품 정보</div>
-                <tr>
-                    <th>
-                        상품명
-                    </th>
-                    <th>
-                        정가
-                    </th>
-                    <th>
-                        판매가
-                    </th>
-                    <th>
-                        수량
-                    </th>
-                    <th>
-                        합계
-                    </th>
-                </tr>
-                <tr th:each="product : ${productDetailsList}">
-                    <td th:text="${product.getProductName()}">
-                    </td>
-                    <td th:text="${product.getFixedPrice()}">
-                    </td>
-                    <td th:text="${product.getSelledPrice()}">
-                    </td>
-                    <td th:text="${productCnt}">
-                    </td>
-                    <td th:text="${product.getSelledPrice()} * ${productCnt}">
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="address-box">
-            <div class="box-title">배송지 정보 입력</div>
-            <div class="box-content">
-                <button class="btn btn-primary">배송지 선택</button>
-                <br/>
-                <div th:each="dst : ${memberDestinationList}">
-                    <input type="text" id="sample4_postcode" readonly placeholder="우편번호" th:value="${dst.getPostcode()}">
-                    <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
-                    <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소" th:value="${dst.getAddress()}">
-                    <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소" th:value="${dst.getDetailAddress()}">
-                </div>
-            </div>
-        </div>
-        <div class="delivery-box">
-            <div class="box-title">배송 희망일 선택</div>
-            <div class="box-content">
-                <div>날짜를 선택하세요:
-                    <input type="date"
-                           id="currentDate">
-                    <p>
-                        날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.
-                    </p>
-                </div>
-            </div>
-            <br>
-            <div>
-                <button>결제하기</button>
-            </div>
-        </div>
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+    <div class="order-title"><b>주 문</b> 하 기</div>
+    <div class="box">
+        <table>
+            <div class="box-title">주문 상품 정보</div>
+            <tr>
+                <th>
+                    상품명
+                </th>
+                <th>
+                    정가
+                </th>
+                <th>
+                    판매가
+                </th>
+                <th>
+                    수량
+                </th>
+                <th>
+                    합계
+                </th>
+            </tr>
+            <tr th:each="product : ${productDetailsList}">
+                <td th:text="${product.getProductName()}">
+                </td>
+                <td th:text="${product.getFixedPrice()}">
+                </td>
+                <td th:text="${product.getSelledPrice()}">
+                </td>
+                <td th:text="${productCnt}">
+                </td>
+                <td th:text="${product.getSelledPrice()} * ${productCnt}">
+                </td>
+            </tr>
+        </table>
     </div>
+    <div class="address-box">
+        <div class="box-title">배송지 정보 입력</div>
+        <div class="box-content">
+            <button class="btn btn-primary">배송지 선택</button>
+            <br/>
+            <div th:each="dst : ${memberDestinationList}">
+                <input type="text" id="sample4_postcode" readonly placeholder="우편번호"
+                       th:value="${dst.getPostcode()}">
+                <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+                <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
+                       th:value="${dst.getRoadNameAddress()}">
+                <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
+                       th:value="${dst.getRecipientAddressDetails()}">
+            </div>
+        </div>
     </div>
+    <div class="delivery-box">
+        <div class="box-title">배송 희망일 선택</div>
+        <div class="box-content">
+            <div>날짜를 선택하세요:
+                <input type="date"
+                       id="currentDate">
+                <p>
+                    날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.
+                </p>
+            </div>
+        </div>
+        <br>
+        <div>
+            <button th:onclick="|location.href='@{/orders/completion}'|">결제하기</button>
+        </div>
+    </div>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script>
         let currentDate = new Date;
@@ -91,7 +88,6 @@
         document.getElementById('currentDate').min = currentDate.toISOString().slice(0, 10);
         document.getElementById('currentDate').max = maxDate.toISOString().slice(0, 10);
     </script>
-
     <script>
         //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
         function sample4_execDaumPostcode() {
