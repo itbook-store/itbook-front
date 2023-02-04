@@ -8,6 +8,20 @@ function notSelectEbook() {
     ebookDiv.style.display = "none";
 }
 
+function selectPointApplying() {
+    let pointPercentDiv = document.getElementById("increasingPoint-div");
+    let pointBasedDiv = document.getElementById("increasingPointBase-div");
+    pointPercentDiv.style.display = "block";
+    pointBasedDiv.style.display = "block";
+}
+
+function notSelectPointApplying() {
+    let pointPercentDiv = document.getElementById("increasingPoint-div");
+    let pointBasedDiv = document.getElementById("increasingPointBase-div");
+    pointPercentDiv.style.display = "none";
+    pointBasedDiv.style.display = "none";
+}
+
 async function showSubCategoryAndForm(event, categoryNoList) {
 
     event.preventDefault();

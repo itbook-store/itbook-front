@@ -96,14 +96,36 @@
                     </div>
 
                     <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <label>포인트 적립 여부</label>
+                            <fieldset>
+                                YES <input type="radio" name="isPointApplying" value="true" onclick="selectPointApplying()" checked/>
+                                NO <input type="radio" name="isPointApplying" value="false" onclick="notSelectPointApplying()"/>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-3" id="increasingPoint-div">
                             <label for="increasePointPercent">포인트 적립율(%)</label>
                             <input id="increasePointPercent" name="increasePointPercent"
                                    class="form-control input-md" required="" type="text">
                         </div>
+                        <div class="col-md-6" id="increasingPointBase-div">
+                            <label>포인트 적립 기준</label>
+                            <fieldset>
+                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="true" onclick="selectPointApplying()" />
+                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="false" onclick="notSelectPointApplying()"/>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row gx-3 mb-3">
+
                         <div class="col-md-6">
                             <label for="rawPrice">매입 원가(원)</label>
                             <input id="rawPrice" name="rawPrice" class="form-control input-md" required="" type="text">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fixedPrice">정가(원)</label>
+                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
+                                   type="text">
                         </div>
                     </div>
 
@@ -114,9 +136,11 @@
                                    type="text">
                         </div>
                         <div class="col-md-6">
-                            <label for="fixedPrice">정가(원)</label>
-                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                                   type="text">
+                            <label>구독 상품 여부</label>
+                            <fieldset>
+                                YES <input type="radio" name="isSubscription" value="true" />
+                                NO <input type="radio" name="isSubscription" value="false"/>
+                            </fieldset>
                         </div>
                     </div>
 
