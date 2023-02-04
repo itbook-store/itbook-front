@@ -8,6 +8,7 @@ import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
@@ -83,7 +84,12 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
-    public MemberCountResponseDto countMember() {
+    public MemberCountResponseDto countMemberByMemberStatus() {
         return memberAdminAdaptor.countMember();
+    }
+
+    @Override
+    public MemberCountByMembershipResponseDto countMemberByMembership() {
+        return memberAdminAdaptor.countMemberByMembership();
     }
 }

@@ -33,5 +33,11 @@ function selectMemberSideMenu(eventTarget) {
                     회원통계
                 </a>
             </button>
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
+                <a href="/admin/members/membership/count" style="text-decoration: none; color:inherit;">
+                    회원등급별통계
+                </a>
+            </button>
         `;
 }

@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -222,8 +223,23 @@ public class MemberAdminAdaptor {
     }
 
     public MemberCountResponseDto countMember() {
+
         ResponseEntity<CommonResponseBody<MemberCountResponseDto>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/admin/members/count",
+            gatewayConfig.getGatewayServer() + "/api/admin/members/memberStatus/count",
+            HttpMethod.GET, null,
+            new ParameterizedTypeReference<>() {
+            });
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public MemberCountByMembershipResponseDto countMemberByMembership() {
+
+        ResponseEntity<CommonResponseBody<MemberCountByMembershipResponseDto>> responseEntity = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/admin/members/membership/count",
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
             });

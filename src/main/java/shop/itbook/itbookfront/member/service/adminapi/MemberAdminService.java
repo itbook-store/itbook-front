@@ -5,6 +5,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 
@@ -37,5 +38,7 @@ public interface MemberAdminService {
 
     void deleteMemberRole(Long memberNo, Integer roleNo);
 
-    MemberCountResponseDto countMember();
+    MemberCountResponseDto countMemberByMemberStatus();
+
+    MemberCountByMembershipResponseDto countMemberByMembership();
 }

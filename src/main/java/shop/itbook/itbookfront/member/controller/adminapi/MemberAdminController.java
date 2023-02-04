@@ -4,7 +4,6 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
@@ -183,11 +183,21 @@ public class MemberAdminController {
     @GetMapping("/count")
     public String memberCount(Model model) {
 
-        MemberCountResponseDto count = memberAdminService.countMember();
+        MemberCountResponseDto count = memberAdminService.countMemberByMemberStatus();
 
         model.addAttribute("count", count);
         model.addAttribute("normalCount", count.getMemberCount() - (count.getBlockMemberCount() + count.getWithdrawMemberCount()));
 
         return "adminpage/member/admin-member-statistics";
+    }
+
+    @GetMapping("/membership/count")
+    public String memberCountByMembership(Model model) {
+
+        MemberCountByMembershipResponseDto count = memberAdminService.countMemberByMembership();
+
+        model.addAttribute("count", count);
+
+        return "adminpage/member/admin-member-membership-statistics";
     }
 }
