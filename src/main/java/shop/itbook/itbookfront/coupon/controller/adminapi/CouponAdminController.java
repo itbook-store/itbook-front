@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.coupon.controller.adminapi;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -15,13 +14,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
+import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;

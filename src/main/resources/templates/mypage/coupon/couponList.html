@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content">
+            <h2>쿠폰 목록</h2>
+            <hr>
+            <div>
+                <form method="get" th:action="@{/mypage/coupon/usage_status}">
+                    <select name="searchRequirement">
+                        <option value="everything">전체</option>
+                        <option value="notuse">사용전</option>
+                        <option value="alreadyuse">사용완료</option>
+                        <option value="overdate">기간만료</option>
+                    </select>
+                </form>
+            </div>
+            <div class="container bootstrap snippets bootdey">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="main-box no-header clearfix">
+                            <div class="main-box-body clearfix">
+                                <div class="table-responsive">
+                                    <table class="table user-list">
+                                        <thead>
+                                        <tr>
+                                            <th><span>쿠폰번호</span></th>
+                                            <th><span>쿠폰날짜</span></th>
+                                            <th><span>쿠폰혜택</span></th>
+                                            <th class="text-center"><span>쿠폰상태</span></th>
+                                            <th><span>쿠폰타입</span></th>
+                                            <th><span>사용처</span></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="couponIssue : ${pageResponse.getContent()}">
+                                            <td th:text="${couponIssue.couponIssueNo}"></td>
+                                            <td>
+                                                <span th:text="${couponIssue.name}"></span>
+                                            </td>
+                                            <td><span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일')}"></span></td>
+                                            <td class="text-center">
+                                                <span class="badge text-bg-danger" th:text="${couponIssue.usageStatus}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${couponIssue.couponType}"></span>
+                                            </td>
+                                            <td style="width: 20%;">
+                                                <span th:text="${couponIssue.couponType}"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <th:block th:include="component/pageFooter"></th:block>
+        </div>
+    </div>
+</body>
+</html>

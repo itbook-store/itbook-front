@@ -1,6 +1,5 @@
-package shop.itbook.itbookfront.coupon.adaptor.impl;
+package shop.itbook.itbookfront.coupon.adaptor.adminapi.impl;
 
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,7 +24,7 @@ import shop.itbook.itbookfront.util.ResponseChecker;
  */
 @Component
 @RequiredArgsConstructor
-public class CouponAdaptor {
+public class CouponAdminAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
