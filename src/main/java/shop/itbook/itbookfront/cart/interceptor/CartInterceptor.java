@@ -27,7 +27,16 @@ public class CartInterceptor implements HandlerInterceptor {
 
         log.info("-------------- Cart Interceptor Start --------------");
 
-        Cookie cartCookie = getCartCookie(request);
+        Cookie[] cookies = request.getCookies();
+
+        if (Objects.isNull(cookies) || cookies.length == 0) {
+            Cookie newCookie = new Cookie(COOKIE_NAME, "CID=" + UUID.randomUUID());
+            newCookie.setMaxAge(ONE_DAY);
+            response.addCookie(newCookie);
+            return true;
+        }
+
+        Cookie cartCookie = getCartCookie(cookies);
 
         if (Objects.isNull(cartCookie)) {
             Cookie newCookie = new Cookie(COOKIE_NAME, "CID="+ UUID.randomUUID());
@@ -37,9 +46,7 @@ public class CartInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private static Cookie getCartCookie(HttpServletRequest request) {
-
-        Cookie[] cookies = request.getCookies();
+    private static Cookie getCartCookie(Cookie[] cookies) {
 
         return Arrays.stream(cookies)
             .filter(cookie -> cookie.getName().equals(COOKIE_NAME))

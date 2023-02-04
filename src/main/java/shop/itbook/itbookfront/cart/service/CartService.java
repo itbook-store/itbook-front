@@ -1,9 +1,10 @@
 package shop.itbook.itbookfront.cart.service;
 
 import java.util.List;
-import shop.itbook.itbookfront.cart.dto.response.CartResponseDto;
+import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * @author 강명관
@@ -16,9 +17,9 @@ public interface CartService {
 
     boolean addProductMemberToCart(CartMemberRequestDto cartMemberRequestDto);
 
-    List<CartResponseDto> getCartListAnonymous(String cookieValue);
+    List<ProductDetailsResponseDto> getCartListAnonymous(String cookieValue);
 
-    List<CartResponseDto> getCartListMember(CartMemberNoRequestDto cartMemberNoRequestDto);
+    List<CartProductDetailsResponseDto> getCartListMember(CartMemberNoRequestDto cartMemberNoRequestDto);
 
     void deleteProductAnonymousToCart(String cookieValue, Integer productNo);
 
@@ -27,5 +28,7 @@ public interface CartService {
     void deleteProductMemberToCart(CartMemberRequestDto cartMemberRequestDto);
 
     void deleteAllProductMemberToCart(CartMemberNoRequestDto cartMemberNoRequestDto);
+
+    void modifyProductCountToCart(CartMemberRequestDto cartMemberRequestDto);
 }
 

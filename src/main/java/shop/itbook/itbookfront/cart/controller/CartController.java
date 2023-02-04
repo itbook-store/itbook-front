@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
 import shop.itbook.itbookfront.cart.dto.response.CartResponseDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
 import shop.itbook.itbookfront.cart.service.CartService;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * @author 강명관
@@ -41,14 +43,15 @@ public class CartController {
         if (principal instanceof UserDetailsDto) {
             log.info("회원 처리");
             UserDetailsDto userDetailsDto = (UserDetailsDto) principal;
-            List<CartResponseDto> cartListMember = cartService.getCartListMember(
+            List<CartProductDetailsResponseDto> cartListMember = cartService.getCartListMember(
                 new CartMemberNoRequestDto(userDetailsDto.getMemberNo()));
 
             model.addAttribute("cartList", cartListMember);
+            return ROOT_PATH.concat("cart");
         }
 
         log.info("비회원 처리");
-        List<CartResponseDto> cartListAnonymous =
+        List<ProductDetailsResponseDto> cartListAnonymous =
             cartService.getCartListAnonymous(cookie.getValue());
 
         model.addAttribute("cartList", cartListAnonymous);

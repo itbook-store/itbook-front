@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * @author 강명관
@@ -13,13 +14,8 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartResponseDto {
+public class CartProductDetailsResponseDto {
+    private Integer productCount;
 
-    private String fileThumbnailsUrl;
-    private String productName;
-    private Long fixedPrice;
-    private Integer discountPercent;
-    private Integer quantity;
-    private Boolean isForceSoldOut;
-    private Boolean isSubscription;
+    private ProductDetailsResponseDto productDetailsResponseDto;
 }

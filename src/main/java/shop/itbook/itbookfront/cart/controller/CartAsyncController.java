@@ -3,11 +3,15 @@ package shop.itbook.itbookfront.cart.controller;
 import static shop.itbook.itbookfront.cart.util.CartConstant.COOKIE_NAME;
 
 import javax.servlet.http.Cookie;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +45,7 @@ public class CartAsyncController {
 
             UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
             CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
-                userDetailsDto.getMemberNo(),
+                userDetailsDto.getMemberNo().intValue(),
                 productNo
             );
 
@@ -63,7 +67,7 @@ public class CartAsyncController {
 
             UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
             CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
-                userDetailsDto.getMemberNo(),
+                userDetailsDto.getMemberNo().intValue(),
                 productNo
             );
 
@@ -92,6 +96,32 @@ public class CartAsyncController {
 
         log.info("비회원 처리");
         cartService.deleteAllProductAnonymousToCart(cookie.getValue());
+    }
+
+    @PostMapping("/change/product-count")
+    public void productCountChangeInCart(Authentication authentication,
+                                         @RequestBody CartMemberRequestDto cartMemberRequestDto) {
+
+        log.info("cartMemberRequestDto {}", cartMemberRequestDto);
+
+        if (!authentication.isAuthenticated()) {
+            return;
+        }
+
+        UserDetailsDto userDetailsDto = (UserDetailsDto) authentication.getPrincipal();
+
+        if (!checkValidMember(cartMemberRequestDto, userDetailsDto)) {
+            return;
+        }
+
+        cartService.modifyProductCountToCart(cartMemberRequestDto);
+
+    }
+
+    private static boolean checkValidMember(CartMemberRequestDto cartMemberRequestDto,
+                                    UserDetailsDto userDetailsDto) {
+        return userDetailsDto.getMemberNo()
+            .equals(Long.valueOf(cartMemberRequestDto.getMemberNo()));
     }
 
     private boolean checkTypeUserDetailsDto(Object principal) {

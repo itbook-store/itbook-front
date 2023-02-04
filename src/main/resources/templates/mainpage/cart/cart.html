@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout",
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
     <meta charset="UTF-8">
@@ -17,8 +18,6 @@
         <h1 style="padding-bottom: 10px; border-bottom: solid 1px blue;">장바구니</h1>
     </div>
 
-
-
     <div class="cart">
         <div class="cart_type_bntBox">
             <button class="cart_type_general btn btn-primary">일반 상품</button>
@@ -28,55 +27,121 @@
 
         <div class="table-responsive general_product">
             <table class="table table-hover table-md align-middle">
-                <thead class="table-light">
+                <thead  style="background-color: #a2a2a2 !important;">
                 <tr>
-                    <th style="width: 100px;">
-                        <p>전채 <span></span> 개</p>
-                    </th>
-                    <th style="min-width: 80px;"><input type="checkbox"></th>
+                    <th style="min-width: 80px;"></th>
                     <th style="min-width: 350px;">상품명</th>
                     <th style="min-width: 150px;">판매가</th>
-                    <th style="min-width: 250px;">수량</th>
+                    <th style="">재고</th>
+                    <th style="min-width: 200px;">수량</th>
                     <th style="min-width: 110px;">주문 금액</th>
                 </tr>
 
                 </thead>
                 <tbody class="table_body">
-                <tr class="table_line">
-                    <td>1</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                <!-- 회원 장바구니 테이블 -->
+                <th:block sec:authorize="isAuthenticated()">
+                <th:block th:if="${not #lists.isEmpty(cartList)}">
+                <tr class="table_line" th:each="dto : ${cartList}">
+                    <td>
+                        <div style="display: flex; align-items: center; justify-content: center">
+                            <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                    title="Remove item" th:attr="productNo=${dto.productDetailsResponseDto.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                    title="Move to the wish list">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </td>
                     <td>
                         <div class="product_titleBox">
-                            <img class="product_img" src="" alt="" >
-                            <p class="product_title">객체 지향 오해와 사실</p>
+                            <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
+                                <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
+                            <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
+                            </a>
                         </div>
                     </td>
                     <td>
                         <div class="product_priceBox">
-                            <p class="fixed_price">10,000</p>
-                            <p class="discount_price">9,000</p>
+                            <p class="fixed_price" th:text="${dto.productDetailsResponseDto.fixedPrice}"></p>
+                            <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
                         </div>
-
+                    </td>
+                    <td>
+                        <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>
                     </td>
                     <td>
                         <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
-                            <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                <i class="fa fa-minus"></i>
-                            </button>
-
                             <div class="form-outline">
-                                <input min="1" name="quantity" value="1"  class="quantity" type="number" />
+                                <input type="hidden" class="memberNo" th:value="${#authentication.principal.memberNo}"/>
+                                <input min="1" max="100" name="quantity" th:value="${dto.productCount}"  class="quantity" type="number"
+                                       onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                       th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
                             </div>
-
-                            <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                <i class="fa fa-plus"></i>
-                            </button>
                         </div>
                     </td>
                     <td>
-                        <p class="total_price">10,000,000</p>
+                        <input class="total_price" type="number" readonly th:value="${dto.productDetailsResponseDto.selledPrice * dto.productCount}" />
                     </td>
                 </tr>
+                </th:block>
+                </th:block>
+
+                <!-- 비회원 장바구니 테이블 -->
+                <th:block sec:authorize="isAnonymous()">
+                <th:block th:unelss="${not #lists.isEmpty(cartList)}">
+                    <tr class="table_line" th:each="product : ${cartList}">
+                        <td>
+                            <div style="display: flex; align-items: center; justify-content: center">
+                                <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                        title="Remove item" th:attr="productNo=${product.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                        title="Move to the wish list">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product_titleBox">
+                                <a th:href="@{|/products/${product.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
+                                    <img class="product_img" th:src="${product.fileThumbnailsUrl}" alt="" >
+                                    <p class="product_title" th:text="${product.productName}"></p>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product_priceBox">
+                                <p class="fixed_price" th:text="${product.fixedPrice}"></p>
+                                <p class="discount_price" th:text="${product.selledPrice}"></p>
+                            </div>
+
+                        </td>
+                        <td>
+                            <p class="product_stock" th:text="${product.stock}"></p>
+                        </td>
+                        <td>
+                            <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
+                                <div class="form-outline">
+                                    <input type="hidden" th:attr="data-no=${product.productNo}">
+                                    <input min="1" name="quantity" value="1"  class="quantity" type="number"
+                                           th:attr="data-stock=${product.stock}"
+                                           onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                           onchange="changeTotalPrice(this)"
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="total_price" type="number" readonly th:value="${product.selledPrice}"/>
+                        </td>
+                    </tr>
+                </th:block>
+                </th:block>
+
                 </tbody>
             </table>
         </div>
@@ -136,15 +201,12 @@
             </table>
         </div>
 
-
-
         <div class="btn_container">
             <div class="deleteBtn_box">
-                <button class="all_delete_btn btn btn-danger">전체삭제</button>
-                <button class="select_delete_btn btn btn-warning">선택삭제</button>
+                <button class="all_delete_btn btn btn-danger" onclick="deleteAllProduct()">전체삭제</button>
             </div>
             <div class="movementBtn_box">
-                <button class="go_shopping btn btn-secondary">쇼핑 하러가기</button>
+                <button class="go_shopping btn btn-secondary" onclick="location.href='/'">쇼핑 하러가기</button>
                 <button class="go_payment btn btn-success">결제하기</button>
             </div>
         </div>

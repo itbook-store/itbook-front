@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
 
 
@@ -56,6 +57,7 @@ public class ProductDetailsResponseDto {
 
     private String authorName;
 
+    @Setter
     private Long selledPrice;
 
     private String thumbnailsName;
