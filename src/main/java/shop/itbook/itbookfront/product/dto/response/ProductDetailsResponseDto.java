@@ -65,4 +65,7 @@ public class ProductDetailsResponseDto {
     private Boolean isPointApplying;
 
     private Boolean isSubscription;
+    private Boolean isDeleted;
+    private Long dailyHits;
+
 }

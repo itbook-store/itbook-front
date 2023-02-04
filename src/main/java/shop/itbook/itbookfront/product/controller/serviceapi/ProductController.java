@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -62,8 +63,9 @@ public class ProductController {
         return "mainpage/product/product-category";
     }
 
-    @GetMapping(params = {"productTypeNo"})
+    @GetMapping(params = {"productTypeNo", "productTypeName"})
     public String productListByProductType(@RequestParam Integer productTypeNo,
+                                           @RequestParam String productTypeName,
                                            Model model, @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse =
@@ -79,8 +81,11 @@ public class ProductController {
                     pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
         model.addAttribute("pageResponse", productList);
 
+        model.addAttribute("productTypeName", productTypeName);
+
         model.addAttribute("paginationUrl",
-            String.format("/products?productTypeNo=%d", productTypeNo));
+            String.format("/admin/products?productTypeNo=%d&productTypeName=%s", productTypeNo,
+                productTypeName));
 
         return "mainpage/product/product-producttype";
     }
