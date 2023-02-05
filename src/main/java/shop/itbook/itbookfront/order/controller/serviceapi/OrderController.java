@@ -27,5 +27,14 @@ public class OrderController {
         return "mypage/order/my-order-list";
     }
 
-
+    /**
+     * 주문 완료 처리를 위한 컨트롤러.
+     * 로직을 다 처리한 후 완료 페이지를 반환한다.
+     *
+     * @return 사용자에게 보여줄 주문 완료페이지
+     */
+    @GetMapping("/completion")
+    public String orderCompletion() {
+        return "mainpage/order/orderCompletionForm";
+    }
 }

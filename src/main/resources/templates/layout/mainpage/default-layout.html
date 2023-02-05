@@ -24,7 +24,6 @@
 <!--</body>-->
 <!--</html>-->
 
-
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -35,18 +34,12 @@
     <div th:replace="fragment/mainpage/head :: main-head-fragment"></div>
 </head>
 <body>
-<div>
-    <th:block th:replace="fragment/mainpage/header :: header-fragment">
-    </th:block>
-    <th:block th:replace="fragment/mainpage/header :: category-fragment">
-    </th:block>
-<!--    <th:block th:replace="fragment/mainpage/header :: categoryBar-fragment">-->
-<!--    </th:block>-->
-
-    <div class="itbook-container" layout:fragment="content">
-    </div>
-    <div th:replace="fragment/common/footer :: footer-fragment"></div>
-
-</div>
+<th:block th:replace="fragment/mainpage/header :: header-fragment">
+</th:block>
+<th:block th:replace="fragment/mainpage/header :: category-fragment">
+</th:block>
+<th:block class="itbook-container" layout:fragment="content">
+</th:block>
+<div th:replace="fragment/common/footer :: footer-fragment"></div>
 </body>
 </html>
