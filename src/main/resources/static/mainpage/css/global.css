@@ -3,20 +3,17 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+html,body {
+    height: 100%;
+}
+
 body {
     margin:0;
 }
 
 .itbook-container{
-    /*margin: 10%;*/
-
     margin-left: 10%;
     margin-right: 10%;
 
-    height: 100%;
-}
-
-footer {
-    position : relative;
-    transform : translateY(-100%);
+    min-height: 60%;
 }

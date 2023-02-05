@@ -10,9 +10,15 @@ import lombok.Getter;
  */
 @Getter
 public class MemberDestinationResponseDto {
+
+    Long recipientDestinationNo;
     String recipientName;
-    String phoneNumber;
+
+    String recipientPhoneNumber;
+
     Integer postcode;
-    String address;
-    String detailAddress;
+
+    String roadNameAddress;
+
+    String recipientAddressDetails;
 }

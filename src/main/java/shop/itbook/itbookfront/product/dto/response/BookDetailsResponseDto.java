@@ -22,7 +22,7 @@ public class BookDetailsResponseDto {
 
     private String detailsDescription;
 
-    private Boolean isExposed;
+    private Boolean isSelled;
 
     private Boolean isDeleted;
 

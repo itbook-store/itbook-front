@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>나의 주소 목록</h2>
+        <hr>
+        <button class="btn btn-primary">등록하기</button>
+        <button class="btn btn-danger">삭제하기</button>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                    <tr>
+                                        <th>(체크박스)</th>
+                                        <th><span>수령인 이름</span></th>
+                                        <th><span>수령인 전화번호</span></th>
+                                        <th><span>우편번호</span></th>
+                                        <th><span>도로명 주소</span></th>
+                                        <th><span>상세주소</span></th>
+                                        <th>(수정하기 버튼)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="memberDestination : ${memberDestinationList}">
+                                        <td>
+                                            <input type="checkbox" name="deleteDestination" th:value="${memberDestination.getRecipientDestinationNo()}">
+                                        </td>
+                                        <td>
+                                            <span th:text="${memberDestination.getRecipientName()}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${memberDestination.getRecipientPhoneNumber()}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${memberDestination.getPostcode()}"></span></td>
+                                        <td>
+                                            <span th:text="${memberDestination.getRoadNameAddress()}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
