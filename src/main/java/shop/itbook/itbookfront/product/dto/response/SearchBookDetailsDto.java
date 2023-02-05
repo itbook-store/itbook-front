@@ -1,7 +1,5 @@
 package shop.itbook.itbookfront.product.dto.response;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -11,18 +9,13 @@ import lombok.Data;
 @Data
 public class SearchBookDetailsDto {
 
-    private List<Item> item = new ArrayList<>();
-
-    @Data
-    public static class Item {
-        private String title;
-        private String author;
-        private String pubDate;
-        private String description;
-        private Long priceStandard;
-        private String publisher;
-        private BookInfo subInfo;
-    }
+    private String title;
+    private String author;
+    private String pubDate;
+    private String description;
+    private Long priceStandard;
+    private String publisher;
+    private BookInfo subInfo;
 
     @Data
     public static class BookInfo {

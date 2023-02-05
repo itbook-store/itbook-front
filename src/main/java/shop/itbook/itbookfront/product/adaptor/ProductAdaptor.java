@@ -17,13 +17,13 @@ import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
-import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -38,7 +38,30 @@ public class ProductAdaptor {
     private final RestTemplate restTemplate;
 
     public ProductNoResponseDto addProduct(
-        MultipartFile thumbnails, MultipartFile ebook, ProductBookRequestDto requestDto) {
+        MultipartFile thumbnails, ProductRequestDto requestDto) {
+
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        params.add("thumbnails", thumbnails.getResource());
+        params.add("requestDto", requestDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
+            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
+                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(response.getStatusCode(),
+            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(response.getBody()).getResult();
+    }
+
+    public ProductNoResponseDto addBook(
+        MultipartFile thumbnails, MultipartFile ebook, BookRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("thumbnails", thumbnails.getResource());
@@ -51,7 +74,7 @@ public class ProductAdaptor {
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
         ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
-            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
+            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
                 HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
                 });
 
@@ -87,7 +110,7 @@ public class ProductAdaptor {
     }
 
     public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                              ProductBookRequestDto requestDto) {
+                              BookRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("thumbnails", thumbnails.getResource());

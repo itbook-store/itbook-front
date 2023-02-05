@@ -1,15 +1,10 @@
 package shop.itbook.itbookfront.product.service;
 
-import java.io.IOException;
-import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
-import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
@@ -22,14 +17,16 @@ import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
  */
 public interface ProductService {
     ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                 ProductBookRequestDto requestDto);
+                                 BookRequestDto requestDto);
+
+    ProductNoResponseDto addProduct(MultipartFile thumbnails, ProductRequestDto requestDto);
 
     PageResponse<ProductDetailsResponseDto> getProductList(String url);
 
     void removeProduct(Long productNo);
 
     void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                       ProductBookRequestDto requestDto);
+                       BookRequestDto requestDto);
 
     ProductDetailsResponseDto getProduct(Long productNo);
 
