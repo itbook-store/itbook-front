@@ -23,10 +23,6 @@ public class ProductBookRequestDto {
     @Length(max = 255, message = "이름 길이는 1자-255자가 되어야 합니다.")
     private String productName;
 
-    @NotBlank(message = "공백이 아닌 문자를 하나 이상 포함해야 됩니다.")
-    @Length(max = 255, message = "상세설명 길이는 1자-255자가 되어야 합니다.")
-    private String simpleDescription;
-
     private String detailsDescription;
 
     @NotNull(message = "null을 허용하지 않습니다.")
@@ -35,17 +31,23 @@ public class ProductBookRequestDto {
     @NotNull(message = "null을 허용하지 않습니다.")
     private Boolean isForceSoldOut;
 
+    @NotNull(message = "카테고리를 선택해주세요.")
+    private List<Integer> categoryNoList;
+
     @NotNull(message = "null을 허용하지 않습니다.")
     @PositiveOrZero(message = "재고는 0개 이상이어야 합니다.")
     private Integer stock;
 
-    @NotNull(message = "카테고리를 선택해주세요.")
-    private List<Integer> categoryNoList;
+    @NotNull(message = "null을 허용하지 않습니다.")
+    private Boolean isPointApplying;
 
     @Min(value = 0, message = "적립율은 0% 이상이어야 합니다.")
     @Max(value = 100, message = "적립율은 최대 100%입니다.")
     private Integer increasePointPercent;
 
+    @NotNull(message = "null을 허용하지 않습니다.")
+    private Boolean isPointApplyingBasedSellingPrice;
+    
     @NotNull(message = "null을 허용하지 않습니다.")
     @Min(value = 0, message = "매입원가는 0원 이상이어야 합니다.")
     private Long rawPrice;
@@ -79,11 +81,7 @@ public class ProductBookRequestDto {
     @Length(max = 255, message = "이름 길이는 1자-255자가 되어야 합니다.")
     private String authorName;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
-    private Boolean isPointApplying;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
-    private Boolean isPointApplyingBasedSellingPrice;
 
     @NotNull(message = "null을 허용하지 않습니다.")
     private Boolean isSubscription;

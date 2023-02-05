@@ -76,12 +76,12 @@ public class ProductAdminController {
     }
 
     @GetMapping("/add")
-    public String getAddProductForm(Model model) {
+    public String getAddBookForm(Model model) {
         model.addAttribute("mainCategoryList",
             categoryService.findCategoryList(
                 String.format("/api/admin/categories/main-categories?page=%d&size=%d",
                     PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
-        return "adminpage/product/product-add";
+        return "adminpage/product/book-add";
     }
 
     @GetMapping("/{productNo}/modify")

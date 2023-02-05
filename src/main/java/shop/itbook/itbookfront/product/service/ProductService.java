@@ -10,9 +10,11 @@ import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 
 /**
  * @author 이하늬
@@ -35,4 +37,10 @@ public interface ProductService {
     PageResponse<CategoryDetailsResponseDto> getCategoryList(String url);
 
     PageResponse<ProductTypeResponseDto> findProductTypeList(String url);
+
+    SearchBookDetailsDto searchBook(String url);
+
+
+    ProductBooleanResponseDto checkIsbnExists(String url);
+
 }

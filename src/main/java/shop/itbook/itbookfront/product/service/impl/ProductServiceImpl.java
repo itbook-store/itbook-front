@@ -8,9 +8,11 @@ import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -63,4 +65,16 @@ public class ProductServiceImpl implements ProductService {
     public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
         return productAdaptor.findProductTypeList(url);
     }
+
+    @Override
+    public SearchBookDetailsDto searchBook(String url) {
+        return productAdaptor.searchBook(url);
+    }
+
+    @Override
+    public ProductBooleanResponseDto checkIsbnExists(String url) {
+
+        return productAdaptor.isbnExists(url);
+    }
+
 }

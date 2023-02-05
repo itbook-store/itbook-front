@@ -18,9 +18,12 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -146,4 +149,28 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
+    public SearchBookDetailsDto searchBook(String url) {
+        ResponseEntity<CommonResponseBody<SearchBookDetailsDto>> response =
+            restTemplate.exchange(gateway.getGatewayServer() + url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(response.getStatusCode(),
+            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(response.getBody()).getResult();
+    }
+
+    public ProductBooleanResponseDto isbnExists(String url) {
+        ResponseEntity<CommonResponseBody<ProductBooleanResponseDto>> response =
+            restTemplate.exchange(
+                gateway.getGatewayServer() + url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(response.getStatusCode(),
+            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(response.getBody()).getResult();
+    }
 }
