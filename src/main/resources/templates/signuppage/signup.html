@@ -58,8 +58,15 @@
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label">비밀번호(영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다)</label>
-                    <input type="password" class="form-control form-control-lg" name="password" />
+                    <label class="form-label">비밀번호</label>
+                    <input type="password" class="form-control form-control-lg" name="password" id="password" aria-describedby="pwdHelp" />
+                    <div id="pwdHelp" class="form-text">영문 대소문자, 숫자, 특수기호를 적어도 1개 이상 포함시켜야 합니다</div><br/>
+                    <span th:text="${valid_password}" style="color: red"></span>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label">비밀번호 확인</label>
+                    <input type="password" class="form-control form-control-lg" id="passwordCheck" />
                     <span th:text="${valid_password}" style="color: red"></span>
                   </div>
 
