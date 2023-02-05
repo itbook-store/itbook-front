@@ -14,7 +14,7 @@
     <div class="flex-shrink-0 p-3 bg-white">
 
         <div id="form-main">
-            <form id="couponAddForm" th:action="@{/admin/coupon/coupon-addition}" method="post">
+            <form id="couponAddForm" method="post">
 
                 <div id="form-div">
 
@@ -52,7 +52,8 @@
                             <div id="membershipMonthlyCouponDiv" style="display:none;">
                                 이달의 쿠폰 -등급형-
                                 <label for='selectMembership'>쿠폰 종류</label>
-                                <select id='selectMembership' th:field="${couponInputRequestDto.membershipGrade}" onchange="selectMembershipDiv(this)">
+<!--                                <select id='selectMembership' th:field="${couponInputRequestDto.membershipGrade}" onchange="selectMembershipDiv(this)">-->
+                                <select id='selectMembership'>
                                     <option value="">쿠폰의 종류를 선택해주세요.</option>
                                     <option value="일반쿠폰">일반쿠폰</option>
                                     <option value="웰컴쿠폰">웰컴 쿠폰</option>
@@ -204,7 +205,10 @@
 
 
                     </div>
-                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit" value="등록하기"/>
+                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" th:formaction="@{/admin/coupon/coupon-addition}" value="등록하기"/>
+                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" th:formaction="@{/admin/coupon/coupon-addition/all}" value="전체 사용 쿠폰 등록하기"/>
+                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" th:formaction="@{/admin/coupon/coupon-addition/category}" value="카테고리 쿠폰 등록하기"/>
+                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" th:formaction="@{/admin/coupon/coupon-addition/product}" value="상품 쿠폰 등록하기"/>
                 </div>
             </form>
         </div>
