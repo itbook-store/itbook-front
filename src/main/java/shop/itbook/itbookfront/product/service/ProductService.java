@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.product.service;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
@@ -11,6 +12,7 @@ import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
 import shop.itbook.itbookfront.product.dto.response.BookDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 
 /**
  * @author 이하늬
@@ -32,4 +34,5 @@ public interface ProductService {
 
     PageResponse<CategoryDetailsResponseDto> getCategoryList(String url);
 
+    PageResponse<ProductTypeResponseDto> findProductTypeList(String url);
 }
