@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
@@ -52,10 +53,12 @@ public class HomeController {
             memberService.findMemberInfo(userDetailsDto.getMemberId()).getPhoneNumber()
                 .equals(userDetailsDto.getMemberId())) {
 
-            model.addAttribute("memberInfo", memberService.findMemberInfo(userDetailsDto.getMemberId()));
+            model.addAttribute("memberInfo",
+                memberService.findMemberInfo(userDetailsDto.getMemberId()));
 
             return "signuppage/oauth-signup";
         }
+
 
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
@@ -65,8 +68,10 @@ public class HomeController {
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-        String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
-        log.info("########## 브라우저 ip : " + remoteAddr);
+
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        model.addAttribute("productTypeList", productTypeList);
 
         List<ProductDetailsResponseDto> newBookList =
             productService.getProductList(
@@ -79,6 +84,11 @@ public class HomeController {
                 String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
                     PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 2)).getContent();
         model.addAttribute("discountBookList", discountBookList);
+
+
+        String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
+        log.info("########## 브라우저 ip : " + remoteAddr);
+
 
         return "mainpage/index";
     }

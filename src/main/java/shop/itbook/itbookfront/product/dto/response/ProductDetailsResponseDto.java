@@ -24,7 +24,7 @@ public class ProductDetailsResponseDto {
 
     private String detailsDescription;
 
-    private Boolean isExposed;
+    private Boolean isSelled;
 
     private Boolean isForceSoldOut;
 
@@ -65,4 +65,7 @@ public class ProductDetailsResponseDto {
     private Boolean isPointApplying;
 
     private Boolean isSubscription;
+    private Boolean isDeleted;
+    private Long dailyHits;
+
 }
