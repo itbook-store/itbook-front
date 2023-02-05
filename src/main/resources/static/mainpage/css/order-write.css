@@ -1,4 +1,4 @@
-.order-write .order-title {
+.order-title {
     font-size: 30px;
 
     margin-top: 5%;
@@ -8,7 +8,7 @@
     box-shadow: 0 3px 3px -3px blue;
 }
 
-.order-write .box-title {
+.box-title {
     font-size: 22px;
     margin-bottom: 3%;
 
@@ -70,10 +70,10 @@ tr:last-child td:last-child {
     border-bottom-right-radius: 6px;
 }
 
-.order-write .address-box {
+.address-box {
     margin-bottom: 5%;
 }
 
-.order-write .delivery-box {
+.delivery-box {
     margin-bottom: 5%;
 }

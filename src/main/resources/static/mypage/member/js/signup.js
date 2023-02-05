@@ -158,6 +158,16 @@ function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
 }
 
 function signUpSubmit() {
+    if(!checkPassword(document.getElementById("password").value)) {
+        alert("비밀번호 형식에 맞지 않습니다.");
+        return false;
+    }
+
+    if(document.getElementById("password").value != document.getElementById("passwordCheck").value) {
+        alert("비밀번호가 맞지 않습니다. 다시 한번 입력해주세요");
+        return false;
+    }
+
     if (document.getElementById("memberIdCheckBtn").disabled == false
         || document.getElementById("nicknameCheckBtn").disabled == false
         || document.getElementById("phoneNumberCheckBtn").disabled == false
@@ -213,4 +223,17 @@ function checkEmail(str) {
     }
 
     return true;
+}
+
+function checkPassword(str) {
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,255}$/i;
+    if(!regExp.test(str)) {
+        return false;
+    }
+
+    return true;
+}
+
+function inputDetection(id) {
+    document.getElementById(id).style.visibility ='visible';
 }

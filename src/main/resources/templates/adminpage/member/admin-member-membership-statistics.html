@@ -6,22 +6,98 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
         <h2>회원 등급별 회원 통계</h2>
         <hr>
-        일반<br>
-        <span th:text="${count.getCommonCnt()}"></span><br>
-        화이트<br>
-        <span th:text="${count.getWhiteCnt()}"></span><br>
-        실버<br>
-        <span th:text="${count.getSilverCnt()}"></span><br>
-        골드<br>
-        <span th:text="${count.getGoldCnt()}"></span><br>
-        플래티넘<br>
-        <span th:text="${count.getPlatinumCnt()}"></span><br>
+        일반 : <span th:text="${count.getCommonCnt()}"></span>명<br>
+        화이트 : <span th:text="${count.getWhiteCnt()}"></span>명<br>
+        실버 : <span th:text="${count.getSilverCnt()}"></span>명<br>
+        골드 : <span th:text="${count.getGoldCnt()}"></span>명<br>
+        플래티넘 : <span th:text="${count.getPlatinumCnt()}"></span>명<br><br>
+
+        <input type="hidden" id="commonCnt" th:value="${count.getCommonCnt()}">
+        <input type="hidden" id="whiteCnt" th:value="${count.getWhiteCnt()}">
+        <input type="hidden" id="silverCnt" th:value="${count.getSilverCnt()}">
+        <input type="hidden" id="goldCnt" th:value="${count.getGoldCnt()}">
+        <input type="hidden" id="platinumCnt" th:value="${count.getPlatinumCnt()}">
+
+        <div class="container">
+            <div class="row my-3">
+                <div class="col-12">
+                    <h4>회원 등급별 통계 차트</h4>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="membershipStatistics"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            let ctx = document.getElementById('membershipStatistics');
+
+            let commonCnt = document.getElementById('commonCnt').value * 1;
+            let whiteCnt = document.getElementById('whiteCnt').value * 1;
+            let silverCnt = document.getElementById('silverCnt').value * 1;
+            let goldCnt = document.getElementById('goldCnt').value * 1;
+            let platinumCnt = document.getElementById('platinumCnt').value * 1;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['일반', '화이트', '실버', '골드', '플래티넘'],
+                    datasets: [{
+                        label: '회원 등급별 회원 수',
+                        data: [commonCnt, whiteCnt, silverCnt, goldCnt, platinumCnt],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        </script>
     </div>
 </div>
 </body>
