@@ -29,7 +29,7 @@ import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
  * @since 1.0
  */
 @Controller
-@RequestMapping("/admin/coupon")
+@RequestMapping("/admin/coupons")
 @RequiredArgsConstructor
 public class CouponAdminController {
 
@@ -53,7 +53,7 @@ public class CouponAdminController {
             model.addAttribute("couponInputRequestDto", couponInputRequestDto);
 
             Map<String, String> validatorResult = validateHandling(errors);
-            for(String key : validatorResult.keySet()) {
+            for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
 
@@ -64,7 +64,7 @@ public class CouponAdminController {
 
         couponService.addCoupon(couponInputRequestDto);
 
-        return Strings.concat(DIRECTORY_NAME, "/test");
+        return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 
     @GetMapping
@@ -75,13 +75,13 @@ public class CouponAdminController {
         if(Objects.isNull(coverage)) {
             couponList =
                 couponService.findCouponList(
-                    String.format("/api/admin/coupon?page=%d&size=%d",
+                    String.format("/api/admin/coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else if(coverage.equals("카테고리쿠폰")){
             couponList =
                 couponService.findCouponList(
-                    String.format("/api/admin/coupon/category-coupon?page=%d&size=%d",
+                    String.format("/api/admin/category-coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else{

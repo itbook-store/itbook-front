@@ -37,7 +37,7 @@ function selectHowToShowCoupon(eventTarget) {
                             data-bs-target="#dashboard-collapse" aria-expanded="false">
                         쿠폰 관리
                     </button>
-                    <button class="btn btn-toggle" style="margin-left: 10%" onclick="location.href='/admin/coupon';">쿠폰 전체 조회</a></button>
-                    <button class="btn btn-toggle" style="margin-left: 10%" onclick="location.href='/admin/coupon/coupon-addition';">쿠폰 추가</a></button>
+                    <button class="btn btn-toggle" style="margin-left: 10%" onclick="location.href='/admin/coupons';">쿠폰 전체 조회</a></button>
+                    <button class="btn btn-toggle" style="margin-left: 10%" onclick="location.href='/admin/coupons/coupon-addition';">쿠폰 추가</a></button>
         `;
 }``

@@ -22,4 +22,9 @@ public class CouponIssueServiceServiceImpl implements CouponIssueServiceService 
 
         return couponIssueServiceAdaptor.getUserAllCouponIssueList(userAllCouponIssueUrl);
     }
+
+    @Override
+    public void usePointCouponByUser(String usePointCouponIssueUrl){
+        couponIssueServiceAdaptor.usePointCoupon(usePointCouponIssueUrl);
+    }
 }

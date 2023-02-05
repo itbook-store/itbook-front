@@ -10,4 +10,6 @@ import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDt
 public interface CouponIssueServiceService {
     PageResponse<UserCouponIssueListResponseDto> findUserAllCouponIssueList(
         String userAllCouponIssueUrl);
+
+    void usePointCouponByUser(String usePointCouponIssueUrl);
 }

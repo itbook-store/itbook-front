@@ -72,7 +72,7 @@
                                                 <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
                                             </td>
                                             <td th:if="${couponIssue.point!=0}" class="text-center">
-                                                <span class="badge text-bg-primary" th:text="사용하기" onclick="location.href='/coupon/coupon-issue/point-coupon'" style="cursor:pointer"></span>
+                                                <span class="badge text-bg-primary" th:text="사용하기" th:onclick="|location.href='@{/coupons/coupon-issues/(couponIssueNo=${couponIssue.couponIssueNo})/point-coupon-use}'|" style="cursor:pointer"></span>
                                             </td>
                                             <td th:unless="${couponIssue.point!=0}" class="text-center">
                                                 <span class="badge text-bg-danger" th:text="${couponIssue.usageStatusName}"></span>
