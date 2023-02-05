@@ -72,9 +72,7 @@ public class CartServiceImpl implements CartService {
             sb.append(", ");
         }
 
-        return cartAdaptor.getProductListAnonymous(String.valueOf(sb)).stream()
-            .filter(dto -> !dto.getIsSubscription())
-            .collect(Collectors.toList());
+        return cartAdaptor.getProductListAnonymous(String.valueOf(sb));
     }
 
     @Override

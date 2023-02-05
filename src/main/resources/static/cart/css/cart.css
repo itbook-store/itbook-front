@@ -110,13 +110,19 @@ table thead tr th {
 }
 
 .cart_type_general {
-    width: 50%;
+    width: 100%;
 }
 
 .cart_type_subscription {
-    width: 50%;
+    width: 100%;
 }
 
-.subscription_product {
-    display: none;
+.section {
+    width: 90%;
+    margin: 100px auto -10px auto;
+}
+
+.section h1 {
+    padding-bottom: 10px;
+    border-bottom: solid 5px #6868ab !important;
 }

@@ -7,6 +7,8 @@ import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
+ * 장바구니 비지니스로직의 서비스 인터페이스 입니다.
+ *
  * @author 강명관
  * @since 1.0
  */

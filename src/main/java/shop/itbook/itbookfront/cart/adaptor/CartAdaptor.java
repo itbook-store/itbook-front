@@ -22,6 +22,8 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
+ * 장바구니 기능에 대해 Back 서버와 통신하는 로직을 담당하는 클래스입니다.
+ *
  * @author 강명관
  * @since 1.0
  */

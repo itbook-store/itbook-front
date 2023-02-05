@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
+ * 장바구니 이용시 필요한 쿠키를 없으면 생성하기 위한 인터셉터입니다.
+ *
  * @author 강명관
  * @since 1.0
  */

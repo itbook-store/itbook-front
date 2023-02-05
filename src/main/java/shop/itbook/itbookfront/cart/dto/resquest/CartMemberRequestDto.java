@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
+ * 장바구니 요청을 위한 DTO 클래스 입니다.
+ *
  * @author 강명관
  * @since 1.0
  */

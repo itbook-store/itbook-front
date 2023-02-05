@@ -3,7 +3,6 @@ package shop.itbook.itbookfront.cart.controller;
 import static shop.itbook.itbookfront.cart.util.CartConstant.COOKIE_NAME;
 
 import javax.servlet.http.Cookie;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,6 +20,8 @@ import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 
 /**
+ * 장바구니에 대한 비동기 통신을 하는 컨트롤러입니다.
+ *
  * @author 강명관
  * @since 1.0
  */
@@ -37,11 +38,7 @@ public class CartAsyncController {
                                  @CookieValue(value = COOKIE_NAME)Cookie cookie,
                                  @RequestParam(value = "productNo")Integer productNo) {
 
-        log.info("cookie.getValue {}", cookie.getValue());
-        log.info("productNo {}", productNo);
-
         if (checkTypeUserDetailsDto(principal)) {
-            log.info("회원 처리");
 
             UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
             CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
@@ -52,9 +49,7 @@ public class CartAsyncController {
             return cartService.addProductMemberToCart(cartMemberRequestDto);
         }
 
-        log.info("비회원 처리");
         return cartService.addProductAnonymousToCart(cookie.getValue(), productNo);
-
     }
 
     @GetMapping("/delete-product")
@@ -63,8 +58,6 @@ public class CartAsyncController {
                                     @RequestParam(value = "productNo") Integer productNo) {
 
         if (checkTypeUserDetailsDto(principal)) {
-            log.info("회원 처리");
-
             UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
             CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
                 userDetailsDto.getMemberNo().intValue(),
@@ -75,7 +68,6 @@ public class CartAsyncController {
             return;
         }
 
-        log.info("비회원 처리");
         cartService.deleteProductAnonymousToCart(cookie.getValue(), productNo);
     }
 
@@ -85,7 +77,6 @@ public class CartAsyncController {
 
 
         if (checkTypeUserDetailsDto(principal)) {
-            log.info("회원 처리");
             UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
 
             cartService.deleteAllProductMemberToCart(
@@ -94,15 +85,12 @@ public class CartAsyncController {
             return;
         }
 
-        log.info("비회원 처리");
         cartService.deleteAllProductAnonymousToCart(cookie.getValue());
     }
 
     @PostMapping("/change/product-count")
     public void productCountChangeInCart(Authentication authentication,
                                          @RequestBody CartMemberRequestDto cartMemberRequestDto) {
-
-        log.info("cartMemberRequestDto {}", cartMemberRequestDto);
 
         if (!authentication.isAuthenticated()) {
             return;

@@ -1,20 +1,20 @@
-const generalBtn = document.querySelector(".cart_type_general");
-const subscriptionBtn =document.querySelector(".cart_type_subscription");
-
-const generalProduct = document.querySelector(".general_product");
-const subscriptionProduct = document.querySelector(".subscription_product")
-
-generalBtn.addEventListener("click", function() {
-    generalBtn.classList.add("btn-primary");
-    generalBtn.classList.remove("btn-light");
-
-    subscriptionBtn.classList.remove("btn-primary");
-    subscriptionBtn.classList.add("btn-light");
-
-    generalProduct.style.display = "block";
-    subscriptionProduct.style.display = "none";
-
-})
+// const generalBtn = document.querySelector(".cart_type_general");
+// const subscriptionBtn =document.querySelector(".cart_type_subscription");
+//
+// const generalProduct = document.querySelector(".general_product");
+// const subscriptionProduct = document.querySelector(".subscription_product")
+//
+// generalBtn.addEventListener("click", function() {
+//     generalBtn.classList.add("btn-primary");
+//     generalBtn.classList.remove("btn-light");
+//
+//     subscriptionBtn.classList.remove("btn-primary");
+//     subscriptionBtn.classList.add("btn-light");
+//
+//     generalProduct.style.display = "block";
+//     subscriptionProduct.style.display = "none";
+//
+// })
 
 subscriptionBtn.addEventListener("click", function() {
     subscriptionBtn.classList.add("btn-primary");
@@ -102,3 +102,69 @@ function changeTotalPrice(input) {
     let productPrice = Number(input.parentElement.parentElement.parentElement.parentElement.querySelector(".discount_price").innerHTML);
     totalPrice.value = Number(input.value) * productPrice;
 }
+
+
+let generalProductBody = document.getElementById("general_product");
+// async function getGeneralProductList() {
+//
+//     await fetch(`/async/cart/general`, {
+//         method: "GET",
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//
+//             data.forEach((a, i) => {
+//                 let temp = document.createElement("tr");
+//                 temp.classList.add("table_line");
+//
+//                 tmep.innerHTML =
+//                     `
+//                     <td>
+//                             <div style="display: flex; align-items: center; justify-content: center">
+//                                 <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+//                                         title="Remove item" th:attr="productNo=${data[i].productDetailsResponseDto.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">
+//                                     <i class="fas fa-trash"></i>
+//                                 </button>
+//                                 <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+//                                         title="Move to the wish list">
+//                                     <i class="fas fa-heart"></i>
+//                                 </button>
+//                             </div>
+//                         </td>
+//                         <td>
+//                             <div class="product_titleBox">
+//                                 <a th:href="@{|/products/${data[i].productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
+//                                     <img class="product_img" th:src="${data[i].productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
+//                                 <p class="product_title" th:text="${data[i].productDetailsResponseDto.productName}"></p>
+//                                 </a>
+//                             </div>
+//                         </td>
+//                         <td>
+//                             <div class="product_priceBox">
+//                                 <p class="fixed_price" th:text="${data[i].productDetailsResponseDto.fixedPrice}"></p>
+//                                 <p class="discount_price" th:text="${data[i].productDetailsResponseDto.selledPrice}"></p>
+//                             </div>
+//                         </td>
+//                         <td>
+//                             <p class="product_stock" th:text="${data[i].productDetailsResponseDto.stock}"></p>
+//                         </td>
+//                         <td>
+//                             <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
+//                                 <div class="form-outline">
+//                                     <input type="hidden" class="memberNo" th:value="${#authentication.principal.memberNo}"/>
+//                                     <input min="1" max="100" name="quantity" th:value="${data[i].productCount}"  class="quantity" type="number"
+//                                            onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+//                                            th:attr="productNo=${data[i].productDetailsResponseDto.productNo}, data-stock=${data[i].productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
+//                                 </div>
+//                             </div>
+//                         </td>
+//                         <td>
+//                             <input class="total_price" type="number" readonly th:value="${data[i].productDetailsResponseDto.selledPrice * dto.productCount}" />
+//                         </td>
+//                 `
+//                 generalProductBody.append(temp);
+//             })
+//
+//         });
+// }
