@@ -18,106 +18,6 @@
     </h1>
 
     <div class="row">
-        <!--        <div class="col-sm-4 col-md-3">-->
-        <!--            &lt;!&ndash; Filter &ndash;&gt;-->
-        <!--            <form class="shop__filter">-->
-        <!--                &lt;!&ndash; Price &ndash;&gt;-->
-        <!--                <h3 class="headline">-->
-        <!--                    <span>Price</span>-->
-        <!--                </h3>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__price" id="shop-filter-price_1" value="" checked="">-->
-        <!--                    <label for="shop-filter-price_1">Under $25</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__price" id="shop-filter-price_2" value="">-->
-        <!--                    <label for="shop-filter-price_2">$25 to $50</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__price" id="shop-filter-price_3" value="">-->
-        <!--                    <label for="shop-filter-price_3">$50 to $100</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__price" id="shop-filter-price_4" value="specify">-->
-        <!--                    <label for="shop-filter-price_4">Other (specify)</label>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash; Checkboxes &ndash;&gt;-->
-        <!--                <h3 class="headline">-->
-        <!--                    <span>Brand</span>-->
-        <!--                </h3>-->
-        <!--                <div class="checkbox">-->
-        <!--                    <input type="checkbox" value="" id="shop-filter-checkbox_1" checked="">-->
-        <!--                    <label for="shop-filter-checkbox_1">Adidas</label>-->
-        <!--                </div>-->
-        <!--                <div class="checkbox">-->
-        <!--                    <input type="checkbox" value="" id="shop-filter-checkbox_2">-->
-        <!--                    <label for="shop-filter-checkbox_2">Calvin Klein</label>-->
-        <!--                </div>-->
-        <!--                <div class="checkbox">-->
-        <!--                    <input type="checkbox" value="" id="shop-filter-checkbox_3">-->
-        <!--                    <label for="shop-filter-checkbox_3">Columbia</label>-->
-        <!--                </div>-->
-        <!--                <div class="checkbox">-->
-        <!--                    <input type="checkbox" value="" id="shop-filter-checkbox_4">-->
-        <!--                    <label for="shop-filter-checkbox_4">Tommy Hilfiger</label>-->
-        <!--                </div>-->
-        <!--                <div class="checkbox">-->
-        <!--                    <input type="checkbox" value="" id="shop-filter-checkbox_5">-->
-        <!--                    <label for="shop-filter-checkbox_5">Not specified</label>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash; Radios &ndash;&gt;-->
-        <!--                <h3 class="headline">-->
-        <!--                    <span>Material</span>-->
-        <!--                </h3>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__radio" id="shop-filter-radio_1" value="" checked="">-->
-        <!--                    <label for="shop-filter-radio_1">100% Cotton</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__radio" id="shop-filter-radio_2" value="">-->
-        <!--                    <label for="shop-filter-radio_2">Bamboo</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__radio" id="shop-filter-radio_3" value="">-->
-        <!--                    <label for="shop-filter-radio_3">Leather</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__radio" id="shop-filter-radio_4" value="">-->
-        <!--                    <label for="shop-filter-radio_4">Polyester</label>-->
-        <!--                </div>-->
-        <!--                <div class="radio">-->
-        <!--                    <input type="radio" name="shop-filter__radio" id="shop-filter-radio_5" value="">-->
-        <!--                    <label for="shop-filter-radio_5">Not specified</label>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash; Colors &ndash;&gt;-->
-        <!--                <h3 class="headline">-->
-        <!--                    <span>Colors</span>-->
-        <!--                </h3>-->
-        <!--                <div class="shop-filter__color">-->
-        <!--                    <input type="text" id="shop-filter-color_1" value="" data-input-color="black">-->
-        <!--                    <label for="shop-filter-color_1" style="background-color: black;"></label>-->
-        <!--                </div>-->
-        <!--                <div class="shop-filter__color">-->
-        <!--                    <input type="text" id="shop-filter-color_2" value="" data-input-color="gray">-->
-        <!--                    <label for="shop-filter-color_2" style="background-color: gray;"></label>-->
-        <!--                </div>-->
-        <!--                <div class="shop-filter__color">-->
-        <!--                    <input type="text" id="shop-filter-color_3" value="" data-input-color="brown">-->
-        <!--                    <label for="shop-filter-color_3" style="background-color: brown;"></label>-->
-        <!--                </div>-->
-        <!--                <div class="shop-filter__color">-->
-        <!--                    <input type="text" id="shop-filter-color_4" value="" data-input-color="beige">-->
-        <!--                    <label for="shop-filter-color_4" style="background-color: beige;"></label>-->
-        <!--                </div>-->
-        <!--                <div class="shop-filter__color">-->
-        <!--                    <input type="text" id="shop-filter-color_5" value="" data-input-color="white">-->
-        <!--                    <label for="shop-filter-color_5" style="background-color: white;"></label>-->
-        <!--                </div>-->
-        <!--            </form>-->
-        <!--        </div>-->
 
         <div class="col-sm-8 col-md-12">
             <!-- Filters -->
@@ -133,7 +33,7 @@
                 <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
                     <div class="product-image4">
                         <a th:href="@{|/products/${product.productNo}|}">
-                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                            <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
                         </a>
                         <!--                            <ul class="social">-->
                         <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
@@ -155,8 +55,8 @@
                     </ul>
                     <div class="product-content">
                         <h3 class="title">[[${product.productName}]]</h3>
-                        <div class="price">[[${product.selledPrice}]]
-                            <span>[[${product.fixedPrice}]]</span>
+                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                         </div>
                         <a class="add-to-cart" href="">+ Add To Cart</a>
                     </div>
@@ -167,23 +67,9 @@
             </div>
 
 
-        </div> <!-- / .row -->
-
-        <!-- Pagination -->
-        <th:block th:include="component/pageFooter"></th:block>
-
-        <!--        <div class="row">-->
-        <!--            <div class="col-sm-12">-->
-
-        <!--                <ul class="pagination pull-right">-->
-        <!--                    <li><a href="#">«</a></li>-->
-        <!--                    <li><a href="#">»</a></li>-->
-        <!--                </ul>-->
-
-        <!--            </div>-->
-        <!--        </div>-->
-
+        </div>
     </div>
+    <th:block th:include="component/pageFooter"></th:block>
     <script src="/mainpage/js/category.js"></script>
 </div>
 </body>
