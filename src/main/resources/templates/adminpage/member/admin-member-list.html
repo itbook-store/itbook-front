@@ -8,6 +8,7 @@
     <title>관리자 페이지 - 회원 목록</title>
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <script src="/adminpage/member/js/memberList.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -15,21 +16,21 @@
         <h2>회원 목록</h2>
         <hr>
         <div>
-            <form method="get" th:object="${memberSearchRequestDto}" th:action="@{/admin/members/search}">
-                <div>
-                    <input type="date" th:field="*{start}">
+            <form method="post" th:object="${memberSearchRequestDto}" th:action="@{/admin/members/search}">
+                <div id="date" style="display: none;">
+                    <input type="date" id="start" name="start">
                     ~
-                    <input type="date" th:field="*{end}">
+                    <input type="date" id="end" name="end">
                 </div>
-                <select th:field="*{searchRequirement}">
+                <select id="searchRequirement" name="searchRequirement" onchange="selectDateOfRegistration()">
                     <option value="everything">전체</option>
                     <option value="memberId">아이디</option>
                     <option value="nickname">닉네임</option>
                     <option value="name">이름</option>
                     <option value="phoneNumber">전화번호</option>
-                    <option value="dateOfJoining" onclick="selectDateOfRegistration()">가입일</option>
+                    <option value="dateOfJoining">가입일</option>
                 </select>
-                <input type="text" id="searchWordText" th:field="*{searchWord}" value="">
+                <input type="text" id="searchWord" name="searchWord">
                 <button class="btn btn-secondary" type="submit">검색</button>
             </form>
         </div>

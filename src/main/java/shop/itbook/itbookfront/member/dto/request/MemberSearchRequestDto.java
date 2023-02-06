@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -13,15 +16,18 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @since 1.0
  */
 @Getter
+@Setter
+@Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberSearchRequestDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime start;
+    private LocalDate start;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime end;
+    private LocalDate end;
 
     @NotNull(message = "검색조건은 null일 수 없습니다.")
     private String searchRequirement;

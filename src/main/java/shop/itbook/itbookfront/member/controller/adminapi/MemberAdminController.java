@@ -37,16 +37,16 @@ public class MemberAdminController {
     private final MemberAdminService memberAdminService;
 
     @GetMapping()
-    public String memberList(Model model, @PageableDefault Pageable pageable) {
+    public String memberList(Model model, @PageableDefault Pageable pageable,
+                             @ModelAttribute("memberSearchRequestDto")
+                             MemberSearchRequestDto memberSearchRequestDto) {
 
         PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findNormalMembers(
             String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
-        MemberSearchRequestDto memberSearchRequestDto = new MemberSearchRequestDto();
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/members");
-        model.addAttribute("memberSearchRequestDto", memberSearchRequestDto);
 
         return "adminpage/member/admin-member-list";
     }
@@ -128,21 +128,34 @@ public class MemberAdminController {
         return "redirect:/admin/members";
     }
 
-    @GetMapping("/search")
-    public String memberSearch(@RequestParam("searchRequirement") String searchRequirement,
-                               @RequestParam("searchWord") String searchWord,
-                               Model model, @PageableDefault Pageable pageable,
-                               @Valid MemberSearchRequestDto memberSearchRequestDto) {
+    @PostMapping("/search")
+    public String memberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
+                               Model model, @PageableDefault Pageable pageable) {
 
-        PageResponse<MemberAdminResponseDto> pageResponse =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "정상회원",
-                String.format("?page=%d&size=%d", pageable.getPageNumber(),
-                    pageable.getPageSize()));
+        PageResponse<MemberAdminResponseDto> pageResponse;
+
+        if (memberSearchRequestDto.getSearchRequirement().equals("dateOfJoining")) {
+
+            pageResponse =
+                memberAdminService.findMemberByDateOfJoining(memberSearchRequestDto, "정상회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+
+
+        } else {
+            pageResponse =
+                memberAdminService.findMembersBySearch(
+                    memberSearchRequestDto.getSearchRequirement(),
+                    memberSearchRequestDto.getSearchWord(), "정상회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+        }
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            "/admin/members/search?searchRequirement=" + searchRequirement + "&searchWord=" +
-                searchWord);
+            "/admin/members/search?searchRequirement=" +
+                memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
+                memberSearchRequestDto.getSearchWord());
 
         return "adminpage/member/admin-member-list";
     }
@@ -191,7 +204,8 @@ public class MemberAdminController {
         MemberCountResponseDto count = memberAdminService.countMemberByMemberStatus();
 
         model.addAttribute("count", count);
-        model.addAttribute("normalCount", count.getMemberCount() - (count.getBlockMemberCount() + count.getWithdrawMemberCount()));
+        model.addAttribute("normalCount", count.getMemberCount() -
+            (count.getBlockMemberCount() + count.getWithdrawMemberCount()));
 
         return "adminpage/member/admin-member-statistics";
     }
