@@ -132,6 +132,7 @@ public class MemberController {
         Model model) {
 
         MemberDestinationResponseDto memberDestinationResponseDto = memberService.findMemberDestinationDetails(recipientDestinationNo);
+        memberDestinationResponseDto.setRecipientPhoneNumber(memberDestinationResponseDto.getRecipientPhoneNumber().replace("-", ""));
 
         model.addAttribute("memberNo", memberNo);
         model.addAttribute("memberDestinationResponseDto", memberDestinationResponseDto);

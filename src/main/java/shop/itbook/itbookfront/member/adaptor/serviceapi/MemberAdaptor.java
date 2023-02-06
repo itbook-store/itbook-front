@@ -169,9 +169,6 @@ public class MemberAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
