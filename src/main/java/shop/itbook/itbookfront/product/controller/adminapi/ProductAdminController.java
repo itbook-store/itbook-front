@@ -20,14 +20,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
+import shop.itbook.itbookfront.product.exception.InvalidInputException;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -86,7 +89,7 @@ public class ProductAdminController {
 
         return "adminpage/product/product-add";
     }
-    
+
 
     @GetMapping("/{productNo}/modify")
     public String getModifyProductForm(Model model, @PathVariable Long productNo) {
@@ -111,9 +114,16 @@ public class ProductAdminController {
 
     @PostMapping("/add")
     public String addProduct(@ModelAttribute("postForm") @Valid ProductRequestDto requestDto,
-                             @RequestPart(value = "fileThumbnails") MultipartFile thumbnails) {
+                             @RequestPart(value = "fileThumbnails") MultipartFile thumbnails,
+                             RedirectAttributes redirectAttributes) {
 
-        productService.addProduct(thumbnails, requestDto);
+        try {
+            productService.addProduct(thumbnails, requestDto);
+        } catch (InvalidInputException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
+
         return PRODUCT_REDIRECT_URL;
     }
 

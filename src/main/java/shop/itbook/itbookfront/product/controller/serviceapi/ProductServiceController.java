@@ -81,11 +81,11 @@ public class ProductServiceController {
         model.addAttribute("mainCategoryList", mainCategoryList);
 
         if (Optional.ofNullable(userDetailsDto).isPresent()) {
+            Long memberNo = userDetailsDto.getMemberNo();
             PageResponse<ProductDetailsResponseDto> productList =
                 productService.getProductList(
                     String.format("/api/products?productTypeNo=%d&memberNo=%d&page=%d&size=%d",
-                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo,
-                        userDetailsDto.getMemberNo()));
+                        productTypeNo, memberNo, pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", productList);
         } else {
             PageResponse<ProductDetailsResponseDto> productList =
@@ -114,11 +114,7 @@ public class ProductServiceController {
             ProductDetailsResponseDto product = productService.getProduct(productNo);
             model.addAttribute("product", product);
 
-            PageResponse<ProductDetailsResponseDto> relationProductList =
-                productService.getProductList(
-                    String.format("/api/products/relation/%d?page=%d&size=%d",
-                        productNo, pageable.getPageNumber(), pageable.getPageSize()));
-            model.addAttribute("pageResponse", relationProductList);
+
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }

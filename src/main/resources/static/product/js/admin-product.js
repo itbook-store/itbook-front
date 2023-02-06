@@ -173,8 +173,9 @@ function showBookForm(mainCategoryName) {
 function addBookSubmit() {
     if (document.getElementById("confirmBook").disabled == false) {
         alert("등록 가능한 isbn인지 확인이 필요합니다.");
+        return false;
     }
     else {
-        document.getElementById('addBookForm').submit;
+        return true;
     }
 }

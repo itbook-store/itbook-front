@@ -35,7 +35,8 @@ public class CategoryAdminController {
     private static final String DIRECTORY_NAME = "adminpage/categoryadmin";
 
     @PostMapping("/category-addition")
-    public String categoryAdd(@ModelAttribute CategoryRequestDto categoryRequestDto, RedirectAttributes redirectAttributes) {
+    public String categoryAdd(@ModelAttribute CategoryRequestDto categoryRequestDto,
+                              RedirectAttributes redirectAttributes) {
 
         try {
             categoryService.addCategory(categoryRequestDto);
@@ -47,13 +48,17 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/category-addition/sub-category/select-form")
-    public String categoryAddSubCategorySelectForm(Model model, @PageableDefault Pageable pageable) {
+    public String categoryAddSubCategorySelectForm(Model model,
+                                                   @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories/main-categories?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/admin/categories/category-addition/sub-category/select-form");
+        model.addAttribute("paginationUrl",
+            "/admin/categories/category-addition/sub-category/select-form");
         return Strings.concat(DIRECTORY_NAME, "/mainCategorySelectForm");
     }
 
@@ -94,15 +99,20 @@ public class CategoryAdminController {
 
     @GetMapping("/{categoryNo}/modify-form/main-category-sequence")
     public String mainCategorySequenceModifyForm(@PathVariable Integer categoryNo,
-                                                 @RequestParam String categoryName, Model model, @PageableDefault Pageable pageable) {
+                                                 @RequestParam String categoryName, Model model,
+                                                 @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories/main-categories?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("targetCategoryNo", categoryNo);
         model.addAttribute("targetCategoryName", categoryName);
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", String.format("/admin/categories/%d/modify-form/main-category-sequence?categoryName=%s", categoryNo,categoryName));
+        model.addAttribute("paginationUrl",
+            String.format("/admin/categories/%d/modify-form/main-category-sequence?categoryName=%s",
+                categoryNo, categoryName));
         return Strings.concat(DIRECTORY_NAME, "/mainCategorySequenceModifyForm");
     }
 
@@ -116,16 +126,21 @@ public class CategoryAdminController {
 
     @GetMapping("/{categoryNo}/modify-form/sub-category-sequence")
     public String subCategorySequenceModifyForm(@PathVariable Integer categoryNo,
-                                                @RequestParam String categoryName, @PageableDefault Pageable pageable, Model model) {
+                                                @RequestParam String categoryName,
+                                                @PageableDefault Pageable pageable, Model model) {
 
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories?page=%d&size=%d", pageable.getPageNumber(),
+                    pageable.getPageSize()));
 
         model.addAttribute("targetCategoryNo", categoryNo);
         model.addAttribute("targetCategoryName", categoryName);
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", String.format("/admin/categories/%d/modify-form/sub-category-sequence?categoryName=%s", categoryNo,categoryName));
+        model.addAttribute("paginationUrl",
+            String.format("/admin/categories/%d/modify-form/sub-category-sequence?categoryName=%s",
+                categoryNo, categoryName));
         return Strings.concat(DIRECTORY_NAME, "/subCategorySequenceModifyForm");
     }
 
@@ -137,8 +152,10 @@ public class CategoryAdminController {
         return "redirect:/admin/categories/";
     }
 
+    // Todo
     @GetMapping("/{categoryNo}/category-deletion")
-    public String categoryDelete(@PathVariable String categoryNo, RedirectAttributes redirectAttributes) {
+    public String categoryDelete(@PathVariable String categoryNo,
+                                 RedirectAttributes redirectAttributes) {
 
         try {
             categoryService.deleteCategory(categoryNo);
@@ -153,7 +170,9 @@ public class CategoryAdminController {
     public String categoryList(Model model, @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories?page=%d&size=%d", pageable.getPageNumber(),
+                    pageable.getPageSize()));
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/categories");
@@ -164,7 +183,9 @@ public class CategoryAdminController {
     public String mainCategoryList(Model model, @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories/main-categories?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/categories/main-categories");
@@ -172,15 +193,19 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{categoryNo}/sub-categories")
-    public String subCategoryList(@PathVariable Integer categoryNo, @RequestParam String parentCategoryName, Model model, @PageableDefault Pageable pageable) {
+    public String subCategoryList(@PathVariable Integer categoryNo,
+                                  @RequestParam String parentCategoryName, Model model,
+                                  @PageableDefault Pageable pageable) {
 
         PageResponse<CategoryListResponseDto> pageResponse = categoryService.findCategoryList(
-            String.format("/api/admin/categories/%d/child-categories?page=%d&size=%d", categoryNo, pageable.getPageNumber(), pageable.getPageSize()));
+            String.format("/api/admin/categories/%d/child-categories?page=%d&size=%d", categoryNo,
+                pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("parentCategoryName", parentCategoryName);
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            String.format("/admin/categories/%d/sub-categories?parentCategoryName=%s", categoryNo, parentCategoryName));
+            String.format("/admin/categories/%d/sub-categories?parentCategoryName=%s", categoryNo,
+                parentCategoryName));
         return Strings.concat(DIRECTORY_NAME, "/subCategoryList");
     }
 }

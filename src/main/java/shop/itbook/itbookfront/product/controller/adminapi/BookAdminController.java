@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
@@ -26,6 +28,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.exception.InvalidInputException;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -48,8 +51,15 @@ public class BookAdminController {
     public String addBook(@ModelAttribute @Valid BookRequestDto requestDto,
                           @RequestPart(value = "fileThumbnails") MultipartFile thumbnails,
                           @RequestPart(value = "fileEbook", required = false)
-                          MultipartFile ebook) {
-        productService.addBook(thumbnails, ebook, requestDto);
+                          MultipartFile ebook, RedirectAttributes redirectAttributes) {
+
+        if (BindException != null)
+
+            try {
+                productService.addBook(thumbnails, ebook, requestDto);
+            } catch (InvalidInputException e) {
+                redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            }
         return PRODUCT_REDIRECT_URL;
     }
 
