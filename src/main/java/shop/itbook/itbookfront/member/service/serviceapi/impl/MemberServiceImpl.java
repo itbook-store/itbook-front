@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
+import shop.itbook.itbookfront.member.dto.request.MemberPointSendRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
@@ -99,5 +100,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberRecentlyPointResponseDto findMemberRecentlyPoint(Long memberNo) {
 
         return memberAdaptor.findMemberRecentlyPoint(memberNo);
+    }
+
+    @Override
+    public Long giftPointMember(MemberPointSendRequestDto memberPointSendRequestDto) {
+
+        return memberAdaptor.giftPointMember(memberPointSendRequestDto).getPointHistoryNo();
     }
 }

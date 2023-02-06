@@ -13,8 +13,10 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
+import shop.itbook.itbookfront.member.dto.request.MemberPointSendRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
+import shop.itbook.itbookfront.member.dto.response.GiftIncreaseDecreasePointHistoryNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
@@ -179,6 +181,28 @@ public class MemberAdaptor {
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/point/find",
                 HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public GiftIncreaseDecreasePointHistoryNoResponseDto giftPointMember(MemberPointSendRequestDto memberPointSendRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<MemberPointSendRequestDto> httpEntity =
+            new HttpEntity<>(memberPointSendRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<GiftIncreaseDecreasePointHistoryNoResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/members/" +
+                    memberPointSendRequestDto.getSendMemberNo() + "/point-gift/send",
+                HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 });
 
