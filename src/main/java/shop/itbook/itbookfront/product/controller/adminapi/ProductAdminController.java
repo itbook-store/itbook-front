@@ -27,6 +27,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -85,6 +86,7 @@ public class ProductAdminController {
 
         return "adminpage/product/product-add";
     }
+    
 
     @GetMapping("/{productNo}/modify")
     public String getModifyProductForm(Model model, @PathVariable Long productNo) {

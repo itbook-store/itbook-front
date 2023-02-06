@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>연관상품</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section th:if="${not #lists.isEmpty(pageResponse.content)}">
+        <div class="container">
+            <h2>연관 상품</h2>
+            <div class="row">
+                <div class="col-sm-3 col-lg-3 mb-2-6" th:each="rp: ${pageResponse.content}">
+                    <div class="card-wrapper mb-2">
+                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="..."></div>
+                        <div class="card-body">
+                            <div>
+                                <a href="#">
+                                    <i class="bg-white p-3 rounded-circle fa fa-shopping-cart font-weight-600"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h5 class="h6 mb-2"><a th:href="@{|/products/add-relation/${rp.productNo}|}" class="text-secondary">
+                            [[${rp.productName}]] ([[${rp.authorName}]])</a></h5>
+
+                        <h6 class="mb-0 text-primary">[[${rp.selledPrice}]]([[${rp.discountPercent}]]%)</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="component/pageFooter"></th:block>
+    </section>
+</div>
+</body>
+</html>

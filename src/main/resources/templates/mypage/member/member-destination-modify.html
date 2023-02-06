@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <script src="/mypage/member/js/memberDestination.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <div id="modifyMemberDestination" style=" width: 60%;">
+            <br>
+            <h4>배송지 수정하기</h4>
+            <br>
+            <form id="modifyMemberDestinationForm" th:action="@{|/mypage/members/me/destinations/${memberDestinationResponseDto.getRecipientDestinationNo()}/modify|}" method="post" >
+                <input type="hidden" name="memberNo" th:value="${memberNo}">
+                <label class="form-label">수령인 이름</label>
+                <input type="text" id="recipientNameModify" class="form-control form-control-lg" name="recipientName" th:value="${memberDestinationResponseDto.getRecipientName()}">
+                <label class="form-label">수령인 전화번호</label>
+                <input type="text" id="recipientPhoneNumberModify" class="form-control form-control-lg" placeholder="01000000000" name="recipientPhoneNumber" th:value="${memberDestinationResponseDto.getRecipientPhoneNumber()}">
+                <label class="form-label">수령인 우편번호</label>
+                <input type="text" id="postcodeModify" readonly class="form-control form-control-lg" name="postcode" th:value="${memberDestinationResponseDto.getPostcode()}">
+                <input class="btn-info" type="button" onclick="execDaumPostcode()" value="우편번호 찾기">
+                <label class="form-label">도로명 주소</label>
+                <input type="text" id="roadAddressModify" readonly class="form-control form-control-lg" name="roadNameAddress" th:value="${memberDestinationResponseDto.getRoadNameAddress()}">
+                <label class="form-label">상세 주소</label>
+                <input type="text" id="detailAddressModify" class="form-control form-control-lg" name="recipientAddressDetails" th:value="${memberDestinationResponseDto.getRecipientAddressDetails()}"><br/>
+                <button class="btn btn-primary" type="button" onclick="modifyValidationCheck()">수정하기</button><br>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

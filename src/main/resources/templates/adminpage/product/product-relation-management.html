@@ -10,10 +10,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2> 상품 관리</h2>
-    <button style="width: auto;" class="btn btn-secondary mt-3"
-            onclick="location.href='/admin/products/select-add-product-type'">상품 등록
-    </button>
+    <h2> 연관 상품 관리</h2>
     <div class="content">
         <table class="table" style="width: 800px">
             <colgroup>
@@ -21,36 +18,29 @@
             </colgroup>
             <tbody>
             <tr class="thead-light">
-                <th scope="col">상품코드</th>
+                <th scope="col">상품번호</th>
                 <th scope="col">상품명</th>
-                <th scope="col">정가</th>
-                <th scope="col">판매가</th>
-                <th scope="col">수정</th>
-                <th scope="col">삭제</th>
+                <th scope="col">연관상품 갯수</th>
+                <th scope="col">상세보기</th>
             </tr>
-            <tr th:if="${not #lists.isEmpty(pageResponse)}" th:each="product : ${pageResponse.content}"
+            <tr th:if="${not #lists.isEmpty(pageResponse.content)}" th:each="product : ${pageResponse.content}"
                 style="text-align: center">
                 <td class="table-light">[[ ${product.productNo} ]]</td>
                 <td>[[ ${product.productName} ]]</td>
-                <td>[[ ${product.fixedPrice} ]]</td>
-                <td>[[ ${product.selledPrice} ]]</td>
+                <td>[[ ${product.productRelationCount} ]]</td>
                 <td>
-                    <a th:href="@{|/admin/products/${product.productNo}/modify|}">
-                        <button style="width: auto;" class="btn btn-primary ml-1">수정
+                    <a th:href="@{|/admin/products/relation/${product.productNo}|}">
+                        <button style="width: auto;" class="btn btn-primary ml-1">상세보기
                         </button>
                     </a>
                 </td>
-                <td>
-                    <a th:href="@{|/admin/products/${product.productNo}/delete|}">
-                        <button style="width: auto" class="btn btn-danger ml-1">
-                            삭제
-                        </button>
-                    </a>
 
-                </td>
             </tr>
             <tr th:if="${#lists.isEmpty(pageResponse)}">
                 <td colspan="6" style="text-align: center">
+                    <a th:href="@{|/admin/products/relation|}">
+                        <input style="margin-left: 20px" class="btn btn-secondary"
+                               type="button" value="뒤로가기"/></a>
                     <div>목록이 비었습니다.</div>
                 </td>
             </tr>
