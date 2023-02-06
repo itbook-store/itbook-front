@@ -7,17 +7,18 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <script src="/mypage/member/js/memberDestination.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <div id="modifyMemberDestination" style="display: none; width: 60%;">
+        <div id="modifyMemberDestination" style=" width: 60%;">
             <br>
             <h4>배송지 수정하기</h4>
             <br>
             <form id="modifyMemberDestinationForm" th:action="@{|/mypage/members/me/destinations/${memberDestinationResponseDto.getRecipientDestinationNo()}/modify|}" method="post" >
-                <!--<input type="hidden" name="memberNo" th:value="${memberNo}">-->
+                <input type="hidden" name="memberNo" th:value="${memberNo}}">
                 <label class="form-label">수령인 이름</label>
                 <input type="text" id="recipientNameModify" class="form-control form-control-lg" name="recipientName" th:value="${memberDestinationResponseDto.getRecipientName()}">
                 <label class="form-label">수령인 전화번호</label>

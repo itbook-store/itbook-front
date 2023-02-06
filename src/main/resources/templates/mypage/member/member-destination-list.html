@@ -62,34 +62,34 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="i : ${#numbers.sequence(0, memberDestinationList.size()-1)}" th:with="memberDestination=${memberDestinationList[i]}">
-                                                <td>
-                                                    <input type="checkbox" name="checkedDestinationList"
-                                                           th:value="${memberDestination.getRecipientDestinationNo()}">
-                                                </td>
-                                                <td><span th:text="${i+1}"></span></td>
-                                                <td>
-                                                    <span th:text="${memberDestination.getRecipientName()}"></span>
-                                                </td>
-                                                <td>
-                                                    <span th:text="${memberDestination.getRecipientPhoneNumber()}"></span>
-                                                </td>
-                                                <td>
-                                                    <span th:text="${memberDestination.getPostcode()}"></span></td>
-                                                <td>
-                                                    <span th:text="${memberDestination.getRoadNameAddress()}"></span>
-                                                </td>
-                                                <td>
-                                                    <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" id="modifyBtn">
-                                                        <a th:href="@{|/mypage/members/me/destinations/${memberDestination.getRecipientDestinationNo()}/modify|}">
+                                            <div th:if="${memberDestinationList.size()} > 0">
+                                                <tr th:each="i : ${#numbers.sequence(0, memberDestinationList.size()-1)}" th:with="memberDestination=${memberDestinationList[i]}">
+                                                    <td>
+                                                        <input type="checkbox" name="checkedDestinationList"
+                                                               th:value="${memberDestination.getRecipientDestinationNo()}">
+                                                    </td>
+                                                    <td><span th:text="${i+1}"></span></td>
+                                                    <td>
+                                                        <span th:text="${memberDestination.getRecipientName()}"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:text="${memberDestination.getRecipientPhoneNumber()}"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:text="${memberDestination.getPostcode()}"></span></td>
+                                                    <td>
+                                                        <span th:text="${memberDestination.getRoadNameAddress()}"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|location.href= '@{/mypage/members/me/memberDestination/{memberNo}/{destinationNo}/modify(memberNo = ${memberNo}, destinationNo =${memberDestination.getRecipientDestinationNo()})}'|">
                                                             배송지 수정하기
-                                                        </a>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </div>
                                             </tbody>
                                         </table>
                                     </div>

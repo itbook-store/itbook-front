@@ -125,13 +125,15 @@ public class MemberController {
         return "redirect:/mypage/members/me/destinations";
     }
 
-    @GetMapping("/me/memberDestination/{recipientDestinationNo}/modify")
+    @GetMapping("/me/memberDestination/{memberNo}/{recipientDestinationNo}/modify")
     public String memberDestinationModifyPageOpen(
+        @PathVariable("memberNo") Long memberNo,
         @PathVariable("recipientDestinationNo") Long recipientDestinationNo,
         Model model) {
 
         MemberDestinationResponseDto memberDestinationResponseDto = memberService.findMemberDestinationDetails(recipientDestinationNo);
 
+        model.addAttribute("memberNo", memberNo);
         model.addAttribute("memberDestinationResponseDto", memberDestinationResponseDto);
 
         return "mypage/member/member-destination-modify";
