@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
@@ -41,8 +42,11 @@ public class MemberAdminController {
         PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findNormalMembers(
             String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
+        MemberSearchRequestDto memberSearchRequestDto = new MemberSearchRequestDto();
+
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/members");
+        model.addAttribute("memberSearchRequestDto", memberSearchRequestDto);
 
         return "adminpage/member/admin-member-list";
     }
@@ -127,7 +131,8 @@ public class MemberAdminController {
     @GetMapping("/search")
     public String memberSearch(@RequestParam("searchRequirement") String searchRequirement,
                                @RequestParam("searchWord") String searchWord,
-                               Model model, @PageableDefault Pageable pageable) {
+                               Model model, @PageableDefault Pageable pageable,
+                               @Valid MemberSearchRequestDto memberSearchRequestDto) {
 
         PageResponse<MemberAdminResponseDto> pageResponse =
             memberAdminService.findMembersBySearch(searchRequirement, searchWord, "정상회원",
