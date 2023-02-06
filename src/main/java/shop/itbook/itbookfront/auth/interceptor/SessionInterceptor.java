@@ -29,10 +29,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
 
-        log.info("request.getRequestURI {}", request.getRequestURI());
 
         if (Objects.isNull(cookies) || cookies.length == 0) {
-            return false;
+            return true;
         }
 
         Arrays.stream(cookies)
