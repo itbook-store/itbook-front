@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2> 연관 상품 관리</h2>
+    <div class="content">
+        <table class="table" style="width: 800px">
+            <colgroup>
+                <col style="width:auto;"/>
+            </colgroup>
+            <tbody>
+            <tr class="thead-light">
+                <th scope="col">상품번호</th>
+                <th scope="col">상품명</th>
+                <th scope="col">연관상품 갯수</th>
+                <th scope="col">상세보기</th>
+            </tr>
+            <tr th:if="${not #lists.isEmpty(pageResponse.content)}" th:each="product : ${pageResponse.content}"
+                style="text-align: center">
+                <td class="table-light">[[ ${product.productNo} ]]</td>
+                <td>[[ ${product.productName} ]]</td>
+                <td>[[ ${product.productRelationCount} ]]</td>
+                <td>
+                    <a th:href="@{|/admin/products/relation/${product.productNo}|}">
+                        <button style="width: auto;" class="btn btn-primary ml-1">상세보기
+                        </button>
+                    </a>
+                </td>
+
+            </tr>
+            <tr th:if="${#lists.isEmpty(pageResponse)}">
+                <td colspan="6" style="text-align: center">
+                    <a th:href="@{|/admin/products/relation|}">
+                        <input style="margin-left: 20px" class="btn btn-secondary"
+                               type="button" value="뒤로가기"/></a>
+                    <div>목록이 비었습니다.</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <th:block th:include="component/pageFooter"></th:block>
+    </div>
+</div>
+</body>
+</html>

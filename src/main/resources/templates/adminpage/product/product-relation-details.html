@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>연관상품 상세</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<div layout:fragment="content">
+
+    <h2>연관 상품</h2>
+    <section th:if="${not #lists.isEmpty(pageResponse.content)}">
+        <div class="container">
+            <a th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
+                <button style="width: auto;" class="btn btn-primary ml-1">수정
+                </button>
+            </a>
+            <a th:href="@{|/admin/products/relation|}">
+                <input style="margin-left: 20px" class="btn btn-secondary"
+                       type="button" id="editButton" value="뒤로가기"/></a>
+            <div class="row">
+                <div class="col-sm-2 col-lg-2 mb-2-6" th:each="rp: ${pageResponse.content}">
+                    <div class="card-wrapper mb-2">
+                        <div class="card-img">
+                            <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h5 class="h6 mb-2"><a th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
+                            [[${rp.productName}]]</a></h5>
+                        <h5 class="h6 mb-2">[[${rp.authorName}]]</a></h5>
+                        <h5 class="h6 mb-2"><[[${rp.publisherName}]]></a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="component/pageFooter"></th:block>
+    </section>
+    <section th:if="${#lists.isEmpty(pageResponse.content)}">
+        <a th:href="@{|/admin/products/relation|}">
+            <a th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
+                <button style="width: auto;" class="btn btn-primary ml-1">등록
+                </button>
+            </a>
+            <input style="margin-left: 20px" class="btn btn-secondary"
+                   type="button" value="뒤로가기"/></a>
+        <p>연관상품이 없습니다.</p>
+    </section>
+</div>
+</body>
+</html>

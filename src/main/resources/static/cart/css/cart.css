@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+}
+
+p {
+    margin: 0 !important;
+}
+
+table thead tr th {
+    text-align: center;
+}
+
+table thead tr th {
+    padding: 15px !important;
+}
+
+.cart {
+    /* margin-top: 100px; */
+    width: 90%;
+    margin: 0 auto;
+}
+
+.table {
+    text-align: center;
+}
+
+.table-light {
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+.product_titleBox {
+    display: flex;
+    align-items: center;
+}
+
+.product_title {
+    font-size: 0.8em;
+}
+
+.product_img {
+    width: 62px;
+    height: 75px;
+    margin-right: 10px;
+}
+
+.product_priceBox {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.fixed_price {
+    text-decoration: line-through;
+    color: dimgray;
+}
+
+.discount_price {
+    color: blue;
+    font-weight: 600;
+}
+
+.quantity {
+    width: 100px;
+    height: 38px;
+}
+
+.total_price {
+
+}
+
+.btn_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    /* margin: 30px auto; */
+}
+
+.deleteBtn_box {
+    display: flex;
+    align-items: center;
+}
+
+.all_delete_btn {
+    margin-right: 10px;
+}
+
+.movementBtn_box {
+    display: flex;
+    align-items: center;
+}
+
+.go_shopping {
+}
+
+.go_payment {
+    margin-left: 10px;
+}
+
+.cart_type_bntBox {
+    width: 100%;
+    display: flex;
+}
+
+.cart_type_bntBox button {
+    border: none;
+    height: 50px;
+}
+
+.cart_type_general {
+    width: 100%;
+}
+
+.cart_type_subscription {
+    width: 100%;
+}
+
+.section {
+    width: 90%;
+    margin: 100px auto -10px auto;
+}
+
+.section h1 {
+    padding-bottom: 10px;
+    border-bottom: solid 5px #6868ab !important;
+}

@@ -39,8 +39,8 @@
                     <div class="product-content">
                         <h3 class="title"><a
                                 th:href="@{|/products/${product.productNo}|}">[[${product.name}]]</a></h3>
-                        <div class="price">[[${product.selledPrice}]]
-                            <span>[[${product.fixedPrice}]]</span>
+                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                         </div>
                         <a class="add-to-cart" href="">+ Add To Cart</a>
                     </div>

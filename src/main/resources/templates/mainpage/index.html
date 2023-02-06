@@ -44,12 +44,14 @@
             <div class="col-md-2" th:each="product : ${newBookList}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                         <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
@@ -61,8 +63,8 @@
                     <h3 class="title">
                         [[${product.productName}]]
                     </h3>
-                    <div class="price">[[${product.selledPrice}]]
-                        <span>[[${product.fixedPrice}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                     </div>
                 </div>
             </div>
@@ -77,12 +79,14 @@
             <div class="col-md-2" th:each="product : ${discountBookList}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                         <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
@@ -93,8 +97,8 @@
                     <h3 class="title"><a
                     >[[${product.productName}]]</a>
                     </h3>
-                    <div class="price">[[${product.selledPrice}]]
-                        <span>[[${product.fixedPrice}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                     </div>
                 </div>
             </div>
@@ -104,6 +108,7 @@
         </div>
     </div>
     <script src="/mainpage/js/slider.js"></script>
+    <script src="/cart/js/cartAddProduct.js"></script>
 </div>
 
 </body>
