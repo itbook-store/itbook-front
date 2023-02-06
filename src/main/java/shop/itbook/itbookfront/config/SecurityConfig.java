@@ -62,7 +62,7 @@ public class SecurityConfig {
         http
             .logout()
             .logoutUrl("/logout")
-            .addLogoutHandler(customLogoutHandler())
+            .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
             .and()
             .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -73,7 +73,7 @@ public class SecurityConfig {
             .loginPage("/login").permitAll()
             .successHandler(customOAuthSuccessHandler(null))
             .userInfoEndpoint()
-            .userService(customOAuth2UserService(null, null));
+            .userService(customOAuth2UserService(null));
 
         http
             .exceptionHandling()
@@ -124,8 +124,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public CustomLogoutHandler customLogoutHandler() {
-        return new CustomLogoutHandler();
+    public CustomLogoutHandler customLogoutHandler(AuthAdaptor authAdaptor) {
+        return new CustomLogoutHandler(authAdaptor);
     }
 
     /**
@@ -136,8 +136,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public CustomOauthService customOAuth2UserService(AuthAdaptor authAdaptor, GatewayConfig gatewayConfig) {
-        return new CustomOauthService(authAdaptor, gatewayConfig, passwordEncoder());
+    public CustomOauthService customOAuth2UserService(AuthAdaptor authAdaptor) {
+        return new CustomOauthService(authAdaptor, passwordEncoder());
     }
 
     /**

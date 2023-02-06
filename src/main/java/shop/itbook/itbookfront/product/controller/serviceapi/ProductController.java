@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
@@ -23,7 +24,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -79,11 +80,12 @@ public class ProductController {
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-        if(Optional.ofNullable(userDetailsDto).isPresent()) {
+        if (Optional.ofNullable(userDetailsDto).isPresent()) {
             PageResponse<ProductDetailsResponseDto> productList =
                 productService.getProductList(
                     String.format("/api/products?page=%d&size=%d&productTypeNo=%d&memberNo=%d",
-                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo, userDetailsDto.getMemberNo()));
+                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo,
+                        userDetailsDto.getMemberNo()));
             model.addAttribute("pageResponse", productList);
         } else {
             PageResponse<ProductDetailsResponseDto> productList =
@@ -92,7 +94,6 @@ public class ProductController {
                         pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
             model.addAttribute("pageResponse", productList);
         }
-
 
 
         model.addAttribute("productTypeName", productTypeName);
@@ -105,9 +106,16 @@ public class ProductController {
     }
 
     @GetMapping("/{productNo}")
-    public String getAddProductForm(@PathVariable Long productNo, Model model) {
-        model.addAttribute("product",
-            productService.getProduct(productNo));
+    public String getProductDetails(@PathVariable Long productNo, Model model,
+                                    RedirectAttributes redirectAttributes) {
+
+        try {
+            ProductDetailsResponseDto product = productService.getProduct(productNo);
+            model.addAttribute("product", product);
+        } catch (ProductNotFoundException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
         return "mainpage/product/product-details";
     }
 

@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.web.filter.OncePerRequestFilter;
 import shop.itbook.itbookfront.auth.exception.AlreadySingupMemberInSelfCompanyException;
 import shop.itbook.itbookfront.auth.exception.InvalidOAuthServerException;
@@ -22,6 +24,9 @@ public class CustomExceptionFilter extends OncePerRequestFilter {
 
     private static final String LOGIN_PATH = "/login";
 
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -29,13 +34,16 @@ public class CustomExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (LoginFailException e) {
             log.error("loginFailException {}", e.getMessage());
-            response.sendRedirect(LOGIN_PATH);
+            redirectStrategy.sendRedirect(request, response, LOGIN_PATH);
         } catch (AlreadySingupMemberInSelfCompanyException e) {
             log.error("AlreadySingupMemberInSelfCompanyException {}", e.getMessage());
             response.sendRedirect(LOGIN_PATH);
         } catch (InvalidOAuthServerException e) {
             log.error("InvalidOAuthServerException {}", e.getMessage());
-            response.sendRedirect(LOGIN_PATH);
+            redirectStrategy.sendRedirect(request, response, LOGIN_PATH);
+        } catch (Exception e) {
+            log.error("Exception {}", e.getMessage());
+            redirectStrategy.sendRedirect(request, response, LOGIN_PATH);
         }
     }
 }

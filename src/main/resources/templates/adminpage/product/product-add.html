@@ -32,7 +32,7 @@
     <hr>
 
     <div class="form">
-        <form class="form-horizontal" name="form" method="post" action="/admin/products/add"
+        <form class="form-horizontal" id = "addProductForm" name="form" method="post" action="/admin/products/add"
               enctype="multipart/form-data" modelattribute="requestDto">
             <div>
                 <div id="form-product">
@@ -82,8 +82,8 @@
                                         th:value="${mainCategory.categoryNo}" th:text="${mainCategory.categoryName}">
                                 </option>
                             </select>
-                            <button style="margin-left: 5px" class="btn btn-light btn-sm"
-                                    onclick="showSubCategoryAndForm(event)">하위 카테고리 펼치기
+                            <button style="margin-left: 5px" class="btn btn-light btn-sm" type="button"
+                                    onclick="showSubCategory(event)">하위 카테고리 펼치기
                             </button>
                             <div id="categoryCheckBox" style="display:none">
                             </div>
@@ -96,14 +96,40 @@
                     </div>
 
                     <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <label>포인트 적립 여부</label>
+                            <fieldset>
+                                YES <input type="radio" name="isPointApplying" value="true"
+                                           onclick="selectPointApplying()" checked/>
+                                NO <input type="radio" name="isPointApplying" value="false"
+                                          onclick="notSelectPointApplying()"/>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-3" id="increasingPoint-div">
                             <label for="increasePointPercent">포인트 적립율(%)</label>
                             <input id="increasePointPercent" name="increasePointPercent"
                                    class="form-control input-md" required="" type="text">
                         </div>
+                        <div class="col-md-6" id="increasingPointBase-div">
+                            <label>포인트 적립 기준</label>
+                            <fieldset>
+                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="true"
+                                              onclick="selectPointApplying()"/>
+                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="false"
+                                               onclick="notSelectPointApplying()"/>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row gx-3 mb-3">
+
                         <div class="col-md-6">
                             <label for="rawPrice">매입 원가(원)</label>
                             <input id="rawPrice" name="rawPrice" class="form-control input-md" required="" type="text">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fixedPrice">정가(원)</label>
+                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
+                                   type="text">
                         </div>
                     </div>
 
@@ -114,9 +140,11 @@
                                    type="text">
                         </div>
                         <div class="col-md-6">
-                            <label for="fixedPrice">정가(원)</label>
-                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                                   type="text">
+                            <label>구독 상품 여부</label>
+                            <fieldset>
+                                YES <input type="radio" name="isSubscription" value="true"/>
+                                NO <input type="radio" name="isSubscription" value="false"/>
+                            </fieldset>
                         </div>
                     </div>
 
@@ -126,45 +154,12 @@
                     </div>
                 </div>
 
-                <div id="form-book">
-                    <div class="row gx-3 mb-3">
-                        <label for="isbn">isbn</label>
-                        <input id="isbn" name="isbn" class="form-control input-md" type="text">
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <label for="pageCount">page 수</label>
-                        <input id="pageCount" name="pageCount" class="form-control input-md" type="text">
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <label for="bookCreatedAt">발간일</label>
-                        <input type="datetime-local" id="bookCreatedAt" name="bookCreatedAt"
-                               class="form-control input-md">
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <label>상품 분류</label>
-                        <fieldset>
-                            전자책(e-book) <input type="radio" name="isEbook" value="true" onclick="selectEbook()"/>
-                            종이책 <input type="radio" name="isEbook" value="false" onclick="notSelectEbook()" checked/>
-                        </fieldset>
-                        <div class="form-group" id="selectEbook" style="display: none">
-                            <label class="col-md-4 control-label">ebook 등록</label>
-                            <input type="file" value="파일 선택" name="fileEbook" accept=".pdf"/>
-                        </div>
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <label for="publisherName">출판사</label>
-                        <input id="publisherName" name="publisherName" class="form-control input-md" type="text">
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <label for="authorName">저자명</label>
-                        <input id="authorName" name="authorName" class="form-control input-md" type="text">
-                    </div>
-                </div>
-
-                <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit" value="등록하기"/>
+                <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit"
+                       value="등록하기"/>
             </div>
         </form>
     </div>
 </div>
 </body>
 </html>
+No newline at end of file
