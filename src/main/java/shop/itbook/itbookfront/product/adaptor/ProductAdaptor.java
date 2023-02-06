@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.product.adaptor;
 
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
@@ -20,10 +22,12 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
@@ -183,6 +187,20 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
+    public PageResponse<ProductRelationResponseDto> findRelationProductList(String url) {
+        ResponseEntity<CommonResponseBody<PageResponse<ProductRelationResponseDto>>> response =
+            restTemplate.exchange(
+                gateway.getGatewayServer() + url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+
+                });
+
+        ResponseChecker.checkFail(response.getStatusCode(),
+            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(response.getBody()).getResult();
+    }
+
     public SearchBookDetailsDto searchBook(String url) {
         ResponseEntity<CommonResponseBody<SearchBookDetailsDto>> response =
             restTemplate.exchange(gateway.getGatewayServer() + url,
@@ -206,5 +224,24 @@ public class ProductAdaptor {
             Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
 
         return Objects.requireNonNull(response.getBody()).getResult();
+    }
+
+    public void modifyRelationProduct(Long basedProductNo, ProductRelationRequestDto requestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ProductRelationRequestDto> entity = new HttpEntity(requestDto, headers);
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(
+                gateway.getGatewayServer() +
+                    String.format("/api/products/relation/%d/edit", basedProductNo),
+                HttpMethod.POST,
+                entity, new ParameterizedTypeReference<>() {
+                });
+
+        CommonResponseBody.CommonHeader header =
+            Objects.requireNonNull(exchange.getBody()).getHeader();
+        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
     }
 }

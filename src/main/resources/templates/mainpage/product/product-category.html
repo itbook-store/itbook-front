@@ -18,20 +18,20 @@
 
     <div class="row">
         <div class="col-sm-8 col-md-12">
-<!--            &lt;!&ndash; Filters &ndash;&gt;-->
-<!--            <ul class="shop__sorting">-->
-<!--                <li><a href="#">베스트셀러</a></li>-->
-<!--                <li><a href="#">신간</a></li>-->
-<!--                <li><a href="#">추천</a></li>-->
-<!--                <li><a href="#">인기</a></li>-->
-<!--                <li><a href="#">할인</a></li>-->
-<!--            </ul>-->
+            <!--            &lt;!&ndash; Filters &ndash;&gt;-->
+            <!--            <ul class="shop__sorting">-->
+            <!--                <li><a href="#">베스트셀러</a></li>-->
+            <!--                <li><a href="#">신간</a></li>-->
+            <!--                <li><a href="#">추천</a></li>-->
+            <!--                <li><a href="#">인기</a></li>-->
+            <!--                <li><a href="#">할인</a></li>-->
+            <!--            </ul>-->
 
             <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse)}">
                 <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <div class="product-image4">
-                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                            <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
                             <!--                            <ul class="social">-->
                             <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                             <!--                                <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>-->
@@ -51,36 +51,22 @@
                         </ul>
                         <div class="product-content">
                             <h3 class="title">[[${product.productName}]]</h3>
-                            <div class="price">[[${product.selledPrice}]]
-                                <span>[[${product.fixedPrice}]]</span>
+                            <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                                <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                             </div>
                             <a class="add-to-cart" href="">+ Add To Cart</a>
                         </div>
                     </a>
                 </div>
             </div>
+
             <div class="row" th:unless="${not #lists.isEmpty(pageResponse)}" style="text-align: center">
                 <p>해당 카테고리에 속하는 상품이 존재하지 않습니다.</p>
             </div>
 
-
-        </div> <!-- / .row -->
-
-        <!-- Pagination -->
-        <th:block th:include="component/pageFooter"></th:block>
-
-        <!--        <div class="row">-->
-        <!--            <div class="col-sm-12">-->
-
-        <!--                <ul class="pagination pull-right">-->
-        <!--                    <li><a href="#">«</a></li>-->
-        <!--                    <li><a href="#">»</a></li>-->
-        <!--                </ul>-->
-
-        <!--            </div>-->
-        <!--        </div>-->
-
+        </div>
     </div>
+    <th:block th:include="component/pageFooter"></th:block>
     <script src="/mainpage/js/category.js"></script>
 </div>
 </body>
