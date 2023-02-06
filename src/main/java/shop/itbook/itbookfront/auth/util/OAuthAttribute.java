@@ -2,6 +2,8 @@ package shop.itbook.itbookfront.auth.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -97,12 +99,15 @@ public class OAuthAttribute {
                                           String userNameAttributeName) {
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-//        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
-//        log.info("profile {}", profile);
+
+        String email = (String) kakaoAccount.get(AuthConstant.EMAIL);
+
+        if (Objects.isNull(email)) {
+            email = UUID.randomUUID() + "@kakao.com";
+        }
 
         return OAuthAttribute.builder()
-//            .name((String) profile.get(AuthConstant.NICKNAME))
-            .email((String) kakaoAccount.get(AuthConstant.EMAIL))
+            .email(email)
             .attributes(attributes)
             .userNameAttributeName(userNameAttributeName)
             .build();

@@ -49,7 +49,9 @@
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                         <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
@@ -82,7 +84,9 @@
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                         <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
@@ -104,6 +108,7 @@
         </div>
     </div>
     <script src="/mainpage/js/slider.js"></script>
+    <script src="/cart/js/cartAddProduct.js"></script>
 </div>
 
 </body>
