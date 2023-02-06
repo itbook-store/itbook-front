@@ -35,7 +35,7 @@ import shop.itbook.itbookfront.product.service.ProductService;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/products")
-public class ProductController {
+public class ProductServiceController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
@@ -107,14 +107,22 @@ public class ProductController {
 
     @GetMapping("/{productNo}")
     public String getProductDetails(@PathVariable Long productNo, Model model,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes,
+                                    @PageableDefault Pageable pageable) {
 
         try {
             ProductDetailsResponseDto product = productService.getProduct(productNo);
             model.addAttribute("product", product);
+
+            PageResponse<ProductDetailsResponseDto> relationProductList =
+                productService.getProductList(
+                    String.format("/api/products/relation/%d?page=%d&size=%d",
+                        productNo, pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", relationProductList);
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
+
 
         return "mainpage/product/product-details";
     }
