@@ -18,7 +18,6 @@ import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
-import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.exception.LoginFailException;
 
 /**
@@ -33,9 +32,6 @@ import shop.itbook.itbookfront.exception.LoginFailException;
 public class AuthUtil {
 
     private final AuthAdaptor authAdaptor;
-    private final GatewayConfig gatewayConfig;
-
-    private static final String AUTH_LOGIN_PROCESSING_URL = "/auth/login";
     private static final String HEADER_USER_DETAIL = "Authorities-UserDetails";
     private static final String HEADER_TOKEN = "Authorities-Token";
     private static final String HEADER_AUTHORITIES = "Authorities";
@@ -54,7 +50,6 @@ public class AuthUtil {
     public void requestAuthorization(String memberId, String rawPassword) {
         ResponseEntity<CommonResponseBody<Void>> exchange =
             authAdaptor.postAuthServerForLogin(
-                gatewayConfig.getGatewayServer() + AUTH_LOGIN_PROCESSING_URL,
                 new MemberAuthRequestDto(
                     memberId,
                     rawPassword
