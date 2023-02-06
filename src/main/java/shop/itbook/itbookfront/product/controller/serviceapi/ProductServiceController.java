@@ -83,7 +83,7 @@ public class ProductServiceController {
         if (Optional.ofNullable(userDetailsDto).isPresent()) {
             PageResponse<ProductDetailsResponseDto> productList =
                 productService.getProductList(
-                    String.format("/api/products?page=%d&size=%d&productTypeNo=%d&memberNo=%d",
+                    String.format("/api/products?productTypeNo=%d&memberNo=%d&page=%d&size=%d",
                         pageable.getPageNumber(), pageable.getPageSize(), productTypeNo,
                         userDetailsDto.getMemberNo()));
             model.addAttribute("pageResponse", productList);

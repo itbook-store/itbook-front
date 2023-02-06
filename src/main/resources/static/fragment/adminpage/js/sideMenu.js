@@ -20,11 +20,10 @@ function showProductSubMenu(eventTarget) {
     eventTarget.outerHTML =
         `                     
                     <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse" aria-expanded="false">
-                        상품 관리
+                            data-bs-target="#dashboard-collapse" aria-expanded="false"> 상품 관리
                     </button>
                     <button style="margin-left: 10%" class="btn btn-toggle" onclick="location.href='/admin/products'">상품 목록 조회</button>
-                    <button style="margin-left: 10%" class="btn btn-toggle" onclick="location.href='/admin/products/product-type'">상품 유형 관리</button>
+                    <button style="margin-left: 10%" class="btn btn-toggle" onclick="location.href='/admin/products/relation'">상품 연관상품 관리</button>
         `;
 
 }

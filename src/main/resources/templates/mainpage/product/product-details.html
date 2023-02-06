@@ -5,7 +5,7 @@
       layout:decorate="~{layout/mainpage/default-layout}">
 
 <head>
-    <link href="/mainpage/product/css/product-details.css" rel="stylesheet">
+    <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
 
      <style>
 
@@ -65,6 +65,10 @@
                                     <td>작가</td>
                                     <td>[[${product.authorName}]]</td>
                                 </tr>
+                                <tr>
+                                    <td>출판사</td>
+                                    <td>[[${product.publisherName}]]</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -104,6 +108,7 @@
                 </div>
             </div>
         </div>
+        <th:block th:include="component/pageFooter"></th:block>
     </section>
 </div>
 </body>
