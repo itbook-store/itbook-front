@@ -6,78 +6,106 @@
     <meta charset="UTF-8">
     <title>주문 페이지</title>
 
-    <link rel="stylesheet" href="/mainpage/css/order-write.css">
+    <link rel="stylesheet" href="/mainpage/css/orderSheet.css">
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="order-title"><b>주 문</b> 하 기</div>
-    <div class="box">
-        <table>
-            <div class="box-title">주문 상품 정보</div>
-            <tr>
-                <th>
-                    상품명
-                </th>
-                <th>
-                    정가
-                </th>
-                <th>
-                    판매가
-                </th>
-                <th>
-                    수량
-                </th>
-                <th>
-                    합계
-                </th>
-            </tr>
-            <tr th:each="product : ${productDetailsList}">
-                <td th:text="${product.getProductName()}">
-                </td>
-                <td th:text="${product.getFixedPrice()}">
-                </td>
-                <td th:text="${product.getSelledPrice()}">
-                </td>
-                <td th:text="${productCnt}">
-                </td>
-                <td th:text="${product.getSelledPrice()} * ${productCnt}">
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="address-box">
-        <div class="box-title">배송지 정보 입력</div>
-        <div class="box-content">
-            <button class="btn btn-primary">배송지 선택</button>
-            <br/>
-            <div th:each="dst : ${memberDestinationList}">
-                <input type="text" id="sample4_postcode" readonly placeholder="우편번호"
-                       th:value="${dst.getPostcode()}">
-                <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
-                <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
-                       th:value="${dst.getRoadNameAddress()}">
-                <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
-                       th:value="${dst.getRecipientAddressDetails()}">
+    <form id="orderForm" th:action="@{/orders/temp}"
+          class="product-info" method="post">
+        <div class="product-box">
+            <table>
+                <div class="box-title">주문 상품 정보</div>
+                <tr>
+                    <th>
+                        상품명
+                    </th>
+                    <th>
+                        정가
+                    </th>
+                    <th>
+                        판매가
+                    </th>
+                    <th>
+                        수량
+                    </th>
+                    <th>
+                        합계
+                    </th>
+                </tr>
+                <tr th:each="product : ${productDetailsList}">
+                    <td>
+                        <input class="no-input" type="text" name="productNo"
+                               th:value="${product.getProductName()}" readonly>
+                    </td>
+                    <td>
+                        <input class="no-input" type="text" th:value="${product.getFixedPrice()}" readonly>
+                    </td>
+                    <td>
+                        <input class="no-input" type="text" th:value="${product.getSelledPrice()}" readonly>
+                    </td>
+                    <td>
+                        <input class="no-input" type="text" th:value="${productCnt}" readonly>
+                    </td>
+                    <td>
+                        <input class="no-input" type="text" th:value="${product.getSelledPrice()} * ${productCnt}"
+                               readonly>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <input type="text" name="recipientName">
+
+        <div class="address-box">
+            <div class="box-title">배송지 정보 입력</div>
+            <div class="box-content">
+                <button type="button" class="btn btn-primary">배송지 선택</button>
+                <br/>
+
+                <fieldset>
+                    <div th:each="dst : ${memberDestinationList}">
+                        <input type="radio" name="address-radio" id="select-address">
+                        <label for="select-address">
+                            <input type="number" id="sample4_postcode" readonly placeholder="우편번호"
+                                   name="postcode"
+                                   th:value="${dst.getPostcode()}">
+                            <!--                        <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">-->
+                            <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
+                                   name="roadNameAddress"
+                                   th:value="${dst.getRoadNameAddress()}">
+                            <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
+                                   name="recipientAddressDetails"
+                                   th:value="${dst.getRecipientAddressDetails()}" readonly>
+                            <input type="text" placeholder="수령인 이름"
+                                   name="recipientName"
+                                   th:value="${dst.getRecipientName()}">
+                            <input type="text" placeholder="수령인 연락처"
+                                   name="recipientPhoneNumber"
+                                   th:value="${dst.recipientPhoneNumber}">
+                        </label>
+                    </div>
+                </fieldset>
+
             </div>
         </div>
-    </div>
-    <div class="delivery-box">
-        <div class="box-title">배송 희망일 선택</div>
-        <div class="box-content">
-            <div>날짜를 선택하세요:
-                <input type="date"
-                       id="currentDate">
-                <p>
-                    날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.
-                </p>
+        <div class="delivery-box">
+            <div class="box-title">배송 희망일 선택</div>
+            <div class="box-content">
+                <div>날짜를 선택하세요:
+                    <input type="date" id="currentDate" name="selectedDeliveryDate">
+                    <p>
+                        날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.
+                    </p>
+                </div>
             </div>
+            <br>
         </div>
-        <br>
-        <div>
-            <button th:onclick="|location.href='@{/orders/completion}'|">결제하기</button>
-        </div>
-    </div>
+        <!--    all box end-->
+        <input type="submit" value="결제하기">
+    </form>
+        <!--            <button th:onclick="|location.href='@{/orders/temp}'|">결제하기</button>-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script>

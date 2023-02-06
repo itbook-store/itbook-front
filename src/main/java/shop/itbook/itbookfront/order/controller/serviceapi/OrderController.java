@@ -3,7 +3,11 @@ package shop.itbook.itbookfront.order.controller.serviceapi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 
 /**
  * Front 서버에서 사용자의 주문 관련 요청을 처리합니다.
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/orders")
 public class OrderController {
-
 
     /**
      * 마이페이지에서 해당 회원의 주문 목록을 불러옵니다.
@@ -37,4 +40,18 @@ public class OrderController {
     public String orderCompletion() {
         return "mainpage/order/orderCompletionForm";
     }
+
+    /**
+     * 임시 페이지
+     *
+     * @return 임시 페이지
+     */
+    @PostMapping("/temp")
+    public String tempOrder(@ModelAttribute OrderAddRequestDto orderAddRequestDto) {
+
+        System.out.println(orderAddRequestDto.toString());
+
+        return "mainpage/order/orderTempForm";
+    }
+
 }

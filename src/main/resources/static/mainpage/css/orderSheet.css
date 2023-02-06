@@ -77,3 +77,12 @@ tr:last-child td:last-child {
 .delivery-box {
     margin-bottom: 5%;
 }
+
+.no-input {
+    border: 0 solid black;
+    background-color: transparent;
+}
+
+.no-input:focus {
+    outline: none;
+}
