@@ -5,12 +5,14 @@ import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,22 +55,6 @@ public class ProductAdminController {
         return "adminpage/product/product-management";
     }
 
-    @PostMapping("/books/add")
-    public String addBook(@ModelAttribute BookRequestDto requestDto,
-                             @RequestPart(value = "fileThumbnails") MultipartFile thumbnails,
-                             @RequestPart(value = "fileEbook", required = false)
-                             MultipartFile ebook) {
-        productService.addBook(thumbnails, ebook, requestDto);
-        return PRODUCT_REDIRECT_URL;
-    }
-
-    @PostMapping("/add")
-    public String addProduct(@ModelAttribute ProductRequestDto requestDto,
-                             @RequestPart(value = "fileThumbnails") MultipartFile thumbnails) {
-        productService.addProduct(thumbnails, requestDto);
-        return PRODUCT_REDIRECT_URL;
-    }
-
     @PostMapping("/{productNo}/modify")
     public String modifyProduct(@PathVariable Long productNo,
                                 @ModelAttribute BookRequestDto requestDto,
@@ -83,20 +69,6 @@ public class ProductAdminController {
     public String deleteProduct(@PathVariable Long productNo) {
         productService.removeProduct(productNo);
         return PRODUCT_REDIRECT_URL;
-    }
-
-    @GetMapping("/books/add")
-    public String getAddBookForm(Model model) {
-        List<CategoryListResponseDto> allCategoryList = categoryService.findCategoryList(
-            String.format("/api/admin/categories/main-categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
-
-        List<CategoryListResponseDto> categoryList = allCategoryList.stream()
-            .filter(c -> c.getCategoryName().contains("도서"))
-            .collect(Collectors.toList());
-
-        model.addAttribute("mainCategoryList", categoryList);
-        return "adminpage/product/book-add";
     }
 
     @GetMapping("/add")
@@ -134,5 +106,14 @@ public class ProductAdminController {
 
         return "adminpage/product/product-modify";
     }
+
+    @PostMapping("/add")
+    public String addProduct(@ModelAttribute("postForm") @Valid ProductRequestDto requestDto,
+                             @RequestPart(value = "fileThumbnails") MultipartFile thumbnails) {
+
+        productService.addProduct(thumbnails, requestDto);
+        return PRODUCT_REDIRECT_URL;
+    }
+
 
 }

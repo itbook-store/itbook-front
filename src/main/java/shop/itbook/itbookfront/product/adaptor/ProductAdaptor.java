@@ -14,6 +14,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
+import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
@@ -24,6 +26,7 @@ import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
+import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -133,10 +136,18 @@ public class ProductAdaptor {
     }
 
     public ProductDetailsResponseDto findProduct(Long productNo) {
-        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> response =
-            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/" + productNo,
+        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> response = null;
+        try {
+            response = restTemplate.exchange(
+                gateway.getGatewayServer() + "/api/admin/products/" + productNo,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });
+        } catch (
+            BadRequestException e) {
+            if (Objects.equals(e.getMessage(), ProductNotFoundException.MESSAGE)) {
+                throw new ProductNotFoundException();
+            }
+        }
 
         ResponseChecker.checkFail(response.getStatusCode(),
             Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());

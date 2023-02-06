@@ -27,7 +27,6 @@ async function showSubCategory(event, categoryNoList) {
     event.preventDefault();
 
     let mainCategoryNo = document.getElementById("mainCategory").value;
-    console.log(mainCategoryNo);
     let target = document.getElementById("mainCategory");
     // let mainCategoryName = target.options[target.selectedIndex].text;
 
@@ -50,6 +49,9 @@ async function showSubCategory(event, categoryNoList) {
                     checkBox.type = "checkbox";
                     checkBox.name = "categoryNoList";
                     checkBox.value = checkBoxList.categoryNo;
+                    checkBox.addEventListener("click", function () {
+                        checkLimitCategory(this);
+                    });
                     checkBox.style = "margin-right : 4px";
                     checkBoxText.style = "margin-right : 7px";
                     if (categoryNoList && categoryNoList.length != 0)
@@ -62,7 +64,23 @@ async function showSubCategory(event, categoryNoList) {
                 }
             });
         });
+}
 
+function checkLimitCategory(obj){
+    let checkBox = document.getElementsByName("categoryNoList");
+    let cnt = 0;
+    for(let i=0;i<checkBox.length; i++){
+        if(checkBox[i].checked){
+            cnt++;
+        }
+    }
+    console.log("cnt: "+cnt);
+
+    if(cnt>3){
+        alert("카테고리는 최대 3개만 지정 가능합니다.");
+        obj.checked = false;
+        return false;
+    }
 }
 
 async function showSearchResults(event) {
@@ -95,7 +113,6 @@ async function showSearchResults(event) {
 
     // 알라딘에 존재하고 db에 없으면 등록 가능
     if (isExistsInAladin && !isExistsInDb) {
-        console.log('등록 성공')
         let bookTitle;
         await fetch(`/async/books?isbn=${isbn}`, {
             method: "GET"
@@ -117,8 +134,7 @@ async function showSearchResults(event) {
         document.getElementById('confirmBook').disabled = true;
         document.getElementById('isbn').readOnly = true;
         document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
-    } else {
-        console.log('등록 실패')
+    } else { // 등록 실패
         document.getElementById('isbn').value = '';
         document.getElementById('isbnFailed').style.display = 'block';
         document.getElementById('isbnSuccessful').style.display = 'none';
@@ -151,5 +167,14 @@ function showBookForm(mainCategoryName) {
         bookFormDiv.style.display = "block";
     } else {
         bookFormDiv.style.display = "none";
+    }
+}
+
+function addBookSubmit() {
+    if (document.getElementById("confirmBook").disabled == false) {
+        alert("등록 가능한 isbn인지 확인이 필요합니다.");
+    }
+    else {
+        document.getElementById('addBookForm').submit;
     }
 }
