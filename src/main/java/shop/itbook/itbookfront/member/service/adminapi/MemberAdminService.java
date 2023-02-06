@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.member.service.adminapi;
 
 import java.util.List;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
@@ -29,6 +30,8 @@ public interface MemberAdminService {
 
     PageResponse<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord,
                                                      String memberStatusName, String url);
+
+    PageResponse<MemberAdminResponseDto> findMemberByDateOfJoining(MemberSearchRequestDto memberSearchRequestDto, String memberStatusName, String url);
 
     MemberBlockInfoResponseDto findBlockMember(String memberId);
 

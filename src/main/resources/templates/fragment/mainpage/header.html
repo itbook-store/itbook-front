@@ -4,14 +4,11 @@
             <ul class="nav me-auto">
                 <li class="nav-item"><a href="/" class="nav-link link-dark px-2" aria-current="page">Home</a>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
+                <!--                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>-->
             </ul>
             <ul class="nav">
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Sign up</a></li>
+                <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
+                <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -25,7 +22,6 @@
                 <input class="form-control mr-sm-2" type="search" name = "name" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
             </form>
-            </nav>
         </div>
     </header>
 </div>
@@ -47,7 +43,8 @@
                        th:text="${mainCategory.mainCategoryName}">
                         <i class="fa fa-angle-right float-right mt-1"></i></a>
                     <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                        <a th:each="subCategory : ${mainCategory.subCategoryList}" th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                        <a th:each="subCategory : ${mainCategory.subCategoryList}"
+                           th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
                            th:text="${subCategory.categoryName}"
                            class="dropdown-item"></a>
                     </div>
@@ -58,11 +55,11 @@
         </nav>
     </div>
     <div class="col-lg-2" th:each="productType : ${productTypeList}">
-    <a th:href="@{/products(productTypeNo=${productType.productTypeNo}, productTypeName=${productType.productTypeName})}">
-        <button style="margin-left: 15px" class="navbar-toggler text-white">
-            [[${productType.productTypeName}]]
-        </button>
-    </a>
+        <a th:href="@{/products(productTypeNo=${productType.productTypeNo}, productTypeName=${productType.productTypeName})}">
+            <button style="margin-left: 15px" class="navbar-toggler text-white">
+                [[${productType.productTypeName}]]
+            </button>
+        </a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
