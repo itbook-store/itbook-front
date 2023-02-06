@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
+import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
@@ -41,6 +42,13 @@ public class MemberAdminServiceImpl implements MemberAdminService {
                                                             String memberStatusName, String url) {
 
         return memberAdminAdaptor.getMembersBySearch(searchRequirement, searchWord, memberStatusName, url);
+    }
+
+    @Override
+    public PageResponse<MemberAdminResponseDto> findMemberByDateOfJoining(
+        MemberSearchRequestDto memberSearchRequestDto, String memberStatusName, String url) {
+
+        return memberAdminAdaptor.getMembersByDateOfJoining(memberSearchRequestDto, memberStatusName, url);
     }
 
     @Override

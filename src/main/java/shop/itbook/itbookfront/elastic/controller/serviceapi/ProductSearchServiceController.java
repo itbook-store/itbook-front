@@ -28,7 +28,7 @@ import shop.itbook.itbookfront.elastic.service.ProductSearchService;
  * @since 1.0
  */
 @Controller
-@RequestMapping("/product/search")
+@RequestMapping("/products/search")
 @RequiredArgsConstructor
 public class ProductSearchServiceController {
     private final ProductSearchService productSearchService;

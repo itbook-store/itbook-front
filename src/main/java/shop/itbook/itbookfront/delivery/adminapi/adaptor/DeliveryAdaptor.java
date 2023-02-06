@@ -38,7 +38,7 @@ public class DeliveryAdaptor {
      * @param uri 게이트웨이 uri
      * @return 배송 상태가 배송 대기중인 배송 정보 리스트
      */
-    public ResponseEntity<CommonResponseBody<PageResponse<DeliveryWithStatusResponseDto>>> getDeliveryWaitList(
+    public ResponseEntity<CommonResponseBody<PageResponse<DeliveryWithStatusResponseDto>>> findDeliveryWaitList(
         URI uri) {
         return restTemplate.exchange(uri, HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
