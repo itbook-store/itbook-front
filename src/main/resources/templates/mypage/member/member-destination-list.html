@@ -6,62 +6,100 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/mypage/member/js/memberDestination.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
         <h2>나의 주소 목록</h2>
         <hr>
-        <button class="btn btn-primary">등록하기</button>
-        <button class="btn btn-danger">삭제하기</button>
-        <div class="container bootstrap snippets bootdey">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="main-box no-header clearfix">
-                        <div class="main-box-body clearfix">
-                            <div class="table-responsive">
-                                <table class="table user-list">
-                                    <thead>
-                                    <tr>
-                                        <th>(체크박스)</th>
-                                        <th><span>수령인 이름</span></th>
-                                        <th><span>수령인 전화번호</span></th>
-                                        <th><span>우편번호</span></th>
-                                        <th><span>도로명 주소</span></th>
-                                        <th><span>상세주소</span></th>
-                                        <th>(수정하기 버튼)</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="memberDestination : ${memberDestinationList}">
-                                        <td>
-                                            <input type="checkbox" name="deleteDestination" th:value="${memberDestination.getRecipientDestinationNo()}">
-                                        </td>
-                                        <td>
-                                            <span th:text="${memberDestination.getRecipientName()}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${memberDestination.getRecipientPhoneNumber()}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${memberDestination.getPostcode()}"></span></td>
-                                        <td>
-                                            <span th:text="${memberDestination.getRoadNameAddress()}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
-                                        </td>
-                                        <td>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+        <div style="width: 60%;">
+            <input type="button" id="registerBtn" class="btn btn-primary" onclick="memberDestinationRegister()" value="주소 등록하기">
+            <div th:if="${memberDestinationList.size()} <= 10" id="registerMemberDestination" style="display: none;">
+                <br>
+                <h4>배송지 등록하기</h4>
+                <br>
+                <form id="memberDestinationForm" method="post" th:action="@{/mypage/members/me/destinations/add}">
+                    <input type="hidden" name="memberNo" th:value="${memberNo}">
+                    <label class="form-label">수령인 이름</label>
+                    <input type="text" id="recipientName" class="form-control form-control-lg" name="recipientName">
+                    <label class="form-label">수령인 전화번호</label>
+                    <input type="text" id="recipientPhoneNumber" class="form-control form-control-lg" placeholder="01000000000" name="recipientPhoneNumber">
+                    <label class="form-label">수령인 우편번호</label>
+                    <input type="text" id="postcode" readonly class="form-control form-control-lg" name="postcode">
+                    <input class="btn-info" type="button" onclick="execDaumPostcode()" value="우편번호 찾기">
+                    <label class="form-label">도로명 주소</label>
+                    <input type="text" id="roadAddress" readonly class="form-control form-control-lg" name="roadNameAddress">
+                    <label class="form-label">상세 주소</label>
+                    <input type="text" id="detailAddress" class="form-control form-control-lg" name="recipientAddressDetails"><br/>
+                    <button class="btn btn-primary" type="button" onclick="validationCheck()">등록하기</button><br>
+                </form>
+                <hr>
+            </div>
+        </div>
+        <div>
+            <form method="post" th:action="@{/mypage/members/me/destinations/delete}">
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box no-header clearfix">
+                                <div class="main-box-body clearfix">
+                                    <div class="table-responsive">
+                                        <table class="table user-list">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>배송지 번호</th>
+                                                <th><span>수령인 이름</span></th>
+                                                <th><span>수령인 전화번호</span></th>
+                                                <th><span>우편번호</span></th>
+                                                <th><span>도로명 주소</span></th>
+                                                <th><span>상세주소</span></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="i : ${#numbers.sequence(0, memberDestinationList.size()-1)}" th:with="memberDestination=${memberDestinationList[i]}">
+                                                <td>
+                                                    <input type="checkbox" name="checkedDestinationList"
+                                                           th:value="${memberDestination.getRecipientDestinationNo()}">
+                                                </td>
+                                                <td><span th:text="${i+1}"></span></td>
+                                                <td>
+                                                    <span th:text="${memberDestination.getRecipientName()}"></span>
+                                                </td>
+                                                <td>
+                                                    <span th:text="${memberDestination.getRecipientPhoneNumber()}"></span>
+                                                </td>
+                                                <td>
+                                                    <span th:text="${memberDestination.getPostcode()}"></span></td>
+                                                <td>
+                                                    <span th:text="${memberDestination.getRoadNameAddress()}"></span>
+                                                </td>
+                                                <td>
+                                                    <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" id="modifyBtn">
+                                                        <a th:href="@{|/mypage/members/me/destinations/${memberDestination.getRecipientDestinationNo()}/modify|}">
+                                                            배송지 수정하기
+                                                        </a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <button type="submit" class="btn btn-danger">삭제하기</button>
+            </form>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.member.controller.serviceapi;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
@@ -35,7 +38,8 @@ public class MemberController {
     public String mypageInfo(Model model,
                              @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberInfo(userDetailsDto.getMemberId());
+        MemberInfoResponseDto memberInfoResponseDto =
+            memberService.findMemberInfo(userDetailsDto.getMemberId());
 
         model.addAttribute("memberInfoResponseDto", memberInfoResponseDto);
 
@@ -55,7 +59,8 @@ public class MemberController {
     @GetMapping("/withdraw")
     public String memberStatusModifyToWithdraw(@ModelAttribute("memberStatusChangeRequestDto")
                                                MemberStatusChangeRequestDto memberStatusChangeRequestDto,
-                                               @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                               @AuthenticationPrincipal
+                                               UserDetailsDto userDetailsDto,
                                                Model model) {
         MemberInfoResponseDto member = memberService.findMemberInfo(userDetailsDto.getMemberId());
         model.addAttribute("member", member);
@@ -79,13 +84,65 @@ public class MemberController {
 
     @GetMapping("/me/destinations")
     public String memberDestinationList(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                        @ModelAttribute
+                                        MemberDestinationRequestDto memberDestinationRequestDto,
                                         Model model) {
 
-        List<MemberDestinationResponseDto> memberDestinationList = memberService.findMemberDestinationList(
-            userDetailsDto.getMemberNo());
+        List<MemberDestinationResponseDto> memberDestinationList =
+            memberService.findMemberDestinationList(
+                userDetailsDto.getMemberNo());
 
         model.addAttribute("memberDestinationList", memberDestinationList);
+        model.addAttribute("memberNo", userDetailsDto.getMemberNo());
 
         return "mypage/member/member-destination-list";
+    }
+
+    @PostMapping("/me/destinations/delete")
+    public String memberDestinationsDelete(@RequestParam List<Long> checkedDestinationList) {
+
+        List<MemberDestinationNoResponseDto> memberDestinationNoResponseDtoList = new ArrayList<>();
+
+        for (Long memberDestinationNo : checkedDestinationList) {
+            memberDestinationNoResponseDtoList.add(
+                new MemberDestinationNoResponseDto(memberDestinationNo));
+        }
+
+        memberService.deleteMemberDestinations(memberDestinationNoResponseDtoList);
+
+        return "redirect:/mypage/members/me/destinations";
+    }
+
+    @PostMapping("/me/destinations/add")
+    public String memberDestinationAdd(
+        @Valid MemberDestinationRequestDto memberDestinationRequestDto) {
+
+        memberService.addMemberDestination(memberDestinationRequestDto);
+
+        return "redirect:/mypage/members/me/destinations";
+    }
+
+    @GetMapping("/me/memberDestination/{recipientDestinationNo}/modify")
+    public String memberDestinationModifyPageOpen(
+        @PathVariable("recipientDestinationNo") Long recipientDestinationNo,
+        Model model) {
+
+        MemberDestinationResponseDto memberDestinationResponseDto = memberService.findMemberDestinationDetails(recipientDestinationNo);
+
+        model.addAttribute("memberDestinationResponseDto", memberDestinationResponseDto);
+
+        return "mypage/member/member-destination-modify";
+    }
+
+    @PostMapping("/me/destinations/{recipientDestinationNo}/modify")
+    public String memberDestinationModify(
+        @PathVariable("recipientDestinationNo") String recipientDestinationNo,
+        @Valid MemberDestinationRequestDto memberDestinationRequestDto) {
+
+        System.out.println(recipientDestinationNo + " " + recipientDestinationNo.getClass().getName());
+
+        memberService.modifyMemberDestination(Long.parseLong(recipientDestinationNo), memberDestinationRequestDto);
+
+        return "redirect:/mypage/members/me/destinations";
     }
 }
