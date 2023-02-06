@@ -35,19 +35,19 @@ public class CouponAdminAdaptor {
 
         HttpEntity<CouponInputRequestDto> httpEntity = new HttpEntity<>(couponInputRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> commonResponseBodyResponseEntity
+        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
             = restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/coupons",
             HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){
 
             });
 
-        CommonResponseBody<CouponNoResponseDto> body = commonResponseBodyResponseEntity.getBody();
+        CommonResponseBody<CouponNoResponseDto> body = exchange.getBody();
         CommonResponseBody.CommonHeader header = Objects.requireNonNull(body).getHeader();
 
-        ResponseChecker.checkFail(commonResponseBodyResponseEntity.getStatusCode(),
+        ResponseChecker.checkFail(exchange.getStatusCode(),
             header.getResultMessage());
 
-        return body.getResult().getCouponNo();
+        return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
 
     public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){

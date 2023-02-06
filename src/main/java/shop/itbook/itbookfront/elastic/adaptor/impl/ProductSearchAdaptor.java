@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.elastic.adaptor.impl;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -30,6 +31,6 @@ public class ProductSearchAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        return exchange.getBody().getResult();
+        return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 }
