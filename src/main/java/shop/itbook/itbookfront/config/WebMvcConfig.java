@@ -41,7 +41,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CartInterceptor())
-            .addPathPatterns(List.of("/cart/**", "/async/cart/**"))
+//            .addPathPatterns(List.of("/cart/**", "/async/cart/**"))
+            .addPathPatterns("/**")
             .excludePathPatterns(staticResourcesPath);
 
         registry.addInterceptor(new SessionInterceptor())
