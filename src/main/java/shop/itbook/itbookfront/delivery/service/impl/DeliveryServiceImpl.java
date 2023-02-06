@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.delivery.service.impl;
 
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +43,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public PageResponse<DeliveryWithStatusResponseDto> getDeliveryList(Pageable pageable) {
+    public PageResponse<DeliveryWithStatusResponseDto> findDeliveryList(Pageable pageable) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
@@ -54,11 +53,11 @@ public class DeliveryServiceImpl implements DeliveryService {
             .build();
 
         return Objects.requireNonNull(
-            deliveryAdaptor.getDeliveryWaitList(uriComponents.toUri()).getBody()).getResult();
+            deliveryAdaptor.findDeliveryWaitList(uriComponents.toUri()).getBody()).getResult();
     }
 
     @Override
-    public PageResponse<DeliveryWithStatusResponseDto> getDeliveryWaitList(Pageable pageable) {
+    public PageResponse<DeliveryWithStatusResponseDto> findDeliveryWaitList(Pageable pageable) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
@@ -68,7 +67,6 @@ public class DeliveryServiceImpl implements DeliveryService {
             .build();
 
         return Objects.requireNonNull(
-            deliveryAdaptor.getDeliveryWaitList(uriComponents.toUri()).getBody()).getResult();
+            deliveryAdaptor.findDeliveryWaitList(uriComponents.toUri()).getBody()).getResult();
     }
-
 }
