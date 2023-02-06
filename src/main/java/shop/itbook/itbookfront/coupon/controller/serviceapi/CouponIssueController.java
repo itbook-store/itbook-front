@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDto;
-import shop.itbook.itbookfront.coupon.service.serviceapi.CouponIssueServiceService;
+import shop.itbook.itbookfront.coupon.service.serviceapi.CouponIssueService;
 
 /**
  * @author 송다혜
@@ -19,9 +19,9 @@ import shop.itbook.itbookfront.coupon.service.serviceapi.CouponIssueServiceServi
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/mypage/coupons/coupon-issues")
-public class CouponIssueServiceController {
+public class CouponIssueController {
 
-    private final CouponIssueServiceService couponIssueServiceService;
+    private final CouponIssueService couponIssueService;
     private static final String DIRECTORY_NAME = "mypage/coupon";
 
 
@@ -30,7 +30,7 @@ public class CouponIssueServiceController {
                                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto){
 
         PageResponse<UserCouponIssueListResponseDto> userCouponIssueList =
-            couponIssueServiceService.findUserAllCouponIssueList("/api/coupon-issues/"+ userDetailsDto.getMemberId());
+            couponIssueService.findUserAllCouponIssueList("/api/coupon-issues/"+ userDetailsDto.getMemberId());
 
         model.addAttribute("pageResponse", userCouponIssueList);
         model.addAttribute("paginationUrl",
@@ -42,7 +42,7 @@ public class CouponIssueServiceController {
     public String usePointCoupon(@PathVariable Long couponIssueNo){
 
 
-        couponIssueServiceService.usePointCouponByUser(
+        couponIssueService.usePointCouponByUser(
                 "/api/coupon-issues/"+ couponIssueNo +"/point-coupon-use");
 
         return "redirect:/mypage/coupons/coupon-issues/all";
