@@ -7,7 +7,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
@@ -65,9 +64,10 @@ public class OrderController {
      * @return 임시 페이지
      */
     @PostMapping("/temp")
-    public String tempOrder(@ModelAttribute OrderAddRequestDto orderAddRequestDto) {
+    public String tempOrder(OrderAddRequestDto orderAddRequestDto,
+                            @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        System.out.println(orderAddRequestDto.toString());
+        orderService.addOrderOfMember(orderAddRequestDto, userDetailsDto.getMemberNo());
 
         return "mainpage/order/orderTempForm";
     }

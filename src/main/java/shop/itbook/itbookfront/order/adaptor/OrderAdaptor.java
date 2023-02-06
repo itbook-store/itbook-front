@@ -50,4 +50,13 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
+    public <T> void addOrderOfMember(URI uri, HttpEntity<T> http) {
+        ResponseEntity<CommonResponseBody<Void>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.POST, http,
+                new ParameterizedTypeReference<>() {
+                });
+    }
+
 }

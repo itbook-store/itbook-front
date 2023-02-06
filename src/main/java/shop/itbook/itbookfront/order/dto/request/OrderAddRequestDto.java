@@ -1,19 +1,26 @@
 package shop.itbook.itbookfront.order.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Queue;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author 정재원
  * @since 1.0
  */
 @Getter
+@NoArgsConstructor
+@Setter
 public class OrderAddRequestDto {
 
     private List<Long> productNoList;
-    private List<Integer> productCountList;
-    private LocalDateTime selectedDeliveryDate;
+    private List<Integer> productCntList;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate selectedDeliveryDate;
     private String recipientName;
     private String recipientPhoneNumber;
     private Integer postcode;
@@ -24,7 +31,7 @@ public class OrderAddRequestDto {
     public String toString() {
         return "OrderAddRequestDto{" +
             "productNoList=" + productNoList +
-            ", productCountList=" + productCountList +
+            ", productCountList=" + productCntList +
             ", selectedDeliveryDate=" + selectedDeliveryDate +
             ", recipientName='" + recipientName + '\'' +
             ", recipientPhoneNumber='" + recipientPhoneNumber + '\'' +
