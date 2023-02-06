@@ -26,6 +26,7 @@ public class CouponMainController {
 
     @GetMapping("/month")
     public String couponOfMonth(Model model) {
+
         List<CouponListResponseDto> couponList = couponIssueService.getCouponsByCouponType(
             String.format("/api/admin/coupons/list/all/%s","이달의쿠폰예약형"));
 
