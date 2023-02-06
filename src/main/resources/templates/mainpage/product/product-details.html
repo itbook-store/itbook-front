@@ -103,7 +103,7 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star mr-0"></i>
                         </div>
-                        <h6 class="mb-0 text-primary">[[${rp.selledPrice}]]([[${rp.discountPercent}]]%)</h6>
+                        <h6 class="mb-0 text-primary" >[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') + '원'}]]([[${rp.discountPercent}]]%)</h6>
                     </div>
                 </div>
             </div>
