@@ -8,6 +8,7 @@ import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRecentlyPointResponseDto;
 
 /**
  * @author 노수연
@@ -30,4 +31,6 @@ public interface MemberService {
     void modifyMemberDestination(Long recipientDestinationNo, MemberDestinationRequestDto memberDestinationRequestDto);
 
     MemberDestinationResponseDto findMemberDestinationDetails(Long recipientDestinationNo);
+
+    MemberRecentlyPointResponseDto findMemberRecentlyPoint(Long memberNo);
 }

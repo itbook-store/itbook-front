@@ -94,7 +94,13 @@ public class HomeController {
     }
 
     @GetMapping("/mypage")
-    public String mypage() {
+    public String mypage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                         Model model) {
+
+        Long recentlyPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
+        model.addAttribute("memberId", userDetailsDto.getMemberId());
+        model.addAttribute("recentlyPoint", recentlyPoint);
+
         return "mypage/index";
     }
 

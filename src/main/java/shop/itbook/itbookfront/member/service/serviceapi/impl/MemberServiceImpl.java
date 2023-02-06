@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRecentlyPointResponseDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 
 /**
@@ -90,6 +91,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDestinationResponseDto findMemberDestinationDetails(Long recipientDestinationNo) {
+
         return memberAdaptor.findMemberDestination(recipientDestinationNo);
+    }
+
+    @Override
+    public MemberRecentlyPointResponseDto findMemberRecentlyPoint(Long memberNo) {
+
+        return memberAdaptor.findMemberRecentlyPoint(memberNo);
     }
 }

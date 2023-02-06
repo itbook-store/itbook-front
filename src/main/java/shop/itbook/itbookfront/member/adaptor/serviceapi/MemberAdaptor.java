@@ -13,14 +13,12 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
-import shop.itbook.itbookfront.signin.dto.request.MemberRequestDto;
-import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRecentlyPointResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -161,10 +159,26 @@ public class MemberAdaptor {
     }
 
     public MemberDestinationResponseDto findMemberDestination(Long recipientDestinationNo) {
+
         ResponseEntity<CommonResponseBody<MemberDestinationResponseDto>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/" +
                     recipientDestinationNo + "/info", HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public MemberRecentlyPointResponseDto findMemberRecentlyPoint(Long memberNo) {
+
+        ResponseEntity<CommonResponseBody<MemberRecentlyPointResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/point/find",
+                HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
 
