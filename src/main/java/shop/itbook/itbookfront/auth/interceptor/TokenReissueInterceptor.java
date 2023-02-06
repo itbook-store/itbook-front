@@ -39,17 +39,12 @@ public class TokenReissueInterceptor implements HandlerInterceptor {
 
         TokenDto tokenDto = (TokenDto) session.getAttribute("tokenDto");
 
-        /* 세션은 있는데 토큰이 존재하지 않을 경우 (이 경우는 redirectFlash 같은걸로 세션이 생겼을 경우가 가능함)*/
         if (Objects.isNull(tokenDto)) {
             return true;
         }
 
-        Date accessTokenExpirationTime = tokenDto.getAccessTokenExpirationTime();
         Date refreshTokenExpirationTime = tokenDto.getRefreshTokenExpirationTime();
 
-        /* 리프레쉬 토큰까지 만료된 경우. 이 경우에는 로그아웃 시켜야 한다?
-            그래야 Auth서버에서도 블랙리스트 관리가 되기 때문
-        */
         if (!refreshTokenExpirationTime.after(new Date())) {
             response.sendRedirect("/logout");
             return true;
