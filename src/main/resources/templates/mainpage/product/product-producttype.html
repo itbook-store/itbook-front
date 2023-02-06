@@ -133,7 +133,7 @@
                 <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
                     <div class="product-image4">
                         <a th:href="@{|/products/${product.productNo}|}">
-                            <img class="pic-1" th:src="${product.fileThumbnailsUrl}">
+                            <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
                         </a>
                         <!--                            <ul class="social">-->
                         <!--                                <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
@@ -155,8 +155,8 @@
                     </ul>
                     <div class="product-content">
                         <h3 class="title">[[${product.productName}]]</h3>
-                        <div class="price">[[${product.selledPrice}]]
-                            <span>[[${product.fixedPrice}]]</span>
+                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                         </div>
                         <a class="add-to-cart" href="">+ Add To Cart</a>
                     </div>
