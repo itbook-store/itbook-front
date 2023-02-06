@@ -2,15 +2,17 @@ package shop.itbook.itbookfront.product.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
-import shop.itbook.itbookfront.product.dto.request.ProductBookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
+import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -20,17 +22,21 @@ import shop.itbook.itbookfront.product.service.ProductService;
  * @since 1.0
  */
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
 
-    @Transactional
     @Override
     public ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                        ProductBookRequestDto requestDto) {
-        return productAdaptor.addProduct(thumbnails, ebook, requestDto);
+                                        BookRequestDto requestDto) {
+        return productAdaptor.addBook(thumbnails, ebook, requestDto);
+    }
+
+    @Override
+    public ProductNoResponseDto addProduct(MultipartFile thumbnails,
+                                           ProductRequestDto requestDto) {
+        return productAdaptor.addProduct(thumbnails, requestDto);
     }
 
     @Override
@@ -50,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                              ProductBookRequestDto requestDto) {
+                              BookRequestDto requestDto) {
         productAdaptor.modifyProduct(productNo, thumbnails, ebook, requestDto);
     }
 
@@ -63,4 +69,16 @@ public class ProductServiceImpl implements ProductService {
     public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
         return productAdaptor.findProductTypeList(url);
     }
+
+    @Override
+    public SearchBookDetailsDto searchBook(String url) {
+        return productAdaptor.searchBook(url);
+    }
+
+    @Override
+    public ProductBooleanResponseDto checkIsbnExists(String url) {
+
+        return productAdaptor.isbnExists(url);
+    }
+
 }
