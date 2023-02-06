@@ -47,6 +47,12 @@
             </tbody>
         </table>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            alert(failMessage);
+        }
+    </script>
 </div>
 
 </body>
