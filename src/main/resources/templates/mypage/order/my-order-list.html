@@ -57,6 +57,9 @@
                                                   th:text="${ord.orderStatus}"></span>
                                         </td>
                                         <td>
+                                            <span th:if="${ord.trackingNo == null}">
+                                                미발급
+                                            </span>
                                             <span th:text="${ord.trackingNo}"></span>
                                         </td>
                                         <td style="width: 20%;">
