@@ -10,6 +10,9 @@
     <div class="content">
         <h2>마이페이지</h2>
         <hr>
+        <h4>나의 포인트</h4><br>
+        <span th:text="${memberId}"></span> 님의 현재 포인트는 <span th:text="${recentlyPoint}"></span>p 입니다.
+        <hr>
         <h4>최근 주문내역</h4>
         <table class="order_table table">
             <tr>
