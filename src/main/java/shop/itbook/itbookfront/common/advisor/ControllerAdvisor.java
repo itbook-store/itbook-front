@@ -1,13 +1,12 @@
 package shop.itbook.itbookfront.common.advisor;
 
-import javassist.NotFoundException;
+import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.MemberForbiddenException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
@@ -25,11 +24,13 @@ public class ControllerAdvisor {
     private static final String MESSAGE = "message";
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = {BadRequestException.class})
+    @ExceptionHandler(value = {BadRequestException.class, ValidationException.class})
     public String badRequestException400(Exception e) {
         log.error("badRequestException400 {}", e);
         return "/error/400error";
     }
+
+//    @ExceptionHandler(value = {})
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = {MemberForbiddenException.class})

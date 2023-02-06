@@ -20,7 +20,6 @@ import shop.itbook.itbookfront.auth.exception.AlreadySingupMemberInSelfCompanyEx
 import shop.itbook.itbookfront.auth.util.OAuthAttribute;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
-import shop.itbook.itbookfront.config.GatewayConfig;
 
 /**
  * OAuth Login 에서 받아온 유저정보를 컨트롤하기 위한 클래스 입니다.
@@ -34,11 +33,7 @@ public class CustomOauthService implements OAuth2UserService<OAuth2UserRequest, 
 
     private final AuthAdaptor authAdaptor;
 
-    private final GatewayConfig gatewayConfig;
-
     private final PasswordEncoder passwordEncoder;
-
-    private static final String SHOP_API_URL = "/api/members/oauth/login/find";
 
     /**
      * OAuth2UserService의 메소드를 Override 한 메서드 입니다.
@@ -70,7 +65,6 @@ public class CustomOauthService implements OAuth2UserService<OAuth2UserRequest, 
 
         ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> checkValidAuthUser =
             authAdaptor.postShopServerCheckValidAuthUser(
-                gatewayConfig.getGatewayServer() + SHOP_API_URL,
                 new MemberOAuthRequestDto(
                     oAuthAttribute.getEmail(),
                     passwordEncoder.encode(oAuthAttribute.getEmail())
