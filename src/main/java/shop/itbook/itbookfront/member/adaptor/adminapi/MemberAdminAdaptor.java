@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.member.adaptor.adminapi;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
@@ -26,6 +28,7 @@ import shop.itbook.itbookfront.util.ResponseChecker;
  * @author 노수연
  * @since 1.0
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MemberAdminAdaptor {
@@ -157,6 +160,27 @@ public class MemberAdminAdaptor {
                 gatewayConfig.getGatewayServer() + "/api/admin/members/search/" + memberStatusName +
                     "/" +
                     searchRequirement + "/" + searchWord + url, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
+
+    public PageResponse<MemberAdminResponseDto> getMembersByDateOfJoining(MemberSearchRequestDto memberSearchRequestDto,
+                                                                          String memberStatusName,
+                                                                          String url) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<MemberSearchRequestDto> httpEntity = new HttpEntity<>(memberSearchRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<PageResponse<MemberAdminResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/members/search/" + memberStatusName +
+                    url, HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 }
             );

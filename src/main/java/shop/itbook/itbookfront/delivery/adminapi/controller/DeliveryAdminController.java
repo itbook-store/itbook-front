@@ -1,24 +1,15 @@
 package shop.itbook.itbookfront.delivery.adminapi.controller;
 
-import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.delivery.adminapi.adaptor.DeliveryAdaptor;
 import shop.itbook.itbookfront.delivery.adminapi.dto.response.DeliveryWithStatusResponseDto;
-import shop.itbook.itbookfront.delivery.adminapi.exception.DeliveryNoWaitStatusException;
 import shop.itbook.itbookfront.delivery.service.DeliveryService;
 
 /**
@@ -43,7 +34,7 @@ public class DeliveryAdminController {
     @GetMapping
     public String adminDeliveryListPage(Model model, @PageableDefault Pageable pageable) {
         PageResponse<DeliveryWithStatusResponseDto> deliveryWaitListPageResponse =
-            deliveryService.getDeliveryList(pageable);
+            deliveryService.findDeliveryList(pageable);
 
         model.addAttribute("pageResponse", deliveryWaitListPageResponse);
 
@@ -59,7 +50,7 @@ public class DeliveryAdminController {
     @GetMapping("/wait-list")
     public String adminDeliveryWaitListPage(Model model, Pageable pageable) {
         PageResponse<DeliveryWithStatusResponseDto> deliveryWaitListPageResponse =
-            deliveryService.getDeliveryWaitList(pageable);
+            deliveryService.findDeliveryWaitList(pageable);
 
         model.addAttribute("pageResponse", deliveryWaitListPageResponse);
 

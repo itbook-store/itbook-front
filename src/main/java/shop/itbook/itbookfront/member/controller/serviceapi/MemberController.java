@@ -162,7 +162,7 @@ public class MemberController {
         model.addAttribute("myMemberId", userDetailsDto.getMemberId());
         model.addAttribute("recentlyPoint", recentlyPoint);
 
-        return "/mypage/member/member-point-send";
+        return "mypage/member/member-point-send";
     }
 
     @PostMapping("/me/point-gift")

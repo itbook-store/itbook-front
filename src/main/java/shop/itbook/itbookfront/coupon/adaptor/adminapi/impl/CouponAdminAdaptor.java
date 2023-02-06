@@ -1,6 +1,5 @@
-package shop.itbook.itbookfront.coupon.adaptor.impl;
+package shop.itbook.itbookfront.coupon.adaptor.adminapi.impl;
 
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,7 +24,7 @@ import shop.itbook.itbookfront.util.ResponseChecker;
  */
 @Component
 @RequiredArgsConstructor
-public class CouponAdaptor {
+public class CouponAdminAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
@@ -36,19 +35,19 @@ public class CouponAdaptor {
 
         HttpEntity<CouponInputRequestDto> httpEntity = new HttpEntity<>(couponInputRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> commonResponseBodyResponseEntity
-            = restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/coupon",
+        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
+            = restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/coupons",
             HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){
 
             });
 
-        CommonResponseBody<CouponNoResponseDto> body = commonResponseBodyResponseEntity.getBody();
+        CommonResponseBody<CouponNoResponseDto> body = exchange.getBody();
         CommonResponseBody.CommonHeader header = Objects.requireNonNull(body).getHeader();
 
-        ResponseChecker.checkFail(commonResponseBodyResponseEntity.getStatusCode(),
+        ResponseChecker.checkFail(exchange.getStatusCode(),
             header.getResultMessage());
 
-        return body.getResult().getCouponNo();
+        return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
 
     public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
