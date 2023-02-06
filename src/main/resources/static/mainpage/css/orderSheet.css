@@ -1,0 +1,59 @@
+.order-title {
+    font-size: 30px;
+
+    margin-top: 5%;
+    margin-bottom: 5%;
+
+    border-bottom: #03a9ff solid 1px;
+    box-shadow: 0 3px 3px -3px blue;
+}
+
+.box-title {
+    font-size: 22px;
+    margin-bottom: 3%;
+
+    padding-bottom: 5px;
+
+    border-bottom: #eaeaed solid 2px;
+}
+
+.box-title:before {
+    content: "|";
+    margin-right: 8px;
+    font-weight: bold;
+    color: #1869B3;
+}
+
+.box-content input {
+    margin-bottom: 10px;
+}
+
+.address-box {
+    margin-bottom: 5%;
+}
+
+.delivery-box {
+    margin-bottom: 5%;
+}
+
+.no-input {
+    width: 100%;
+    border: 0 solid black;
+    background-color: transparent;
+
+    display: block;
+    text-align: center;
+
+    font-size: 0.875em;
+    vertical-align: middle;
+    border-top: 1px solid #e7ebee;
+    padding: 12px 8px;
+}
+
+.no-input:focus {
+    outline: none;
+}
+
+.table td {
+    display: block;
+}

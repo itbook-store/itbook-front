@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.coupon.controller.serviceapi;
+package shop.itbook.itbookfront.coupon.service.adminapi;
 
 import java.util.List;
 import shop.itbook.itbookfront.common.response.PageResponse;

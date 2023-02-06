@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.coupon.controller.adminapi;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -15,13 +14,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.coupon.controller.serviceapi.CouponService;
+import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
@@ -31,7 +29,7 @@ import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
  * @since 1.0
  */
 @Controller
-@RequestMapping("/admin/coupon")
+@RequestMapping("/admin/coupons")
 @RequiredArgsConstructor
 public class CouponAdminController {
 
@@ -55,7 +53,7 @@ public class CouponAdminController {
             model.addAttribute("couponInputRequestDto", couponInputRequestDto);
 
             Map<String, String> validatorResult = validateHandling(errors);
-            for(String key : validatorResult.keySet()) {
+            for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
 
@@ -66,7 +64,7 @@ public class CouponAdminController {
 
         couponService.addCoupon(couponInputRequestDto);
 
-        return Strings.concat(DIRECTORY_NAME, "/test");
+        return "redirect:/admin/coupons";
     }
 
     @GetMapping
@@ -77,13 +75,13 @@ public class CouponAdminController {
         if(Objects.isNull(coverage)) {
             couponList =
                 couponService.findCouponList(
-                    String.format("/api/admin/coupon?page=%d&size=%d",
+                    String.format("/api/admin/coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else if(coverage.equals("카테고리쿠폰")){
             couponList =
                 couponService.findCouponList(
-                    String.format("/api/admin/coupon/category-coupon?page=%d&size=%d",
+                    String.format("/api/admin/category-coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else{
