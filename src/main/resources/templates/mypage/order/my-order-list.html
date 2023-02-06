@@ -10,8 +10,81 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        ㅎㅇ
+        <div>
+            <form method="get" th:action="@{/admin/orders/search}">
+                <select name="searchRequirement">
+                    <option value="everything">전체</option>
+                    <option value="orderNo">주문번호</option>
+                    <option value="name">주문자</option>
+                    <option value="phoneNumber">전화번호</option>
+                    <option value="trackingNo">송장번호</option>
+                    <!--TODO 가입일 누르면 날짜 선택하는 칸 추가 -->
+                </select>
+                <input type="text" name="searchWord">
+                <button class="btn btn-secondary" type="submit">검색</button>
+            </form>
+        </div>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                    <tr>
+                                        <th><span>주문번호</span></th>
+                                        <th><span>받는분</span></th>
+                                        <th><span>받는분 연락처</span></th>
+                                        <th><span>주문상태</span></th>
+                                        <th><span>송장번호</span></th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ord : ${pageResponse.content}">
+                                        <td th:text="${ord.orderNo}"></td>
+                                        <td>
+                                            <span th:text="${ord.recipientName}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${ord.recipientPhoneNumber}"></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge text-bg-primary"
+                                                  th:text="${ord.orderStatus}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${ord.trackingNo}"></span>
+                                        </td>
+                                        <td style="width: 20%;">
+<!--                                            <a th:href="@{|/admin/members/${member.memberId}/info|}"-->
+<!--                                               style="text-decoration-line: none; color: black;"-->
+<!--                                               class="table-link text-warning">-->
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                            </a>
+                                            <a href="#" class="table-link danger">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+    <th:block th:include="component/pageFooter"></th:block>
 </div>
 </body>
 </html>

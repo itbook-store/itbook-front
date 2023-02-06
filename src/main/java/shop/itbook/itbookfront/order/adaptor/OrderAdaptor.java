@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
-import shop.itbook.itbookfront.order.dto.request.OrderProductRequestDto;
+import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 
 /**
@@ -30,6 +31,19 @@ public class OrderAdaptor {
             restTemplate.exchange(
                 uri,
                 HttpMethod.GET, http,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public PageResponse<OrderListMemberViewResponseDto> findOrderListViewResponseDtoPageResponse(
+        URI uri) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<OrderListMemberViewResponseDto>>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
 
