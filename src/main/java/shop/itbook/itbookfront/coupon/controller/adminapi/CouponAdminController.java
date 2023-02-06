@@ -64,7 +64,7 @@ public class CouponAdminController {
 
         couponService.addCoupon(couponInputRequestDto);
 
-        return Strings.concat(DIRECTORY_NAME, "/couponList");
+        return "redirect:/admin/coupons";
     }
 
     @GetMapping

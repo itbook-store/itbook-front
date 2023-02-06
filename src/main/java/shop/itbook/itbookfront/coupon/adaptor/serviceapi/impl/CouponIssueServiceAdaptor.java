@@ -6,16 +6,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDto;
-import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
  * @author 송다혜
@@ -48,7 +45,7 @@ public class CouponIssueServiceAdaptor {
 
         restTemplate.exchange(
             gatewayConfig.getGatewayServer() + usePointCouponIssueUrl,
-            HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+            HttpMethod.PUT, null, new ParameterizedTypeReference<>() {
             });
 
     }

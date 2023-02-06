@@ -71,10 +71,10 @@
                                                 <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
                                                 <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
                                             </td>
-                                            <td th:if="${couponIssue.point!=0}" class="text-center">
-                                                <span class="badge text-bg-primary" th:text="사용하기" th:onclick="|location.href='@{/coupons/coupon-issues/(couponIssueNo=${couponIssue.couponIssueNo})/point-coupon-use}'|" style="cursor:pointer"></span>
+                                            <td th:if="${couponIssue.point!=0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
+                                                <span class="badge text-bg-primary" th:text="사용하기" th:onclick="|location.href='@{/mypage/coupons/coupon-issues/{couponIssueNo}/point-coupon-use(couponIssueNo=${couponIssue.couponIssueNo})}'|" style="cursor:pointer"></span>
                                             </td>
-                                            <td th:unless="${couponIssue.point!=0}" class="text-center">
+                                            <td th:unless="${couponIssue.point!=0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
                                                 <span class="badge text-bg-danger" th:text="${couponIssue.usageStatusName}"></span>
                                             </td>
                                             <td style="width: 20%;" th:if="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
