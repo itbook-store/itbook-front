@@ -46,9 +46,8 @@
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
                        th:text="${mainCategory.mainCategoryName}">
                         <i class="fa fa-angle-right float-right mt-1"></i></a>
-                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0"
-                         th:each="subCategory : ${mainCategory.subCategoryList}">
-                        <a th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
+                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                        <a th:each="subCategory : ${mainCategory.subCategoryList}" th:href="@{/products(categoryNo=${subCategory.categoryNo},categoryName=${subCategory.categoryName})}"
                            th:text="${subCategory.categoryName}"
                            class="dropdown-item"></a>
                     </div>

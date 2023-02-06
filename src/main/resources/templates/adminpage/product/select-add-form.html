@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>상품등록</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="bootstrap snippets bootdey">
+            <div class="col-md-12">
+                <h2 class="text-primary">
+                   등록할 상품 선택
+                </h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel panel-info ">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <i class="fa fa-calculator fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-6 text-right">
+                                        <p class="announcement-heading">&nbsp;</p>
+                                        <p class="announcement-text">잡화</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/admin/products/add">
+                                <div class="panel-footer announcement-bottom">
+                                    <div class="row">
+                                        <div class="col-xs-6">등록하러 가기</div>
+                                        <div class="col-xs-6 text-right">
+                                            <i class="fa fa-arrow-circle-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-success ">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <i class="fa fa-leanpub fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-6 text-right">
+                                        <p class="announcement-heading">&nbsp;</p>
+                                        <p class="announcement-text">도서</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/admin/products/books/add">
+                                <div class="panel-footer announcement-bottom">
+                                    <div class="row">
+                                        <div class="col-xs-6">등록하러 가기</div>
+                                        <div class="col-xs-6 text-right">
+                                            <i class="fa fa-arrow-circle-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
