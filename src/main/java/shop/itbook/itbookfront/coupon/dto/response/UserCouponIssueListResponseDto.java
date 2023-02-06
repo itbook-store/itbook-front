@@ -10,15 +10,21 @@ import lombok.NoArgsConstructor;
  * @since 1.0
  */
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CouponListResponseDto {
-    private Long couponNo;
+@AllArgsConstructor
+public class UserCouponIssueListResponseDto {
+
+    private Long couponIssueNo;
     private String name;
     private String code;
     private Long amount;
     private Integer percent;
     private Long point;
-    private LocalDateTime couponCreatedAt;
+    private String couponTypeName;
+    private String usageStatusName;
+    private LocalDateTime couponIssueCreatedAt;
     private LocalDateTime couponExpiredAt;
+    private LocalDateTime couponUsageCreatedAt;
+    private String categoryName;
+    private String productName;
 }
