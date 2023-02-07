@@ -20,6 +20,7 @@
 
                 <input type="hidden" name="sendMemberNo" th:value="${myMemberNo}">
                 <input type="hidden" name="receiveMemberNo" value="-1">
+                <input type="hidden" id="checkMemberId" th:value="${myMemberId}">
 
                 <div class="form-outline mb-4">
                     <label class="form-label">선물할 회원 아이디</label>
@@ -31,9 +32,9 @@
                 </div>
                 <div>
                     <label class="form-label">선물할 포인트</label>
-                    <input type="text" id="giftPoint" name="giftPoint" class="form-control form-control-lg">
+                    <input type="text" id="giftPoint" name="giftPoint" class="form-control form-control-lg" oninput="writePoint()">
                 </div>
-                <button type="button" onclick="sendPoint()" class="btn btn-primary">선물하기</button>
+                <button id="sendBtn" type="button" onclick="sendPoint()" class="btn btn-primary" disabled>선물하기</button>
             </form>
         </div>
     </div>
