@@ -31,7 +31,7 @@
                         <small class="text-success" th:text="|${product.discountPercent}%off|"></small>
                     </h2>
                     <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
-                            data-original-title="Add to cart">
+                            data-original-title="Add to cart" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
                         <i class="fa fa-shopping-cart"></i>
                     </button>
                     <button class="btn btn-danger"
@@ -110,6 +110,7 @@
         </div>
         <th:block th:include="component/pageFooter"></th:block>
     </section>
+    <script src="/cart/js/cartAddProduct.js"></script>
 </div>
 </body>
 </html>
