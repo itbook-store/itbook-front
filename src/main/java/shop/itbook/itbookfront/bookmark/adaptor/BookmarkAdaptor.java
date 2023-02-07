@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 
 /**
@@ -28,20 +29,22 @@ import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 @RequiredArgsConstructor
 public class BookmarkAdaptor {
 
-    private GatewayConfig gatewayConfig;
-    private RestTemplate restTemplate;
+    private final GatewayConfig gatewayConfig;
+    private final RestTemplate restTemplate;
 
-    private static final String GET_BOOKMARK_LIST_API = "";
+    private static final String GET_BOOKMARK_LIST_API = "/api/bookmark/";
 
-    private static final String ADD_BOOKMARK_API = "";
+    private static final String ADD_BOOKMARK_API = "/api/bookmark";
 
-    private static final String DELETE_BOOKMARK_API = "";
+    private static final String DELETE_BOOKMARK_API = "/api/bookmark";
+
+    private static final String DELETE_ALL_BOOKMARK_API = "/api/bookmark/";
+
 
     public boolean addBookmark(BookmarkRequestDto bookmarkRequestDto) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
 
         ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange = restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + ADD_BOOKMARK_API,
@@ -66,6 +69,32 @@ public class BookmarkAdaptor {
             new HttpEntity<>(bookmarkRequestDto, headers),
             new ParameterizedTypeReference<>() {}
         );
+    }
+
+    public void deleteAllBookmark(Long memberNo) {
+
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + DELETE_ALL_BOOKMARK_API + memberNo,
+            HttpMethod.DELETE,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+    }
+
+    public PageResponse<ProductDetailsResponseDto> getBookmarkList(Long memberNo) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<ProductDetailsResponseDto>>> exchange =
+            restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + GET_BOOKMARK_LIST_API + memberNo,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
 }

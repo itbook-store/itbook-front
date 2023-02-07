@@ -113,5 +113,12 @@
 
 </div>
 
+<script th:inline="javascript">
+    let bookmarkFailMessage = [[${bookmarkFailMessage}]];
+    if (bookmarkFailMessage) {
+        alert(bookmarkFailMessage);
+    }
+</script>
+
 </body>
 </html>

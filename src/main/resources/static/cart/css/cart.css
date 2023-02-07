@@ -121,7 +121,7 @@
 
 /* main page dropdown */
 
-.bx {
+#drop_down_with_links .bx {
     font-size: 20px;
     color: #333;
 }
@@ -131,7 +131,7 @@
     margin-right: 10px;
 }
 
-#trigger {
+#drop_down_with_links #trigger {
     border: none;
     padding: 6px 14px;
     display: flex;
@@ -143,7 +143,7 @@
     border: 2px solid #e9e9e9;
 }
 
-#menu {
+#drop_down_with_links #menu {
     position: absolute;
     top: 46px;
     left: 0px;
@@ -156,11 +156,20 @@
     transition: 500ms ease-in;
 }
 
-#menu.closed {
+#drop_down_with_links #menu.closed {
     display: none;
+    list-style: none;
 }
 
-li > a {
+#drop_down_with_links #menu {
+    z-index: 10;
+}
+
+#drop_down_with_links #menu li {
+    list-style: none;
+}
+
+#drop_down_with_links li > a {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -170,21 +179,21 @@ li > a {
     padding: 10px;
 }
 
-.select_component:focus-visible,
+#drop_down_with_links .select_component:focus-visible,
 select:focus-visible {
     border-radius: 8px;
     outline: 2px solid purple;
     background-color: rgba(0,0,0,0.05)
 }
 
-li > a:focus-visible,
+#drop_down_with_links li > a:focus-visible,
 #trigger:focus-visible {
     border-radius: 8px;
     outline: 2px solid purple;
     background-color: rgba(0,0,0,0.05);
 }
 
-li > a:hover,
+#drop_down_with_links li > a:hover,
 .select_component:hover,
 #trigger:hover {
     background-color: rgba(0,0,0,0.05);
