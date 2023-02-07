@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.product.adaptor;
 
-import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,8 +13,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
+import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
+import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
@@ -30,6 +30,7 @@ import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
+import shop.itbook.itbookfront.product.exception.InvalidInputException;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
@@ -44,7 +45,7 @@ public class ProductAdaptor {
     private final GatewayConfig gateway;
     private final RestTemplate restTemplate;
 
-    public ProductNoResponseDto addProduct(
+    public Long addProduct(
         MultipartFile thumbnails, ProductRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
@@ -56,18 +57,23 @@ public class ProductAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
-            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
-                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
-                });
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response = null;
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
+        try {
+            response =
+                restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
+                    HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                    });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
+                throw new InvalidInputException();
+            }
+        }
+        CommonResponseBody<ProductNoResponseDto> body = response.getBody();
+        return body.getResult().getProductNo();
     }
 
-    public ProductNoResponseDto addBook(
+    public Long addBook(
         MultipartFile thumbnails, MultipartFile ebook, BookRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
@@ -80,15 +86,19 @@ public class ProductAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
-            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
-                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response = null;
+        try {
+            response =
+                restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
+                    HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                    });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
+                throw new InvalidInputException();
+            }
+        }
+        CommonResponseBody<ProductNoResponseDto> body = response.getBody();
+        return body.getResult().getProductNo();
     }
 
     public void removeProduct(Long productNo) {

@@ -22,9 +22,9 @@
             <a th:href="@{|/admin/products/relation|}">
                 <input style="margin-left: 20px" class="btn btn-secondary"
                        type="button" id="editButton" value="뒤로가기"/></a>
-            <div class="row">
-                <div class="col-sm-2 col-lg-2 mb-2-6" th:each="rp: ${pageResponse.content}">
-                    <div class="card-wrapper mb-2">
+            <div class="row" style="margin-top: 20px">
+                <div class="col-sm-3 col-lg-2 mb-2-6" style="margin-inline: 5px" th:each="rp: ${pageResponse.content}">
+                    <div class="card-wrapper mb-2" >
                         <div class="card-img">
                             <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
                         </div>

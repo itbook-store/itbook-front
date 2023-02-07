@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.MemberForbiddenException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.product.exception.InvalidInputException;
 
 /**
  * 프론트 서버에서 에러를 처리하기 위한 클래스 입니다.

@@ -14,8 +14,8 @@
         <div class="container">
             <h2>연관 상품</h2>
             <div class="row">
-                <div class="col-sm-3 col-lg-3 mb-2-6" th:each="rp: ${pageResponse.content}">
-                    <div class="card-wrapper mb-2">
+                <div class="col-sm-3 col-lg-3 mb-2-6" th:each="rp: ${pageResponse.content}" style="margin-inline: 5px">
+                    <div class="card-wrapper mb-2" >
                         <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="..."></div>
                         <div class="card-body">
                             <div>

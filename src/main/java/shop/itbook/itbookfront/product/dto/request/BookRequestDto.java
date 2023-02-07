@@ -62,7 +62,6 @@ public class BookRequestDto {
     @NotNull(message = "null을 허용하지 않습니다.")
     private Boolean isPointApplying;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
     private Boolean isPointApplyingBasedSellingPrice;
 
     @NotNull(message = "null을 허용하지 않습니다.")

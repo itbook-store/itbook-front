@@ -66,21 +66,38 @@ async function showSubCategory(event, categoryNoList) {
         });
 }
 
-function checkLimitCategory(obj){
+function checkLimitCategory(obj) {
     let checkBox = document.getElementsByName("categoryNoList");
     let cnt = 0;
-    for(let i=0;i<checkBox.length; i++){
-        if(checkBox[i].checked){
+    for (let i = 0; i < checkBox.length; i++) {
+        if (checkBox[i].checked) {
             cnt++;
         }
     }
-    console.log("cnt: "+cnt);
+    console.log("cnt: " + cnt);
 
-    if(cnt>3){
-        alert("카테고리는 최대 3개만 지정 가능합니다.");
-        obj.checked = false;
+    if (cnt > 3) {
+        alert("카테고리는 최대 3개까지 지정 가능합니다.");
         return false;
+    } else
+        return true;
+}
+
+function checkCategoryCount() {
+    let checkBox = document.getElementsByName("categoryNoList");
+    let cnt = 0;
+    for (let i = 0; i < checkBox.length; i++) {
+        if (checkBox[i].checked) {
+            cnt++;
+        }
     }
+    console.log("cnt: " + cnt);
+
+    if (cnt < 1) {
+        alert("카테고리는 최소 1개 지정해야만 합니다.");
+        return false;
+    } else
+        return true;
 }
 
 async function showSearchResults(event) {
@@ -152,13 +169,13 @@ function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
     document.getElementById(notExistMsg).style.display = 'none';
     document.getElementById(checkBtn).disabled = false;
     document.getElementById(retypeBtn).style.visibility = 'hidden';
-    document.getElementById('productName').value='';
-    document.getElementById('authorName').value='';
-    document.getElementById('simpleDescription').value='';
-    document.getElementById('fixedPrice').value='';
-    document.getElementById('publisherName').value='';
-    document.getElementById('pageCount').value='';
-    document.getElementById('bookCreatedAt').value='';
+    document.getElementById('productName').value = '';
+    document.getElementById('authorName').value = '';
+    document.getElementById('simpleDescription').value = '';
+    document.getElementById('fixedPrice').value = '';
+    document.getElementById('publisherName').value = '';
+    document.getElementById('pageCount').value = '';
+    document.getElementById('bookCreatedAt').value = '';
 }
 
 function showBookForm(mainCategoryName) {
@@ -173,8 +190,11 @@ function showBookForm(mainCategoryName) {
 function addBookSubmit() {
     if (document.getElementById("confirmBook").disabled == false) {
         alert("등록 가능한 isbn인지 확인이 필요합니다.");
-    }
-    else {
-        document.getElementById('addBookForm').submit;
+        return false;
+    } else if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        return true;
     }
 }

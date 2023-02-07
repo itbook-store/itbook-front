@@ -73,18 +73,17 @@ public class HomeController {
             "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
         model.addAttribute("productTypeList", productTypeList);
 
-        List<ProductDetailsResponseDto> newBookList =
+        List<ProductDetailsResponseDto> recommendation =
             productService.getProductList(
                 String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 1)).getContent();
-        model.addAttribute("newBookList", newBookList);
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 4)).getContent();
+        model.addAttribute("recommendationList", recommendation);
 
-        List<ProductDetailsResponseDto> discountBookList =
+        List<ProductDetailsResponseDto> bestSeller =
             productService.getProductList(
                 String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 2)).getContent();
-        model.addAttribute("discountBookList", discountBookList);
-
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 3)).getContent();
+        model.addAttribute("bestSeller", bestSeller);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
@@ -97,7 +96,8 @@ public class HomeController {
     public String mypage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                          Model model) {
 
-        Long recentlyPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
+        Long recentlyPoint =
+            memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
         model.addAttribute("memberId", userDetailsDto.getMemberId());
         model.addAttribute("recentlyPoint", recentlyPoint);
 

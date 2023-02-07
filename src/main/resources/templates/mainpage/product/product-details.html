@@ -27,19 +27,7 @@
                     <!--                    <h4 class="box-title mt-5">Product description</h4>-->
                     <p th:if="${not #strings.equals(product.detailsDescription, null)}">
                         [[${product.detailsDescription}]]</p>
-                    <h2 class="mt-5" data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}">
-                        <small class="text-success" th:text="|${product.discountPercent}%off|"></small>
-                    </h2>
-                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
-                            data-original-title="Add to cart">
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
-                    <button class="btn btn-danger"
-                            th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                        품절</button>
-                    <button class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
-                            th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                    >구매하기</button>
+
                     <div class="col-lg-11 col-md-11 col-sm-10">
                         <h5 class="box-title mt-5">상세 정보</h5>
                         <div class="table-responsive">
@@ -73,6 +61,22 @@
                             </table>
                         </div>
                     </div>
+
+                    <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5" data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
+                        <small style="font-size: 15pt; margin-left: 10%" class="text-success" th:text="|(${product.discountPercent}%off)|"></small>
+
+
+                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
+                            data-original-title="Add to cart">
+                        <i class="fa fa-shopping-cart"></i>
+                    </button>
+                    <button class="btn btn-danger"
+                            th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                        품절</button>
+                    <button class="btn btn-primary btn-rounded"
+                            th:unless="${product.isForceSoldOut == true or product.stock == 0}"
+                            th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
+                    >구매하기</button>
                 </div>
             </div>
         </div>

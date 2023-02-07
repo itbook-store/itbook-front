@@ -43,25 +43,32 @@ public class ProductRelationAdminController {
                     pageable.getPageNumber(), pageable.getPageSize()));
         model.addAttribute("pageResponse", relationProductList);
         model.addAttribute("paginationUrl", "/admin/products/relation");
+
+        model.addAttribute("paginationUrl",
+            String.format("/admin/products/relation"));
+
         return "adminpage/product/product-relation-management";
     }
 
-    // 해당번호에 연관상품을 조회하는 화면을 불러옵니다.
+    // 해당번호의 연관상품을 조회하는 화면을 불러옵니다.
     @GetMapping("/{productNo}")
     public String getProductRelationListFilteredProductNo(Model model, @PathVariable Long productNo,
                                                           @PageableDefault Pageable pageable) {
         PageResponse<ProductDetailsResponseDto> relationProductList =
             productService.getProductList(
-                String.format("/api/products/relation/%d?page=%d&size=%d",
+                String.format("/api/admin/products/relation/%d?page=%d&size=%d",
                     productNo, pageable.getPageNumber(), pageable.getPageSize()));
         model.addAttribute("pageResponse", relationProductList);
         model.addAttribute("basedProductNo", productNo);
-        return "adminpage/product/product-relation-details";
 
+        model.addAttribute("paginationUrl",
+            String.format("/admin/products/relation/%d", productNo));
+
+        return "adminpage/product/product-relation-details";
     }
 
 
-    // 해당번호에 연관상품 추가하는 화면을 불러옵니다.
+    // 해당번호에 연관상품 수정하는 화면을 불러옵니다.
     @GetMapping("/{basedProductNo}/edit")
     public String getAddProductRelationForm(Model model, @PathVariable Long basedProductNo,
                                             @PageableDefault Pageable pageable) {
@@ -70,7 +77,7 @@ public class ProductRelationAdminController {
         PageResponse<ProductDetailsResponseDto> candidateProductList =
             productService.getProductList(
                 String.format("/api/products/relation/add-candidates/%d?page=%d&size=%d",
-                    basedProductNo, pageable.getPageNumber(), pageable.getPageSize()));
+                    basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
         model.addAttribute("pageResponse", candidateProductList);
 
         //기존의 리스트
@@ -80,6 +87,10 @@ public class ProductRelationAdminController {
                     basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
         model.addAttribute("existingList", existingProductList);
         model.addAttribute("basedProductNo", basedProductNo);
+
+        model.addAttribute("paginationUrl",
+            String.format("/admin/products/relation/%d/edit", basedProductNo));
+
         return "adminpage/product/product-relation-edit";
     }
 
