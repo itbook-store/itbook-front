@@ -5,86 +5,105 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 
 <head>
-    <script th:inline="javascript">
-        $('.btn-toggle').click(function() {
-            $(this).find('.btn').toggleClass('active');
+    <style>
+        .toggleSwitch {
+            width: 50px;
+            height: 25px;
+            display: block;
+            position: relative;
+            border-radius: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+            cursor: pointer;
+        }
 
-            if ($(this).find('.btn-primary').size()>0) {
-                $(this).find('.btn').toggleClass('btn-primary');
-            }
-            if ($(this).find('.btn-danger').size()>0) {
-                $(this).find('.btn').toggleClass('btn-danger');
-            }
-            if ($(this).find('.btn-success').size()>0) {
-                $(this).find('.btn').toggleClass('btn-success');
-            }
-            if ($(this).find('.btn-info').size()>0) {
-                $(this).find('.btn').toggleClass('btn-info');
-            }
+        .toggleSwitch .toggleButton {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 30%;
+            left: 4px;
+            transform: translateY(-25%);
+            border-radius: 50%;
+            background: #f03d3d;
+        }
 
-            $(this).find('.btn').toggleClass('btn-default');
+        #toggle:checked ~ .toggleSwitch {
+            background: #f03d3d;
+        }
 
-        });
-    </script>
+        #toggle:checked ~ .toggleSwitch .toggleButton {
+            left: calc(100% - 24px);
+            background: #fff;
+        }
 
+        .toggleSwitch, .toggleButton {
+            transition: all 0.2s ease-in;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <meta charset="UTF-8">
-    <title>상품</title>
+    <title>상품 관리</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2> 상품 관리</h2>
-    <button style="width: auto;" class="btn btn-secondary mt-3"
-            onclick="location.href='/admin/products/select-add-product-type'">상품 등록
-    </button>
     <div class="content">
-        <table class="table" style="width: 1000px">
-            <colgroup>
-                <col style="width:auto;"/>
-            </colgroup>
-            <tbody>
-            <tr class="thead-light">
-                <th scope="col">상품코드</th>
-                <th scope="col">상품명</th>
-                <th scope="col">정가</th>
-                <th scope="col">판매가</th>
-<!--                <th scope="col">수정</th>-->
-                <th scope="col">삭제</th>
-            </tr>
-            <tr th:if="${not #lists.isEmpty(pageResponse)}" th:each="product : ${pageResponse.content}"
-                style="text-align: center">
-                <td class="table-light">[[ ${product.productNo} ]]</td>
-                <td>[[ ${product.productName} ]]</td>
-                <td>[[ ${product.fixedPrice} ]]</td>
-                <td>[[ ${product.selledPrice} ]]</td>
-<!--                <td>-->
-<!--                    <a th:href="@{|/admin/products/${product.productNo}/modify|}">-->
-<!--                        <button style="width: auto;" class="btn btn-primary ml-1">수정-->
-<!--                        </button>-->
-<!--                    </a>-->
-<!--                </td>-->
-                <td>
-                    <div class=" bootstrap snippets bootdey">
-                        <div class="btn-group btn-toggle">
-                            <button class="btn btn-xs btn-success">Y</button>
-                            <button class="btn btn-xs btn-danger active">N</button>
-                        </div></div>
 
-<!--                    <a th:href="@{|/admin/products/${product.productNo}/delete|}">-->
-<!--                        <button style="width: auto" class="btn btn-danger ml-1">-->
-<!--                            삭제-->
-<!--                        </button>-->
-<!--                    </a>-->
+        <h2> 상품 관리 <button style="width: auto; margin-left: 90%" class="btn btn-secondary mt-3"
+                           onclick="location.href='/admin/products/select-add-product-type'">상품 등록
+        </button></h2>
 
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(pageResponse)}">
-                <td colspan="6" style="text-align: center">
-                    <div>목록이 비었습니다.</div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <th:block th:include="component/pageFooter"></th:block>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                    <tr>
+                                        <th><span>상품코드</span></th>
+                                        <th><span>상품명</span></th>
+                                        <th><span>정가</span></th>
+                                        <th class="text-center"><span>판매가</span></th>
+                                        <th><span>삭제</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${not #lists.isEmpty(pageResponse)}"
+                                        th:each="product : ${pageResponse.content}">
+                                        <td th:text="${product.productNo}"></td>
+                                        <td><strong>
+                                            <span th:text="${product.productName}"
+                                                  th:onclick="|location.href='@{/products/{productNo}(productNo=${product.productNo})}'|"></span>
+                                        </strong>
+                                        </td>
+                                        <td><strong><span>
+                                            [[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                                        </span></strong></td>
+                                        <td class="text-center">
+                                            <strong><span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span></strong>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="toggle" hidden>
+                                            <label for="toggle" class="toggleSwitch" style="margin: auto">
+                                                <span class="toggleButton"
+                                                      th:onclick="|location.href='@{/admin/products/{productNo}/delete(productNo=${product.productNo})}'|"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <th:block th:include="component/pageFooter"></th:block>
+        </div>
     </div>
 </div>
 </body>

@@ -24,6 +24,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
 
@@ -107,11 +108,18 @@ public class ProductServiceController {
 
     @GetMapping("/{productNo}")
     public String getProductDetails(@PathVariable Long productNo, Model model,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes,
+                                    @PageableDefault Pageable pageable) {
 
         try {
             ProductDetailsResponseDto product = productService.getProduct(productNo);
             model.addAttribute("product", product);
+
+            PageResponse<ProductDetailsResponseDto> relationProductList =
+                productService.getProductList(
+                    String.format("/api/products/relation/%d?page=%d&size=%d",
+                        productNo, pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", relationProductList);
 
 
         } catch (ProductNotFoundException e) {
