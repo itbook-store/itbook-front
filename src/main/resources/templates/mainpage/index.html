@@ -7,6 +7,8 @@
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
+    <link href="/mainpage/css/floating-button.css" rel="stylesheet">
+    <link href="/mainpage/css/bubbler.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
 <body>
@@ -17,6 +19,10 @@
             <!--            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">-->
             <div class="fade-custom" th:each="product : ${newBookList}">
                 <span class="product-type-label">NEW</span>
+                <div>
+                    <i class="fa fa-id-card" aria-hidden="true"></i>
+                </div>
+
                 <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
                     <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal"
                         th:text="${product.productName}"></h1>
@@ -33,6 +39,27 @@
         <br>
 
     </div>
+    <div class="main-navigation-wrap">
+        <nav class="main-navigation" data-back-btn-text="Back">
+            <ul class="menu">
+                <li class="menu-item-has-children current-menu-item delay-0">
+                    <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i>More Options</a>
+                    <ul class="sub-menu">
+
+                        <li class="current-menu-item"><a href="#">Home Design Agency</a></li>
+                        <li><a href="#">Home Architecture</a></li>
+                        <li><a href="#">Home Photographer</a></li>
+                    </ul>
+                </li>
+                <li class="delay-1"><a href="#">Portfolio</a></li>
+                <li class="delay-2"><a href="#">Blog</a></li>
+                <li class="delay-3"><a href="#">About Us</a></li>
+                <li class="delay-4"><a href="#">Contacts</a></li>
+                <li class="delay-5"><a href="#">Elements</a></li>
+            </ul><!-- .menu -->
+        </nav><!-- .main-navigation -->
+    </div><!-- .main-navigation-wrap -->
+
 
     <!--    헤더 및 메인-->
 
@@ -108,7 +135,10 @@
         </div>
     </div>
     <script src="/mainpage/js/slider.js"></script>
+    <script src="/mainpage/js/floating-button.js"></script>
     <script src="/cart/js/cartAddProduct.js"></script>
+    <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>
+    <script type="text/javascript" src="/mainpage/js/script.js"></script>
 </div>
 
 </body>
