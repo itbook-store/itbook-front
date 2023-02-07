@@ -3,6 +3,11 @@ async function findMember() {
     let memberId = document.getElementById('receiveMemberId').value;
     let isExists = false;
 
+    if(memberId === document.getElementById('checkMemberId').value) {
+        alert("자신의 아이디는 입력할 수 없습니다.")
+        return false;
+    }
+
     const request = {
         method: "GET"
     };
@@ -49,6 +54,11 @@ function sendPoint() {
         return false;
     }
 
+    if(inputPoint === 0) {
+        alert("선물할 포인트를 입력해주세요.")
+        return false;
+    }
+
     if(!regExp.test(inputPoint)) {
         alert("유효한 포인트 값만 입력해야 합니다.")
         return false;
@@ -60,4 +70,8 @@ function sendPoint() {
     }
 
     document.getElementById('giftPointForm').submit();
+}
+
+function writePoint() {
+    document.getElementById("sendBtn").disabled = false;
 }
