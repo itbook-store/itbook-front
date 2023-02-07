@@ -19,10 +19,10 @@ import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
  * @since 1.0
  */
 public interface ProductService {
-    ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                 BookRequestDto requestDto);
+    Long addBook(MultipartFile thumbnails, MultipartFile ebook,
+                 BookRequestDto requestDto);
 
-    ProductNoResponseDto addProduct(MultipartFile thumbnails, ProductRequestDto requestDto);
+    Long addProduct(MultipartFile thumbnails, ProductRequestDto requestDto);
 
     PageResponse<ProductDetailsResponseDto> getProductList(String url);
 

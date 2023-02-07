@@ -31,14 +31,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductAdaptor productAdaptor;
 
     @Override
-    public ProductNoResponseDto addBook(MultipartFile thumbnails, MultipartFile ebook,
-                                        BookRequestDto requestDto) {
+    public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
+                        BookRequestDto requestDto) {
         return productAdaptor.addBook(thumbnails, ebook, requestDto);
     }
 
     @Override
-    public ProductNoResponseDto addProduct(MultipartFile thumbnails,
-                                           ProductRequestDto requestDto) {
+    public Long addProduct(MultipartFile thumbnails,
+                           ProductRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, requestDto);
     }
 

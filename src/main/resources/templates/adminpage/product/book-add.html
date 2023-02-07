@@ -33,13 +33,13 @@
 
     <div class="form">
         <form class="form-horizontal" id = "addBookForm" name="form" method="post" action="/admin/products/books/add"
-              enctype="multipart/form-data" modelattribute="requestDto">
+              enctype="multipart/form-data" modelattribute="requestDto" onSubmit="return addBookSubmit()">
             <div>
                 <div id="form-product">
                     <div class="row gx-3 mb-3">
                         <div class="col-md-9">
                             <label for="isbn">isbn</label>
-                            <input id="isbn" name="isbn" class="form-control input-md" type="text">
+                            <input id="isbn" name="isbn" class="form-control input-md" required="" type="text">
                         </div>
                         <div class="col-md-3">
                         <button type="button" class="btn btn-secondary" id="confirmBook" onclick="showSearchResults(event)">
@@ -77,15 +77,15 @@
                         <div class="col-md-6">
                             <label>상품 노출 여부 (판매 여부)</label>
                             <fieldset>
-                                YES <input type="radio" name="isSelled" value="true" checked/>
-                                NO <input type="radio" name="isSelled" value="false"/>
+                                YES <input type="radio" name="isSelled" required="" value="true" checked/>
+                                NO <input type="radio" name="isSelled" required="" value="false"/>
                             </fieldset>
                         </div>
                         <div class="col-md-6">
                             <label>강제 품절 설정 여부</label>
                             <fieldset>
-                                YES <input type="radio" name="isForceSoldOut" value="true"/>
-                                NO <input type="radio" name="isForceSoldOut" value="false" checked/>
+                                YES <input type="radio" name="isForceSoldOut" required="" value="true"/>
+                                NO <input type="radio" name="isForceSoldOut" required="" value="false" checked/>
                             </fieldset>
                         </div>
                     </div>
@@ -116,23 +116,21 @@
                             <label>포인트 적립 여부</label>
                             <fieldset>
                                 YES <input type="radio" name="isPointApplying" value="true"
-                                           onclick="selectPointApplying()" checked/>
-                                NO <input type="radio" name="isPointApplying" value="false"
+                                           onclick="selectPointApplying()" required="" checked/>
+                                NO <input type="radio" name="isPointApplying" required="" value="false"
                                           onclick="notSelectPointApplying()"/>
                             </fieldset>
                         </div>
                         <div class="col-md-3" id="increasingPoint-div">
                             <label for="increasePointPercent">포인트 적립율(%)</label>
                             <input id="increasePointPercent" name="increasePointPercent"
-                                   class="form-control input-md" required="" type="text">
+                                   class="form-control input-md" type="text">
                         </div>
                         <div class="col-md-6" id="increasingPointBase-div">
                             <label>포인트 적립 기준</label>
                             <fieldset>
-                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="true"
-                                              onclick="selectPointApplying()"/>
-                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="false"
-                                               onclick="notSelectPointApplying()"/>
+                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="true"/>
+                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="false"/>
                             </fieldset>
                         </div>
                     </div>
@@ -157,46 +155,46 @@
                         <div class="col-md-6">
                             <label>구독 상품 여부</label>
                             <fieldset>
-                                YES <input type="radio" name="isSubscription" value="true"/>
-                                NO <input type="radio" name="isSubscription" value="false"/>
+                                YES <input type="radio" required="" name="isSubscription" value="true"/>
+                                NO <input type="radio" required="" name="isSubscription" value="false"/>
                             </fieldset>
                         </div>
                     </div>
 
                     <div class="row gx-3 mb-3">
                         <label>썸네일 사진 선택</label>
-                        <input type="file" value="파일 선택" name="fileThumbnails" accept="image/*"/>
+                        <input type="file" value="파일 선택" required="" name="fileThumbnails" accept="image/*"/>
                     </div>
                 </div>
 
                 <div id="form-book">
                     <div class="row gx-3 mb-3">
                         <label for="pageCount">page 수</label>
-                        <input id="pageCount" name="pageCount" class="form-control input-md" type="text">
+                        <input id="pageCount" name="pageCount" required="" class="form-control input-md" type="text">
                     </div>
                     <div class="row gx-3 mb-3">
                         <label for="bookCreatedAt">발간일</label>
-                        <input type="date" id="bookCreatedAt" name="bookCreatedAt"
+                        <input type="date" id="bookCreatedAt" required="" name="bookCreatedAt"
                                class="form-control input-md">
                     </div>
                     <div class="row gx-3 mb-3">
                         <label>상품 분류</label>
                         <fieldset>
-                            전자책(e-book) <input type="radio" name="isEbook" value="true" onclick="selectEbook()"/>
-                            종이책 <input type="radio" name="isEbook" value="false" onclick="notSelectEbook()" checked/>
+                            전자책(e-book) <input type="radio" name="isEbook" value="true" required="" onclick="selectEbook()"/>
+                            종이책 <input type="radio" name="isEbook" value="false" required="" onclick="notSelectEbook()" checked/>
                         </fieldset>
                         <div class="form-group" id="selectEbook" style="display: none">
-                            <label class="col-md-4 control-label">ebook 등록</label>
+                            <p class="col-md-3 control-label">ebook 등록</p>
                             <input type="file" value="파일 선택" name="fileEbook" accept=".pdf"/>
                         </div>
                     </div>
                     <div class="row gx-3 mb-3">
                         <label for="publisherName">출판사</label>
-                        <input id="publisherName" name="publisherName" class="form-control input-md" type="text">
+                        <input id="publisherName" name="publisherName" required="" class="form-control input-md" type="text">
                     </div>
                     <div class="row gx-3 mb-3">
                         <label for="authorName">저자명</label>
-                        <input id="authorName" name="authorName" class="form-control input-md" type="text">
+                        <input id="authorName" name="authorName" required="" class="form-control input-md" type="text">
                     </div>
                 </div>
 

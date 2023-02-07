@@ -51,7 +51,6 @@ public class ProductRequestDto {
     @Max(value = 100, message = "적립율은 최대 100%입니다.")
     private Integer increasePointPercent;
 
-    @NotNull(message = "포인트 적립 기준은 반드시 선택되어야 합니다")
     private Boolean isPointApplyingBasedSellingPrice;
 
     @NotNull(message = "정가는 반드시 입력되어야 합니다.")

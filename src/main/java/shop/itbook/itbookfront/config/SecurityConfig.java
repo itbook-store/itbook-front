@@ -26,7 +26,7 @@ import shop.itbook.itbookfront.auth.util.AuthUtil;
  * @author 강명관
  * @since 1.0
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
     /**

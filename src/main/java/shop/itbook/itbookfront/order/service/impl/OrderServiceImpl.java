@@ -12,6 +12,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.response.OrderAddResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -43,7 +44,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addOrderOfMember(OrderAddRequestDto orderAddRequestDto, Long memberNo) {
+    public OrderAddResponseDto addOrderOfMember(OrderAddRequestDto orderAddRequestDto,
+                                                Long memberNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
@@ -55,6 +57,17 @@ public class OrderServiceImpl implements OrderService {
 
         HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
 
-        orderAdaptor.addOrderOfMember(uriComponents.toUri(), http);
+        return orderAdaptor.addOrderOfMember(uriComponents.toUri(), http);
+    }
+
+    @Override
+    public void completeOrderPayOfMember(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/orders/pay-completion/%d", orderNo))
+            .build();
+
+        orderAdaptor.completeOrderPayOfMember(uriComponents.toUri());
     }
 }
