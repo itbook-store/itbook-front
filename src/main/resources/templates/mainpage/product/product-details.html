@@ -37,7 +37,7 @@
                     <button class="btn btn-danger"
                             th:if="${product.isForceSoldOut == true or product.stock == 0}">
                         품절</button>
-                    <button class="btn btn-primary btn-rounded"
+                    <button class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}"
                     >구매하기</button>
                     <div class="col-lg-11 col-md-11 col-sm-10">
