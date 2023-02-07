@@ -7,8 +7,37 @@
                 <!--                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>-->
             </ul>
             <ul class="nav">
+
+                <div id="drop_down_with_links">
+                    <button id="trigger">
+                        <i class="fa-solid fa-cart-shopping" style="font-size: 20px; color: #222333; margin-right: 10px;"></i>
+                        <span class="user">장바구니</span>
+                    </button>
+
+                    <ul id="menu" class="closed">
+                        <li>
+                            <a href="/cart/general" class="link">
+                                <span>일반상품</span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="/cart/subscription" class="link">
+                                <span>구독상품</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <th:block th:if="${!#authentication.isAuthenticated()}">
                 <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
                 <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
+                </th:block>
+
+                <th:block th:if="${#authentication.isAuthenticated()}">
+                <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">마이페이지</a></li>
+                </th:block>
+
             </ul>
         </div>
     </nav>
