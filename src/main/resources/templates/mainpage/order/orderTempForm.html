@@ -22,10 +22,10 @@
         배송 완료 상태</br>
     - 취소</br>
         입금 이상으로 진행된 상태에서 고객이 취소한 상태. (환불)</br>
-    </p>ㅐ
+    </p>
   </div>
     <div>
-        <button th:onclick="|location.href='@{/orders/completion}'|">결제완료</button>
+        <button th:onclick="|location.href='@{/orders/completion/{orderNo}(orderNo=${orderDto.orderNo})}'|">결제완료</button>
     </div>
 </div>
 </body>

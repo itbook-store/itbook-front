@@ -6,7 +6,12 @@ async function checkMemberIdDuplicate() {
     if(!checkKor(memberId)) {
         return false;
     }
+
     blankCheck(memberId);
+
+    if(!checkMemberId(memberId)) {
+        return false;
+    }
 
     const request = {
         method: "GET"
@@ -35,6 +40,10 @@ async function checkNicknameDuplicate() {
     let isExists = false;
 
     blankCheck(nickname);
+
+    if(!checkNickname(nickname)) {
+        return false;
+    }
 
     const request = {
         method: "GET"
@@ -68,7 +77,7 @@ async function checkPhoneNumberDuplicate() {
 
     phoneNumber = phoneNumber.slice(0, 3) + "-" + phoneNumber.slice(3, 7) + "-" + phoneNumber.slice(7, 11);
 
-    if(!checkKorEng(phoneNumber)) {
+    if(!checkPhoneNumber(phoneNumber)) {
         return false;
     }
 
@@ -130,24 +139,6 @@ async function checkEmailDuplicate() {
     }
 }
 
-function blankCheck(str) {
-    //공백만 입력된 경우
-    let blank_pattern1 = /^\s+|\s+$/g;
-    if(str.replace(blank_pattern1, '' ) == "" ){
-        alert('공백만 입력되었습니다.');
-        document.getElementById(str).value = '';
-        return false;
-    }
-
-    //문자열에 공백이 있는 경우
-    let blank_pattern2 = /[\s]/g;
-    if( blank_pattern2.test(str) == true){
-        alert('공백이 입력되었습니다.');
-        document.getElementById(str).value = '';
-        return false;
-    }
-}
-
 function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
     document.getElementById(text).value = '';
     document.getElementById(text).readOnly = false;
@@ -158,6 +149,12 @@ function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
 }
 
 function signUpSubmit() {
+
+    if(!checkName()) {
+        alert("이름 형식에 맞지 않습니다.")
+        return false;
+    }
+
     if(!checkPassword(document.getElementById("password").value)) {
         alert("비밀번호 형식에 맞지 않습니다.");
         return false;
@@ -165,6 +162,16 @@ function signUpSubmit() {
 
     if(document.getElementById("password").value != document.getElementById("passwordCheck").value) {
         alert("비밀번호가 맞지 않습니다. 다시 한번 입력해주세요");
+        return false;
+    }
+
+    if(!checkGender()) {
+        alert("성별을 체크해야 합니다.");
+        return false;
+    }
+
+    if(!checkBirth()) {
+        alert("생일 입력 형식에 맞지 않습니다.");
         return false;
     }
 
@@ -187,6 +194,24 @@ function socialLoginSubmit() {
     }
 }
 
+function blankCheck(str) {
+    //공백만 입력된 경우
+    let blank_pattern1 = /^\s+|\s+$/g;
+    if(str.replace(blank_pattern1, '' ) == "" ){
+        alert('공백만 입력되었습니다.');
+        //document.getElementById(str).value = '';
+        //return false;
+    }
+
+    //문자열에 공백이 있는 경우
+    let blank_pattern2 = /[\s]/g;
+    if( blank_pattern2.test(str) == true){
+        alert('공백이 입력되었습니다.');
+        //document.getElementById(str).value = '';
+        //return false;
+    }
+}
+
 function checkKor(str) {
     const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
     if(regExp.test(str)){
@@ -196,19 +221,79 @@ function checkKor(str) {
     return true;
 }
 
-function checkKorEng(str) {
+function checkSpecial(str) {
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    if(regExp.test(str)) {
+        alert("특수문자가 입력되었습니다.");
+        return false;
+    }
+
+    return true;
+}
+
+function checkMemberId(str) {
+    const regExp = /^[a-z0-9-_]{2,15}$/;
+    if(!regExp.test(str)) {
+        alert("아이디 형식에 맞지 않습니다.");
+        return false;
+    }
+
+     return true;
+}
+
+function checkNickname(str) {
+    if(str.length < 2 || str.length > 20) {
+        alert("닉네임 형식에 맞지 않습니다.");
+        return false;
+    }
+
+    return true;
+}
+
+function checkName() {
+
+    let name = document.getElementById("name").value;
+
+    blankCheck(name);
+
+    if(!checkSpecial(name)) {
+        alert("이름에 특수문자가 입력되었습니다.");
+        return false;
+    }
+
+    if(name.length > 20) {
+        alert("이름은 최대 20자까지 허용합니다.")
+        return false;
+    }
+
+    return true;
+}
+
+function checkPhoneNumber(str) {
     const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/g;
-    if(regExp.test(str)){
+
+    if(regExp.test(str) || document.getElementById("phoneNumber").value.length != 11){
         alert("전화번호 형식으로 입력해야 합니다.");
         return false;
     }
     return true;
 }
 
-function checkSpecial(str) {
-    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
-    if(regExp.test(str)) {
-        alert("특수문자가 입력되었습니다.");
+function checkGender() {
+    let female = document.getElementById("femaleGender").checked;
+    let male = document.getElementById("maleGender").checked;
+
+    if(female === false && male === false) {
+        return false;
+    }
+
+    return true;
+}
+
+function checkBirth() {
+    let birth = document.getElementById("birth").value;
+
+    if(!birth instanceof Date || !isNaN(birth)) {
         return false;
     }
 

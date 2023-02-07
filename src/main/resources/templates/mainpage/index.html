@@ -7,6 +7,8 @@
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
+    <link href="/mainpage/css/floating-button.css" rel="stylesheet">
+    <link href="/mainpage/css/bubbler.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
 <body>
@@ -76,7 +78,18 @@
     </div>
     <script src="/mainpage/js/slider.js"></script>
     <script src="/cart/js/cartAddProduct.js"></script>
+    <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>
+    <script type="text/javascript" src="/mainpage/js/script.js"></script>
+    <script src="/cart/js/cartHeader.js"></script>
+
 </div>
+
+<script th:inline="javascript">
+    let bookmarkFailMessage = [[${bookmarkFailMessage}]];
+    if (bookmarkFailMessage) {
+        alert(bookmarkFailMessage);
+    }
+</script>
 
 </body>
 </html>

@@ -42,8 +42,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests()
             .antMatchers("/login").permitAll()
-            .antMatchers("/adminpage").hasAuthority("ADMIN")
-            .antMatchers("/mypage").authenticated()
+            .antMatchers("/adminpage/**").hasAuthority("ADMIN")
+            .antMatchers("/mypage/**").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf()

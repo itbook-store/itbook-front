@@ -14,7 +14,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="card" style="margin-top: 20px">
+    <div class="card" style="margin-top: 10px">
         <div class="card-body">
             <h2 class="card-title">[[${product.productName}]]</h2>
             <h6 class="card-subtitle">[[${product.simpleDescription}]]</h6>
@@ -75,6 +75,7 @@
                         품절</button>
                     <button class="btn btn-primary btn-rounded"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}"
+                            th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
                     >구매하기</button>
                 </div>
             </div>
