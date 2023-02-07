@@ -29,7 +29,7 @@ public class MemberRequestDto {
     @NotBlank(message = "멤버 상태 이름은 null값 및 공백을 허용하지 않습니다.")
     private String memberStatusName;
 
-    @Length(min = 2, max = 15, message = "아이디는 최소 2자부터 시작하며 최대 15자까지 작성해야합니다.")
+    @Pattern(regexp = "^[a-z0-9-_]{2,15}$", message = "아이디는 특수문자를 제외한 2 ~ 15자리여야 합니다.")
     @NotBlank(message = "아이디는 null값 및 공백을 허용하지 않습니다.")
     private String memberId;
 
@@ -47,8 +47,6 @@ public class MemberRequestDto {
     @NotNull(message = "생일은 null값을 허용하지 않습니다.")
     private LocalDateTime birth;
 
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,255}",
-        message = "비밀번호는 영문 대소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함되어야하고 길이는 8자 이상이어야 합니다.")
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")
     private String password;
 

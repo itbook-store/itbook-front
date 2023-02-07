@@ -4,6 +4,7 @@ import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,13 +25,12 @@ public class ControllerAdvisor {
     private static final String MESSAGE = "message";
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = {BadRequestException.class, ValidationException.class})
+    @ExceptionHandler(value = {BadRequestException.class, MethodArgumentNotValidException.class})
     public String badRequestException400(Exception e) {
         log.error("badRequestException400 {}", e);
         return "/error/400error";
     }
 
-//    @ExceptionHandler(value = {})
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = {MemberForbiddenException.class})
