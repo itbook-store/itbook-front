@@ -6,9 +6,15 @@ package shop.itbook.itbookfront.product.exception;
  */
 public class InvalidInputException extends RuntimeException {
 
-    public static final String MESSAGE = "유효하지 않은 입력값입니다. 입력 값을 다시 확인해주세요!";
+    public static final String MESSAGE = "입력된 값";
+
+    public InvalidInputException(String message) {
+        super(message);
+    }
 
     public InvalidInputException() {
         super(MESSAGE);
+
+
     }
 }

@@ -53,13 +53,11 @@ public class BookAdminController {
                           @RequestPart(value = "fileEbook", required = false)
                           MultipartFile ebook, RedirectAttributes redirectAttributes) {
 
-        if (BindException != null)
-
-            try {
-                productService.addBook(thumbnails, ebook, requestDto);
-            } catch (InvalidInputException e) {
-                redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            }
+        try {
+            productService.addBook(thumbnails, ebook, requestDto);
+        } catch (InvalidInputException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
         return PRODUCT_REDIRECT_URL;
     }
 

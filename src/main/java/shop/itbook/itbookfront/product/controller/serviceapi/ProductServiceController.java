@@ -61,7 +61,7 @@ public class ProductServiceController {
         model.addAttribute("categoryName", categoryName);
 
         model.addAttribute("paginationUrl",
-            String.format("/admin/products?categoryNo=%d&categoryName=%s", categoryNo,
+            String.format("/products?categoryNo=%d&categoryName=%s", categoryNo,
                 categoryName));
 
         return "mainpage/product/product-category";
@@ -99,7 +99,7 @@ public class ProductServiceController {
         model.addAttribute("productTypeName", productTypeName);
 
         model.addAttribute("paginationUrl",
-            String.format("/admin/products?productTypeNo=%d&productTypeName=%s", productTypeNo,
+            String.format("/products?productTypeNo=%d&productTypeName=%s", productTypeNo,
                 productTypeName));
 
         return "mainpage/product/product-producttype";
@@ -107,8 +107,7 @@ public class ProductServiceController {
 
     @GetMapping("/{productNo}")
     public String getProductDetails(@PathVariable Long productNo, Model model,
-                                    RedirectAttributes redirectAttributes,
-                                    @PageableDefault Pageable pageable) {
+                                    RedirectAttributes redirectAttributes) {
 
         try {
             ProductDetailsResponseDto product = productService.getProduct(productNo);

@@ -5,6 +5,28 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 
 <head>
+    <script th:inline="javascript">
+        $('.btn-toggle').click(function() {
+            $(this).find('.btn').toggleClass('active');
+
+            if ($(this).find('.btn-primary').size()>0) {
+                $(this).find('.btn').toggleClass('btn-primary');
+            }
+            if ($(this).find('.btn-danger').size()>0) {
+                $(this).find('.btn').toggleClass('btn-danger');
+            }
+            if ($(this).find('.btn-success').size()>0) {
+                $(this).find('.btn').toggleClass('btn-success');
+            }
+            if ($(this).find('.btn-info').size()>0) {
+                $(this).find('.btn').toggleClass('btn-info');
+            }
+
+            $(this).find('.btn').toggleClass('btn-default');
+
+        });
+    </script>
+
     <meta charset="UTF-8">
     <title>상품</title>
 </head>
@@ -25,7 +47,7 @@
                 <th scope="col">상품명</th>
                 <th scope="col">정가</th>
                 <th scope="col">판매가</th>
-                <th scope="col">수정</th>
+<!--                <th scope="col">수정</th>-->
                 <th scope="col">삭제</th>
             </tr>
             <tr th:if="${not #lists.isEmpty(pageResponse)}" th:each="product : ${pageResponse.content}"
@@ -34,18 +56,24 @@
                 <td>[[ ${product.productName} ]]</td>
                 <td>[[ ${product.fixedPrice} ]]</td>
                 <td>[[ ${product.selledPrice} ]]</td>
+<!--                <td>-->
+<!--                    <a th:href="@{|/admin/products/${product.productNo}/modify|}">-->
+<!--                        <button style="width: auto;" class="btn btn-primary ml-1">수정-->
+<!--                        </button>-->
+<!--                    </a>-->
+<!--                </td>-->
                 <td>
-                    <a th:href="@{|/admin/products/${product.productNo}/modify|}">
-                        <button style="width: auto;" class="btn btn-primary ml-1">수정
-                        </button>
-                    </a>
-                </td>
-                <td>
-                    <a th:href="@{|/admin/products/${product.productNo}/delete|}">
-                        <button style="width: auto" class="btn btn-danger ml-1">
-                            삭제
-                        </button>
-                    </a>
+                    <div class=" bootstrap snippets bootdey">
+                        <div class="btn-group btn-toggle">
+                            <button class="btn btn-xs btn-success">Y</button>
+                            <button class="btn btn-xs btn-danger active">N</button>
+                        </div></div>
+
+<!--                    <a th:href="@{|/admin/products/${product.productNo}/delete|}">-->
+<!--                        <button style="width: auto" class="btn btn-danger ml-1">-->
+<!--                            삭제-->
+<!--                        </button>-->
+<!--                    </a>-->
 
                 </td>
             </tr>
