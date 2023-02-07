@@ -25,6 +25,7 @@ import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
 
@@ -53,6 +54,10 @@ public class ProductServiceController {
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        model.addAttribute("productTypeList", productTypeList);
+
         PageResponse<ProductDetailsResponseDto> productList =
             productService.getProductList(
                 String.format("/api/admin/products?page=%d&size=%d&categoryNo=%d",
@@ -80,6 +85,10 @@ public class ProductServiceController {
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(pageResponse.getContent());
         model.addAttribute("mainCategoryList", mainCategoryList);
+
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        model.addAttribute("productTypeList", productTypeList);
 
         if (Optional.ofNullable(userDetailsDto).isPresent()) {
             Long memberNo = userDetailsDto.getMemberNo();
@@ -111,6 +120,17 @@ public class ProductServiceController {
                                     RedirectAttributes redirectAttributes,
                                     @PageableDefault Pageable pageable) {
 
+        PageResponse<CategoryListResponseDto> pageResponse =
+            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
+                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+        model.addAttribute("mainCategoryList", mainCategoryList);
+
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        model.addAttribute("productTypeList", productTypeList);
+
         try {
             ProductDetailsResponseDto product = productService.getProduct(productNo);
             model.addAttribute("product", product);
@@ -125,7 +145,6 @@ public class ProductServiceController {
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
-
 
         return "mainpage/product/product-details";
     }
