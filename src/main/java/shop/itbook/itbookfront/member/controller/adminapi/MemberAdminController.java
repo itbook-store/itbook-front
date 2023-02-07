@@ -135,13 +135,10 @@ public class MemberAdminController {
         PageResponse<MemberAdminResponseDto> pageResponse;
 
         if (memberSearchRequestDto.getSearchRequirement().equals("dateOfJoining")) {
-
             pageResponse =
                 memberAdminService.findMemberByDateOfJoining(memberSearchRequestDto, "정상회원",
                     String.format("?page=%d&size=%d", pageable.getPageNumber(),
                         pageable.getPageSize()));
-
-
         } else {
             pageResponse =
                 memberAdminService.findMembersBySearch(
@@ -161,39 +158,58 @@ public class MemberAdminController {
     }
 
     @GetMapping("withdraw/search")
-    public String withdrawMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
-                                       @RequestParam("searchWord") String searchWord,
+    public String withdrawMemberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                        Model model, @PageableDefault Pageable pageable) {
 
-        PageResponse<MemberAdminResponseDto> memberList =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "탈퇴회원",
-                String.format("?page=%d&size=%d", pageable.getPageNumber(),
-                    pageable.getPageSize()));
+        PageResponse<MemberAdminResponseDto> pageResponse;
 
-        model.addAttribute("pageResponse", memberList);
+        if (memberSearchRequestDto.getSearchRequirement().equals("dateOfJoining")) {
+            pageResponse =
+                memberAdminService.findMemberByDateOfJoining(memberSearchRequestDto, "탈퇴회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+        } else {
+            pageResponse =
+                memberAdminService.findMembersBySearch(
+                    memberSearchRequestDto.getSearchRequirement(),
+                    memberSearchRequestDto.getSearchWord(), "탈퇴회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+        }
+
+        model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            "/admin/members/withdraw/search?searchRequirement=" + searchRequirement +
-                "&searchWord=" + searchWord);
+            "/admin/members/withdraw/search?searchRequirement=" + memberSearchRequestDto.getSearchRequirement() +
+                "&searchWord=" + memberSearchRequestDto.getSearchWord());
 
 
         return "adminpage/member/admin-member-withdraw-list";
     }
 
     @GetMapping("block/search")
-    public String blockMemberSearch(@RequestParam("searchRequirement") String searchRequirement,
-                                    @RequestParam("searchWord") String searchWord,
+    public String blockMemberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                     Model model, @PageableDefault Pageable pageable) {
 
-        PageResponse<MemberAdminResponseDto> memberList =
-            memberAdminService.findMembersBySearch(searchRequirement, searchWord, "차단회원",
-                String.format("?page=%d&size=%d", pageable.getPageNumber(),
-                    pageable.getPageSize()));
+        PageResponse<MemberAdminResponseDto> pageResponse;
 
-        model.addAttribute("pageResponse", memberList);
+        if (memberSearchRequestDto.getSearchRequirement().equals("dateOfJoining")) {
+            pageResponse =
+                memberAdminService.findMemberByDateOfJoining(memberSearchRequestDto, "차단회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+        } else {
+            pageResponse =
+                memberAdminService.findMembersBySearch(
+                    memberSearchRequestDto.getSearchRequirement(),
+                    memberSearchRequestDto.getSearchWord(), "차단회원",
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()));
+        }
+
+        model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            "/admin/members/block/search?searchRequirement=" + searchRequirement + "&searchWord=" +
-                searchWord);
-
+            "/admin/members/block/search?searchRequirement=" + memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
+                memberSearchRequestDto.getSearchWord());
 
         return "adminpage/member/admin-member-block-list";
     }
