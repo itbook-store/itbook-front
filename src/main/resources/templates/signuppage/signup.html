@@ -33,9 +33,10 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">아이디</label>
-                    <input type="text" class="form-control form-control-lg" id = "memberId" name="memberId" />
+                    <input type="text" class="form-control form-control-lg" id = "memberId" name="memberId" aria-describedby="memberIdHelp" />
+                    <div id="memberIdHelp" class="form-text">아이디는 특수문자를 제외한 2 ~ 15자리여야 합니다</div><br/>
+                    <button type="button" class="btn btn-light" onclick="checkMemberIdDuplicate()" id = "memberIdCheckBtn">중복 확인</button>
                     <span th:text="${valid_memberId}" style="color: red"></span>
-                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkMemberIdDuplicate()" id = "memberIdCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')" id = "memberIdRetypeBtn" style="visibility:hidden; margin-top: 10px">다시 입력</button>
                     <div id = "memberIdNotExists" style = "display:none;">등록 가능한 아이디입니다.</div>
                     <div id = "memberIdExists" style = "display:none;">이미 존재하는 아이디입니다.</div>
@@ -43,9 +44,10 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">닉네임</label>
-                    <input type="text" class="form-control form-control-lg" id = "nickname" name="nickname" />
+                    <input type="text" class="form-control form-control-lg" id = "nickname" name="nickname" aria-describedby="nicknameHelp"/>
+                    <div id="nicknameHelp" class="form-text">닉네임은 최소 2자, 최대 20자까지 허용합니다</div><br/>
+                    <button type="button" class="btn btn-light" onclick="checkNicknameDuplicate()" id = "nicknameCheckBtn">중복 확인</button>
                     <span th:text="${valid_nickname}" style="color: red"></span>
-                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkNicknameDuplicate()" id = "nicknameCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('nickname', 'nicknameExists', 'nicknameNotExists', 'nicknameCheckBtn', 'nicknameRetypeBtn')" id = "nicknameRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                     <div id = "nicknameNotExists" style = "display:none;">등록 가능한 닉네임입니다.</div>
                     <div id = "nicknameExists" style = "display:none;">이미 존재하는 닉네임입니다.</div>
@@ -53,7 +55,8 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">이름</label>
-                    <input type="text" class="form-control form-control-lg" name="name" />
+                    <input type="text" class="form-control form-control-lg" id="name" name="name" aria-describedby="nameHelp" />
+                    <div id="nameHelp" class="form-text">이름은 최대 20자까지 허용합니다</div><br/>
                     <span th:text="${valid_name}" style="color: red"></span>
                   </div>
 
@@ -72,9 +75,10 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label">핸드폰번호(-미포함)</label>
-                    <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="01000000000" name="phoneNumber" />
+                    <input type="text" class="form-control form-control-lg" id = "phoneNumber" placeholder="01000000000" name="phoneNumber" aria-describedby="phoneNumberHelp" />
+                    <div id="phoneNumberHelp" class="form-text">전화번호 형식에 맞춰 입력해주세요. 숫자만 입력할 수 있습니다</div><br/>
+                    <button type="button" class="btn btn-light" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
                     <span th:text="${valid_phoneNumber}" style="color: red"></span>
-                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('phoneNumber', 'phoneNumberExists', 'phoneNumberNotExists', 'phoneNumberCheckBtn', 'phoneNumberRetypeBtn')" id = "phoneNumberRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                     <div id = "phoneNumberNotExists" style = "display:none;">등록 가능한 핸드폰 번호입니다.</div>
                     <div id = "phoneNumberExists" style = "display:none;">이미 존재하는 핸드폰 번호입니다.</div>
@@ -87,13 +91,13 @@
                     <div class="form-check form-check-inline mb-0 me-4">
                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
                              value="false" th:field="${memberInputRequestDto.isMan}" checked/>
-                      <label class="form-check-label" for="femaleGender">Female</label>
+                      <label class="form-check-label" for="femaleGender">여성</label>
                     </div>
 
                     <div class="form-check form-check-inline mb-0 me-4">
                       <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
                              value="true" th:field="${memberInputRequestDto.isMan}" />
-                      <label class="form-check-label" for="maleGender">Male</label>
+                      <label class="form-check-label" for="maleGender">남성</label>
                     </div>
 
                   </div>
@@ -101,14 +105,15 @@
                   <div class="form-outline mb-4">
                     <label class="form-label">생년월일</label>
                     <span th:text="${valid_birth}" style="color: red"></span>
-                    <input type="date" class="form-control form-control-lg" name="birth" />
+                    <input type="date" class="form-control form-control-lg" id="birth" name="birth" />
                   </div>
 
                   <div class="form-outline mb-4">
                     <label class="form-label">이메일</label>
-                    <input type="email" class="form-control form-control-lg" id = "email" name="email" />
+                    <input type="email" class="form-control form-control-lg" id = "email" name="email" aria-describedby="emailHelp" />
+                    <div id="emailHelp" class="form-text">이메일 형식을 갖춰야 합니다</div><br/>
+                    <button type="button" class="btn btn-light" onclick="checkEmailDuplicate()" id = "emailCheckBtn">중복 확인</button>
                     <span th:text="${valid_email}" style="color: red"></span>
-                    <button type="button" class="btn btn-light" style="margin-top: 10px" onclick="checkEmailDuplicate()" id = "emailCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('email', 'emailExists', 'emailNotExists', 'emailCheckBtn', 'emailRetypeBtn')" id = "emailRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                     <div id = "emailNotExists" style = "display:none;">등록 가능한 이메일입니다.</div>
                     <div id = "emailExists" style = "display:none;">이미 존재하는 이메일입니다.</div>
