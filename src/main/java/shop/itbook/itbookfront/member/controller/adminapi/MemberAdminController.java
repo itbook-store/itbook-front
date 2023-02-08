@@ -128,7 +128,7 @@ public class MemberAdminController {
         return "redirect:/admin/members";
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public String memberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                Model model, @PageableDefault Pageable pageable) {
 
