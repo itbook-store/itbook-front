@@ -200,4 +200,30 @@ select:focus-visible {
     border-radius: 4px;
 }
 
+.bookmark .product_isSelled {
+    font-size: 15px;
+}
+
+.bookmark .product_author, .bookmark .product_publisher_name{
+    text-align: left;
+    font-size: 12px;
+    color: #777777;
+}
+
+.bookmark .bookmark_paging {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark .bookmark_paging span{
+    margin: 0 5px;
+}
+
+.bookmark .bookmark_href_btn_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
 

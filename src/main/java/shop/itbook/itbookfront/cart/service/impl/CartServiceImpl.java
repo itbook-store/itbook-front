@@ -94,7 +94,6 @@ public class CartServiceImpl implements CartService {
         Set<Integer> productNoSet = redisTemplate.opsForSet().members(cookieValue);
 
         if (Objects.nonNull(productNoSet)) {
-            log.info("비회원 전체 삭제 됨");
             productNoSet.forEach(o -> redisTemplate.opsForSet().remove(cookieValue, o));
 
         }

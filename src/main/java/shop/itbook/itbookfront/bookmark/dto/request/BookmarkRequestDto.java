@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
+ * 즐겨찾기 요청에 대한 DTO 클래스 입니다.
+ *
  * @author 강명관
  * @since 1.0
  */

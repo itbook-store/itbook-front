@@ -38,14 +38,14 @@ public class CartController {
 
     @GetMapping("/general")
     public String getCartListGeneralProduct(@AuthenticationPrincipal Object principal,
-                              @CookieValue(value = COOKIE_NAME) Cookie cookie,
-                              Model model) {
+                                            @CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                            Model model) {
 
         if (principal instanceof UserDetailsDto) {
             UserDetailsDto userDetailsDto = (UserDetailsDto) principal;
             List<CartProductDetailsResponseDto> cartListMember = cartService.getCartListMember(
-                new CartMemberNoRequestDto(userDetailsDto.getMemberNo())
-            ).stream()
+                    new CartMemberNoRequestDto(userDetailsDto.getMemberNo())
+                ).stream()
                 .filter(dto -> !dto.getProductDetailsResponseDto().getIsSubscription())
                 .collect(Collectors.toList());
 
@@ -66,14 +66,14 @@ public class CartController {
 
     @GetMapping("/subscription")
     public String getCartListSubscriptionProduct(@AuthenticationPrincipal Object principal,
-                              @CookieValue(value = COOKIE_NAME) Cookie cookie,
-                              Model model) {
+                                                 @CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                                 Model model) {
 
         if (principal instanceof UserDetailsDto) {
             UserDetailsDto userDetailsDto = (UserDetailsDto) principal;
             List<CartProductDetailsResponseDto> cartListMember = cartService.getCartListMember(
-                new CartMemberNoRequestDto(userDetailsDto.getMemberNo())
-            ).stream()
+                    new CartMemberNoRequestDto(userDetailsDto.getMemberNo())
+                ).stream()
                 .filter(dto -> dto.getProductDetailsResponseDto().getIsSubscription())
                 .collect(Collectors.toList());
 
