@@ -69,16 +69,19 @@ public class CouponAdminController {
 
     @GetMapping
     public String couponList(Model model, @RequestParam(required = false) String coverage,
-                             @PageableDefault Pageable pageable)
-        throws InvalidPathRequestCouponList {
+                             @PageableDefault Pageable pageable) throws InvalidPathRequestCouponList {
+
         PageResponse<CouponListResponseDto> couponList = null;
         if(Objects.isNull(coverage)) {
             couponList =
                 couponService.findCouponList(
                     String.format("/api/admin/coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", couponList);
+            model.addAttribute("paginationUrl", "/admin/coupons");
+            return Strings.concat(DIRECTORY_NAME, "/couponList");
         }
-        else if(coverage.equals("카테고리쿠폰")){
+        else if(coverage.equals("category")){
             couponList =
                 couponService.findCouponList(
                     String.format("/api/admin/category-coupons?page=%d&size=%d",
@@ -89,7 +92,7 @@ public class CouponAdminController {
         }
         model.addAttribute("pageResponse", couponList);
         model.addAttribute("paginationUrl",
-            String.format("/admin/products?coverage=%s", coverage));
+            String.format("/admin/coupons?coverage=%s", coverage));
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 

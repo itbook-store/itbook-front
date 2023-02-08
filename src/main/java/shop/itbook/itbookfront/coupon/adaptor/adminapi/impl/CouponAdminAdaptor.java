@@ -28,6 +28,8 @@ public class CouponAdminAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
+    private static final String BASE_API_URL = "/api/admin/coupons";
+    private static final String CATEGORY_COUPON_API_URL = "/api/admin/category-coupons";
 
     public Long addCoupon(CouponInputRequestDto couponInputRequestDto){
         HttpHeaders headers = new HttpHeaders();
@@ -36,7 +38,7 @@ public class CouponAdminAdaptor {
         HttpEntity<CouponInputRequestDto> httpEntity = new HttpEntity<>(couponInputRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
-            = restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/coupons",
+            = restTemplate.exchange(gatewayConfig.getGatewayServer() + BASE_API_URL,
             HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){
 
             });

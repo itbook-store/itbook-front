@@ -20,50 +20,6 @@
 
                     <h3>쿠폰 생성</h3>
                     <div class="border-top my-3"></div>
-                    <div>
-                        <h4>쿠폰 발급</h4>
-                        <div class="border-top my-3"></div>
-                        <div class="form-group">
-                            <label for='selectCoupon'>쿠폰 종류</label>
-                            <select id='selectCoupon' th:field="${couponInputRequestDto.couponType}" onchange="selectCouponDiv(this)">
-                                <option value="">쿠폰의 종류를 선택해주세요.</option>
-                                <option value="일반쿠폰">일반쿠폰</option>
-                                <option value="웰컴쿠폰">웰컴 쿠폰</option>
-                                <option value="이달의쿠폰예약형">이달의 쿠폰 -예약형-</option>
-                                <option value="이달의쿠폰등급형">이달의 쿠폰 -등급형-</option>
-                                <option value="생일쿠폰">생일 쿠폰</option>
-                            </select>
-                        </div>
-                        <div class="alert alert-light">
-                            <div id="normalCouponDiv" style="display:none;">
-                                일반쿠폰
-                                <input type="text" class="form-control form-control-lg" id="memberId"
-                                       th:field="${couponInputRequestDto.userId}"/>
-                                <button type="button" onclick="checkMemberId()" id="memberIdCheckBtn">아이디 확인</button>
-                                <button type="button"
-                                        onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')"
-                                        id="memberIdRetypeBtn" style="visibility:hidden;">다시 입력
-                                </button>
-                                <div id="memberIdNotExists" style="display:none;">존재하지 않는 아이디입니다.</div>
-                                <div id="memberIdExists" style="display:none;">존재하는 아이디입니다.</div>
-                            </div>
-                        </div>
-                        <div class="alert alert-light">
-                            <div id="membershipMonthlyCouponDiv" style="display:none;">
-                                이달의 쿠폰 -등급형-
-                                <label for='selectMembership'>쿠폰 종류</label>
-<!--                                <select id='selectMembership' th:field="${couponInputRequestDto.membershipGrade}" onchange="selectMembershipDiv(this)">-->
-                                <select id='selectMembership'>
-                                    <option value="">쿠폰의 종류를 선택해주세요.</option>
-                                    <option value="일반쿠폰">일반</option>
-                                    <option value="웰컴쿠폰">실버</option>
-                                    <option value="이달의쿠폰예약형">골드</option>
-                                    <option value="이달의쿠폰등급형">플레티넘</option>
-                                    <option value="생일쿠폰">다이아</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
 
                     <div>

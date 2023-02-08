@@ -47,7 +47,7 @@ public class CouponInputRequestDto {
     @Positive(message = "최대 할인금액이 음수거나 0원일수는 없습니다.")
     private Long maxDiscountAmount;
 
-    @NotNull(message = "쿠폰 생성 가능 일을 입력해주세요.")
+    @NotNull(message = "쿠폰 생성 가능일을 입력해주세요.")
     private String couponCreatedAt;
 
     @NotNull(message = "쿠폰 정책의 만료일을 입력해주세요.")
@@ -55,10 +55,9 @@ public class CouponInputRequestDto {
 
     private String image;
 
-    @Positive(message = "쿠폰 발급수량이 음수 일 수는 없습니다.")
+    @PositiveOrZero(message = "쿠폰 발급수량이 음수 일 수는 없습니다.")
     private Long totalQuantity;
 
-//    @NotNull(message = "")
     private boolean isDuplicateUse;
 
 }
