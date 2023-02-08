@@ -66,26 +66,38 @@
                         </div>
                     </td>
                     <td>
-                        <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
-                            <p class="product_isSelled badge bg-danger">품절</p>
+                        <th:block th:if="${!dto.productDetailsResponseDto.isSelled}">
+                            <p class="product_isSelled badge bg-danger">판매중단</p>
                         </th:block>
 
-                        <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
-                            <p class="product_isSelled badge bg-success">재고있음</p>
+                        <th:block th:unless="${!dto.productDetailsResponseDto.isSelled}">
+                            <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                                <p class="product_isSelled badge bg-danger">품절</p>
+                            </th:block>
+
+                            <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                                <p class="product_isSelled badge bg-success">재고있음</p>
+                            </th:block>
                         </th:block>
                     </td>
                     <td>
                         <p class="bookmark_created_at" th:text="${#temporals.format(dto.bookmarkCreateAt, 'yyyy-MM-dd mm:ss')}"></p>
                     </td>
                     <td>
-                        <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
-                            <button class="btn btn-info" style="width: 114px">재입고 알림</button>
+                        <th:block th:if="${!dto.productDetailsResponseDto.isSelled}">
+                            <button class="btn btn-danger" style="width: 114px">판매중단</button>
                         </th:block>
 
-                        <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
-                            <button class="btn btn-primary" style="width: 114px"
-                                    th:attr="productNo=${dto.productDetailsResponseDto.productNo}"
-                                    th:onclick="addProduct(this.getAttribute('productNo'))">장바구니 담기</button>
+                        <th:block th:unless="${!dto.productDetailsResponseDto.isSelled}">
+                            <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                                <button class="btn btn-info" style="width: 114px">재입고 알림</button>
+                            </th:block>
+
+                            <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                                <button class="btn btn-primary" style="width: 114px"
+                                        th:attr="productNo=${dto.productDetailsResponseDto.productNo}"
+                                        th:onclick="addProduct(this.getAttribute('productNo'))">장바구니 담기</button>
+                            </th:block>
                         </th:block>
                     </td>
 
