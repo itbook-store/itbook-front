@@ -7,7 +7,7 @@
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
-    <link href="/mainpage/css/floating-button.css" rel="stylesheet">
+<!--    <link href="/mainpage/css/floating-button.css" rel="stylesheet">-->
     <link href="/mainpage/css/bubbler.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
@@ -50,7 +50,17 @@
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <th:block sec:authorize="isAnonymous()">
+                        <li><a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a>
+                            </li>
+                        </th:block>
+
                         <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
                             <a><i class="fa fa-shopping-cart"></i></a>
                         </li>
@@ -80,7 +90,8 @@
     <script src="/cart/js/cartAddProduct.js"></script>
     <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>
     <script type="text/javascript" src="/mainpage/js/script.js"></script>
-    <script src="/cart/js/cartHeader.js"></script>
+<!--    <script src="/cart/js/cartHeader.js"></script>-->
+    <script src="/bookmark/js/bookmarkAdd.js"></script>
 
 </div>
 

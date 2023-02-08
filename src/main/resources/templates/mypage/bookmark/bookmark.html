@@ -18,9 +18,7 @@
         <h1>즐겨찾기</h1>
     </div>
 
-    <h1 th:text="${pageResponse}"></h1>
-
-    <div class="cart" style="margin-bottom: 300px">
+    <div class="cart bookmark" style="margin-bottom: 300px">
 
         <div class="table-responsive">
             <table class="table table-hover table-md align-middle">
@@ -31,61 +29,92 @@
                     <th style="min-width: 150px;">판매가</th>
                     <th style="">품절여부</th>
                     <th style="min-width: 200px;">등록일</th>
+                    <th></th>
                 </tr>
 
                 </thead>
                 <tbody class="table_body" id="general_product">
-                <!-- 회원 일반상품 장바구니 테이블 -->
-<!--                <th:block sec:authorize="isAuthenticated()">-->
-<!--                <th:block th:if="${not #lists.isEmpty(cartList)}">-->
-<!--                <tr class="table_line" th:each="dto : ${cartList}">-->
-<!--                    <td>-->
-<!--                        <div style="display: flex; align-items: center; justify-content: center">-->
-<!--                            <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"-->
-<!--                                    title="Remove item" th:attr="productNo=${dto.productDetailsResponseDto.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">-->
-<!--                                <i class="fas fa-trash"></i>-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="product_titleBox">-->
-<!--                            <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">-->
-<!--                                <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >-->
-<!--                                <div>-->
-<!--                                    <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>-->
-<!--                                    <p class="product_author"></p>-->
-<!--                                    <p class="product_publisher_name"></p>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="product_priceBox">-->
-<!--                            <p class="fixed_price" th:text="${dto.productDetailsResponseDto.fixedPrice}"></p>-->
-<!--                            <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <p class="product_isSelled" th:text="${dto.productDetailsResponseDto.stock}"></p>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <p class="bookmark_created_at"></p>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <button class="btn btn-primary">Add Cart</button>-->
-<!--                    </td>-->
+                <tr class="table_line" th:each="dto : ${pageResponse.content}">
+                    <td>
+                        <div style="display: flex; align-items: center; justify-content: center">
+                            <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                    title="Remove item"
+                                    th:attr="productNo=${dto.productDetailsResponseDto.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                    th:onclick="bookmarkDelete(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product_titleBox">
+                            <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
+                                <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
 
-<!--                </tr>-->
-<!--                </th:block>-->
-<!--                </th:block>-->
+                                <div>
+
+                                    <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
+                                    <p class="product_author" th:text="${dto.productDetailsResponseDto.authorName}"></p>
+                                    <p class="product_publisher_name" th:text="${dto.productDetailsResponseDto.publisherName}"></p>
+                                </div>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product_priceBox">
+                            <p class="fixed_price" th:text="${dto.productDetailsResponseDto.fixedPrice}"></p>
+                            <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
+                        </div>
+                    </td>
+                    <td>
+                        <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                            <p class="product_isSelled badge bg-danger">품절</p>
+                        </th:block>
+
+                        <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                            <p class="product_isSelled badge bg-success">재고있음</p>
+                        </th:block>
+                    </td>
+                    <td>
+                        <p class="bookmark_created_at" th:text="${#temporals.format(dto.bookmarkCreateAt, 'yyyy-MM-dd mm:ss')}"></p>
+                    </td>
+                    <td>
+                        <th:block th:if="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                            <button class="btn btn-info" style="width: 114px">재입고 알림</button>
+                        </th:block>
+
+                        <th:block th:unless="${dto.productDetailsResponseDto.isForceSoldOut || dto.productDetailsResponseDto.stock == 0}">
+                            <button class="btn btn-primary" style="width: 114px"
+                                    th:attr="productNo=${dto.productDetailsResponseDto.productNo}"
+                                    th:onclick="addProduct(this.getAttribute('productNo'))">장바구니 담기</button>
+                        </th:block>
+                    </td>
+
+                </tr>
 
                 </tbody>
             </table>
         </div>
 
+        <div class="bookmark_paging">
+        <th:block th:include="component/pageFooter"></th:block>
+        </div>
+
+        <div class="bookmark_href_btn_box">
+            <div>
+                <button class="all_delete_btn btn btn-danger"
+                        th:attr="memberNo=${#authentication.principal.memberNo}"
+                        onclick="bookmarkDeleteAll(this.getAttribute('memberNo'))">전체삭제</button>
+            </div>
+
+            <div>
+                <button class="go_shopping btn btn-success" onclick="location.href='/cart/general'">장바구니 가기</button>
+            </div>
+        </div>
 
     </div>
 
+    <script src="/bookmark/js/bookmarkForm.js"></script>
+    <script src="/cart/js/cartAddProduct.js"></script>
 </div>
 
 </body>

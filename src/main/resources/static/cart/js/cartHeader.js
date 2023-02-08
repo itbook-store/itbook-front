@@ -8,7 +8,6 @@ function openCloseMenu() {
     menu.classList.toggle('closed');
 }
 
-
 document.addEventListener('click', closeOnClickOutside);
 
 function closeOnClickOutside(e) {
@@ -16,7 +15,6 @@ function closeOnClickOutside(e) {
         menu.classList.add('closed');
     }
 }
-
 
 document.addEventListener('keydown', closeOnEscape);
 
