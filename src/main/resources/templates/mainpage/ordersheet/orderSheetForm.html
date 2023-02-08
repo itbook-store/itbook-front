@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>주문 페이지</title>
 
+    <script src="/payment/js/payment.js"></script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
     <link rel="stylesheet" href="/mainpage/css/orderSheet.css">
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
 
@@ -14,7 +17,7 @@
 
 <div layout:fragment="content">
     <div class="order-title"><b>주 문</b> 하 기</div>
-    <form id="orderForm" th:action="@{/orders/temp}"
+    <form id="orderForm" th:action="@{/payment/paymentWidget}"
           class="product-info" method="post" th:object="${orderAddRequestDto}">
         <div class="product-box">
             <div class="box-title table">주문 상품 정보</div>
@@ -121,11 +124,27 @@
             </div>
             <br>
         </div>
+
+        <input type="text" value="asdlkasdjfji12093_2i3" name="orderId">
+        <input type="text" value = "제발제발" name="orderName">
+        <input type="text" th:value = 30000 name="amount">
+
+        <button class="btn btn-info" type="button" onclick="doPaymentProcessByCard()">
+            카드 결제
+        </button>
+<!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
+<!--            가상계좌 결제-->
+<!--        </button>-->
         <!--    all box end-->
         <input type="submit" value="결제하기">
     </form>
     <!--            <button th:onclick="|location.href='@{/orders/temp}'|">결제하기</button>-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+    <script th:inline="javascript">
+
+    </script>
 
     <script>
         let currentDate = new Date;
