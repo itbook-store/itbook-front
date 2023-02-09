@@ -16,7 +16,6 @@ import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
-import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 import shop.itbook.itbookfront.payment.service.PaymentService;
 
 /**

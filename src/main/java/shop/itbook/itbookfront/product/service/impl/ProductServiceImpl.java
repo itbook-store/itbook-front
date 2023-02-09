@@ -1,7 +1,11 @@
 package shop.itbook.itbookfront.product.service.impl;
 
+import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
+import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
@@ -12,7 +16,6 @@ import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
@@ -29,6 +32,7 @@ import shop.itbook.itbookfront.product.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
+    private final Integer MAIN_EXPOSED_LIMIT_NUM = 6;
 
     @Override
     public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
@@ -93,6 +97,46 @@ public class ProductServiceImpl implements ProductService {
     public ProductBooleanResponseDto checkIsbnExists(String url) {
 
         return productAdaptor.isbnExists(url);
+    }
+
+    @Override
+    @Cacheable(value = "newBooks")
+    public List<ProductDetailsResponseDto> getNewBooks() {
+        return this.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 1)).getContent();
+    }
+
+    @Override
+    @Cacheable(value = "discountBooks")
+    public List<ProductDetailsResponseDto> getdiscountBooks() {
+        return this.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 2)).getContent();
+    }
+
+    @Override
+    @Cacheable(value = "bestSeller")
+    public List<ProductDetailsResponseDto> getBestSellers() {
+        return this.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 3)).getContent();
+    }
+
+    @Override
+    @Cacheable(value = "recommendations")
+    public List<ProductDetailsResponseDto> getRecommendations() {
+        return this.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 4)).getContent();
+    }
+
+    @Override
+    @Cacheable(value = "popularBooks")
+    public List<ProductDetailsResponseDto> getPopularBooks() {
+        return this.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 5)).getContent();
     }
 
 }

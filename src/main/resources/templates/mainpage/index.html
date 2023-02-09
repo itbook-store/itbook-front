@@ -40,6 +40,70 @@
 
     <div class="main" style="margin-inline: 10%;">
 
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(newBooks)}">
+            <h2 style="text-align: left">신간 도서 </h2>
+            <hr>
+            <div class="col-md-2" th:each="product : ${newBooks}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBooks)}">
+            <h2 style="text-align: left"> 할인 도서 </h2>
+            <hr>
+            <div class="col-md-2" th:each="product : ${discountBooks}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row product-grid4" th:if="${not #lists.isEmpty(bestSeller)}">
             <h2 style="text-align: left">베스트셀러 </h2>
             <hr>
@@ -70,10 +134,41 @@
                     </div>
                 </div>
             </div>
-            <div class="row" th:unless="${not #lists.isEmpty(bestSeller)}" style="text-align: center">
-                <p>상품이 존재하지 않습니다.</p>
+        </div>
+
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(popularBooks)}">
+            <h2 style="text-align: left">인기 도서 </h2>
+            <hr>
+            <div class="col-md-2" th:each="product, count : ${popularBooks}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+
 
     </div>
     <script src="/mainpage/js/slider.js"></script>

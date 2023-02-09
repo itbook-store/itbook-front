@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,17 +74,20 @@ public class HomeController {
             "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
         model.addAttribute("productTypeList", productTypeList);
 
-        List<ProductDetailsResponseDto> recommendation =
-            productService.getProductList(
-                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 4)).getContent();
+        List<ProductDetailsResponseDto> newBooks = productService.getNewBooks();
+        model.addAttribute("newBooks", newBooks);
+
+        List<ProductDetailsResponseDto> discountBooks = productService.getdiscountBooks();
+        model.addAttribute("discountBooks", discountBooks);
+
+        List<ProductDetailsResponseDto> bestSeller = productService.getBestSellers();
+        model.addAttribute("bestSeller", bestSeller);
+
+        List<ProductDetailsResponseDto> recommendation = productService.getRecommendations();
         model.addAttribute("recommendationList", recommendation);
 
-        List<ProductDetailsResponseDto> bestSeller =
-            productService.getProductList(
-                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 3)).getContent();
-        model.addAttribute("bestSeller", bestSeller);
+        List<ProductDetailsResponseDto> popularBooks = productService.getPopularBooks();
+        model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -72,6 +73,7 @@ public class ProductServiceController {
 
         return "mainpage/product/product-category";
     }
+
 
     @GetMapping(params = {"productTypeNo", "productTypeName"})
     public String productListByProductType(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
@@ -148,5 +150,5 @@ public class ProductServiceController {
 
         return "mainpage/product/product-details";
     }
-
+    
 }
