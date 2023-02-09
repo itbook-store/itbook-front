@@ -40,13 +40,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="pointHistory : ${pageResponse.content}">
-                                        <td th:if="${pointHistory.isDecrease}">차감</td>
-                                        <td th:unless="${pointHistory.isDecrease}">적립</td>
+                                    <tr th:if="${pointHistory.isDecrease}" class="table-danger" th:each="pointHistory : ${pageResponse.content}">
+                                        <td class="text-danger">차감</td>
                                         <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
                                         <td><span th:text="${pointHistory.content}"/></td>
                                         <td><span th:text="${pointHistory.remainedPoint}"/></td>
-                                        <td><span th:text="${pointHistory.historyCreatedAt}"/></td>
+                                        <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
+                                    </tr>
+                                    <tr th:unless="${pointHistory.isDecrease}" class="table-primary" style="" th:each="pointHistory : ${pageResponse.content}">
+                                        <td class="text-primary">적립</td>
+                                        <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
+                                        <td><span th:text="${pointHistory.content}"/></td>
+                                        <td><span th:text="${pointHistory.remainedPoint}"/></td>
+                                        <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
                                     </tr>
                                     </tbody>
                                 </table>
