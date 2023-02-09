@@ -25,8 +25,8 @@
                                             <th></th>
                                             <th><span>상품이름</span></th>
                                             <th><span>별점</span></th>
-                                            <th><span>리뷰내용</span></th>
                                             <th><span></span></th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                         </thead>
@@ -34,10 +34,15 @@
                                         <tr th:each="review : ${pageResponse.getContent()}">
                                             <td><img width="100px;" th:src="${review.image}"></td>
                                             <td><span th:text="${review.productName}"></span></td>
-                                            <td><span th:text="${review.starPoint}"></span></td>
-                                            <td><span th:text="${review.content}"></span></td>
+                                            <td><span th:text="${review.starPoint}"></span> / 5</td>
+                                            <td>
+                                                <button class="btn btn-light"
+                                                        th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">상세보기</button>
+                                            </td>
                                             <td>(수정하기 버튼)</td>
-                                            <td>(삭제하기 버튼)</td>
+                                            <td>
+                                                <button class="btn btn-danger" th:onclick="|location.href='@{/review/mypage/{orderProductNo}/delete(orderProductNo = ${review.orderProductNo})}'|">삭제하기</button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

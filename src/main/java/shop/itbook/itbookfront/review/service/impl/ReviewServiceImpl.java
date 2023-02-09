@@ -34,4 +34,16 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewAdaptor.addReview(reviewRequestDto, images);
     }
+
+    @Override
+    public ReviewResponseDto findReview(Long orderProductNo) {
+
+        return reviewAdaptor.getReview(orderProductNo);
+    }
+
+    @Override
+    public void deleteReview(Long orderProductNo) {
+
+        reviewAdaptor.deleteReview(orderProductNo);
+    }
 }

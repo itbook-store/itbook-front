@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -23,7 +24,9 @@ import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewNoResponseDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 import shop.itbook.itbookfront.review.exception.ReviewAlreadyRegisteredException;
+import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
 import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
+import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
  * 리뷰 어댑터 입니다.
@@ -87,5 +90,35 @@ public class ReviewAdaptor {
         CommonResponseBody<ReviewNoResponseDto> body = responseEntity.getBody();
 
         return body.getResult().getOrderProductNo();
+    }
+
+    public ReviewResponseDto getReview(Long orderProductNo) {
+
+        ResponseEntity<CommonResponseBody<ReviewResponseDto>> responseEntity = null;
+
+        try {
+            responseEntity = restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+        } catch (BadRequestException e) {
+            if(Objects.equals(e.getMessage(), ReviewNotFoundException.MESSAGE)) {
+                throw new ReviewNotFoundException();
+            }
+        }
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            Objects.requireNonNull(responseEntity.getBody()).getHeader().getResultMessage());
+
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
+
+    public void deleteReview(Long orderProductNo) {
+
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/delete",
+            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
+            });
     }
 }
