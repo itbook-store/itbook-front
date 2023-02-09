@@ -4,6 +4,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
+    <style>
+        a { text-decoration:none !important }
+        a:hover { text-decoration:none !important }
+    </style>
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
@@ -41,7 +45,10 @@
     <div class="main" style="margin-inline: 10%;">
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(newBooks)}">
-            <h2 style="text-align: left">신간 도서 </h2>
+            <h2 style="text-align: left">신간 도서 <a th:href="@{/products(productTypeNo=${1}, productTypeName=${'신간'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a></h2>
             <hr>
             <div class="col-md-2" th:each="product : ${newBooks}" style="text-align: center">
                 <div class="product-image4">
@@ -73,7 +80,11 @@
         </div>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBooks)}">
-            <h2 style="text-align: left"> 할인 도서 </h2>
+            <h2 style="text-align: left"> 할인 도서
+                <a th:href="@{/products(productTypeNo=${2}, productTypeName=${'할인'})}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                </a></h2>
             <hr>
             <div class="col-md-2" th:each="product : ${discountBooks}" style="text-align: center">
                 <div class="product-image4">
@@ -105,7 +116,10 @@
         </div>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(bestSeller)}">
-            <h2 style="text-align: left">베스트셀러 </h2>
+            <h2 style="text-align: left">베스트셀러 <a th:href="@{/products(productTypeNo=${3}, productTypeName=${'베스트셀러'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a> </h2>
             <hr>
             <div class="col-md-2" th:each="product : ${bestSeller}" style="text-align: center">
                 <div class="product-image4">
@@ -137,7 +151,10 @@
         </div>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(popularBooks)}">
-            <h2 style="text-align: left">인기 도서 </h2>
+            <h2 style="text-align: left">인기 도서 <a th:href="@{/products(productTypeNo=${5}, productTypeName=${'인기'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a></h2>
             <hr>
             <div class="col-md-2" th:each="product, count : ${popularBooks}" style="text-align: center">
                 <div class="product-image4">
