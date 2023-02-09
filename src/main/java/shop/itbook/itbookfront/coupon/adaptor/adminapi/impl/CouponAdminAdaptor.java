@@ -38,7 +38,7 @@ public class CouponAdminAdaptor {
         HttpEntity<CouponInputRequestDto> httpEntity = new HttpEntity<>(couponInputRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
-            = restTemplate.exchange(gatewayConfig.getGatewayServer() + BASE_API_URL,
+            = restTemplate.exchange(gatewayConfig.getGatewayServer() + BASE_API_URL+"/add",
             HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){
 
             });
