@@ -56,7 +56,7 @@
                     <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
                     <td><span th:text="${pointHistory.content}"/></td>
                     <td><span th:text="${pointHistory.remainedPoint}"/></td>
-                    <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 hh시 MM분')}"></span></td>
+                    <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
                   </tr>
                   <tr th:unless="${pointHistory.isDecrease}" class="table-primary" style="" th:each="pointHistory : ${pageResponse.content}">
                     <td><span th:text="${pointHistory.memberId}"/></td>
@@ -65,7 +65,7 @@
                     <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
                     <td><span th:text="${pointHistory.content}"/></td>
                     <td><span th:text="${pointHistory.remainedPoint}"/></td>
-                    <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 hh시 MM분')}"></span></td>
+                    <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
                   </tr>
 
                   </tbody>
