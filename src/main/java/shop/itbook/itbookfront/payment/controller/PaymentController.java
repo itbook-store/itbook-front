@@ -1,7 +1,12 @@
 package shop.itbook.itbookfront.payment.controller;
 
+import static shop.itbook.itbookfront.payment.adaptor.PaymentAdaptor.FAIL_URL;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,11 +25,11 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 @Controller
 @RequiredArgsConstructor
 public class PaymentController {
-
     private final PaymentService paymentService;
 
     @PostMapping("/payment/paymentWidget")
-    public String getPaymentWidget(@ModelAttribute OrderAddRequestDto orderAddRequestDto) {
+    public String getPaymentWidget(@ModelAttribute OrderAddRequestDto orderAddRequestDto)
+        throws JsonProcessingException {
 
         String orderId = orderAddRequestDto.getOrderId();
         String orderName = orderAddRequestDto.getOrderName();
@@ -36,7 +41,7 @@ public class PaymentController {
     }
 
 
-    @GetMapping(value = "orders/success", params = {"paymentKey", "orderId", "amount"})
+    @GetMapping(value = "/orders/success", params = {"paymentKey", "orderId", "amount"})
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
                                  @RequestParam Long amount) {
 
@@ -47,16 +52,19 @@ public class PaymentController {
             requestDto = new PaymentApproveRequestDto(paymentKey, orderId, amount);
         PaymentResponseDto.PaymentDataResponseDto responseDto =
             paymentService.requestApproveApi(requestDto);
+        if (Objects.isNull(responseDto)) {
+            return "redirect:" + FAIL_URL;
+        }
 
         return "redirect:/orders/completion/" + responseDto.getOrderId();
     }
 
-    @GetMapping(value = "orders/fail", params = {"code", "message", "orderId"})
+    @GetMapping(value = "/orders/fail", params = {"code", "message", "orderId"})
     public String failureHandler(@RequestParam String code, @RequestParam String message,
                                  @RequestParam String orderId) {
         PaymentErrorResponseDto
             requestDto = new PaymentErrorResponseDto(code, message);
 
-        return requestDto.toString();
+        return "redirect:/";
     }
 }

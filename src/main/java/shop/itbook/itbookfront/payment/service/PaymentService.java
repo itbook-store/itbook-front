@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.payment.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 
@@ -19,7 +20,8 @@ public interface PaymentService {
      * @param amount    the amount
      * @return the widget url
      */
-    String getWidgetUrl(String orderId, String orderName, Long amount);
+    String getWidgetUrl(String orderId, String orderName, Long amount)
+        throws JsonProcessingException;
 
     /**
      * Request approve api payment response dto . payment data response dto.

@@ -13,4 +13,8 @@ public class InvalidPaymentException extends RuntimeException {
     public InvalidPaymentException() {
         super(MESSAGE);
     }
+
+    public InvalidPaymentException(String message) {
+        super(message);
+    }
 }

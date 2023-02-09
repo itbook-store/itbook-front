@@ -55,8 +55,8 @@ public class OrderController {
      *
      * @return 사용자에게 보여줄 주문 완료페이지
      */
-    @GetMapping("/completion/{orderNo}")
-    public String orderCompletion(@PathVariable("orderNo") String orderNo) {
+    @GetMapping("/completion/{orderId}")
+    public String orderCompletion(@PathVariable("orderId") String orderId) {
 
 //        orderService.completeOrderPayOfMember(orderNo);
 

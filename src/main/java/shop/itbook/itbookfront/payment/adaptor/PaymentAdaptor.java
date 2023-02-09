@@ -1,8 +1,11 @@
 package shop.itbook.itbookfront.payment.adaptor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -12,19 +15,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentCreatedRequestDto;
+import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 import shop.itbook.itbookfront.payment.exception.InvalidPaymentException;
+import shop.itbook.itbookfront.product.exception.InvalidInputException;
 
 /**
  * @author 이하늬
  * @since 1.0
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PaymentAdaptor {
@@ -37,9 +44,9 @@ public class PaymentAdaptor {
 
     private final String PAYMENT_METHOD = "카드";
     @Value("${payment.success.url}")
-    private String SUCCESS_URL = "http://localhost:8080/orders/success";
+    public static String SUCCESS_URL = "http://localhost:8080/orders/success";
     @Value("${payment.fail.url}")
-    private String FAIL_URL = "http://localhost:8080/orders/fail";
+    public static String FAIL_URL = "http://localhost:8080/orders/fail";
 
     public PaymentResponseDto.PaymentDataResponseDto requestApproveApi(
         PaymentApproveRequestDto requestDto) {
@@ -57,10 +64,9 @@ public class PaymentAdaptor {
                     gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay",
                     HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                     });
+
         } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), InvalidPaymentException.MESSAGE)) {
-                throw new InvalidPaymentException();
-            }
+            log.info(e.getMessage());
         }
 
         return Objects.requireNonNull(response.getBody()).getResult();
@@ -87,16 +93,19 @@ public class PaymentAdaptor {
         HttpEntity<PaymentCreatedRequestDto> httpEntity =
             new HttpEntity<>(paymentCreatedRequestDto, headers);
 
-        ResponseEntity<PaymentResponseDto.PaymentDataResponseDto> response =
-            restTemplate.exchange(TOSS_REQUEST_URL, HttpMethod.POST, httpEntity,
+        ResponseEntity<PaymentResponseDto.PaymentDataResponseDto> response = null;
+        try {
+            response = restTemplate.exchange(TOSS_REQUEST_URL, HttpMethod.POST, httpEntity,
                 PaymentResponseDto.PaymentDataResponseDto.class);
 
-        if (!response.getStatusCode().equals(HttpStatus.OK)) {
+            if (Objects.isNull(response)) {
+                return FAIL_URL;
+            }
+        } catch (HttpClientErrorException e) {
+            log.info(e.getMessage());
             throw new InvalidPaymentException();
         }
 
-        String checkOutUrl = response.getBody().getCheckout().getUrl();
-
-        return checkOutUrl;
+        return response.getBody().getCheckout().getUrl();
     }
 }

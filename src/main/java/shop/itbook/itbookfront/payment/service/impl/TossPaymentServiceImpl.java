@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.payment.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class TossPaymentServiceImpl implements PaymentService {
         PaymentApproveRequestDto requestDto) {
         PaymentResponseDto.PaymentDataResponseDto responseDto =
             paymentAdaptor.requestApproveApi(requestDto);
-        
+
         return responseDto;
     }
 }
