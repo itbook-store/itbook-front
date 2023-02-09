@@ -46,4 +46,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewAdaptor.deleteReview(orderProductNo);
     }
+
+    @Override
+    public void modifyReview(Long orderProductNo, ReviewRequestDto reviewRequestDto,
+                             MultipartFile images) {
+
+        reviewAdaptor.modifyReview(orderProductNo, reviewRequestDto, images);
+    }
 }

@@ -1,7 +1,4 @@
-function fixStarPoint() {
-    let starPoint = document.getElementById("starPoint").value + "";
+let starPoint = document.getElementById("savedStarPoint").value + "";
 
-    let starPointRadio = document.getElementsByName("starPoint");
+$('input:radio[name=starPoint]:input[value=' + starPoint +']').attr("checked", true);
 
-    //starPointRadio[]
-}

@@ -121,4 +121,31 @@ public class ReviewAdaptor {
             HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
             });
     }
+
+    public void modifyReview(Long orderProductNo,
+                             ReviewRequestDto reviewRequestDto,
+                             MultipartFile images) {
+
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        params.add("images", images.getResource());
+        params.add("reviewRequestDto", reviewRequestDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
+
+        try {
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/modify", HttpMethod.PUT,
+                uploadEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        } catch (BadRequestException e) {
+            if(Objects.equals(e.getMessage(), ReviewNotFoundException.MESSAGE)) {
+                throw new ReviewNotFoundException();
+            }
+        }
+
+    }
 }

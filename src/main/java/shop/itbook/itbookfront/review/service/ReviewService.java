@@ -19,4 +19,8 @@ public interface ReviewService {
     ReviewResponseDto findReview(Long orderProductNo);
 
     void deleteReview(Long orderProductNo);
+
+    void modifyReview(Long orderProductNo,
+                      ReviewRequestDto reviewRequestDto,
+                      MultipartFile images);
 }

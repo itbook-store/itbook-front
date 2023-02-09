@@ -39,7 +39,8 @@
                                                 <button class="btn btn-light"
                                                         th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">상세보기</button>
                                             </td>
-                                            <td>(수정하기 버튼)</td>
+                                            <td><button class="btn btn-primary"
+                                                        th:onclick="|location.href= '@{/review/mypage/{orderProductNo}/modify(orderProductNo=${review.orderProductNo})}'|">수정하기</button></td>
                                             <td>
                                                 <button class="btn btn-danger" th:onclick="|location.href='@{/review/mypage/{orderProductNo}/delete(orderProductNo = ${review.orderProductNo})}'|">삭제하기</button>
                                             </td>
