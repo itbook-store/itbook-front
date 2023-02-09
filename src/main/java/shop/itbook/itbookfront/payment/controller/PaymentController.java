@@ -4,15 +4,16 @@ import static shop.itbook.itbookfront.payment.adaptor.PaymentAdaptor.FAIL_URL;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
@@ -50,13 +51,12 @@ public class PaymentController {
 
         PaymentApproveRequestDto
             requestDto = new PaymentApproveRequestDto(paymentKey, orderId, amount);
-        PaymentResponseDto.PaymentDataResponseDto responseDto =
-            paymentService.requestApproveApi(requestDto);
+        OrderNoResponseDto responseDto = paymentService.requestApprovePayment(requestDto);
         if (Objects.isNull(responseDto)) {
             return "redirect:" + FAIL_URL;
         }
 
-        return "redirect:/orders/completion/" + responseDto.getOrderId();
+        return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
 
     @GetMapping(value = "/orders/fail", params = {"code", "message", "orderId"})
@@ -67,4 +67,19 @@ public class PaymentController {
 
         return "redirect:/";
     }
+
+//    @GetMapping("/payment/cancel/{orderNo}")
+//    public String getCancelPaymentForm(@PathVariable Long orderNo, Model model) {
+//        model.addAttribute("orderNo", orderNo);
+//        return "mypage/order/select-cancel-reason";
+//
+//    }
+
+    @PostMapping("/payment/cancel/{orderNo}")
+    public String requestCancelPayment(@PathVariable Long orderNo,
+                                       @RequestParam String canceledReason) {
+        paymentService.requestCanceledPayment(orderNo, canceledReason);
+        return "redirect:/mypage/list";
+    }
+
 }

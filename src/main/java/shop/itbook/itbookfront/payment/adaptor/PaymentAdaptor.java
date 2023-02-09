@@ -1,7 +1,5 @@
 package shop.itbook.itbookfront.payment.adaptor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +9,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -21,11 +18,11 @@ import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
+import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentCreatedRequestDto;
-import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
+import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 import shop.itbook.itbookfront.payment.exception.InvalidPaymentException;
-import shop.itbook.itbookfront.product.exception.InvalidInputException;
 
 /**
  * @author 이하늬
@@ -48,7 +45,7 @@ public class PaymentAdaptor {
     @Value("${payment.fail.url}")
     public static String FAIL_URL = "http://localhost:8080/orders/fail";
 
-    public PaymentResponseDto.PaymentDataResponseDto requestApproveApi(
+    public OrderNoResponseDto requestApprovePayment(
         PaymentApproveRequestDto requestDto) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -56,7 +53,7 @@ public class PaymentAdaptor {
 
         HttpEntity<PaymentApproveRequestDto> httpEntity =
             new HttpEntity<>(requestDto, headers);
-        ResponseEntity<CommonResponseBody<PaymentResponseDto.PaymentDataResponseDto>> response =
+        ResponseEntity<CommonResponseBody<OrderNoResponseDto>> response =
             null;
         try {
             response =
@@ -98,14 +95,37 @@ public class PaymentAdaptor {
             response = restTemplate.exchange(TOSS_REQUEST_URL, HttpMethod.POST, httpEntity,
                 PaymentResponseDto.PaymentDataResponseDto.class);
 
-            if (Objects.isNull(response)) {
-                return FAIL_URL;
-            }
         } catch (HttpClientErrorException e) {
             log.info(e.getMessage());
             throw new InvalidPaymentException();
         }
 
-        return response.getBody().getCheckout().getUrl();
+        return Objects.requireNonNull(response.getBody()).getCheckout().getUrl();
+    }
+
+    // 취소한 주문에 대한 정보를 반환
+    public OrderNoResponseDto requestCanceledPayment(
+        PaymentCanceledRequestDto paymentCanceledRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<PaymentCanceledRequestDto> httpEntity =
+            new HttpEntity<>(paymentCanceledRequestDto, headers);
+
+        ResponseEntity<CommonResponseBody<OrderNoResponseDto>> response =
+            null;
+        try {
+            response =
+                restTemplate.exchange(
+                    gatewayConfig.getGatewayServer() + "/api/admin/payment/request-cancel",
+                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                    });
+
+        } catch (BadRequestException e) {
+            log.info(e.getMessage());
+        }
+
+        return Objects.requireNonNull(response.getBody()).getResult();
     }
 }

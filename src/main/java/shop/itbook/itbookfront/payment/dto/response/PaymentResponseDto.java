@@ -37,6 +37,7 @@ public class PaymentResponseDto {
         private CardResponseDto card;
         private Receipt receipt;
         private Checkout checkout;
+        private Cancels cancels;
         private String country;
         private Failure failure;
         private Long vat;
@@ -57,6 +58,16 @@ public class PaymentResponseDto {
 //    @AllArgsConstructor
     public static class Checkout {
         private String url;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Cancels {
+        private String canceledAt;
+        private Long cancelAmount;
+        private String cancelReason;
     }
 
     @Getter
