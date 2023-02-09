@@ -210,7 +210,7 @@ async function showSearchResults(event) {
             .then(data => {
                 document.getElementById('productName').value = data.title;
                 document.getElementById('authorName').value = data.author;
-                document.getElementById('simpleDescription').value = data.description;
+                document.getElementById('simpleDescription').value = unEntity(data.description);
                 document.getElementById('fixedPrice').value = data.priceStandard;
                 document.getElementById('publisherName').value = data.publisher;
                 document.getElementById('pageCount').value = data.subInfo.itemPage;
@@ -232,6 +232,10 @@ async function showSearchResults(event) {
         document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
     }
     spinnerStop();
+}
+
+function unEntity(str){
+    return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 }
 
 function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {

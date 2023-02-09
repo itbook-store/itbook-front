@@ -52,7 +52,7 @@
                         <div class="col-md-12" id="bookList">
                             <span class="col-md-8" id = "isbnSuccessful" style = "display:none;">등록 가능한 도서입니다.</span>
                             <span class="col-md-8" id = "isbnFailed" style = "display:none;">이미 등록 되어 있거나 없는 도서입니다.</span>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="retypeFn('isbn', 'isbnSuccessful', 'isbnFailed', 'confirmBook', 'isbnRetypeBtn')" id = "isbnRetypeBtn" style="visibility:hidden; margin-top: 10px">다시 입력</button>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="retypeFn('isbn', 'isbnSuccessful', 'isbnFailed', 'confirmBook', 'isbnRetypeBtn')" id = "isbnRetypeBtn" style="visibility:hidden; margin-top: 10px">다시 입력</button>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -63,15 +63,17 @@
 
                     <div class="mb-3">
                         <label for="simpleDescription">간단 설명</label>
-                        <input id="simpleDescription" name="simpleDescription"
+                        <textarea id="simpleDescription" name="simpleDescription"
                                class="form-control input-md" required="" type="text"
-                               placeholder="상품에 대한 간단한 설명을 입력하세요">
+                                  placeholder="상품에 대한 간단한 설명을 입력하세요"
+                                  rows="4" cols="50"></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="detailsDescription">상세 설명</label>
                         <textarea class="form-control" id="detailsDescription" name="detailsDescription"
-                                  placeholder="상품에 대한 상세한 설명을 입력하세요"></textarea>
+                                  placeholder="상품에 대한 상세한 설명을 입력하세요"
+                                  rows="5" cols="50"></textarea>
                     </div>
 
                     <div class="row gx-3 mb-3">
