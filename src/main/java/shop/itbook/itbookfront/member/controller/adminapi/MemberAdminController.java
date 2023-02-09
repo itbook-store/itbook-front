@@ -125,7 +125,7 @@ public class MemberAdminController {
 
         memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberId);
 
-        return "redirect:/admin/members";
+        return "redirect:/admin/members/block";
     }
 
     @GetMapping("/search")

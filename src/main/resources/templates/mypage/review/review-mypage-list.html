@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>나의 리뷰 목록</h2>
+        <hr>
+        <div>
+            <div class="container bootstrap snippets bootdey">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="main-box no-header clearfix">
+                            <div class="main-box-body clearfix">
+                                <div class="table-responsive">
+                                    <table class="table user-list">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><span>상품이름</span></th>
+                                            <th><span>별점</span></th>
+                                            <th><span>리뷰내용</span></th>
+                                            <th><span></span></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="review : ${pageResponse.getContent()}">
+                                            <td><img width="100px;" th:src="${review.image}"></td>
+                                            <td><span th:text="${review.productName}"></span></td>
+                                            <td><span th:text="${review.starPoint}"></span></td>
+                                            <td><span th:text="${review.content}"></span></td>
+                                            <td>(수정하기 버튼)</td>
+                                            <td>(삭제하기 버튼)</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
