@@ -48,18 +48,7 @@ public interface ProductService {
 
     void modifyRelationProduct(Long basedProductNo, ProductRelationRequestDto requestDto);
 
-    @Cacheable(value = "newBooks")
-    List<ProductDetailsResponseDto> getNewBooks();
+    @Cacheable(value = "productTypes", key = "#id")
+    List<ProductDetailsResponseDto> getBooksByProductTypes(Integer id);
 
-    @Cacheable(value = "discountBooks")
-    List<ProductDetailsResponseDto> getdiscountBooks();
-
-    @Cacheable(value = "bestSeller")
-    List<ProductDetailsResponseDto> getBestSellers();
-
-    @Cacheable(value = "recommendations")
-    List<ProductDetailsResponseDto> getRecommendations();
-
-    @Cacheable(value = "popularBooks")
-    List<ProductDetailsResponseDto> getPopularBooks();
 }

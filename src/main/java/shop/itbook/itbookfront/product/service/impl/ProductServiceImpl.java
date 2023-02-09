@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.product.service.impl;
 
 import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
-import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -100,43 +99,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "newBooks")
-    public List<ProductDetailsResponseDto> getNewBooks() {
+    @Cacheable(value = "productTypes", key = "#id")
+    public List<ProductDetailsResponseDto> getBooksByProductTypes(Integer id) {
         return this.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 1)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "discountBooks")
-    public List<ProductDetailsResponseDto> getdiscountBooks() {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 2)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "bestSeller")
-    public List<ProductDetailsResponseDto> getBestSellers() {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 3)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "recommendations")
-    public List<ProductDetailsResponseDto> getRecommendations() {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 4)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "popularBooks")
-    public List<ProductDetailsResponseDto> getPopularBooks() {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, 5)).getContent();
+                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, id)).getContent();
     }
 
 }

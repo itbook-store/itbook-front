@@ -16,11 +16,7 @@ public class CachingConfig {
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
-            new ConcurrentMapCache("newBooks"),
-            new ConcurrentMapCache("discountBooks"),
-            new ConcurrentMapCache("bestSeller"),
-            new ConcurrentMapCache("recommendations"),
-            new ConcurrentMapCache("popularBooks")
+            new ConcurrentMapCache("productTypes")
         ));
         return cacheManager;
     }
