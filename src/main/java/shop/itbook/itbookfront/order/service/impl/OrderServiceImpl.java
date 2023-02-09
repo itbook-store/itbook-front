@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.service.impl;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -8,11 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
-import shop.itbook.itbookfront.order.dto.response.OrderAddResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -44,12 +46,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderAddResponseDto addOrderOfMember(OrderAddRequestDto orderAddRequestDto,
-                                                Long memberNo) {
+    public OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
+                                    Optional<Long> memberNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
-            .path(String.format("/api/orders/%d", memberNo))
+            .path("/api/orders")
+            .queryParamIfPresent("memberNo", memberNo)
             .build();
 
         HttpHeaders headers = new HttpHeaders();

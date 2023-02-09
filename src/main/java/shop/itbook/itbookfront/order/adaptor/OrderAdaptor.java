@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.order.dto.response.OrderAddResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 
@@ -51,8 +51,8 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public <T> OrderAddResponseDto addOrderOfMember(URI uri, HttpEntity<T> http) {
-        ResponseEntity<CommonResponseBody<OrderAddResponseDto>> exchange =
+    public <T> OrderPaymentDto addOrderOfMember(URI uri, HttpEntity<T> http) {
+        ResponseEntity<CommonResponseBody<OrderPaymentDto>> exchange =
             restTemplate.exchange(
                 uri,
                 HttpMethod.POST, http,
