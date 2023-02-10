@@ -28,7 +28,8 @@ public class MembershipController {
     @GetMapping("/history")
     public String membershipHistoryList(Model model, @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
         List<MembershipHistoryResponseDto> membershipHistoryList = membershipService
-            .getMembershipHistories(userDetailsDto.getMemberId());
+            .getMembershipHistories(userDetailsDto.getMemberNo());
+
 
         MembershipHistoryResponseDto membershipHistoryResponseDto = membershipHistoryList.get(membershipHistoryList.size()-1);
         Long amountBasedOnNextLevel = 0L;

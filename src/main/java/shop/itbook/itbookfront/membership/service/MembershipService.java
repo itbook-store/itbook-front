@@ -12,5 +12,5 @@ public interface MembershipService {
 
     List<MembershipResponseDto> getMemberships();
 
-    List<MembershipHistoryResponseDto> getMembershipHistories(String memberId);
+    List<MembershipHistoryResponseDto> getMembershipHistories(Long memberNo);
 }

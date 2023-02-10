@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.auth.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class AlreadySingupMemberInSelfCompanyException extends RuntimeException {
+public class AlreadySignupMemberInSelfCompanyException extends AuthenticationException {
 
     private static final String MESSAGE = "이미 자사 회원가입이 된 회원입니다.";
 
-    public AlreadySingupMemberInSelfCompanyException() {
+    public AlreadySignupMemberInSelfCompanyException() {
         super(MESSAGE);
     }
 }
