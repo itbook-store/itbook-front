@@ -48,10 +48,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .addPathPatterns("/**")
             .excludePathPatterns(staticResourcesPath);
 
-        registry.addInterceptor(new TokenReissueInterceptor(authAdaptor))
-            .addPathPatterns("/**")
-            .excludePathPatterns(loginPath)
-            .excludePathPatterns("/logout")
-            .excludePathPatterns(staticResourcesPath);
+//        registry.addInterceptor(new TokenReissueInterceptor(authAdaptor))
+//            .addPathPatterns("/**")
+//            .excludePathPatterns(loginPath)
+//            .excludePathPatterns("/logout")
+//            .excludePathPatterns(staticResourcesPath);
     }
 }

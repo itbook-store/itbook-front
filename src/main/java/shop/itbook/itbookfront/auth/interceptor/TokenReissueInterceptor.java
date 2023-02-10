@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.auth.interceptor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,12 @@ public class TokenReissueInterceptor implements HandlerInterceptor {
         }
 
         Date refreshTokenExpirationTime = tokenDto.getRefreshTokenExpirationTime();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        localDateTime.minusMinutes(30);
+
+        /* 만료시간이 현재 시간 30분 전이면?*/
 
         if (!refreshTokenExpirationTime.after(new Date())) {
             response.sendRedirect("/logout");
