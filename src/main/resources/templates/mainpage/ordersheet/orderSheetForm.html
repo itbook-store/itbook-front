@@ -8,9 +8,11 @@
     <title>주문 페이지</title>
 
     <script src="/payment/js/payment.js"></script>
+    <!-- Sweet Alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="/mainpage/css/orderSheet.css">
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
 
@@ -228,6 +230,49 @@
                 })
         }
 
+        function doPaymentProcessByCard(data) {
+            const clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
+            var tossPayments = TossPayments(clientKey);
+
+            tossPayments.requestPayment('카드', { // 결제 수단 파라미터
+                // 결제 정보 파라미터
+                amount: data.amount,
+                orderId: data.orderId,
+                orderName: data.orderName,
+                successUrl: data.successUrl,
+                failUrl: data.failUrl,
+            })
+                .catch(function (error) {
+                    if (error.code === 'USER_CANCEL') {
+                        Swal.fire(
+                            '결제가 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'DUPLICATED_ORDER_ID') {
+                        Swal.fire(
+                            '이미 승인 및 취소가 진행된 중복된 주문번호 입니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'INVALID_CARD_COMPANY') {
+                        Swal.fire(
+                            '결제가 사용자에 의해 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'PAY_PROCESS_CANCELED') {
+                        Swal.fire(
+                            '결제가 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                        alert("유효하지 않은 카드 코드입니다.");
+                    } else {
+                        console.log(error.code)
+                    }
+                })
+        }
     </script>
 </div>
 </body>
