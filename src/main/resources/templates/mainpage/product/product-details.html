@@ -7,7 +7,7 @@
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
 
-     <style>
+    <style>
 
     </style>
 
@@ -62,27 +62,49 @@
                         </div>
                     </div>
 
-                    <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5" data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
-                        <small style="font-size: 15pt; margin-left: 10%" class="text-success" th:text="|(${product.discountPercent}%off)|"></small>
+                    <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5"
+                                  data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
+                    <small style="font-size: 15pt; margin-left: 10%" class="text-success"
+                           th:text="|(${product.discountPercent}%off)|"></small>
 
 
                     <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
                             data-original-title="Add to cart"
-                            th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
                         <i class="fa fa-shopping-cart"></i>
                     </button>
                     <button class="btn btn-danger"
                             th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                        품절</button>
-                    <button class="btn btn-primary btn-rounded"
-                            th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                            th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
-                    >구매하기</button>
+                        품절
+                    </button>
+                    <!--                    <form id="purchase" method="post" th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
+                    <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
+                    <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
+                    <!--                    </form>-->
+                    <button id="purchase" class="btn btn-primary btn-rounded" th:onclick="confirmNonMember()"
+                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
+                        <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header"></div>
+                                    <div class="modal-body">비회원으로 주문하시겠습니까?</div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-info" id="modalY">예</a>
+                                        <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
+                                        <a class="btn btn-dark block" type="button" data-dismiss="modal">취소</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
@@ -90,7 +112,8 @@
             <div class="row">
                 <div class="col-sm-2 col-lg-2 mb-2-6" th:each="rp: ${pageResponse.content}">
                     <div class="card-wrapper mb-2">
-                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="..."></div>
+                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                        </div>
                         <div class="card-body">
                             <div>
                                 <a href="#">
@@ -108,7 +131,8 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star mr-0"></i>
                         </div>
-                        <h6 class="mb-0 text-primary" >[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') + '원'}]]([[${rp.discountPercent}]]%)</h6>
+                        <h6 class="mb-0 text-primary">[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') +
+                            '원'}]]([[${rp.discountPercent}]]%)</h6>
                     </div>
                 </div>
             </div>
@@ -159,6 +183,38 @@
         </div>
     </section>
     <script src="/cart/js/cartAddProduct.js"></script>
+    <!--    <script th:inline="javascript">-->
+    <!--        /*<![CDATA[*/-->
+    <!--        function confirmNonMember() {-->
+
+    <!--            let result = window.confirm("비회원으로 주문하시겠습니까?");-->
+
+    <!--            if (result) {-->
+    <!--                const productNoList = [[${product.productNo}]]-->
+    <!--                const productCntList = [1];-->
+    <!--                console.log(productNoList);-->
+    <!--                location.href = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;-->
+    <!--            } else if (result == false) {-->
+    <!--            } else {-->
+    <!--                location.href = "/login";-->
+    <!--            }-->
+    <!--        }-->
+    <!--        /*]]>*/-->
+    <!--        -->
+    <!--    </script>-->
+    <script th:inline="javascript">
+        $('#purchase').click(function (e) {
+            e.preventDefault();
+            $('#nonMemberModal').modal("show");
+        });
+        $('#nonMemberModal').click(function () {
+            const productNoList = [[${product.productNo}]];
+            const productCntList = [1];
+
+            location.href = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;
+            $('#nonMemberModal').modal("hide");
+        })
+    </script>
 </div>
 </body>
 </html>

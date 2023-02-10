@@ -11,6 +11,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Setter
-public class OrderAddResponseDto {
+public class OrderPaymentDto {
     private Long orderNo;
+    private String orderId;
+    private String orderName;
+    private Long amount;
 }
