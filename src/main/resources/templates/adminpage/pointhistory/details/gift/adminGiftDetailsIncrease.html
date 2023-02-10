@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지 - 포인트 내역 상세 조회</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="content">
+    <div class="container-fluid px-4">
+      <h1 class="mt-4">선물적립 상세조회</h1>
+      <div class="card mb-4">
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label for="title" class="form-label">적립대상 ID</label> <input
+                    type="text" class="form-control" id="title" name="title"
+                    th:value="${details.mainMemberId}" disabled>
+            </div>
+
+            <div class="mb-3">
+              <label for="mainName" class="form-label">적립대상 이름</label> <input
+                    type="text" class="form-control" id="mainName" name="title"
+                    th:value="${details.mainMemberName}" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="regDate" class="form-label">적립대상에게 포인트 선물한 회원 ID</label> <input
+                    type="text" class="form-control" id="regDate" name="regDate"
+                    th:value="${details.subMemberId}" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="oldPoint" class="form-label">기존 포인트</label> <input
+                    type="text" class="form-control" id="oldPoint" name="writer"
+                    th:value="${#numbers.formatInteger(details.remainedPoint - details.point, 1, 'COMMA')} + 'P'" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="point" class="form-label">선물받은 포인트</label> <input
+                    type="text" class="form-control" id="point" name="writer"
+                    th:value="${#numbers.formatInteger(details.point, 1, 'COMMA')} + 'P'" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="remainedPoint" class="form-label">잔여 포인트</label> <input
+                    type="text" class="form-control" id="remainedPoint" name="writer"
+                    th:value="${#numbers.formatInteger(details.remainedPoint, 1, 'COMMA')} + 'P'" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="time" class="form-label">일시</label> <input
+                    type="text" class="form-control" id="time" name="writer"
+                    th:value="${#temporals.format(details.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}" disabled>
+            </div>
+            <a th:href="@{/admin/point-histories/show-content/admin-point-list(page=${adminPointHistoryPage})}" class="btn btn-outline-secondary">list</a>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+</body>
+
+
+
+
+</html>

@@ -1,3 +1,6 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout",
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header-fragment">
     <nav class="py-2 bg-light border-bottom">
         <div class="container d-flex flex-wrap">
@@ -29,13 +32,14 @@
 
                 </div>
 
-                <th:block th:if="${!#authentication.isAuthenticated()}">
+                <th:block sec:authorize="isAnonymous()">
                 <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
                 <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
                 </th:block>
 
-                <th:block th:if="${#authentication.isAuthenticated()}">
-                <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">마이페이지</a></li>
+                <th:block sec:authorize="isAuthenticated()">
+                <li class="nav-item"><a href="/mypage" class="nav-link link-dark px-2">마이페이지</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link link-dark px-2">로그아웃</a></li>
                 </th:block>
 
             </ul>
@@ -83,17 +87,11 @@
 
         </nav>
     </div>
-    <div class="col-lg-2" th:each="productType : ${productTypeList}">
-        <a th:href="@{/products(productTypeNo=${productType.productTypeNo}, productTypeName=${productType.productTypeName})}">
-            <button style="margin-left: 15px" class="navbar-toggler text-white">
-                [[${productType.productTypeName}]]
-            </button>
-        </a>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/product/js/service-product.js"></script>
-
+    <script src="/cart/js/cartHeader.js"></script>
 </nav>
-</div>
+
+</html>

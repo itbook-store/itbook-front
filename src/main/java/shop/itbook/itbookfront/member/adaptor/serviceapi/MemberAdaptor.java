@@ -33,7 +33,7 @@ public class MemberAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public void modifyMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
+    public void modifyMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, Long memberNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -42,7 +42,7 @@ public class MemberAdaptor {
             new HttpEntity<>(memberUpdateRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/members/" + memberId + "/info",
+            gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/info",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
@@ -51,10 +51,10 @@ public class MemberAdaptor {
 
     }
 
-    public MemberInfoResponseDto getMemberInfo(String memberId) {
+    public MemberInfoResponseDto getMemberInfo(Long memberNo) {
         ResponseEntity<CommonResponseBody<MemberInfoResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/members/" + memberId,
+                gatewayConfig.getGatewayServer() + "/api/members/" + memberNo,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
@@ -65,7 +65,7 @@ public class MemberAdaptor {
         return responseEntity.getBody().getResult();
     }
 
-    public void modifyMemberStatusToWithDraw(String memberId,
+    public void modifyMemberStatusToWithdraw(Long memberNo,
                                              MemberStatusChangeRequestDto memberStatusChangeRequestDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -74,7 +74,7 @@ public class MemberAdaptor {
             new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/members/" + memberId + "/withdraw",
+            gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/withdraw",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
@@ -107,15 +107,12 @@ public class MemberAdaptor {
         HttpEntity<List<MemberDestinationNoResponseDto>> httpEntity =
             new HttpEntity<>(memberDestinationNoResponseDtoList, headers);
 
-        ResponseEntity<CommonResponseBody<List<MemberDestinationNoResponseDto>>> responseEntity =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/delete",
-                HttpMethod.DELETE, httpEntity,
-                new ParameterizedTypeReference<>() {
-                });
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/delete",
+            HttpMethod.DELETE, httpEntity,
+            new ParameterizedTypeReference<>() {
+            });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
     public MemberDestinationNoResponseDto addMemberDestination(

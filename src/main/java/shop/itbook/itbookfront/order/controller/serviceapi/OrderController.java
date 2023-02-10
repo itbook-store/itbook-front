@@ -8,12 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
-import shop.itbook.itbookfront.order.dto.response.OrderAddResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -56,28 +53,12 @@ public class OrderController {
      * @return 사용자에게 보여줄 주문 완료페이지
      */
     @GetMapping("/completion/{orderNo}")
-    public String orderCompletion(@PathVariable("orderNo") Long orderNo) {
+    public String orderCompletion(@PathVariable("orderNo") String orderNo) {
 
-        orderService.completeOrderPayOfMember(orderNo);
+//        orderService.completeOrderPayOfMember(orderNo);
 
         return "mainpage/order/orderCompletionForm";
     }
 
-    /**
-     * 임시 페이지
-     *
-     * @return 임시 페이지
-     */
-    @PostMapping("/temp")
-    public String tempOrder(OrderAddRequestDto orderAddRequestDto,
-                            @AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                            Model model) {
-
-        OrderAddResponseDto orderAddResponseDto =
-            orderService.addOrderOfMember(orderAddRequestDto, userDetailsDto.getMemberNo());
-        model.addAttribute("orderDto", orderAddResponseDto);
-
-        return "mainpage/order/orderTempForm";
-    }
 
 }

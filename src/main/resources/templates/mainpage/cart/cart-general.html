@@ -20,6 +20,7 @@
 
     <div class="cart" style="margin-bottom: 300px">
 
+        <form action="/cart/order" method="post">
         <div class="table-responsive general_product">
             <table class="table table-hover table-md align-middle">
                 <thead class="table-primary">
@@ -52,6 +53,7 @@
                     </td>
                     <td>
                         <div class="product_titleBox">
+                            <input type="hidden" name="productNo" th:value="${dto.productDetailsResponseDto.productNo}">
                             <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
                                 <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
                             <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
@@ -71,7 +73,7 @@
                         <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
                             <div class="form-outline">
                                 <input type="hidden" class="memberNo" th:value="${#authentication.principal.memberNo}"/>
-                                <input min="1" max="100" name="quantity" th:value="${dto.productCount}"  class="quantity" type="number"
+                                <input min="1" max="100" name="productCount" th:value="${dto.productCount}"  class="quantity" type="number"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                        th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
                             </div>
@@ -102,6 +104,7 @@
                         </td>
                         <td>
                             <div class="product_titleBox">
+                                <input type="hidden" name="productNo" th:value="${product.productNo}">
                                 <a th:href="@{|/products/${product.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
                                     <img class="product_img" th:src="${product.fileThumbnailsUrl}" alt="" >
                                     <p class="product_title" th:text="${product.productName}"></p>
@@ -122,7 +125,7 @@
                             <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
                                 <div class="form-outline">
                                     <input type="hidden" th:attr="data-no=${product.productNo}">
-                                    <input min="1" name="quantity" value="1"  class="quantity" type="number"
+                                    <input min="1" name="productCount" value="1"  class="quantity" type="number"
                                            th:attr="data-stock=${product.stock}"
                                            onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                            onchange="changeTotalPrice(this)"
@@ -147,9 +150,10 @@
             </div>
             <div class="movementBtn_box">
                 <button class="go_shopping btn btn-secondary" onclick="location.href='/'">쇼핑 하러가기</button>
-                <button class="go_payment btn btn-success">결제하기</button>
+                <button class="go_payment btn btn-success">구매하기</button>
             </div>
         </div>
+        </form>
 
     </div>
 

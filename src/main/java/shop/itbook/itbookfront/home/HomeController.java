@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,11 +51,11 @@ public class HomeController {
                        UserDetailsDto userDetailsDto) throws IOException {
 
         if (Objects.nonNull(userDetailsDto) &&
-            memberService.findMemberInfo(userDetailsDto.getMemberId()).getPhoneNumber()
+            memberService.findMemberInfo(userDetailsDto.getMemberNo()).getPhoneNumber()
                 .equals(userDetailsDto.getMemberId())) {
 
             model.addAttribute("memberInfo",
-                memberService.findMemberInfo(userDetailsDto.getMemberId()));
+                memberService.findMemberInfo(userDetailsDto.getMemberNo()));
 
             return "signuppage/oauth-signup";
         }
@@ -72,19 +73,22 @@ public class HomeController {
         List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
             "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
         model.addAttribute("productTypeList", productTypeList);
+        
 
-        List<ProductDetailsResponseDto> newBookList =
-            productService.getProductList(
-                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 1)).getContent();
-        model.addAttribute("newBookList", newBookList);
+        List<ProductDetailsResponseDto> newBooks = productService.getBooksByProductTypes(1);
+        model.addAttribute("newBooks", newBooks);
 
-        List<ProductDetailsResponseDto> discountBookList =
-            productService.getProductList(
-                String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, 2)).getContent();
-        model.addAttribute("discountBookList", discountBookList);
+        List<ProductDetailsResponseDto> discountBooks = productService.getBooksByProductTypes(2);
+        model.addAttribute("discountBooks", discountBooks);
 
+        List<ProductDetailsResponseDto> bestSeller = productService.getBooksByProductTypes(3);
+        model.addAttribute("bestSeller", bestSeller);
+
+        List<ProductDetailsResponseDto> recommendation = productService.getBooksByProductTypes(4);
+        model.addAttribute("recommendationList", recommendation);
+
+        List<ProductDetailsResponseDto> popularBooks = productService.getBooksByProductTypes(5);
+        model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
         log.info("########## 브라우저 ip : " + remoteAddr);
@@ -97,7 +101,8 @@ public class HomeController {
     public String mypage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                          Model model) {
 
-        Long recentlyPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
+        Long recentlyPoint =
+            memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
         model.addAttribute("memberId", userDetailsDto.getMemberId());
         model.addAttribute("recentlyPoint", recentlyPoint);
 

@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.auth.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 1.0
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class TokenExpirationException extends RuntimeException {
+public class TokenExpirationException extends AuthenticationException {
 
     private static final String MESSAGE = "로그인이 만료 되었습니다.";
 

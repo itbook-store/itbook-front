@@ -1,15 +1,8 @@
 package shop.itbook.itbookfront.common.response;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.core.serializer.Serializer;
-import org.springframework.data.domain.Page;
 
 
 /**

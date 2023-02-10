@@ -39,7 +39,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         HttpSession session = request.getSession(false);
 
-        if (Objects.isNull(session)) {
+        if (Objects.isNull(session) || Objects.isNull(authentication)) {
             response.addHeader("message", MESSAGE);
             try {
                 redirectStrategy.sendRedirect(request, response, "/login");
@@ -52,10 +52,12 @@ public class CustomLogoutHandler implements LogoutHandler {
         UserDetailsDto principal = (UserDetailsDto) authentication.getPrincipal();
         authAdaptor.requestAuthServerForLogout(principal.getMemberNo());
 
-        session.removeAttribute("ITBOOK_SESSIONID");
+        log.info("session ITBOOK_SESSIONID {}", session.getAttribute("ITBOOK_SESSIONID"));
+        session.removeAttribute("tokenDto");
         session.invalidate();
 
         SecurityContext context = SecurityContextHolder.getContext();
+        context.getAuthentication().setAuthenticated(false);
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
 

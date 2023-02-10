@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.dto.request.MemberOAuthRequestDto;
-import shop.itbook.itbookfront.auth.exception.AlreadySingupMemberInSelfCompanyException;
+import shop.itbook.itbookfront.auth.exception.AlreadySignupMemberInSelfCompanyException;
 import shop.itbook.itbookfront.auth.util.OAuthAttribute;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
@@ -75,7 +75,7 @@ public class CustomOauthService implements OAuth2UserService<OAuth2UserRequest, 
             Objects.requireNonNull(checkValidAuthUser.getBody());
 
         if (!Objects.requireNonNull(commonResponseBody.getResult()).getIsSuccessful()) {
-            throw new AlreadySingupMemberInSelfCompanyException();
+            throw new AlreadySignupMemberInSelfCompanyException();
         }
 
         return new DefaultOAuth2User(

@@ -7,13 +7,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
-import shop.itbook.itbookfront.auth.filter.CustomExceptionFilter;
 import shop.itbook.itbookfront.auth.handler.CustomAccessDeniedHandler;
+import shop.itbook.itbookfront.auth.handler.CustomLoginFailureHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.handler.CustomOAuthSuccessHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
@@ -43,7 +43,6 @@ public class SecurityConfig {
             .authorizeHttpRequests()
             .antMatchers("/login").permitAll()
             .antMatchers("/adminpage/**").hasAuthority("ADMIN")
-            .antMatchers("/mypage/**").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf()
@@ -53,25 +52,28 @@ public class SecurityConfig {
             .formLogin()
             .loginPage("/login")
             .permitAll()
-            .loginProcessingUrl("/doLogin")
+            .loginProcessingUrl("/auth/login")
             .usernameParameter("memberId")
             .passwordParameter("password")
             .defaultSuccessUrl("/")
-            .failureUrl("/login");
+            .failureHandler(customLoginFailureHandler());
 
         http
             .logout()
             .logoutUrl("/logout")
+            .deleteCookies("ITBOOK_SESSIONID")
             .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
+
             .and()
-            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
+//            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
             .oauth2Login()
             .loginPage("/login").permitAll()
             .successHandler(customOAuthSuccessHandler(null))
+            .failureHandler(customLoginFailureHandler())
             .userInfoEndpoint()
             .userService(customOAuth2UserService(null));
 
@@ -114,6 +116,7 @@ public class SecurityConfig {
     public CustomAuthorizationFilter customAuthorizationFilter() {
         CustomAuthorizationFilter customAuthorizationFilter = new CustomAuthorizationFilter();
         customAuthorizationFilter.setAuthenticationManager(customAuthenticationManager(null));
+        customAuthorizationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
         return customAuthorizationFilter;
     }
 
@@ -154,17 +157,6 @@ public class SecurityConfig {
     }
 
     /**
-     * 시큐리티에서 발생하는 에러를 try catch로 잡아 처리하는 필터 입니다.
-     *
-     * @return customExceptionFilter
-     * @author 강명관
-     */
-    @Bean
-    public OncePerRequestFilter customExceptionFilter() {
-        return new CustomExceptionFilter();
-    }
-
-    /**
      * AccessDenied 에 대한 처리를 위한 핸들러 입니다.
      *
      * @return CustomAccessDeniedHandler
@@ -175,4 +167,13 @@ public class SecurityConfig {
         return new CustomAccessDeniedHandler();
     }
 
+    /**
+     * 로그인 실패처리를 하기 위한 핸들러 입니다.
+     *
+     * @return AuthenticationFailureHandler
+     */
+    @Bean
+    public AuthenticationFailureHandler customLoginFailureHandler() {
+        return new CustomLoginFailureHandler();
+    }
 }

@@ -2,12 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
 
-     <style>
+    <style>
 
     </style>
 
@@ -27,19 +28,7 @@
                     <!--                    <h4 class="box-title mt-5">Product description</h4>-->
                     <p th:if="${not #strings.equals(product.detailsDescription, null)}">
                         [[${product.detailsDescription}]]</p>
-                    <h2 class="mt-5" data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}">
-                        <small class="text-success" th:text="|${product.discountPercent}%off|"></small>
-                    </h2>
-                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
-                            data-original-title="Add to cart">
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
-                    <button class="btn btn-danger"
-                            th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                        품절</button>
-                    <button class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet?productNo={productNo}&productCnt=1(productNo=${product.productNo})}'|"
-                            th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                    >구매하기</button>
+
                     <div class="col-lg-11 col-md-11 col-sm-10">
                         <h5 class="box-title mt-5">상세 정보</h5>
                         <div class="table-responsive">
@@ -73,11 +62,52 @@
                             </table>
                         </div>
                     </div>
+
+                    <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5"
+                                  data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
+                    <small style="font-size: 15pt; margin-left: 10%" class="text-success"
+                           th:text="|(${product.discountPercent}%off)|"></small>
+
+
+                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
+                            data-original-title="Add to cart"
+                            th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
+                        <i class="fa fa-shopping-cart"></i>
+                    </button>
+                    <button class="btn btn-danger"
+                            th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                        품절
+                    </button>
+                    <!--                    <form id="purchase" method="post" th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
+                    <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
+                    <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
+                    <!--                    </form>-->
+                    <button sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
+                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기</button>
+                    <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"
+                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
+                        <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header"></div>
+                                    <div class="modal-body">비회원으로 주문하시겠습니까?</div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-info" id="modalY">예</a>
+                                        <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
+                                        <a class="btn btn-dark block" id="modalN" type="button" data-dismiss="modal">취소</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+          integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
@@ -85,7 +115,8 @@
             <div class="row">
                 <div class="col-sm-2 col-lg-2 mb-2-6" th:each="rp: ${pageResponse.content}">
                     <div class="card-wrapper mb-2">
-                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="..."></div>
+                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                        </div>
                         <div class="card-body">
                             <div>
                                 <a href="#">
@@ -103,13 +134,74 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star mr-0"></i>
                         </div>
-                        <h6 class="mb-0 text-primary" >[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') + '원'}]]([[${rp.discountPercent}]]%)</h6>
+                        <h6 class="mb-0 text-primary">[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') +
+                            '원'}]]([[${rp.discountPercent}]]%)</h6>
                     </div>
                 </div>
             </div>
         </div>
         <th:block th:include="component/pageFooter"></th:block>
     </section>
+    <section>
+        <div>
+            <h4>도서 리뷰</h4>
+            <hr>
+            <div>
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box no-header clearfix">
+                                <div class="main-box-body clearfix">
+                                    <div class="table-responsive">
+                                        <table class="table user-list">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th><span></span></th>
+                                                <th><span></span></th>
+                                                <th><span></span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="review : ${reviewPageResponse.getContent()}">
+                                                <td><img width="100px;" th:src="${review.image}"></td>
+                                                <td><span th:text="${review.content}"></span></td>
+                                                <td><span th:text="${review.starPoint}"></span> / 5</td>
+                                                <td>
+                                                    <button class="btn btn-primary"
+                                                            th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">상세보기</button>
+                                                </td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:include="component/reviewPageFooter"></th:block>
+            </div>
+        </div>
+    </section>
+    <script src="/cart/js/cartAddProduct.js"></script>
+    <script th:inline="javascript">
+        $('#purchase').click(function (e) {
+            e.preventDefault();
+            $('#nonMemberModal').modal("show");
+        });
+        $('#modalY').click(function () {
+            const productNoList = [[${product.productNo}]];
+            const productCntList = [1];
+
+            location.href = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;
+            $('#nonMemberModal').modal("hide");
+        })
+        $('#modalN').click(function () {
+            $('#nonMemberModal').modal("hide");
+        })
+    </script>
 </div>
 </body>
 </html>

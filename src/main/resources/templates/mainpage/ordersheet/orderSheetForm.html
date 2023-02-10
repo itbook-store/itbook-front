@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
     <meta charset="UTF-8">
     <title>주문 페이지</title>
 
+    <script src="/payment/js/payment.js"></script>
+    <!-- Sweet Alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="/mainpage/css/orderSheet.css">
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
 
@@ -14,7 +21,7 @@
 
 <div layout:fragment="content">
     <div class="order-title"><b>주 문</b> 하 기</div>
-    <form id="orderForm" th:action="@{/orders/temp}"
+    <form id="orderForm"
           class="product-info" method="post" th:object="${orderAddRequestDto}">
         <div class="product-box">
             <div class="box-title table">주문 상품 정보</div>
@@ -60,11 +67,11 @@
                                             </td>
                                             <td>
                                                 <input class="no-input" name="productCntList"
-                                                       type="text" th:value="${productCnt}" readonly>
+                                                       type="text" th:value="${productCntQueue.peek()}">
                                             </td>
                                             <td>
                                                 <input class="no-input" type="text"
-                                                       th:value="${product.selledPrice} * ${productCnt}"
+                                                       th:value="${product.selledPrice} * ${productCntQueue.poll()}"
                                                        readonly>
                                             </td>
                                         </tr>
@@ -80,32 +87,50 @@
         <div class="address-box">
             <div class="box-title">배송지 정보 입력</div>
             <div class="box-content">
-                <button type="button" class="btn btn-primary">배송지 선택</button>
                 <br/>
 
-                <fieldset>
-                    <div th:each="dst : ${memberDestinationList}">
-                        <input type="radio" name="address-radio" id="select-address">
-                        <label for="select-address">
-                            <input type="number" id="sample4_postcode" readonly placeholder="우편번호"
-                                   name="postcode"
-                                   th:value="${dst.postcode}">
-                            <!--                        <input class="btn-info" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">-->
-                            <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
-                                   name="roadNameAddress"
-                                   th:value="${dst.roadNameAddress}">
-                            <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
-                                   name="recipientAddressDetails"
-                                   th:value="${dst.recipientAddressDetails}" readonly>
-                            <input type="text" placeholder="수령인 이름"
-                                   name="recipientName"
-                                   th:value="${dst.recipientName}">
-                            <input type="text" placeholder="수령인 연락처"
-                                   name="recipientPhoneNumber"
-                                   th:value="${dst.recipientPhoneNumber}">
-                        </label>
+                <div class="address-tab">
+                    <div class="button-tabs">
+                        <button type="button" id="member-address-tab" class="btn btn-primary">배송지 선택</button>
+                        <button type="button" id="direct-address-tab" class="btn btn-primary">직접 입력</button>
                     </div>
-                </fieldset>
+                    <th:block sec:authorize="isAuthenticated()" th:if="${!memberDestinationList.isEmpty()}">
+                        <div th:each="dst : ${memberDestinationList}">
+                            <input type="radio" name="address-radio" id="select-address">
+                            <label for="select-address">
+                                <input type="number" readonly placeholder="우편번호"
+                                       name="postcode"
+                                       th:value="${dst.postcode}">
+                                <input type="text" size="50" readonly placeholder="도로명주소"
+                                       name="roadNameAddress"
+                                       th:value="${dst.roadNameAddress}">
+                                <input type="text" size="30" placeholder="상세주소"
+                                       name="recipientAddressDetails"
+                                       th:value="${dst.recipientAddressDetails}" readonly>
+                                <input type="text" placeholder="수령인 이름"
+                                       name="recipientName"
+                                       th:value="${dst.recipientName}">
+                                <input type="text" placeholder="수령인 연락처"
+                                       name="recipientPhoneNumber"
+                                       th:value="${dst.recipientPhoneNumber}">
+                            </label>
+                        </div>
+                    </th:block>
+                </div>
+
+                <div class="address-tab">
+                    <input type="number" id="sample4_postcode" readonly placeholder="우편번호"
+                           name="postcode">
+                    <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+                    <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
+                           name="roadNameAddress">
+                    <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
+                           name="recipientAddressDetails">
+                    <input type="text" placeholder="수령인 이름"
+                           name="recipientName">
+                    <input type="text" placeholder="수령인 연락처"
+                           name="recipientPhoneNumber">
+                </div>
 
             </div>
         </div>
@@ -121,10 +146,15 @@
             </div>
             <br>
         </div>
+
+        <button class="btn btn-info" id="paymentButton" type="button" onclick="createOrderForPayment()">
+            결제하기
+        </button>
+<!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
+<!--            가상계좌 결제-->
+<!--        </button>-->
         <!--    all box end-->
-        <input type="submit" value="결제하기">
     </form>
-    <!--            <button th:onclick="|location.href='@{/orders/temp}'|">결제하기</button>-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script>
@@ -164,27 +194,86 @@
                     // 우편번호와 주소 정보를 해당 필드에 넣는다.
                     document.getElementById('sample4_postcode').value = data.zonecode;
                     document.getElementById("sample4_roadAddress").value = roadAddr;
-
-                    // var guideTextBox = document.getElementById("guide");
-                    // // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                    // if (data.autoRoadAddress) {
-                    //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    //     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                    //     guideTextBox.style.display = 'block';
-                    //
-                    // } else if (data.autoJibunAddress) {
-                    //     var expJibunAddr = data.autoJibunAddress;
-                    //     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                    //     guideTextBox.style.display = 'block';
-                    // } else {
-                    //     guideTextBox.innerHTML = '';
-                    //     guideTextBox.style.display = 'none';
-                    // }
                 }
             }).open();
         }
     </script>
-</div>
+    <script th:inline="javascript">
 
+        let temp = [[${orderAddRequestDto}]];
+        let productCntList = Array.from(document.getElementsByName("productCntList")).map(e => parseInt(e.value));
+
+        async function createOrderForPayment() {
+
+            let orderAddRequestDto = {
+                "productNoList": temp.productNoList,
+                "productCntList": productCntList,
+                "postcode": parseInt(document.getElementsByName("postcode")[0].value),
+                "recipientName": document.getElementsByName("recipientName")[0].value,
+                "recipientPhoneNumber": document.getElementsByName("recipientPhoneNumber")[0].value,
+                "roadNameAddress": document.getElementsByName("roadNameAddress")[0].value,
+                "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
+                "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value
+            }
+
+            await fetch(`/async/orders/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
+        }
+
+        function doPaymentProcessByCard(data) {
+            const clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
+            var tossPayments = TossPayments(clientKey);
+
+            tossPayments.requestPayment('카드', { // 결제 수단 파라미터
+                // 결제 정보 파라미터
+                amount: data.amount,
+                orderId: data.orderId,
+                orderName: data.orderName,
+                successUrl: data.successUrl,
+                failUrl: data.failUrl,
+            })
+                .catch(function (error) {
+                    if (error.code === 'USER_CANCEL') {
+                        Swal.fire(
+                            '결제가 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'DUPLICATED_ORDER_ID') {
+                        Swal.fire(
+                            '이미 승인 및 취소가 진행된 중복된 주문번호 입니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'INVALID_CARD_COMPANY') {
+                        Swal.fire(
+                            '결제가 사용자에 의해 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                    } else if (error.code === 'PAY_PROCESS_CANCELED') {
+                        Swal.fire(
+                            '결제가 취소되었습니다.',
+                            '',
+                            'error',
+                        );
+                        alert("유효하지 않은 카드 코드입니다.");
+                    } else {
+                        console.log(error.code)
+                    }
+                })
+        }
+    </script>
+</div>
 </body>
 </html>

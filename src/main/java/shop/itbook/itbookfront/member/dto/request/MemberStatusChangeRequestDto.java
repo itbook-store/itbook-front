@@ -20,7 +20,7 @@ public class MemberStatusChangeRequestDto {
     @Length(max = 255, message = "멤버 상태는 최대 255자까지 허용합니다.")
     private String memberStatusName;
 
-    @Length(min=2, max = 255)
+    @Length(min=2, max = 255, message = "차단 사유는 2자 ~ 255자 이내로 적어야합니다.")
     @NotNull(message = "차단사유는 null값을 허용하지 않습니다.")
     private String statusChangedReason;
 

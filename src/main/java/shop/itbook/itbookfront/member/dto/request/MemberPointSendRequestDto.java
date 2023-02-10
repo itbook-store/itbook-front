@@ -1,7 +1,9 @@
 package shop.itbook.itbookfront.member.dto.request;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +34,7 @@ public class MemberPointSendRequestDto {
     @NotNull(message = "포인트 받는 회원 아이디는 null 일 수 없습니다.")
     private String receiveMemberId;
 
-    @Positive(message = "포인트는 양수여야 합니다.")
+    @PositiveOrZero(message = "포인트는 양수여야 합니다.")
+    @NotBlank(message = "포인트는 null이거나 공백일 수 없습니다.")
     private Long giftPoint;
 }

@@ -8,6 +8,10 @@ html, body {
     background: #ffffff;
 }
 
+body {
+    background-color: #F8F8F8;
+}
+
 #container {
     display: flex;
     flex-direction: row;

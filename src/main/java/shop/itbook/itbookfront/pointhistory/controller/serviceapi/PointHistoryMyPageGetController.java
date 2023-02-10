@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.pointhistory.dto.response.PointHistoryListDto;
-import shop.itbook.itbookfront.pointhistory.service.serviceapi.PointHistoryMyPageGetService;
+import shop.itbook.itbookfront.pointhistory.service.serviceapi.PointHistoryService;
 
 /**
  * @author 최겸준
@@ -26,7 +26,7 @@ public class PointHistoryMyPageGetController {
 
     public static final String DIRECTORY_PATH = "mypage/pointhistory";
 
-    private final PointHistoryMyPageGetService pointHistoryMemberService;
+    private final PointHistoryService pointHistoryMemberService;
 
     @GetMapping("/show-content/my-point-list")
     public String myPointHistoryList(@PageableDefault Pageable pageable, @RequestParam(required = false) String content, Model model, @AuthenticationPrincipal
@@ -36,7 +36,7 @@ public class PointHistoryMyPageGetController {
             String.format("/api/point-histories/my-point/%d?page=%d&size=%d&content=%s", userDetailsDto.getMemberNo(), pageable.getPageNumber(),
                 pageable.getPageSize(), content);
 
-        PageResponse<PointHistoryListDto> pageResponse = pointHistoryMemberService.findMyPointHistoryList(format);
+        PageResponse<PointHistoryListDto> pageResponse = pointHistoryMemberService.findPointHistoryList(format);
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/point-histories/show-content/my-point-list");
         model.addAttribute("content", content);

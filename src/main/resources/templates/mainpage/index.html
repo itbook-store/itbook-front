@@ -4,23 +4,25 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
+    <style>
+        a { text-decoration:none !important }
+        a:hover { text-decoration:none !important }
+    </style>
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
-    <link href="/mainpage/css/floating-button.css" rel="stylesheet">
+<!--    <link href="/mainpage/css/floating-button.css" rel="stylesheet">-->
     <link href="/mainpage/css/bubbler.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
 <body>
 <div layout:fragment="content" style="width: 100%!important; margin-inline: 0!important">
-    <div th:if="${not #lists.isEmpty(newBookList)}" style="height: 548px; margin: 0">
+    <div th:if="${not #lists.isEmpty(recommendationList)}" style="height: 548px; margin: 0">
 
         <div class="position-relative overflow-hidden p-md-5 text-center bg-light" style="height: 88%">
             <!--            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">-->
-            <div class="fade-custom" th:each="product : ${newBookList}">
-                <span class="product-type-label">NEW</span>
-
-
+            <div class="fade-custom" th:each="product : ${recommendationList}">
+                <span class="product-type-label">추천 도서</span>
                 <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
                     <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal"
                         th:text="${product.productName}"></h1>
@@ -42,10 +44,13 @@
 
     <div class="main" style="margin-inline: 10%;">
 
-        <div class="row product-grid4" th:if="${not #lists.isEmpty(newBookList)}">
-            <h2 style="text-align: left">신간 도서 </h2>
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(newBooks)}">
+            <h2 style="text-align: left">신간 도서 <a th:href="@{/products(productTypeNo=${1}, productTypeName=${'신간'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product : ${newBookList}" style="text-align: center">
+            <div class="col-md-2" th:each="product : ${newBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
@@ -72,15 +77,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row" th:unless="${not #lists.isEmpty(newBookList)}" style="text-align: center">
-                <p>상품이 존재하지 않습니다.</p>
-            </div>
         </div>
 
-        <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBookList)}" data-spy="scroll">
-            <h2 style="text-align: left">할인 도서 </h2>
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBooks)}">
+            <h2 style="text-align: left"> 할인 도서
+                <a th:href="@{/products(productTypeNo=${2}, productTypeName=${'할인'})}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product : ${discountBookList}" style="text-align: center">
+            <div class="col-md-2" th:each="product : ${discountBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
@@ -97,9 +103,10 @@
                                     품절</span>
                     <span class="product-new-label">[[${product.discountPercent}]]%</span>
                 </div>
+                </a>
                 <div class="product-content">
-                    <h3 class="title"><a
-                    >[[${product.productName}]]</a>
+                    <h3 class="title">
+                        [[${product.productName}]]
                     </h3>
                     <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
                         <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
@@ -107,15 +114,96 @@
                 </div>
             </div>
         </div>
-        <div class="row" th:unless="${not #lists.isEmpty(discountBookList)}" style="text-align: center">
-            <p>상품이 존재하지 않습니다.</p>
+
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(bestSeller)}">
+            <h2 style="text-align: left">베스트셀러 <a th:href="@{/products(productTypeNo=${3}, productTypeName=${'베스트셀러'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a> </h2>
+            <hr>
+            <div class="col-md-2" th:each="product : ${bestSeller}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <th:block sec:authorize="isAnonymous()">
+                        <li><a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a>
+                            </li>
+                        </th:block>
+
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(popularBooks)}">
+            <h2 style="text-align: left">인기 도서 <a th:href="@{/products(productTypeNo=${5}, productTypeName=${'인기'})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            </a></h2>
+            <hr>
+            <div class="col-md-2" th:each="product, count : ${popularBooks}" style="text-align: center">
+                <div class="product-image4">
+                    <a th:href="@{|/products/${product.productNo}|}">
+                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                    </a>
+                    <ul class="social">
+                        <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                    </ul>
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                    품절</span>
+                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                </div>
+                </a>
+                <div class="product-content">
+                    <h3 class="title">
+                        [[${product.productName}]]
+                    </h3>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
     <script src="/mainpage/js/slider.js"></script>
     <script src="/cart/js/cartAddProduct.js"></script>
     <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>
     <script type="text/javascript" src="/mainpage/js/script.js"></script>
-    <script src="/cart/js/cartHeader.js"></script>
+<!--    <script src="/cart/js/cartHeader.js"></script>-->
+    <script src="/bookmark/js/bookmarkAdd.js"></script>
 
 </div>
 

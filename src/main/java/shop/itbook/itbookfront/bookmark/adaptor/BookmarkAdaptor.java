@@ -12,15 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.bookmark.dto.request.BookmarkRequestDto;
-import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.bookmark.dto.response.BookmarkResponseDto;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
 
 /**
+ * 즐겨찾기에 대한 Shop서버와 통신하는 로직을 담고있는 클래스 입니다.
+ *
  * @author 강명관
  * @since 1.0
  */
@@ -65,7 +65,7 @@ public class BookmarkAdaptor {
 
         restTemplate.exchange(
             gatewayConfig.getGatewayServer() + DELETE_BOOKMARK_API,
-            HttpMethod.POST,
+            HttpMethod.DELETE,
             new HttpEntity<>(bookmarkRequestDto, headers),
             new ParameterizedTypeReference<>() {}
         );
@@ -83,9 +83,9 @@ public class BookmarkAdaptor {
 
     }
 
-    public PageResponse<ProductDetailsResponseDto> getBookmarkList(Long memberNo) {
+    public PageResponse<BookmarkResponseDto> getBookmarkList(Long memberNo) {
 
-        ResponseEntity<CommonResponseBody<PageResponse<ProductDetailsResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<PageResponse<BookmarkResponseDto>>> exchange =
             restTemplate.exchange(
             gatewayConfig.getGatewayServer() + GET_BOOKMARK_LIST_API + memberNo,
             HttpMethod.GET,

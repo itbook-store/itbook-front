@@ -6,6 +6,10 @@ table, tr, td {
     text-align: center;
 }
 
+th {
+    text-align: center;
+}
+
 td {
     cursor: hand;
 }

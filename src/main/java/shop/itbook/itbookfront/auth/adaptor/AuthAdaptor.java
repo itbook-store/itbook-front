@@ -16,7 +16,7 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.exception.LoginFailException;
+import shop.itbook.itbookfront.auth.exception.LoginFailException;
 
 /**
  * RestTemplate 통신 메서드를 제공해주는 클래스 입니다.
