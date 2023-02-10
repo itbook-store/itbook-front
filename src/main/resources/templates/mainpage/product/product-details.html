@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 
 <head>
@@ -82,7 +83,9 @@
                     <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
                     <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
                     <!--                    </form>-->
-                    <button id="purchase" class="btn btn-primary btn-rounded" th:onclick="confirmNonMember()"
+                    <button sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
+                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
+                    <button sec:authorize="!isAuthenticated()" id="purchase" class="btn btn-primary btn-rounded"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
                         <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
