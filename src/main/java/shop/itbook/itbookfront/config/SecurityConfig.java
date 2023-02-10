@@ -62,10 +62,10 @@ public class SecurityConfig {
             .logout()
             .logoutUrl("/logout")
             .addLogoutHandler(customLogoutHandler(null))
-            .logoutSuccessUrl("/")
-            .and()
-            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .logoutSuccessUrl("/");
+//            .and()
+//            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
+//            .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
             .oauth2Login()
