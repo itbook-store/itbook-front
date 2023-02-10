@@ -53,4 +53,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewAdaptor.modifyReview(orderProductNo, reviewRequestDto, images);
     }
+
+    @Override
+    public PageResponse<ReviewResponseDto> findReviewListByProductNo(String url, Long productNo) {
+        return reviewAdaptor.getReviewListByProductNo(url, productNo);
+    }
 }

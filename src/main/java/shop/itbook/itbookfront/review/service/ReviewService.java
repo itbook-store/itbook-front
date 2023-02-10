@@ -23,4 +23,7 @@ public interface ReviewService {
     void modifyReview(Long orderProductNo,
                       ReviewRequestDto reviewRequestDto,
                       MultipartFile images);
+
+    PageResponse<ReviewResponseDto> findReviewListByProductNo(String url,
+                                                             Long productNo);
 }

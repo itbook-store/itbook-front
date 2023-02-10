@@ -148,4 +148,23 @@ public class ReviewAdaptor {
         }
 
     }
+
+    public PageResponse<ReviewResponseDto> getReviewListByProductNo(String url,
+                                                                   Long productNo) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<CommonResponseBody<PageResponse<ReviewResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/list/product/" + productNo + url,
+                HttpMethod.GET, entity, new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
 }

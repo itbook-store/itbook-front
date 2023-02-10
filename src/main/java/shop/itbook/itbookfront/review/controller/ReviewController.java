@@ -46,14 +46,20 @@ public class ReviewController {
     @GetMapping("/mypage/list")
     public String mypageReviewList(Model model,
                                    @PageableDefault Pageable pageable,
+                                   RedirectAttributes redirectAttributes,
                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        PageResponse<ReviewResponseDto> pageResponse = reviewService.findReviewListByMemberNo(
-            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
-            userDetailsDto.getMemberNo());
+        try {
+            PageResponse<ReviewResponseDto> pageResponse = reviewService.findReviewListByMemberNo(
+                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
+                userDetailsDto.getMemberNo());
 
-        model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/review/mypage/list");
+            model.addAttribute("pageResponse", pageResponse);
+            model.addAttribute("paginationUrl", "/review/mypage/list");
+        } catch (ReviewNotFoundException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
 
         return "mypage/review/review-mypage-list";
     }
@@ -133,7 +139,8 @@ public class ReviewController {
         log.info("reviewRequestDto = {}", reviewRequestDto);
 
         try {
-            reviewService.modifyReview(reviewRequestDto.getOrderProductNo(), reviewRequestDto, images);
+            reviewService.modifyReview(reviewRequestDto.getOrderProductNo(), reviewRequestDto,
+                images);
         } catch (ReviewAlreadyRegisteredException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
