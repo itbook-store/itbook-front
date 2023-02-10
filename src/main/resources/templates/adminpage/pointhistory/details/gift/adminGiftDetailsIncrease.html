@@ -51,7 +51,7 @@
                     type="text" class="form-control" id="time" name="writer"
                     th:value="${#temporals.format(details.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}" disabled>
             </div>
-            <a href="list" class="btn btn-outline-secondary">list</a>
+            <a th:href="@{/admin/point-histories/show-content/admin-point-list(page=${adminPointHistoryPage})}" class="btn btn-outline-secondary">list</a>
           </form>
         </div>
       </div>
