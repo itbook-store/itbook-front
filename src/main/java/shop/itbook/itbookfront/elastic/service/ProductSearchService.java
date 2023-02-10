@@ -9,5 +9,7 @@ import shop.itbook.itbookfront.elastic.dto.response.ProductSampleResponseDto;
  * @since 1.0
  */
 public interface ProductSearchService {
-    PageResponse<ProductSampleResponseDto> findProductList(String searchProductUrl);
+    PageResponse<ProductSampleResponseDto> findProductPageList(String url);
+
+    List<ProductSampleResponseDto> findProductList(String searchProductUrl);
 }
