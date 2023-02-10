@@ -87,13 +87,6 @@
 
         </nav>
     </div>
-    <div class="col-lg-2" th:each="productType : ${productTypeList}">
-        <a th:href="@{/products(productTypeNo=${productType.productTypeNo}, productTypeName=${productType.productTypeName})}">
-            <button style="margin-left: 15px" class="navbar-toggler text-white">
-                [[${productType.productTypeName}]]
-            </button>
-        </a>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

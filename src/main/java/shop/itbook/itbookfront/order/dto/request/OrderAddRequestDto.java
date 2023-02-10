@@ -13,8 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @since 1.0
  */
 @Getter
-@NoArgsConstructor
 @Setter
+@NoArgsConstructor
 public class OrderAddRequestDto {
 
     private List<Long> productNoList;
