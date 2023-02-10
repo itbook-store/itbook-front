@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -55,10 +56,14 @@ public class OrderController {
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") String orderNo) {
 
-//        orderService.completeOrderPayOfMember(orderNo);
 
         return "mainpage/order/orderCompletionForm";
     }
 
+    @GetMapping("/details/{orderNo}")
+    public String orderDetailsView(@PathVariable("orderNo") Long orderNo) {
 
+        orderService.findOrderDetails(orderNo);
+        return "hell";
+    }
 }

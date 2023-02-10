@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.payment.dto.response;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,6 @@ public class PaymentResponseDto {
     @Getter
     @Setter
     @NoArgsConstructor
-//    @AllArgsConstructor
     public static class PaymentDataResponseDto {
         private String paymentKey;
         private String orderId;
@@ -73,7 +71,6 @@ public class PaymentResponseDto {
     @Getter
     @Setter
     @NoArgsConstructor
-//    @AllArgsConstructor
     public static class Failure {
         private String code;
         private String message;
@@ -82,7 +79,6 @@ public class PaymentResponseDto {
     @Getter
     @Setter
     @NoArgsConstructor
-//    @AllArgsConstructor
     public static class CardResponseDto {
         private String number;
         private Long amount;
