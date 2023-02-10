@@ -39,7 +39,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         HttpSession session = request.getSession(false);
 
-        if (Objects.isNull(session)) {
+        if (Objects.isNull(session) || Objects.isNull(authentication)) {
             response.addHeader("message", MESSAGE);
             try {
                 redirectStrategy.sendRedirect(request, response, "/login");

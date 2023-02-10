@@ -28,6 +28,9 @@ import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
+import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
+import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
+import shop.itbook.itbookfront.review.service.ReviewService;
 
 /**
  * @author 이하늬
@@ -41,6 +44,8 @@ public class ProductServiceController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+
+    private final ReviewService reviewService;
 
     @GetMapping(params = {"categoryNo", "categoryName"})
     public String productListByCategory(@RequestParam Integer categoryNo,
@@ -141,8 +146,16 @@ public class ProductServiceController {
                         productNo, pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", relationProductList);
 
+            PageResponse<ReviewResponseDto> reviewPageResponse = reviewService.findReviewListByProductNo(
+                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
+                productNo);
+
+            model.addAttribute("reviewPageResponse", reviewPageResponse);
+            model.addAttribute("paginationUrl", "/products/"+productNo);
 
         } catch (ProductNotFoundException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        } catch (ReviewNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
 
