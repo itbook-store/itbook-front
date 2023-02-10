@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.MemberForbiddenException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.payment.exception.InvalidPaymentException;
 import shop.itbook.itbookfront.product.exception.InvalidInputException;
 
 /**
@@ -26,7 +27,10 @@ public class ControllerAdvisor {
     private static final String MESSAGE = "message";
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = {BadRequestException.class, MethodArgumentNotValidException.class})
+    @ExceptionHandler(value = {
+        BadRequestException.class,
+        MethodArgumentNotValidException.class,
+        InvalidPaymentException.class})
     public String badRequestException400(Exception e) {
         log.error("badRequestException400 {}", e);
         return "/error/400error";

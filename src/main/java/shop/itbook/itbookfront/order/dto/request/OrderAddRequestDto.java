@@ -2,10 +2,10 @@ package shop.itbook.itbookfront.order.dto.request;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Queue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -13,8 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @since 1.0
  */
 @Getter
-@NoArgsConstructor
 @Setter
+@NoArgsConstructor
 public class OrderAddRequestDto {
 
     private List<Long> productNoList;
@@ -27,17 +27,27 @@ public class OrderAddRequestDto {
     private String roadNameAddress;
     private String recipientAddressDetails;
 
+    @JsonIgnore
+    private String orderId;
+    @JsonIgnore
+    private String orderName;
+    @JsonIgnore
+    private Long amount;
+
     @Override
     public String toString() {
         return "OrderAddRequestDto{" +
             "productNoList=" + productNoList +
-            ", productCountList=" + productCntList +
+            ", productCntList=" + productCntList +
             ", selectedDeliveryDate=" + selectedDeliveryDate +
             ", recipientName='" + recipientName + '\'' +
             ", recipientPhoneNumber='" + recipientPhoneNumber + '\'' +
             ", postcode=" + postcode +
             ", roadNameAddress='" + roadNameAddress + '\'' +
             ", recipientAddressDetails='" + recipientAddressDetails + '\'' +
+            ", orderId='" + orderId + '\'' +
+            ", orderName='" + orderName + '\'' +
+            ", amount=" + amount +
             '}';
     }
 }

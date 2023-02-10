@@ -30,5 +30,4 @@ public class CustomAuthorizationFilter extends UsernamePasswordAuthenticationFil
             new UsernamePasswordAuthenticationToken(memberId, password)
         );
     }
-
 }

@@ -1,5 +1,7 @@
 package shop.itbook.itbookfront.ordersheet.service.impl;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +13,6 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
-import shop.itbook.itbookfront.ordersheet.util.OrderSheetUtil;
 
 /**
  * OrderSheetService 인터페이스의 구현 클래스
@@ -26,16 +27,21 @@ public class OrderSheetServiceImpl implements OrderSheetService {
     private final GatewayConfig gatewayConfig;
     private final OrderAdaptor orderAdaptor;
 
-    private static final String ORDER_SHEET_PATH = "/api/order-sheet";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public OrderSheetResponseDto findOrderSheetOneProduct(Long productNo, Integer productCnt,
-                                                          Long memberNo) {
+    public OrderSheetResponseDto findOrderSheetCartProducts(List<Long> productNoList,
+                                                            List<Integer> productCntList,
+                                                            Optional<Long> memberNo) {
+
         UriComponents uriComponents =
             UriComponentsBuilder.fromUriString(gatewayConfig.getGatewayServer())
-                .path(ORDER_SHEET_PATH)
-                .queryParam("productNo", productNo)
-                .queryParam("memberNo", memberNo)
+                .path("/api/order-sheet")
+                .queryParam("productNoList", productNoList)
+                .queryParam("productCntList", productCntList)
+                .queryParamIfPresent("memberNo", memberNo)
                 .build();
 
         HttpHeaders headers = new HttpHeaders();

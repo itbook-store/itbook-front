@@ -57,3 +57,12 @@
 .table td {
     display: block;
 }
+
+.button-tabs {
+    display: flex;
+    margin-bottom: 2vh;
+}
+
+#direct-address-tab {
+    margin-left: 1vh;
+}
