@@ -3,8 +3,12 @@ function doPaymentProcessByCard() {
     var tossPayments = TossPayments(clientKey);
 
     let orderId_UUID = self.crypto.randomUUID();
-    let amount_input = document.getElementById("amount");
-    let orderName_input = document.getElementById("orderName");
+    let amount_input = document.getElementById("amount").value;
+    let orderName_input = document.getElementById("orderName").value;
+
+    console.log(orderId_UUID);
+    console.log(amount_input);
+    console.log(orderName_input);
 
     tossPayments.requestPayment('카드', { // 결제 수단 파라미터
                                         // 결제 정보 파라미터

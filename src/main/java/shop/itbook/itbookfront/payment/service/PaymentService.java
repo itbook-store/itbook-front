@@ -28,11 +28,10 @@ public interface PaymentService {
     /**
      * 샵 서버를 통해 토스에 결제 승인 요청을 하는 기능을 담당합니다.
      *
-     * @param requestDto the request dto
      * @return the payment response dto . payment data response dto
      */
     OrderNoResponseDto requestApprovePayment(
-        PaymentApproveRequestDto requestDto);
+        String paymentKey, String orderId, Long amount);
 
     /**
      * 샵 서버를 통해 토스에 결제 취소 요청을 하는 기능을 담당합니다.

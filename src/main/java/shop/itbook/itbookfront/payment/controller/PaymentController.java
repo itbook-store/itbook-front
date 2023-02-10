@@ -47,10 +47,9 @@ public class PaymentController {
 
         // requestPayment() 메서드에 담아 보낸 amount 값과 successUrl로 돌아온 amount 값이 같은지 확인해보기
         // 값이 다르면 결제 요청을 다시 하기
-
-        PaymentApproveRequestDto
-            requestDto = new PaymentApproveRequestDto(paymentKey, orderId, amount);
-        OrderNoResponseDto responseDto = paymentService.requestApprovePayment(requestDto);
+        
+        OrderNoResponseDto responseDto =
+            paymentService.requestApprovePayment(paymentKey, orderId, amount);
         if (Objects.isNull(responseDto)) {
             return "redirect:" + FAIL_URL;
         }

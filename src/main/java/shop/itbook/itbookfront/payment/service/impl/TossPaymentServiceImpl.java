@@ -26,11 +26,10 @@ public class TossPaymentServiceImpl implements PaymentService {
 
     @Override
     public OrderNoResponseDto requestApprovePayment(
-        PaymentApproveRequestDto requestDto) {
-        OrderNoResponseDto responseDto =
-            paymentAdaptor.requestApprovePayment(requestDto);
+        String paymentKey, String orderId, Long amount) {
 
-        return responseDto;
+        return paymentAdaptor.requestApprovePayment(
+            new PaymentApproveRequestDto(paymentKey, orderId, amount));
     }
 
     @Override
@@ -39,8 +38,7 @@ public class TossPaymentServiceImpl implements PaymentService {
 
         PaymentCanceledRequestDto paymentCanceledRequestDto =
             new PaymentCanceledRequestDto(orderNo, canceledReason);
-        OrderNoResponseDto responseDto =
-            paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto);
-        return responseDto;
+        
+        return paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto);
     }
 }
