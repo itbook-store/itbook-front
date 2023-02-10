@@ -62,8 +62,10 @@ public class SecurityConfig {
         http
             .logout()
             .logoutUrl("/logout")
+            .deleteCookies("ITBOOK_SESSIONID")
             .addLogoutHandler(customLogoutHandler(null))
             .logoutSuccessUrl("/")
+
             .and()
 //            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

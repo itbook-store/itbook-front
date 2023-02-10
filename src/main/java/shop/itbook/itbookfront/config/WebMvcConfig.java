@@ -35,7 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .setViewName("adminpage/categoryadmin/mainCategoryAddForm");
         registry.addViewController("/admin/products/select-add-product-type")
             .setViewName("adminpage/product/select-add-form");
-        registry.addViewController("/403error").setViewName("403error");
+        registry.addViewController("/error/403error").setViewName("/error/403error");
     }
 
     @Override
