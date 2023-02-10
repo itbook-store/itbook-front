@@ -16,4 +16,6 @@ public class OrderPaymentDto {
     private String orderId;
     private String orderName;
     private Long amount;
+    private String successUrl;
+    private String failUrl;
 }

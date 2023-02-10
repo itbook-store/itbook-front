@@ -6,7 +6,6 @@ import shop.itbook.itbookfront.payment.adaptor.PaymentAdaptor;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
-import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 import shop.itbook.itbookfront.payment.service.PaymentService;
 
 /**
@@ -18,18 +17,18 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 public class TossPaymentServiceImpl implements PaymentService {
     private final PaymentAdaptor paymentAdaptor;
 
-    @Override
-    public String getWidgetUrl(String orderId, String orderName, Long amount) {
-
-        return paymentAdaptor.requestWidget(orderId, orderName, amount);
-    }
+//    @Override
+//    public String getWidgetUrl(String orderId, String orderName, Long amount) {
+//
+//        return paymentAdaptor.requestWidget(orderId, orderName, amount);
+//    }
 
     @Override
     public OrderNoResponseDto requestApprovePayment(
-        String paymentKey, String orderId, Long amount) {
+        String paymentKey, String orderId, Long amount, Long orderNo) {
 
         return paymentAdaptor.requestApprovePayment(
-            new PaymentApproveRequestDto(paymentKey, orderId, amount));
+            new PaymentApproveRequestDto(paymentKey, orderId, amount), orderNo);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class TossPaymentServiceImpl implements PaymentService {
 
         PaymentCanceledRequestDto paymentCanceledRequestDto =
             new PaymentCanceledRequestDto(orderNo, canceledReason);
-        
+
         return paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto);
     }
 }

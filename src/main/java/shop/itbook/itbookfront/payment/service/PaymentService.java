@@ -1,9 +1,7 @@
 package shop.itbook.itbookfront.payment.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
-import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
 
 /**
  * The interface Payment service.
@@ -13,17 +11,17 @@ import shop.itbook.itbookfront.payment.dto.response.PaymentResponseDto;
  */
 public interface PaymentService {
 
-    /**
-     * 결제창을 호출합니다.
-     *
-     * @param orderId   the order id
-     * @param orderName the order name
-     * @param amount    the amount
-     * @return the widget url
-     * @throws JsonProcessingException the json processing exception
-     */
-    String getWidgetUrl(String orderId, String orderName, Long amount)
-        throws JsonProcessingException;
+//    /**
+//     * 결제창을 호출합니다.
+//     *
+//     * @param orderId   the order id
+//     * @param orderName the order name
+//     * @param amount    the amount
+//     * @return the widget url
+//     * @throws JsonProcessingException the json processing exception
+//     */
+//    String getWidgetUrl(String orderId, String orderName, Long amount)
+//        throws JsonProcessingException;
 
     /**
      * 샵 서버를 통해 토스에 결제 승인 요청을 하는 기능을 담당합니다.
@@ -31,7 +29,7 @@ public interface PaymentService {
      * @return the payment response dto . payment data response dto
      */
     OrderNoResponseDto requestApprovePayment(
-        String paymentKey, String orderId, Long amount);
+        String paymentKey, String orderId, Long amount, Long orderNo);
 
     /**
      * 샵 서버를 통해 토스에 결제 취소 요청을 하는 기능을 담당합니다.

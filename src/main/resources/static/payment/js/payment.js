@@ -1,52 +1,21 @@
-function doPaymentProcessByCard() {
+function doPaymentProcessByCard(data) {
     const clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
     var tossPayments = TossPayments(clientKey);
 
-    let orderId_UUID = self.crypto.randomUUID();
-    let amount_input = document.getElementById("amount").value;
-    let orderName_input = document.getElementById("orderName").value;
-
-    console.log(orderId_UUID);
-    console.log(amount_input);
-    console.log(orderName_input);
-
     tossPayments.requestPayment('카드', { // 결제 수단 파라미터
                                         // 결제 정보 파라미터
-        amount: amount_input,
-        orderId: orderId_UUID,
-        orderName: orderName_input,
-        successUrl: 'http://localhost:8080/orders/success',
-        failUrl: 'http://localhost:8080/orders/fail',
+        amount: data.amount,
+        orderId: data.orderId,
+        orderName: data.orderName,
+        successUrl: data.successUrl,
+        failUrl: data.failUrl,
     })
         .catch(function (error) {
             if (error.code === 'USER_CANCEL') {
-                console.log
             } else if (error.code === 'INVALID_CARD_COMPANY') {
                 // 유효하지 않은 카드 코드에 대한 에러 처리
             }
         })
-}
-
-function doPaymentProcessByVirtualAccount() {
-    const clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
-    var tossPayments = TossPayments(clientKey);
-
-    tossPayments.requestPayment('가상계좌', { // 결제 수단 파라미터
-        // 결제 정보 파라미터
-        amount: 15000,
-        orderId: 'Gz1n8igOcd_P6ReNzw_lv',
-        orderName: '토스 티셔츠 외 2건',
-        customerName: '박토스',
-        successUrl: 'http://localhost:8080/orders/success',
-        failUrl: 'http://localhost:8080/orders/fail',
-    })
-        // .catch(function (error) {
-        //     if (error.code === 'USER_CANCEL') {
-        //         // 결제 고객이 결제창을 닫았을 때 에러 처리
-        //     } else if (error.code === 'INVALID_CARD_COMPANY') {
-        //         // 유효하지 않은 카드 코드에 대한 에러 처리
-        //     }
-        // })
 }
 
 //

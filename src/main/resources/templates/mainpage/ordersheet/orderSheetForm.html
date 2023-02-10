@@ -144,20 +144,14 @@
             <br>
         </div>
 
-<!--        <input type="text" id="orderId" value="asdlkasdjfji12093_2i3" name="orderId">-->
-        <input type="text" id="orderName" value = "제발제발" name="orderName">
-        <input type="text" id="amount" th:value = 30000 name="amount">
-
-        <button class="btn btn-info" type="button" onclick="doPaymentProcessByCard()">
-            카드 결제
+        <button class="btn btn-info" id="paymentButton" type="button" onclick="createOrderForPayment()">
+            결제하기
         </button>
 <!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
 <!--            가상계좌 결제-->
 <!--        </button>-->
         <!--    all box end-->
-        <input class="btn" id="paymentButton" type="button" onclick="createOrderForPayment()" value="결제하기">
     </form>
-    <!--            <button th:onclick="|location.href='@{/orders/temp}'|">결제하기</button>-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script>
@@ -219,10 +213,6 @@
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value
             }
 
-            console.log(JSON.stringify(orderAddRequestDto));
-
-            console.log(orderAddRequestDto);
-
             await fetch(`/async/orders/payment-start`, {
 
                 method: "POST",
@@ -232,6 +222,9 @@
                 body: JSON.stringify(orderAddRequestDto)
             })
                 .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
         }
 
     </script>

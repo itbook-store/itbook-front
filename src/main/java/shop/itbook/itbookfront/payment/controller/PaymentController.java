@@ -1,7 +1,5 @@
 package shop.itbook.itbookfront.payment.controller;
 
-import static shop.itbook.itbookfront.payment.adaptor.PaymentAdaptor.FAIL_URL;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -27,39 +25,39 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @PostMapping("/payment/paymentWidget")
-    public String getPaymentWidget(@ModelAttribute OrderAddRequestDto orderAddRequestDto)
-        throws JsonProcessingException {
+//    @PostMapping("/payment/paymentWidget")
+//    public String getPaymentWidget(@ModelAttribute OrderAddRequestDto orderAddRequestDto)
+//        throws JsonProcessingException {
+//
+//        String orderId = orderAddRequestDto.getOrderId();
+//        String orderName = orderAddRequestDto.getOrderName();
+//        Long amount = orderAddRequestDto.getAmount();
+//
+//        String widgetUrl = paymentService.getWidgetUrl(orderId, orderName, amount);
+//
+//        return "redirect:" + widgetUrl;
+//    }
 
-        String orderId = orderAddRequestDto.getOrderId();
-        String orderName = orderAddRequestDto.getOrderName();
-        Long amount = orderAddRequestDto.getAmount();
 
-        String widgetUrl = paymentService.getWidgetUrl(orderId, orderName, amount);
-
-        return "redirect:" + widgetUrl;
-    }
-
-
-    @GetMapping(value = "/orders/success", params = {"paymentKey", "orderId", "amount"})
+    @GetMapping(value = "/orders/success/{orderNo}", params = {"paymentKey", "orderId", "amount"})
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
-                                 @RequestParam Long amount) {
+                                 @RequestParam Long amount, @PathVariable Long orderNo) {
 
         // requestPayment() 메서드에 담아 보낸 amount 값과 successUrl로 돌아온 amount 값이 같은지 확인해보기
         // 값이 다르면 결제 요청을 다시 하기
-        
+
         OrderNoResponseDto responseDto =
-            paymentService.requestApprovePayment(paymentKey, orderId, amount);
+            paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo);
         if (Objects.isNull(responseDto)) {
-            return "redirect:" + FAIL_URL;
+//            return "redirect:" + FAIL_URL;
         }
 
         return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
 
-    @GetMapping(value = "/orders/fail", params = {"code", "message", "orderId"})
+    @GetMapping(value = "/orders/fail/{orderNo}", params = {"code", "message", "orderId"})
     public String failureHandler(@RequestParam String code, @RequestParam String message,
-                                 @RequestParam String orderId) {
+                                 @RequestParam String orderId, @PathVariable Long orderNo) {
         PaymentErrorResponseDto
             requestDto = new PaymentErrorResponseDto(code, message);
 
