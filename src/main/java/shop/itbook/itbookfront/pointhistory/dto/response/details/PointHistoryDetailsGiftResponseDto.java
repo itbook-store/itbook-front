@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.pointhistory.dto.response;
+package shop.itbook.itbookfront.pointhistory.dto.response.details;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

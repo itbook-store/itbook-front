@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.pointhistory.controller.adminapi;
 
-import java.time.LocalDateTime;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -9,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.membership.dto.response.MembershipResponseDto;
 import shop.itbook.itbookfront.pointhistory.adapter.PointHistoryDetailsGetAdaptor;
-import shop.itbook.itbookfront.pointhistory.dto.response.PointHistoryDetailsGiftResponseDto;
+import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
+import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryGradeDetailsResponseDto;
 
 /**
  * @author 최겸준
@@ -59,10 +60,17 @@ public class PointHistoryAdminDetailsGetController {
     }
 
     @GetMapping("/{pointHistoryNo}/grade-details")
-    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model) {
+    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session) {
+
+        PointHistoryGradeDetailsResponseDto pointHistoryGradeDetailsResponseDto =
+            pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGrade(
+                "/api/admin/point-histories/" + pointHistoryNo + "/grade-details");
 
 
-        return "mypage/member/membership-info";
+        model.addAttribute("details", pointHistoryGradeDetailsResponseDto);
+        model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
+
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
     }
 
 
