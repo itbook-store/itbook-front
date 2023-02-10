@@ -150,8 +150,20 @@ public class ProductServiceController {
                 String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
                 productNo);
 
+            int totalStarPoint = 0;
+            double avgStarPoint;
+
+            for(ReviewResponseDto review : reviewPageResponse.getContent()) {
+                totalStarPoint += review.getStarPoint();
+            }
+
+            avgStarPoint = totalStarPoint / Double.parseDouble(
+                String.valueOf(reviewPageResponse.getContent().size()));
+
             model.addAttribute("reviewPageResponse", reviewPageResponse);
             model.addAttribute("paginationUrl", "/products/"+productNo);
+
+            model.addAttribute("avgStarPoint", avgStarPoint);
 
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
