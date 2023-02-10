@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
 import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
@@ -71,10 +73,10 @@ public class PaymentController {
 //
 //    }
 
-    @PostMapping("/payment/cancel/{orderNo}")
-    public String requestCancelPayment(@PathVariable Long orderNo,
-                                       @RequestParam String canceledReason) {
-        paymentService.requestCanceledPayment(orderNo, canceledReason);
+    @PostMapping("async/payment/cancel")
+    public String requestCancelPayment(
+        @RequestBody PaymentCanceledRequestDto paymentCanceledRequestDto) {
+        paymentService.requestCanceledPayment(paymentCanceledRequestDto);
         return "redirect:/mypage/list";
     }
 

@@ -33,10 +33,10 @@ public class TossPaymentServiceImpl implements PaymentService {
 
     @Override
     public OrderNoResponseDto requestCanceledPayment(
-        Long orderNo, String canceledReason) {
+        PaymentCanceledRequestDto requestDto) {
 
         PaymentCanceledRequestDto paymentCanceledRequestDto =
-            new PaymentCanceledRequestDto(orderNo, canceledReason);
+            new PaymentCanceledRequestDto(requestDto.getOrderNo(), requestDto.getCancelReason());
 
         return paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto);
     }

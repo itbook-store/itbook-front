@@ -4,29 +4,42 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/mypage/default-layout}">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
-        <style type=”text/css”>
-                          body{
-                              text-align: center;
-                              display: block;
-                              margin: 0 auto;
-                              font-size: 16px;
-                              color: #999;
-                          }
-        h1{
+        <
+        style type
+
+        =
+        ”text
+
+        /
+        css” >
+        body {
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            font-size: 16px;
+            color: #999;
+        }
+
+        h1 {
             font-family: ‘Oswald’, sans-serif;
             font-size: 30px;
             color: #216182;
         }
+
         label {
             display: block;
             margin-top: 20px;
             letter-spacing: 2px;
         }
+
         form {
             margin: 0 auto;
             width: 459px;
         }
+
         input, textarea {
             width: 439px;
             height: 27px;
@@ -38,15 +51,17 @@
             font-size: 0.9em;
             color: #3a3a3a;
         }
-        input:focus, textarea:focus{
+
+        input:focus, textarea:focus {
             border: 1px solid #97d6eb;
         }
 
-        textarea{
+        textarea {
             height: 60px;
             background-color: #efefef;
         }
-        #submit{
+
+        #submit {
             width: 127px;
             height: 48px;
             text-align: center;
@@ -54,28 +69,31 @@
             margin-top: 20px;
             cursor: pointer;
         }
-        #submit:hover{
+
+        #submit:hover {
             color: #fff;
             background-color: #216282;
             opacity: 0.9;
         }
+
         #cancel {
-            width: 127px; height: 48px;
+            width: 127px;
+            height: 48px;
             text-align: center;
             border: none;
             margin-top: 20px;
             cursor: pointer;
         }
-        #cancel:hover{
+
+        #cancel:hover {
             color: #fff;
             background-color: #216282;
             opacity: 0.9;
         }
 
-        광고
+        /*광고*/
 
-        이 광고 신고
-
+        /*이 광고 신고*/
 
 
         .modal {
@@ -90,6 +108,7 @@
             transform: scale(1.1);
             transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
         }
+
         .modal-content {
             position: absolute;
             top: 50%;
@@ -101,6 +120,7 @@
             height: 350px;
             border-radius: 0.5rem;
         }
+
         .close-button {
             float: right;
             width: 1.5rem;
@@ -110,9 +130,11 @@
             border-radius: 0.25rem;
             background-color: lightgray;
         }
+
         .close-button:hover {
             background-color: darkgray;
         }
+
         .show-modal {
             opacity: 1;
             visibility: visible;
@@ -120,7 +142,7 @@
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
 
-        </style>
+    </style>
     </style>
 
     <meta charset="UTF-8">
@@ -159,8 +181,6 @@
                                         <th><span>주문상태</span></th>
                                         <th><span>송장번호</span></th>
                                         <th>&nbsp;</th>
-                                        <th></th>
-                                        <th>&nbsp;<span>결제취소</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -199,11 +219,14 @@
                                             </a>
                                         </td>
                                         <td>
-<!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
-<!--                                            <a-->
-<!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                                <button class="trigger">취소</button>
-<!--                                            </a>-->
+                                            <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
+                                            <!--                                            <a-->
+                                            <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
+                                            <button th:orderNo="${ord.orderNo}"
+                                                    class="btn btn-danger"
+                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
+                                            </button>
+                                            <!--                                            </a>-->
                                         </td>
                                         <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
                                         <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
@@ -216,47 +239,58 @@
                                     </tbody>
                                 </table>
 
-                                <div class="modal">
-                                    <div class="modal-content">
-                                        <span class="close-button">&times;</span>
-                                        <h1 class="title">결제 취소</h1>
-                                        <form th:action="@{/payment/cancel/ord.orderNo}" method="POST">
-                                            <label for="canceledReason">결제 취소 사유 입력</label>
-                                            <input type="text" name="canceledReason" id="canceledReason"
-                                                   placeholder="취소 사유를 입력해주세요." required="required">
-<!--                                            <label for="cancelReason">결제 취소 사유 선택</label>-->
-<!--                                            <select name="cancelReason" id="cancelReason">-->
-<!--                                                <option value="everything">고객 변심</option>-->
-<!--                                                <option value="orderNo">상품 옵션 변경</option>-->
-<!--                                                <option value="name">입고지연</option>-->
-<!--                                                <option value="phoneNumber">상품품절</option>-->
-<!--                                                <option value="trackingNo">송장번호</option>-->
-<!--                                            </select>-->
-                                        </form>
-                                    </div>
-                                </div>
                                 <script type="text/javascript">
-                                    var modal = document.querySelector(".modal");
-                                    var trigger = document.querySelector(".trigger");
-                                    var closeButton = document.querySelector(".close-button");
-                                    var cancelButton = document.querySelector("#cancel");
 
-                                    //console.log(modal);
+                                    function getInputCancelReason(orderNo) {
 
-                                    function toggleModal() {
-                                        modal.classList.toggle("show-modal");
+                                        Swal.fire({
+                                            title: '취소 사유를 입력해주세요.',
+                                            input: 'text',
+                                            inputAttributes: {
+                                                autocapitalize: 'off'
+                                            },
+                                            showCancelButton: true,
+                                            confirmButtonText: '확인',
+                                            showLoaderOnConfirm: true,
+                                            preConfirm: async (cancelReason) => {
+
+                                                let paymentCanceledRequestDto = {
+                                                    "orderNo" : orderNo,
+                                                    "cancelReason" : cancelReason
+                                                }
+
+                                                await fetch(`/async/payment/cancel`, {
+
+                                                    method: "POST",
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(paymentCanceledRequestDto)
+                                                })
+                                                    .then(response => {
+                                                        if (!response.ok) {
+                                                            throw new Error(response.statusText)
+                                                        }
+                                                        return response.json()
+                                                    })
+                                                    .catch(error => {
+                                                        Swal.showValidationMessage(
+                                                            `취소 요청 실패: ${error}`
+                                                        )
+                                                    })
+
+                                                // return fetch(requestUrl)
+                                            },
+                                            allowOutsideClick: () => !Swal.isLoading()
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: `결제 취소가 성공적으로 완료되었습니다.`,
+                                                })
+                                            }
+                                        })
+
                                     }
-
-                                    function windowOnClick(event) {
-                                        if (event.target === modal) {
-                                            toggleModal();
-                                        }
-                                    }
-
-                                    trigger.addEventListener("click", toggleModal);
-                                    closeButton.addEventListener("click", toggleModal);
-                                    cancelButton.addEventListener("click", toggleModal);
-                                    window.addEventListener("click", windowOnClick);
                                 </script>
 
                             </div>
