@@ -12,8 +12,15 @@ function doPaymentProcessByCard(data) {
     })
         .catch(function (error) {
             if (error.code === 'USER_CANCEL') {
+                alert("결제가 취소되었습니다.");
+            } else if (error.code === 'DUPLICATED_ORDER_ID') {
+                alert("이미 승인 및 취소가 진행된 중복된 주문번호 입니다.");
             } else if (error.code === 'INVALID_CARD_COMPANY') {
-                // 유효하지 않은 카드 코드에 대한 에러 처리
+                alert("결제가 사용자에 의해 취소되었습니다.");
+            } else if (error.code === 'PAY_PROCESS_CANCELED') {
+                alert("유효하지 않은 카드 코드입니다.");
+            } else {
+                console.log(error.code)
             }
         })
 }
