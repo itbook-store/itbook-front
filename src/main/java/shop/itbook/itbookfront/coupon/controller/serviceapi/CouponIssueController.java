@@ -30,7 +30,7 @@ public class CouponIssueController {
                                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto){
 
         PageResponse<UserCouponIssueListResponseDto> userCouponIssueList =
-            couponIssueService.findUserAllCouponIssueList("/api/coupon-issues/"+ userDetailsDto.getMemberId());
+            couponIssueService.findUserAllCouponIssueList("/api/coupon-issues/"+ userDetailsDto.getMemberNo());
 
         model.addAttribute("pageResponse", userCouponIssueList);
         model.addAttribute("paginationUrl",
