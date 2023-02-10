@@ -59,14 +59,36 @@ public class CouponAdminController {
 
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
-        model.addAttribute("string", couponInputRequestDto.toString());
         couponInputRequestDto.setDuplicateUse(false);
 
-        couponService.addCoupon(couponInputRequestDto);
 
+        couponType(couponInputRequestDto);
+
+        if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
+        }
         return "redirect:/admin/coupons";
     }
 
+    private void couponType(CouponInputRequestDto couponInputRequestDto){
+        if (couponInputRequestDto.getPoint() != 0 ){
+            couponService.addCoupon(couponInputRequestDto);
+//        }
+//        else if("category"){
+//            couponService.addCategoryCoupon(couponInputRequestDto);
+//        }
+//        else if ("product") {
+//            couponService.addProductCoupon(couponInputRequestDto);
+        } else {
+            couponService.addOrderTotalCoupon(couponInputRequestDto);
+        }
+    }
+    @PostMapping("/coupon-addition/coupon-type")
+    public String couponTypeAdd(){
+//         "먼슬리 쿠폰으로 가는 로직추가";
+        return Strings.concat(DIRECTORY_NAME, "/gradecoupon");
+
+
+    }
     @GetMapping
     public String couponList(Model model, @RequestParam(required = false) String coverage,
                              @PageableDefault Pageable pageable) throws InvalidPathRequestCouponList {

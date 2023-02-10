@@ -23,8 +23,8 @@ public class CouponInputRequestDto {
 
     private String userId;
 
-    private Long categoryNo;
-    private Long searchResult;
+    private Integer categoryNo;
+    private Long productNo;
     @NotNull(message = "쿠폰 이름을 입력해 주세요.")
     @Length(min = 1, max = 20, message = "이름의 길이는 20자를 넘을수 없습니다.")
     private String name;
