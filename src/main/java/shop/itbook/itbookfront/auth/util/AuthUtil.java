@@ -18,7 +18,7 @@ import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.auth.dto.request.MemberAuthRequestDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
-import shop.itbook.itbookfront.exception.LoginFailException;
+import shop.itbook.itbookfront.auth.exception.LoginFailException;
 
 /**
  * Auth 서버와 통신하는 공통 로직을 정의한 클래스 입니다.
