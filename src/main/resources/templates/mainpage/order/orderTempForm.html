@@ -3,30 +3,50 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
-  <meta charset="UTF-8">
-  <title>임시 결제창</title>
+    <script src="/payment/js/payment.js"></script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <meta charset="UTF-8">
+  <title>결제창</title>
 </head>
+
 <body>
-<div layout:fragment="content">
-  <div class="card-body">
-    <p>
-    - <b>주문 <- 현재 단계</br>
-        고객이 주문서를 작성한 상태</br></b>
-    - 입금</br>
-        고객이 작성된 주문서를 결제완료한 상태</br>
-    - 준비</br>
-        관리자가 입금 (결제)를 확인하여 배송 준비중인 상태</br>
-    - 배송</br>
-        택배사에 접수되어 배송(중) 상태</br>
-    - 완료</br>
-        배송 완료 상태</br>
-    - 취소</br>
-        입금 이상으로 진행된 상태에서 고객이 취소한 상태. (환불)</br>
-    </p>
-  </div>
-    <div>
-        <button th:onclick="|location.href='@{/orders/completion/{orderNo}(orderNo=${orderDto.orderNo})}'|">결제완료</button>
-    </div>
-</div>
-</body>
+<button id="card_button">카드 등록</button>
+
+<script type="text/javascript" th:inline="javascript">
+    window.addEventListener('load', (event) => {
+        document.getElementById("card_button").addEventListener("click", function() {
+            var clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
+            var tossPayments = TossPayments(clientKey);
+            tossPayments.requestBillingAuth("카드", {
+                customerKey: "customer_key",
+                successUrl: window.location.origin + "/orders/completion/{orderNo}",
+                failUrl: window.location.origin + "/fail"
+            });
+        });
+    });
+</script>
+
+<!--<body>-->
+<!--<div layout:fragment="content">-->
+<!--  <div class="card-body">-->
+<!--    <p>-->
+<!--    - <b>주문 <- 현재 단계</br>-->
+<!--        고객이 주문서를 작성한 상태</br></b>-->
+<!--    - 입금</br>-->
+<!--        고객이 작성된 주문서를 결제완료한 상태</br>-->
+<!--    - 준비</br>-->
+<!--        관리자가 입금 (결제)를 확인하여 배송 준비중인 상태</br>-->
+<!--    - 배송</br>-->
+<!--        택배사에 접수되어 배송(중) 상태</br>-->
+<!--    - 완료</br>-->
+<!--        배송 완료 상태</br>-->
+<!--    - 취소</br>-->
+<!--        입금 이상으로 진행된 상태에서 고객이 취소한 상태. (환불)</br>-->
+<!--    </p>-->
+<!--  </div>-->
+<!--    <div>-->
+<!--        <button th:onclick="|location.href='@{/orders/completion/{orderNo}(orderNo=${orderDto.orderNo})}'|">결제완료</button>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
 </html>

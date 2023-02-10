@@ -63,29 +63,29 @@
                         <div class="main-box-body clearfix">
                             <div class="table-responsive">
                                 <table class="table user-list">
-                                    <thead>
-                                    <tr>
-                                        <th><span>상품코드</span></th>
-                                        <th><span>상품명</span></th>
-                                        <th><span>정가</span></th>
-                                        <th class="text-center"><span>판매가</span></th>
-                                        <th><span>삭제</span></th>
+                                    <thead style="text-align: center">
+                                    <tr style="text-align: center!important;">
+                                        <th >상품코드</th>
+                                        <th >상품명</th>
+                                        <th >정가</th>
+                                        <th >판매가</th>
+                                        <th >삭제</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:if="${not #lists.isEmpty(pageResponse)}"
                                         th:each="product : ${pageResponse.content}">
-                                        <td th:text="${product.productNo}"></td>
+                                        <td  style="text-align: center" th:text="${product.productNo}"></td>
                                         <td><strong>
-                                            <span th:text="${product.productName}"
+                                            <span style="text-align: left" th:text="${product.productName}"
                                                   th:onclick="|location.href='@{/products/{productNo}(productNo=${product.productNo})}'|"></span>
                                         </strong>
                                         </td>
-                                        <td><strong><span>
+                                        <td><strong><span style="text-align: center">
                                             [[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
                                         </span></strong></td>
-                                        <td class="text-center">
-                                            <strong><span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span></strong>
+                                        <td>
+                                            <strong><span style="text-align: center">[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span></strong>
                                         </td>
                                         <td>
                                             <input type="checkbox" id="toggle" hidden>
