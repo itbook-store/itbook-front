@@ -152,7 +152,6 @@ public class CategoryAdminController {
         return "redirect:/admin/categories/";
     }
 
-    // Todo
     @GetMapping("/{categoryNo}/category-deletion")
     public String categoryDelete(@PathVariable String categoryNo,
                                  RedirectAttributes redirectAttributes) {

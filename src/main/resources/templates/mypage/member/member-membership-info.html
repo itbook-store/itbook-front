@@ -60,7 +60,6 @@
                                         <th><span>등급</span></th>
                                         <th><span>전월사용금액</span></th>
                                         <th><span>다음등급기준금액</span></th>
-                                        <th><span>등급생성일자</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -69,7 +68,6 @@
                                         <td th:text="${membershipHistory.membershipGrade}"></td>
                                         <td th:text="${membershipHistory.monthlyUsageAmount}"></td>
                                         <td th:text="${#numbers.formatInteger(amountBasedOnNextLevel, 0, 'COMMA')}"></td>
-                                        <td th:text="${#temporals.format(membershipHistory.membershipHistoryCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

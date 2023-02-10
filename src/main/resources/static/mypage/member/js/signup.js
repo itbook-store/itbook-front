@@ -2,7 +2,6 @@ async function checkMemberIdDuplicate() {
     let memberId = document.getElementById('memberId').value;
     let isExists = false;
 
-
     if(!checkKor(memberId)) {
         return false;
     }

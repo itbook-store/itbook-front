@@ -125,10 +125,10 @@ public class MemberAdminController {
 
         memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberId);
 
-        return "redirect:/admin/members";
+        return "redirect:/admin/members/block";
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public String memberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                Model model, @PageableDefault Pageable pageable) {
 
