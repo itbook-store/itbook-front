@@ -12,6 +12,7 @@ import shop.itbook.itbookfront.membership.dto.response.MembershipResponseDto;
 import shop.itbook.itbookfront.pointhistory.adapter.PointHistoryDetailsGetAdaptor;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryGradeDetailsResponseDto;
+import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 
 /**
  * @author 최겸준
@@ -73,21 +74,20 @@ public class PointHistoryAdminDetailsGetController {
         return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
     }
 
-
     @GetMapping("/{pointHistoryNo}/coupon-details")
     public String couponDetails(@PathVariable Long pointHistoryNo, Model model) {
 
         return "내가만든 뷰";
     }
 
-
-
     @GetMapping("/{pointHistoryNo}/review-details")
-    public String reviewDetails(@PathVariable Long pointHistoryNo) {
+    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model) {
 
-        // 가져오는로직
-        return "수연님이 만든 뷰";
+        ReviewResponseDto reviewResponseDto =
+            pointHistoryDetailsGetAdaptor.findPointHistoryDetailsReview(
+                "/api/admin/point-histories/" + pointHistoryNo + "/review-details");
+
+        model.addAttribute("reviewResponseDto", reviewResponseDto);
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "mypage/review/review-detail");
     }
-
-
 }
