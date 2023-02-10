@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.pointhistory.controller.adminapi;
 
 import java.time.LocalDateTime;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,13 @@ public class PointHistoryAdminDetailsGetController {
     public static final String ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME = "adminpage/pointhistory/details";
 
     @GetMapping("/{pointHistoryNo}/gift-details")
-    public String giftDetails(@PathVariable Long pointHistoryNo, Model model) {
+    public String giftDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session) {
         PointHistoryDetailsGiftResponseDto pointHistoryDetailsGiftResponseDto =
             pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGift(
                 "/api/admin/point-histories/" + pointHistoryNo + "/gift-details");
 
         model.addAttribute("details", pointHistoryDetailsGiftResponseDto);
+        model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
 
         if (pointHistoryDetailsGiftResponseDto.getIsDecrease()) {
             return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/adminGiftDetailsDecrease");

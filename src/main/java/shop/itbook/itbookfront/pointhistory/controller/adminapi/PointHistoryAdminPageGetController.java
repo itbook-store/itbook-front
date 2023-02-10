@@ -35,7 +35,7 @@ public class PointHistoryAdminPageGetController {
         PointIncreaseDecreaseContentEnum pointContentEnum =
             PointIncreaseDecreaseContentEnum.stringToEnum(content);
 
-        session.setAttribute("adminPointPage", pageable.getPageNumber());
+        session.setAttribute("adminPointHistoryPage", pageable.getPageNumber());
         String format = String.format(pointContentEnum.getAdminRedirectUrl(), pointHistoryNo);
         return Strings.concat("redirect:", format);
     }
