@@ -41,7 +41,7 @@ public class MembershipAdaptor {
         return responseEntity.getBody().getResult();
     }
 
-    public List<MembershipHistoryResponseDto> getMembershipHistoriesByMemberId(String memberId) {
+    public List<MembershipHistoryResponseDto> getMembershipHistoriesByMemberNo(Long memberNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -50,7 +50,7 @@ public class MembershipAdaptor {
         HttpEntity entity = new HttpEntity(headers);
         ResponseEntity<CommonResponseBody<List<MembershipHistoryResponseDto>>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/membership-history/" + memberId,
+                gatewayConfig.getGatewayServer() + "/api/membership-history/" + memberNo,
                 HttpMethod.GET, entity,
                 new ParameterizedTypeReference<>() {
                 });

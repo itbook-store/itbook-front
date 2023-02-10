@@ -17,11 +17,11 @@ import shop.itbook.itbookfront.member.dto.response.MemberRecentlyPointResponseDt
  */
 public interface MemberService {
 
-    void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId);
+    void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, Long memberNo);
 
-    MemberInfoResponseDto findMemberInfo(String memberId);
+    MemberInfoResponseDto findMemberInfo(Long memberNo);
 
-    void withdrawMember(String memberId, MemberStatusChangeRequestDto requestDto);
+    void withdrawMember(Long memberNo, MemberStatusChangeRequestDto requestDto);
 
     List<MemberDestinationResponseDto> findMemberDestinationList(Long memberNo);
 

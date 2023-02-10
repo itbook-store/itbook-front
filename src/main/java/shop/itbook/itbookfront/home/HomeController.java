@@ -51,11 +51,11 @@ public class HomeController {
                        UserDetailsDto userDetailsDto) throws IOException {
 
         if (Objects.nonNull(userDetailsDto) &&
-            memberService.findMemberInfo(userDetailsDto.getMemberId()).getPhoneNumber()
+            memberService.findMemberInfo(userDetailsDto.getMemberNo()).getPhoneNumber()
                 .equals(userDetailsDto.getMemberId())) {
 
             model.addAttribute("memberInfo",
-                memberService.findMemberInfo(userDetailsDto.getMemberId()));
+                memberService.findMemberInfo(userDetailsDto.getMemberNo()));
 
             return "signuppage/oauth-signup";
         }

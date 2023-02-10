@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.member.service.adminapi.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
@@ -18,6 +19,7 @@ import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
  * @author 노수연
  * @since 1.0
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberAdminServiceImpl implements MemberAdminService {
@@ -25,15 +27,15 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     private final MemberAdminAdaptor memberAdminAdaptor;
 
     @Override
-    public MemberAdminResponseDto findMember(String memberId) {
-        return memberAdminAdaptor.getMember(memberId);
+    public MemberAdminResponseDto findMember(Long memberNo) {
+        return memberAdminAdaptor.getMember(memberNo);
     }
 
     @Override
     public void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto,
-                                   String memberId) {
+                                   Long memberNo) {
 
-        memberAdminAdaptor.modifyMemberStatus(memberStatusChangeRequestDto, memberId);
+        memberAdminAdaptor.modifyMemberStatus(memberStatusChangeRequestDto, memberNo);
     }
 
     @Override
@@ -72,8 +74,8 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
-    public MemberBlockInfoResponseDto findBlockMember(String memberId) {
-        return memberAdminAdaptor.getBlockMember(memberId);
+    public MemberBlockInfoResponseDto findBlockMember(Long memberNo) {
+        return memberAdminAdaptor.getBlockMember(memberNo);
     }
 
     @Override
@@ -82,8 +84,8 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     }
 
     @Override
-    public void addMemberRole(String memberId, String roleName) {
-        memberAdminAdaptor.addMemberRole(memberId, roleName);
+    public void addMemberRole(Long memberNo, String roleName) {
+        memberAdminAdaptor.addMemberRole(memberNo, roleName);
     }
 
     @Override
