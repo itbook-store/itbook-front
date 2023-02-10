@@ -6,59 +6,133 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 정보</title>
+    <link rel="stylesheet" type="text/css" href="/adminpage/member/css/adminMemberDetail.css">
 </head>
 <body>
     <div layout:fragment="content">
         <div class="content">
-            <h2 th:text="${member.memberId}"></h2>
-            <hr>
-            회원번호 : <span th:text="${member.memberNo}"></span><br />
-            가입날짜 : <span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span><br />
-            아이디 : <span th:text="${member.memberId}"></span><br />
-            닉네임 : <span th:text="${member.nickname}"></span><br />
-            이름 : <span th:text="${member.name}"></span><br />
-            성별 : <span th:if="${member.isMan == true}">남</span>
-            <span th:if="${member.isMan == false}">여</span> <br/>
-            생일 : <span th:text="${#temporals.format(member.birth, 'yyyy년 MM월 dd일')}"></span><br />
-            핸드폰번호 : <span th:text="${member.phoneNumber}"></span><br />
-            이메일 : <span th:text="${member.email}"></span><br />
-            회원등급 : <span th:text="${member.membershipGrade}"></span><br />
-            회원상태 : <span th:text="${member.memberStatusName}"></span><br />
-            회원 권한
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="memberRole : ${memberRoles}">
-                    <td th:text="${memberRole.getRole()}"></td>
-                </tr>
-                </tbody>
-            </table>
-            <hr>
-            <div>
-                <button onclick="selectBlockBtnInMemberDetails()">차단하기</button><br/>
-                <form method="post" id="block_form" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
-                    <input type="hidden" name="memberStatusName" value="차단회원">
-                    <div>
-                        <span style="margin-left: 10%;">차단 사유</span><br/>
-                        <input type="text" id="statusChangedReason" th:field="${memberStatusChangeRequestDto.statusChangedReason}">
-                    </div>
-                    <input type ="submit" value="차단완료">
-                </form>
+            <div class="tab-pane fade in active show" id="profile-about">
+                <!-- begin table -->
+                <div class="table-responsive">
+                    <table class="table table-profile">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <h2 th:text="${member.memberId}"><small>Lorraine Stokes</small></h2>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="highlight">
+                            <td class="field">회원번호</td>
+                            <td><span th:text="${member.memberNo}"></span></td>
+                        </tr>
+                        <tr class="divider">
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="field">가입날짜</td>
+                            <td><span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="field">아이디</td>
+                            <td><span th:text="${member.memberId}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="field">닉네임</td>
+                            <td><span th:text="${member.nickname}"></span></td>
+                        </tr>
+                        <tr class="divider">
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="field">이름</td>
+                            <td><span th:text="${member.name}"></span></td>
+                        </tr>
+                        <tr class="divider">
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="field">성별</td>
+                            <td>
+                                <span th:if="${member.isMan == true}">남</span>
+                                <span th:if="${member.isMan == false}">여</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field">생일</td>
+                            <td><span th:text="${#temporals.format(member.birth, 'yyyy년 MM월 dd일')}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="field">핸드폰번호</td>
+                            <td><span th:text="${member.phoneNumber}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="field">이메일</td>
+                            <td><span th:text="${member.email}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="field">회원등급</td>
+                            <td>
+                                <span th:text="${member.membershipGrade}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field">회원상태</td>
+                            <td>
+                                <span th:text="${member.memberStatusName}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field">회원 권한</td>
+                            <td>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="memberRole : ${memberRoles}">
+                                        <td th:text="${memberRole.getRole()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="divider">
+                            <td colspan="2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end table -->
             </div>
-            <div th:if="${memberRoles.get(0).getRole()} == 'ADMIN'">
-                <form method="post" id="delete_role_form" th:action="@{|/admin/members/${member.memberNo}/${memberRoles.get(0).getRoleNo()}/member-role/delete|}">
-                    <input type="submit" value="어드민 권한 삭제">
-                </form>
-            </div>
-            <div th:if="${memberRoles.get(0).getRole()} != 'ADMIN'">
-                <form method="post" id="Authorization_form" th:action="@{|/admin/members/${member.memberId}/member-role/add|}">
-                    <input type="hidden" name="roleName" value="ADMIN">
-                    <input type="submit" value="어드민 권한 부여">
-                </form>
+            <div th:if="${member.memberStatusName} != '탈퇴회원'">
+                <div th:if="${memberRoles.get(0).getRole()} == 'ADMIN'">
+                    <form method="post" id="delete_role_form" th:action="@{|/admin/members/${member.memberNo}/${memberRoles.get(0).getRoleNo()}/member-role/delete|}">
+                        <button class="btn btn-dark" type="submit">어드민 권한 삭제</button>
+                    </form>
+                </div>
+                <div th:if="${memberRoles.get(0).getRole()} != 'ADMIN'">
+                    <form method="post" id="Authorization_form" th:action="@{|/admin/members/${member.memberNo}/member-role/add|}">
+                        <input type="hidden" name="roleName" value="ADMIN">
+                        <button class="btn btn-info" style="color:white;" type="submit">어드민 권한 부여</button>
+                    </form>
+                </div>
+                <hr>
+                <div>
+                    <button class="btn btn-danger" style="margin-bottom: 10px;" onclick="selectBlockBtnInMemberDetails()">차단하기</button><br/>
+                    <form method="post" id="block_form" th:action="@{|/admin/members/${member.memberNo}/modify/member-status|}" style="display: none;">
+                        <input type="hidden" name="memberStatusName" value="차단회원">
+                        <div>
+                            <span>차단 사유</span><br/>
+                            <input style="width:500px;" type="textarea" id="statusChangedReason" name="statusChangedReason">
+                        </div>
+                        <button class="btn btn-dark" style="margin-top: 10px;" type ="submit">차단완료</button>
+                    </form>
+                </div>
             </div>
         </div>
         <script th:src="@{/adminpage/member/js/MemberStatusBtnSelect.js}"></script>

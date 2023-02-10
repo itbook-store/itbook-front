@@ -73,12 +73,12 @@ public class MemberAdminController {
         return "adminpage/member/admin-member-withdraw-list";
     }
 
-    @GetMapping("/{memberId}/info")
-    public String memberDetails(@PathVariable("memberId") String memberId,
+    @GetMapping("/{memberNo}/info")
+    public String memberDetails(@PathVariable("memberNo") Long memberNo,
                                 @ModelAttribute("memberStatusChangeRequestDto")
                                 MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                 Model model) {
-        MemberAdminResponseDto member = memberAdminService.findMember(memberId);
+        MemberAdminResponseDto member = memberAdminService.findMember(memberNo);
         List<MemberRoleResponseDto> memberRoleList =
             memberAdminService.findMemberRoles(member.getMemberNo());
 
@@ -88,12 +88,12 @@ public class MemberAdminController {
         return "adminpage/member/admin-member-details-form";
     }
 
-    @PostMapping("/{memberId}/member-role/add")
-    public String memberRoleAdd(@PathVariable("memberId") String memberId,
+    @PostMapping("/{memberNo}/member-role/add")
+    public String memberRoleAdd(@PathVariable("memberNo") Long memberNo,
                                 @RequestParam("roleName") String roleName) {
-        memberAdminService.addMemberRole(memberId, roleName);
+        memberAdminService.addMemberRole(memberNo, roleName);
 
-        return "redirect:/admin/members/" + memberId + "/info";
+        return "redirect:/admin/members/" + memberNo + "/info";
     }
 
     @PostMapping("/{memberNo}/{roleNo}/member-role/delete")
@@ -104,12 +104,12 @@ public class MemberAdminController {
         return "redirect:/admin/members";
     }
 
-    @GetMapping("/block/{memberId}/info")
-    public String blockMemberDetails(@PathVariable("memberId") String memberId,
+    @GetMapping("/block/{memberNo}/info")
+    public String blockMemberDetails(@PathVariable("memberNo") Long memberNo,
                                      @ModelAttribute("memberStatusChangeRequestDto")
                                      MemberStatusChangeRequestDto memberStatusChangeRequestDto,
                                      Model model) {
-        MemberBlockInfoResponseDto member = memberAdminService.findBlockMember(memberId);
+        MemberBlockInfoResponseDto member = memberAdminService.findBlockMember(memberNo);
         List<MemberRoleResponseDto> memberRoleList =
             memberAdminService.findMemberRoles(member.getMemberNo());
 
@@ -119,16 +119,16 @@ public class MemberAdminController {
         return "adminpage/member/admin-block-member-details-form";
     }
 
-    @PostMapping("/{memberId}/modify/member-status")
-    public String memberStatusModify(@PathVariable("memberId") String memberId,
+    @PostMapping("/{memberNo}/modify/member-status")
+    public String memberStatusModify(@PathVariable("memberNo") Long memberNo,
                                      @Valid MemberStatusChangeRequestDto memberStatusChangeRequestDto) {
 
-        memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberId);
+        memberAdminService.updateMemberStatus(memberStatusChangeRequestDto, memberNo);
 
-        return "redirect:/admin/members";
+        return "redirect:/admin/members/block";
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public String memberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                Model model, @PageableDefault Pageable pageable) {
 

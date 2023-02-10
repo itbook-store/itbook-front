@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.pointhistory.adapter.serviceapi;
+package shop.itbook.itbookfront.pointhistory.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,7 +17,7 @@ import shop.itbook.itbookfront.pointhistory.dto.response.PointHistoryListDto;
  */
 @Component
 @RequiredArgsConstructor
-public class PointHistoryMyPageGetAdaptor {
+public class PointHistoryPageGetAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;

@@ -32,21 +32,24 @@
                                 <table class="table user-list">
                                     <thead>
                                     <tr>
-                                        <th><span>종류</span></th>
                                         <th><span>적용포인트</span></th>
                                         <th><span>내용</span></th>
                                         <th><span>잔여포인트</span></th>
-                                        <th><span>생성일자</span></th>
+                                        <th><span>일자</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="pointHistory : ${pageResponse.content}">
-                                        <td th:if="${pointHistory.isDecrease}">차감</td>
-                                        <td th:unless="${pointHistory.isDecrease}">적립</td>
+                                    <tr th:if="${pointHistory.isDecrease}" class="table-danger" th:each="pointHistory : ${pageResponse.content}">
                                         <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
-                                        <td><span th:text="${pointHistory.content}"/></td>
+                                        <td class="text-danger"><span th:text="${pointHistory.content}"/>차감</td>
                                         <td><span th:text="${pointHistory.remainedPoint}"/></td>
-                                        <td><span th:text="${pointHistory.historyCreatedAt}"/></td>
+                                        <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
+                                    </tr>
+                                    <tr th:unless="${pointHistory.isDecrease}" class="table-primary" style="" th:each="pointHistory : ${pageResponse.content}">
+                                        <td><span th:text="${pointHistory.increaseDecreasePoint}"/></td>
+                                        <td class="text-primary"><span th:text="${pointHistory.content}"/>적립</td>
+                                        <td><span th:text="${pointHistory.remainedPoint}"/></td>
+                                        <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
                                     </tr>
                                     </tbody>
                                 </table>

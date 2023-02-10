@@ -24,20 +24,20 @@ public interface MemberAdminService {
 
     PageResponse<MemberAdminResponseDto> findWithdrawMembers(String url);
 
-    MemberAdminResponseDto findMember(String memberId);
+    MemberAdminResponseDto findMember(Long memberNo);
 
-    void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto, String memberId);
+    void updateMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto, Long memberNo);
 
     PageResponse<MemberAdminResponseDto> findMembersBySearch(String searchRequirement, String searchWord,
                                                      String memberStatusName, String url);
 
     PageResponse<MemberAdminResponseDto> findMemberByDateOfJoining(MemberSearchRequestDto memberSearchRequestDto, String memberStatusName, String url);
 
-    MemberBlockInfoResponseDto findBlockMember(String memberId);
+    MemberBlockInfoResponseDto findBlockMember(Long memberNo);
 
     List<MemberRoleResponseDto> findMemberRoles(Long memberNo);
 
-    void addMemberRole(String memberId, String roleName);
+    void addMemberRole(Long memberNo, String roleName);
 
     void deleteMemberRole(Long memberNo, Integer roleNo);
 
