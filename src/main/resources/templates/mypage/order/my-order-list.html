@@ -139,7 +139,6 @@
                     <option value="name">주문자</option>
                     <option value="phoneNumber">전화번호</option>
                     <option value="trackingNo">송장번호</option>
-                    <!--TODO 가입일 누르면 날짜 선택하는 칸 추가 -->
                 </select>
                 <input type="text" name="searchWord">
                 <button class="btn btn-secondary" type="submit">검색</button>
@@ -159,6 +158,8 @@
                                         <th><span>받는분 연락처</span></th>
                                         <th><span>주문상태</span></th>
                                         <th><span>송장번호</span></th>
+                                        <th>&nbsp;</th>
+                                        <th></th>
                                         <th>&nbsp;<span>결제취소</span></th>
                                     </tr>
                                     </thead>
@@ -203,6 +204,13 @@
 <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
                                                 <button class="trigger">취소</button>
 <!--                                            </a>-->
+                                        </td>
+                                        <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
+                                        <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
+                                        <td>
+                                            <div th:if="${ord.orderStatus} == '입금완료'">
+                                                <button class="btn btn-primary">리뷰쓰기</button>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>

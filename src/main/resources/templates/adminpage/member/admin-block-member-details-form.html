@@ -41,11 +41,11 @@
     </table>
     <hr>
     <div>
-      <button onclick="selectNormalBtnInMemberDetails()">차단풀기</button><br/>
+      <button class="btn btn-light" onclick="selectNormalBtnInMemberDetails()">차단풀기</button><br/>
       <form method="post" id="normal_form" th:object="${memberStatusChangeRequestDto}" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
         <input type="hidden" name="memberStatusName" value="정상회원">
         <input type="hidden" name ="statusChangedReason" value="차단회원에서 정상회원으로 변경">
-        <input type ="submit" value="차단해제">
+        <button class="btn btn-primary" style="margin-top: 10px;" type ="submit">차단해제</button>
       </form>
     </div>
   </div>
