@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.member.adaptor.serviceapi.MemberAdaptor;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberPointSendRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
@@ -31,24 +30,24 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, String memberId) {
+    public void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, Long memberNo) {
 
         if (!memberUpdateRequestDto.getPassword().contains("$2a$10$")) {
             memberUpdateRequestDto.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
         }
 
-        memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberId);
+        memberAdaptor.modifyMemberInfo(memberUpdateRequestDto, memberNo);
     }
 
     @Override
-    public MemberInfoResponseDto findMemberInfo(String memberId) {
+    public MemberInfoResponseDto findMemberInfo(Long memberNo) {
 
-        return memberAdaptor.getMemberInfo(memberId);
+        return memberAdaptor.getMemberInfo(memberNo);
     }
 
     @Override
-    public void withdrawMember(String memberId, MemberStatusChangeRequestDto requestDto) {
-        memberAdaptor.modifyMemberStatusToWithDraw(memberId, requestDto);
+    public void withdrawMember(Long memberNo, MemberStatusChangeRequestDto requestDto) {
+        memberAdaptor.modifyMemberStatusToWithdraw(memberNo, requestDto);
     }
 
     @Override

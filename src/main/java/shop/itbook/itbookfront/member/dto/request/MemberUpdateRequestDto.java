@@ -35,6 +35,7 @@ public class MemberUpdateRequestDto {
     @NotBlank(message = "비밀번호는 null값 및 공백을 허용하지 않습니다.")
     private String password;
 
+    @Pattern(regexp = "^[0-9]{11}$", message = "전화번호 형식에 맞춰 입력해주세요. 숫자만 입력할 수 있습니다.")
     @NotBlank(message = "핸드폰 번호는 null값 및 공백을 허용하지 않습니다.")
     private String phoneNumber;
 

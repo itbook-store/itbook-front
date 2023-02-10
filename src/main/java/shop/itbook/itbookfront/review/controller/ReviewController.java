@@ -136,8 +136,6 @@ public class ReviewController {
                                @RequestPart(value = "images") MultipartFile images,
                                RedirectAttributes redirectAttributes) {
 
-        log.info("reviewRequestDto = {}", reviewRequestDto);
-
         try {
             reviewService.modifyReview(reviewRequestDto.getOrderProductNo(), reviewRequestDto,
                 images);
