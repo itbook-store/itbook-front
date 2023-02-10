@@ -108,7 +108,6 @@ public class ReviewController {
         }
 
         model.addAttribute("reviewResponseDto", reviewResponseDto);
-
         return "mypage/review/review-detail";
     }
 
