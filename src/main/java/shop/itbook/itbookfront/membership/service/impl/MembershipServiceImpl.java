@@ -24,7 +24,7 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public List<MembershipHistoryResponseDto> getMembershipHistories(String memberId) {
-        return membershipAdaptor.getMembershipHistoriesByMemberId(memberId);
+    public List<MembershipHistoryResponseDto> getMembershipHistories(Long memberNo) {
+        return membershipAdaptor.getMembershipHistoriesByMemberNo(memberNo);
     }
 }

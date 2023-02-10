@@ -42,7 +42,7 @@ public class MemberController {
                              @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
         MemberInfoResponseDto memberInfoResponseDto =
-            memberService.findMemberInfo(userDetailsDto.getMemberId());
+            memberService.findMemberInfo(userDetailsDto.getMemberNo());
 
         model.addAttribute("memberInfoResponseDto", memberInfoResponseDto);
 
@@ -51,9 +51,9 @@ public class MemberController {
 
     @PostMapping("/modify")
     public String mypageInfoModify(@Valid MemberUpdateRequestDto memberUpdateRequestDto,
-                                   @RequestParam("memberId") String memberId) {
+                                   @RequestParam("memberNo") Long memberNo) {
 
-        memberService.updateMemberInfo(memberUpdateRequestDto, memberId);
+        memberService.updateMemberInfo(memberUpdateRequestDto, memberNo);
 
         return "redirect:/mypage";
 
@@ -65,17 +65,17 @@ public class MemberController {
                                                @AuthenticationPrincipal
                                                UserDetailsDto userDetailsDto,
                                                Model model) {
-        MemberInfoResponseDto member = memberService.findMemberInfo(userDetailsDto.getMemberId());
+        MemberInfoResponseDto member = memberService.findMemberInfo(userDetailsDto.getMemberNo());
         model.addAttribute("member", member);
 
         return "mypage/member/member-withdraw";
     }
 
-    @PostMapping("/{memberId}/withdraw")
-    public String memberWithdraw(@PathVariable("memberId") String memberId,
+    @PostMapping("/{memberNo}/withdraw")
+    public String memberWithdraw(@PathVariable("memberNo") Long memberNo,
                                  @Valid MemberStatusChangeRequestDto memberStatusChangeRequestDto) {
 
-        memberService.withdrawMember(memberId, memberStatusChangeRequestDto);
+        memberService.withdrawMember(memberNo, memberStatusChangeRequestDto);
 
         return "redirect:/logout";
     }
@@ -170,7 +170,7 @@ public class MemberController {
         @Valid MemberPointSendRequestDto memberPointSendRequestDto
         ) {
 
-        Long receiveMemberNo = memberService.findMemberInfo(memberPointSendRequestDto.getReceiveMemberId()).getMemberNo();
+        Long receiveMemberNo = memberService.findMemberInfo(memberPointSendRequestDto.getReceiveMemberNo()).getMemberNo();
         memberPointSendRequestDto.setReceiveMemberNo(receiveMemberNo);
 
         memberService.giftPointMember(memberPointSendRequestDto);

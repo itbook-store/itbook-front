@@ -24,7 +24,7 @@
         <hr>
         <div style="width: 60%;">
             <form method="post" th:action="@{/mypage/members/modify}">
-                <input type="hidden" name="memberId" th:value="${memberInfoResponseDto.memberId}">
+                <input type="hidden" name="memberNo" th:value="${memberInfoResponseDto.memberNo}">
                 <div class="mb-3">
                     <label for="showMemberId" class="form-label">아이디</label>
                     <input type="text" class="form-control" th:field="${memberInfoResponseDto.memberId}" id="showMemberId" disabled>

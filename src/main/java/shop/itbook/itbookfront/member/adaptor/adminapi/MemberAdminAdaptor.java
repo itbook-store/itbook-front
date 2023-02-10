@@ -110,11 +110,11 @@ public class MemberAdminAdaptor {
         return Objects.requireNonNull(responseEntity.getBody()).getResult();
     }
 
-    public MemberAdminResponseDto getMember(String memberId) {
+    public MemberAdminResponseDto getMember(Long memberNo) {
 
         ResponseEntity<CommonResponseBody<MemberAdminResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberId, HttpMethod.GET,
+                gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberNo, HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
                 }
@@ -127,7 +127,7 @@ public class MemberAdminAdaptor {
     }
 
     public void modifyMemberStatus(MemberStatusChangeRequestDto memberStatusChangeRequestDto,
-                                   String memberId) {
+                                   Long memberNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -136,7 +136,7 @@ public class MemberAdminAdaptor {
             httpEntity = new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberId, HttpMethod.PUT,
+            gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberNo, HttpMethod.PUT,
             httpEntity, new ParameterizedTypeReference<>() {
             }
         );
@@ -188,11 +188,11 @@ public class MemberAdminAdaptor {
         return Objects.requireNonNull(responseEntity.getBody()).getResult();
     }
 
-    public MemberBlockInfoResponseDto getBlockMember(String memberId) {
+    public MemberBlockInfoResponseDto getBlockMember(Long memberNo) {
 
         ResponseEntity<CommonResponseBody<MemberBlockInfoResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberId + "/block",
+                gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberNo + "/block",
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }
@@ -220,11 +220,11 @@ public class MemberAdminAdaptor {
         return responseEntity.getBody().getResult();
     }
 
-    public void addMemberRole(String memberId, String roleName) {
+    public void addMemberRole(Long memberNo, String roleName) {
 
         ResponseEntity<CommonResponseBody<Void>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberId + "/" +
+                gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" +
                     roleName + "/add",
                 HttpMethod.POST, null, new ParameterizedTypeReference<>() {
                 });
