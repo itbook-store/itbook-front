@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/mypage/review/css/starPoint.css" rel="stylesheet"/>
+    <script src="/mypage/review/js/reviewStar.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>리뷰 수정</h2>
+        <hr>
+        <div>
+            <form class = "mb-3" enctype="multipart/form-data" id="reviewModifyForm" name="reviewModifyForm" method="post"
+                  th:object="${reviewResponseDto}" th:action="@{/review/modify}">
+                <input type="hidden" name="orderProductNo" th:value="${reviewResponseDto.orderProductNo}">
+                <input type="hidden" name="productNo" th:value="${reviewResponseDto.productNo}">
+                <input type="hidden" name="memberNo" th:value="${reviewResponseDto.memberNo}">
+                <input type="hidden" id="savedStarPoint" th:value="${reviewResponseDto.starPoint}">
+
+                <div id="starDiv">
+                    <h5>상품은 만족하셨나요?</h5>
+                    <fieldset>
+                        <input type="radio" class="starPoint" name="starPoint" value="5" id="rate1" th:field="*{starPoint}">
+                        <label class="star-label" for="rate1">★</label>
+
+                        <input type="radio" class="starPoint" name="starPoint" value="4" id="rate2" th:field="*{starPoint}">
+                        <label class="star-label" for="rate2">★</label>
+
+                        <input type="radio" class="starPoint" name="starPoint" value="3" id="rate3" th:field="*{starPoint}">
+                        <label class="star-label" for="rate3">★</label>
+
+                        <input type="radio" class="starPoint" name="starPoint" value="2" id="rate4" th:field="*{starPoint}">
+                        <label class="star-label" for="rate4">★</label>
+
+                        <input type="radio" class="starPoint" name="starPoint" value="1" id="rate5" th:field="*{starPoint}">
+                        <label class="star-label" for="rate5">★</label>
+                    </fieldset>
+                </div>
+                <img style="width: 450px;" th:src="${reviewResponseDto.image}"><br>
+                <div>
+                    <h5>어떤 점이 좋았나요?</h5>
+                    <textarea class="col-auto form-control" type="text" id="reviewContents" name="content"
+                              placeholder="리뷰를 남겨주세요!" th:text="${reviewResponseDto.content}"></textarea>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <h5>사진 첨부하기</h5>
+                    <input type="file" value="파일 선택" name="images" accept="image/*"/>
+                </div>
+                <button class="btn btn-primary" type="submit">작성 완료</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

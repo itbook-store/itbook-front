@@ -37,27 +37,27 @@
                 </tr>
                 </tbody>
             </table>
-            <hr>
-            <div>
-                <button onclick="selectBlockBtnInMemberDetails()">차단하기</button><br/>
-                <form method="post" id="block_form" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
-                    <input type="hidden" name="memberStatusName" value="차단회원">
-                    <div>
-                        <span style="margin-left: 10%;">차단 사유</span><br/>
-                        <input type="text" id="statusChangedReason" th:field="${memberStatusChangeRequestDto.statusChangedReason}">
-                    </div>
-                    <input type ="submit" value="차단완료">
-                </form>
-            </div>
             <div th:if="${memberRoles.get(0).getRole()} == 'ADMIN'">
                 <form method="post" id="delete_role_form" th:action="@{|/admin/members/${member.memberNo}/${memberRoles.get(0).getRoleNo()}/member-role/delete|}">
-                    <input type="submit" value="어드민 권한 삭제">
+                    <button class="btn btn-dark" type="submit">어드민 권한 삭제</button>
                 </form>
             </div>
             <div th:if="${memberRoles.get(0).getRole()} != 'ADMIN'">
                 <form method="post" id="Authorization_form" th:action="@{|/admin/members/${member.memberId}/member-role/add|}">
                     <input type="hidden" name="roleName" value="ADMIN">
-                    <input type="submit" value="어드민 권한 부여">
+                    <button class="btn btn-info" style="color:white;" type="submit">어드민 권한 부여</button>
+                </form>
+            </div>
+            <hr>
+            <div>
+                <button class="btn btn-danger" style="margin-bottom: 10px;" onclick="selectBlockBtnInMemberDetails()">차단하기</button><br/>
+                <form method="post" id="block_form" th:action="@{|/admin/members/${member.memberId}/modify/member-status|}" style="display: none;">
+                    <input type="hidden" name="memberStatusName" value="차단회원">
+                    <div>
+                        <span>차단 사유</span><br/>
+                        <input style="width:500px;" type="textarea" id="statusChangedReason" th:field="${memberStatusChangeRequestDto.statusChangedReason}">
+                    </div>
+                    <button class="btn btn-dark" style="margin-top: 10px;" type ="submit">차단완료</button>
                 </form>
             </div>
         </div>
