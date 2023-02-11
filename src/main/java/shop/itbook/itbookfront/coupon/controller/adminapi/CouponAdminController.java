@@ -104,10 +104,20 @@ public class CouponAdminController {
             model.addAttribute("paginationUrl", "/admin/coupons/list");
             return Strings.concat(DIRECTORY_NAME, "/couponList");
         }
-        else if(coverage.equals("category")){
+        else if(coverage.equals("total")){
             couponList =
                 couponService.findCouponList(
-                    String.format("/api/admin/category-coupons?page=%d&size=%d",
+                    String.format("/api/admin/order-total-coupons/list?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
+        } else if(coverage.equals("product")){
+            couponList =
+                couponService.findCouponList(
+                    String.format("/api/admin/product-coupons/list?page=%d&size=%d",
+                    pageable.getPageNumber(), pageable.getPageSize()));
+        } else if(coverage.equals("category")){
+            couponList =
+                couponService.findCouponList(
+                    String.format("/api/admin/category-coupons/list?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else{

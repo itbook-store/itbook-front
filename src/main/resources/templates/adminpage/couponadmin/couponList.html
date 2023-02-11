@@ -11,10 +11,16 @@
 <div layout:fragment="content">
 
     <h1 style="text-align: center">쿠폰 목록</h1>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons'|">
+    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list'|">
         전체 쿠폰
     </button>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons?coverage=category'|">
+    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=total'|">
+        전체 쿠폰
+    </button>
+    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=product'|">
+        상품 쿠폰
+    </button>
+    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=category'|">
         카테고리 쿠폰
     </button>
     <div class="container">
