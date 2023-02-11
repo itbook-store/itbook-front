@@ -22,4 +22,6 @@ public interface OrderService {
                              Optional<Long> memberNo);
 
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
+
+    void cancelOrder(Long orderNo);
 }

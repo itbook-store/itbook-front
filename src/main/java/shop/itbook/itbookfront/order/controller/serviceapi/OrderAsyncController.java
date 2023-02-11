@@ -51,11 +51,10 @@ public class OrderAsyncController {
     }
 
     @PostMapping("/payment-cancel/{orderNo}")
-    public OrderPaymentDto orderPaymentCancel(@PathVariable("orderNo") Long orderNo) {
+    public void orderPaymentCancel(@PathVariable("orderNo") Long orderNo) {
 
-        // TODO: 2023/02/11 주문 삭제 처리. 
-
-
-        return null;
+        // TODO: 2023/02/11 주문 삭제 처리.
+        orderService.cancelOrder(orderNo);
+        log.info("제발:{} ", orderNo);
     }
 }
