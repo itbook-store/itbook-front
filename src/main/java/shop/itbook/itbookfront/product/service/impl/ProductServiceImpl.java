@@ -10,9 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
-import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
-import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
@@ -31,17 +33,10 @@ import shop.itbook.itbookfront.product.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
-    private final Integer MAIN_EXPOSED_LIMIT_NUM = 6;
-
-    @Override
-    public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
-                        BookRequestDto requestDto) {
-        return productAdaptor.addBook(thumbnails, ebook, requestDto);
-    }
 
     @Override
     public Long addProduct(MultipartFile thumbnails,
-                           ProductRequestDto requestDto) {
+                           ProductAddRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, requestDto);
     }
 
@@ -56,14 +51,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void removeProduct(Long productNo) {
-        productAdaptor.removeProduct(productNo);
-    }
-
-    @Override
-    public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                              BookRequestDto requestDto) {
-        productAdaptor.modifyProduct(productNo, thumbnails, ebook, requestDto);
+    public void modifyProduct(Long productNo, MultipartFile thumbnails,
+                              ProductModifyRequestDto requestDto) {
+        productAdaptor.modifyProduct(productNo, thumbnails, requestDto);
     }
 
     @Override
@@ -88,22 +78,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public SearchBookDetailsDto searchBook(String url) {
-        return productAdaptor.searchBook(url);
-    }
-
-    @Override
-    public ProductBooleanResponseDto checkIsbnExists(String url) {
-
-        return productAdaptor.isbnExists(url);
-    }
-
-    @Override
-    @Cacheable(value = "productTypes", key = "#id")
-    public List<ProductDetailsResponseDto> getBooksByProductTypes(Integer id) {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, id)).getContent();
+    public void changeBooleanField(Long productNo, String fieldName) {
+        productAdaptor.changeBooleanField(productNo, fieldName);
     }
 
 }

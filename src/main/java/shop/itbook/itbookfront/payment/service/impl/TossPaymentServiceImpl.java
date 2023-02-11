@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.payment.adaptor.PaymentAdaptor;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
 import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
-import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
+import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 import shop.itbook.itbookfront.payment.service.PaymentService;
 
 /**
@@ -17,14 +17,8 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 public class TossPaymentServiceImpl implements PaymentService {
     private final PaymentAdaptor paymentAdaptor;
 
-//    @Override
-//    public String getWidgetUrl(String orderId, String orderName, Long amount) {
-//
-//        return paymentAdaptor.requestWidget(orderId, orderName, amount);
-//    }
-
     @Override
-    public OrderNoResponseDto requestApprovePayment(
+    public OrderResponseDto requestApprovePayment(
         String paymentKey, String orderId, Long amount, Long orderNo) {
 
         return paymentAdaptor.requestApprovePayment(
@@ -32,7 +26,7 @@ public class TossPaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public OrderNoResponseDto requestCanceledPayment(
+    public OrderResponseDto requestCanceledPayment(
         PaymentCanceledRequestDto requestDto) {
 
         PaymentCanceledRequestDto paymentCanceledRequestDto =

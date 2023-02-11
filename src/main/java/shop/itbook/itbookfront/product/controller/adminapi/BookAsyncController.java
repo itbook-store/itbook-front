@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
+import shop.itbook.itbookfront.product.service.BookService;
 import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 
@@ -19,25 +20,25 @@ import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 @RequiredArgsConstructor
 @RequestMapping("/async/books")
 public class BookAsyncController {
-    private final ProductService productService;
+    private final BookService bookService;
 
     @GetMapping
     public SearchBookDetailsDto searchBookDetailsInAladin(@RequestParam String isbn) {
 
-        return productService.searchBook("/api/admin/products/books?isbn=" + isbn);
+        return bookService.searchBook("/api/admin/products/books?isbn=" + isbn);
     }
 
     @GetMapping("exist-db")
     public ProductBooleanResponseDto checkIsbnExistsInDb(@RequestParam String isbn) {
 
-        return productService.checkIsbnExists(
+        return bookService.checkIsbnExists(
             "/api/admin/products/books/check-exist-db?isbn=" + isbn);
     }
 
     @GetMapping("exist-aladin")
     public ProductBooleanResponseDto checkIsbnExistsInAladin(@RequestParam String isbn) {
 
-        return productService.checkIsbnExists(
+        return bookService.checkIsbnExists(
             "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
     }
 }

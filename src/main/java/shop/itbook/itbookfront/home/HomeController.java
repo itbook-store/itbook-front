@@ -22,8 +22,8 @@ import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.service.BookService;
 import shop.itbook.itbookfront.product.service.ProductService;
-import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
  * @author gwanii
@@ -34,6 +34,7 @@ import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 @Slf4j
 public class HomeController {
     private final ProductService productService;
+    private final BookService bookService;
 
     private final CategoryService categoryService;
 
@@ -73,21 +74,21 @@ public class HomeController {
         List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
             "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
         model.addAttribute("productTypeList", productTypeList);
-        
 
-        List<ProductDetailsResponseDto> newBooks = productService.getBooksByProductTypes(1);
+
+        List<ProductDetailsResponseDto> newBooks = bookService.getBooksByProductTypes(1);
         model.addAttribute("newBooks", newBooks);
 
-        List<ProductDetailsResponseDto> discountBooks = productService.getBooksByProductTypes(2);
+        List<ProductDetailsResponseDto> discountBooks = bookService.getBooksByProductTypes(2);
         model.addAttribute("discountBooks", discountBooks);
 
-        List<ProductDetailsResponseDto> bestSeller = productService.getBooksByProductTypes(3);
+        List<ProductDetailsResponseDto> bestSeller = bookService.getBooksByProductTypes(3);
         model.addAttribute("bestSeller", bestSeller);
 
-        List<ProductDetailsResponseDto> recommendation = productService.getBooksByProductTypes(4);
+        List<ProductDetailsResponseDto> recommendation = bookService.getBooksByProductTypes(4);
         model.addAttribute("recommendationList", recommendation);
 
-        List<ProductDetailsResponseDto> popularBooks = productService.getBooksByProductTypes(5);
+        List<ProductDetailsResponseDto> popularBooks = bookService.getBooksByProductTypes(5);
         model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");

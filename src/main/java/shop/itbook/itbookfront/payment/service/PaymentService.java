@@ -1,8 +1,7 @@
 package shop.itbook.itbookfront.payment.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
-import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
+import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 
 /**
  * The interface Payment service.
@@ -33,7 +32,7 @@ public interface PaymentService {
      * @param orderNo    the order no
      * @return the payment response dto . payment data response dto
      */
-    OrderNoResponseDto requestApprovePayment(
+    OrderResponseDto requestApprovePayment(
         String paymentKey, String orderId, Long amount, Long orderNo);
 
     /**
@@ -42,6 +41,6 @@ public interface PaymentService {
      * @param requestDto the request dto
      * @return the order no response dto
      */
-    OrderNoResponseDto requestCanceledPayment(
+    OrderResponseDto requestCanceledPayment(
         PaymentCanceledRequestDto requestDto);
 }

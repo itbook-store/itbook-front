@@ -164,11 +164,12 @@ function checkCategoryCount() {
     console.log("cnt: " + cnt);
 
     if (cnt < 1) {
-        alert("카테고리는 최소 1개 지정해야만 합니다.");
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
         return false;
     } else
         return true;
 }
+
 
 async function showSearchResults(event) {
 

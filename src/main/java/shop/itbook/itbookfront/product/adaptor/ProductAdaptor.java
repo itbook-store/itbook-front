@@ -13,17 +13,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
-import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
-import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
-import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
-import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
@@ -46,7 +47,7 @@ public class ProductAdaptor {
     private final RestTemplate restTemplate;
 
     public Long addProduct(
-        MultipartFile thumbnails, ProductRequestDto requestDto) {
+        MultipartFile thumbnails, ProductAddRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("thumbnails", thumbnails.getResource());
@@ -73,45 +74,6 @@ public class ProductAdaptor {
         return body.getResult().getProductNo();
     }
 
-    public Long addBook(
-        MultipartFile thumbnails, MultipartFile ebook, BookRequestDto requestDto) {
-
-        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        params.add("thumbnails", thumbnails.getResource());
-        params.add("ebook", ebook.getResource());
-        params.add("requestDto", requestDto);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
-
-        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response = null;
-        try {
-            response =
-                restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
-                    HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
-                    });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
-                throw new InvalidInputException();
-            }
-        }
-        CommonResponseBody<ProductNoResponseDto> body = response.getBody();
-        return body.getResult().getProductNo();
-    }
-
-    public void removeProduct(Long productNo) {
-        ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
-            gateway.getGatewayServer() + "/api/admin/products/" + productNo,
-            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
-            });
-
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(response.getBody()).getHeader();
-        ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
-    }
-
     public PageResponse<ProductDetailsResponseDto> findProductList(String url) {
         ResponseEntity<CommonResponseBody<PageResponse<ProductDetailsResponseDto>>> response =
             restTemplate.exchange(
@@ -126,12 +88,13 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
-    public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                              BookRequestDto requestDto) {
+    public void modifyProduct(Long productNo, MultipartFile thumbnails,
+                              ProductModifyRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        params.add("thumbnails", thumbnails.getResource());
-        params.add("ebook", ebook.getResource());
+        if (!Objects.isNull(thumbnails)) {
+            params.add("thumbnails", thumbnails.getResource());
+        }
         params.add("requestDto", requestDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -148,6 +111,7 @@ public class ProductAdaptor {
             Objects.requireNonNull(response.getBody()).getHeader();
         ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
+
 
     public ProductDetailsResponseDto findProduct(Long productNo) {
         ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> response = null;
@@ -211,31 +175,6 @@ public class ProductAdaptor {
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
-    public SearchBookDetailsDto searchBook(String url) {
-        ResponseEntity<CommonResponseBody<SearchBookDetailsDto>> response =
-            restTemplate.exchange(gateway.getGatewayServer() + url,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
-    }
-
-    public ProductBooleanResponseDto isbnExists(String url) {
-        ResponseEntity<CommonResponseBody<ProductBooleanResponseDto>> response =
-            restTemplate.exchange(
-                gateway.getGatewayServer() + url,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
-        return Objects.requireNonNull(response.getBody()).getResult();
-    }
-
     public void modifyRelationProduct(Long basedProductNo, ProductRelationRequestDto requestDto) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -253,5 +192,23 @@ public class ProductAdaptor {
         CommonResponseBody.CommonHeader header =
             Objects.requireNonNull(exchange.getBody()).getHeader();
         ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
+    }
+
+    public void changeBooleanField(Long productNo, String fieldName) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gateway.getGatewayServer())
+            .path(String.format("/api/admin/products/modify/%d", productNo))
+            .queryParam("fieldName", fieldName)
+            .build();
+
+        ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
+            uriComponents.toUriString(), HttpMethod.PUT, null,
+            new ParameterizedTypeReference<>() {
+            });
+
+        CommonResponseBody.CommonHeader header =
+            Objects.requireNonNull(response.getBody()).getHeader();
+        ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
 }
