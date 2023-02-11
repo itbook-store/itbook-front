@@ -86,6 +86,6 @@ public class PointHistoryAdminDetailsGetController {
                 "/api/admin/point-histories/" + pointHistoryNo + "/review-details");
 
         model.addAttribute("reviewResponseDto", reviewResponseDto);
-        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "mypage/review/review-detail");
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/review/adminReviewDetailsIncrease");
     }
 }
