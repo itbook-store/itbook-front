@@ -9,6 +9,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.review.adaptor.ReviewAdaptor;
 import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
+import shop.itbook.itbookfront.review.dto.response.UnwrittenReviewOrderProductResponseDto;
 import shop.itbook.itbookfront.review.service.ReviewService;
 
 /**
@@ -56,6 +57,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public PageResponse<ReviewResponseDto> findReviewListByProductNo(String url, Long productNo) {
+
         return reviewAdaptor.getReviewListByProductNo(url, productNo);
+    }
+
+    @Override
+    public PageResponse<UnwrittenReviewOrderProductResponseDto> findUnwrittenReviewOrderProductList(
+        String url, Long memberNo) {
+
+        return reviewAdaptor.getUnwrittenReviewOrderProductList(url, memberNo);
     }
 }

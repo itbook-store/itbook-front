@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
+import shop.itbook.itbookfront.review.dto.response.UnwrittenReviewOrderProductResponseDto;
 import shop.itbook.itbookfront.review.exception.ReviewAlreadyRegisteredException;
 import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
 import shop.itbook.itbookfront.review.service.ReviewService;
@@ -143,6 +145,26 @@ public class ReviewController {
         }
 
         return "redirect:/review/mypage/list";
+    }
+
+    @GetMapping("/mypage/unwritten-list")
+    public String unwrittenReviewOrderProductList(
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        @PageableDefault Pageable pageable,
+        RedirectAttributes redirectAttributes,
+        Model model) {
+
+        PageResponse<UnwrittenReviewOrderProductResponseDto> pageResponse =
+            reviewService.findUnwrittenReviewOrderProductList(
+                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
+                userDetailsDto.getMemberNo());
+
+        log.info("!productNo = {}", pageResponse.getContent().get(0).getProductNo());
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/review/mypage/list");
+
+        return "mypage/review/review-writeable-list";
     }
 
 }

@@ -3,7 +3,6 @@ package shop.itbook.itbookfront.member.service.serviceapi;
 import java.util.List;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberPointSendRequestDto;
-import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
@@ -19,7 +18,9 @@ public interface MemberService {
 
     void updateMemberInfo(MemberUpdateRequestDto memberUpdateRequestDto, Long memberNo);
 
-    MemberInfoResponseDto findMemberInfo(Long memberNo);
+    MemberInfoResponseDto findMember(Long memberNo);
+
+    MemberInfoResponseDto findMemberByMemberId(String memberId);
 
     void withdrawMember(Long memberNo, MemberStatusChangeRequestDto requestDto);
 
