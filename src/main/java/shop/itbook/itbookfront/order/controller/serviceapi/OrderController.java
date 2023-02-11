@@ -56,7 +56,6 @@ public class OrderController {
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") String orderNo) {
 
-
         return "mainpage/order/orderCompletionForm";
     }
 

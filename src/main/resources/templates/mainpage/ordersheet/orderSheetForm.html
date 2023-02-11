@@ -243,6 +243,9 @@
                 failUrl: data.failUrl,
             })
                 .catch(function (error) {
+
+                    cancelOrderForPayment(data.orderNo)
+
                     if (error.code === 'USER_CANCEL') {
                         Swal.fire(
                             '결제가 취소되었습니다.',
@@ -272,6 +275,16 @@
                         console.log(error.code)
                     }
                 })
+        }
+
+        async function cancelOrderForPayment(orderNo) {
+            await fetch(`async/orders/payment-cancel/${orderNo}`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     </script>
 </div>
