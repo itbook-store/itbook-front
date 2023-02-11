@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -89,18 +90,18 @@ public class CouponAdminController {
 
 
     }
-    @GetMapping
+    @GetMapping("/list")
     public String couponList(Model model, @RequestParam(required = false) String coverage,
                              @PageableDefault Pageable pageable) throws InvalidPathRequestCouponList {
 
-        PageResponse<CouponListResponseDto> couponList = null;
+        PageResponse<AdminCouponListResponseDto> couponList = null;
         if(Objects.isNull(coverage)) {
             couponList =
                 couponService.findCouponList(
                     String.format("/api/admin/coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", couponList);
-            model.addAttribute("paginationUrl", "/admin/coupons");
+            model.addAttribute("paginationUrl", "/admin/coupons/list");
             return Strings.concat(DIRECTORY_NAME, "/couponList");
         }
         else if(coverage.equals("category")){
@@ -114,7 +115,7 @@ public class CouponAdminController {
         }
         model.addAttribute("pageResponse", couponList);
         model.addAttribute("paginationUrl",
-            String.format("/admin/coupons?coverage=%s", coverage));
+            String.format("/admin/coupons/list?coverage=%s", coverage));
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 

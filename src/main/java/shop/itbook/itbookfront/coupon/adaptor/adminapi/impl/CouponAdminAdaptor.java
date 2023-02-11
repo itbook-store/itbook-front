@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.coupon.dto.request.CategoryCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.OrderTotalCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
+import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponNoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -95,9 +96,9 @@ public class CouponAdminAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
-    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
+    public PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl){
 
-        ResponseEntity<CommonResponseBody<PageResponse<CouponListResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<PageResponse<AdminCouponListResponseDto>>> exchange =
         restTemplate.exchange(gatewayConfig.getGatewayServer() + couponListUrl,
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {

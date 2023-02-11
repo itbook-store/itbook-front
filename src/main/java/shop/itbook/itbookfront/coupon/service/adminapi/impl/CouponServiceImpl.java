@@ -9,6 +9,7 @@ import shop.itbook.itbookfront.coupon.adaptor.adminapi.impl.CouponAdminAdaptor;
 import shop.itbook.itbookfront.coupon.dto.request.CategoryCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.OrderTotalCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
+import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
@@ -83,7 +84,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl) {
+    public PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl) {
 
         return couponAdminAdaptor.findCouponList(couponListUrl);
     }

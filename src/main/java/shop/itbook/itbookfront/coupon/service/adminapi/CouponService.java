@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.coupon.service.adminapi;
 import java.util.List;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
+import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 
 /**
@@ -18,5 +19,5 @@ public interface CouponService {
 
     void addProductCoupon(CouponInputRequestDto couponInputRequestDto);
 
-    PageResponse<CouponListResponseDto> findCouponList(String couponListUrl);
+    PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl);
 }

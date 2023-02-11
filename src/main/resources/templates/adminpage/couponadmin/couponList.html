@@ -21,21 +21,71 @@
         <table class="table table-striped" style="text-align: center">
             <thead>
             <tr>
-                <th style="width: auto">이름</th>
-                <th style="width: auto">코드</th>
-                <th style="width: auto">생성가능일</th>
-                <th style="width: auto">만료일</th>
+                <th><span>번호</span></th>
+                <th style="width: 10%"><span>타입</span></th>
+                <th style="width: 15%"><span>이름</span></th>
+                <th style="width: 19%"><span>코드</span></th>
+                <th><span>쿠폰혜택</span></th>
+                <th><span>사용처</span></th>
+                <th><span>발급수량</span></th>
+                <th style="width: 17%"><span>발급기간</span></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="coupon : ${pageResponse.content}">
-                <td th:text="${coupon.name}"></td>
-                <td th:text="${coupon.code}"></td>
-                <td th:text="${coupon.couponCreatedAt}"></td>
-                <td th:text="${coupon.couponExpiredAt}"></td>
+            <tr th:each="coupon : ${pageResponse.getContent()}">
+
+                <td>
+                    <span th:text="${coupon.couponNo}"></span>
+                </td>
+                <td>
+                    <span th:text="${coupon.couponType}"></span>
+                </td>
+                <td style="text-align: left">
+                    <span th:text="${coupon.name}"></span>
+                </td>
+                <td >
+                    <span th:text="${coupon.code}"></span>
+                </td>
+                <td th:if="${coupon.amount!=0}">
+                    <span th:text="${coupon.amount} + '원 할인'"></span>
+                </td>
+                <td th:if="${coupon.percent!=0}">
+                    <span th:text="${coupon.percent} +'% 할인'"></span>
+                </td>
+                <td th:if="${coupon.point!=0}">
+                    <span th:text="${coupon.point} + ' 포인트 적립'"></span>
+                </td>
+                <td th:if="${coupon.point!=0}">
+                    포인트 쿠폰
+                </td>
+                <td th:if="${not #strings.isEmpty(coupon.categoryName)}">
+                    <span th:text="${coupon.categoryNo}"></span>.
+                    <span th:text="${coupon.categoryName}"></span>
+                </td>
+                <td th:if="${not #strings.isEmpty(coupon.productName)}">
+                    <span th:text="${coupon.productNo}"></span>.
+                    <span th:text="${coupon.productName}"></span>
+                </td>
+                <td th:if="${#strings.isEmpty(coupon.productName) and #strings.isEmpty(coupon.categoryName) and coupon.point==0}">
+                    전체 상품
+                </td>
+                <td th:if="${coupon.totalQuantity==0}">
+                    <span th:text="${coupon.issuedQuantity}"></span>
+                    / <br> 무제한
+                </td>
+                <td th:if="${coupon.totalQuantity!=0}">
+                    <span th:text="${coupon.issuedQuantity}"></span>
+                    / <span th:text="${coupon.totalQuantity}"></span>
+                </td>
+                <td style="width: 17%">
+                    <span th:text="${#temporals.format(coupon.couponCreatedAt, 'yyyy년 MM월 dd일')}"></span>
+                    <br>
+                    <span th:text="${#temporals.format(coupon.couponExpiredAt, '~ yyyy년 MM월 dd일')}"></span>
+                </td>
 
             </tr>
             </tbody>
+        </table>
         </table>
         <th:block th:include="component/pageFooter"></th:block>
 
