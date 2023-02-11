@@ -35,6 +35,6 @@ public class MemberPointSendRequestDto {
     private String receiveMemberId;
 
     @PositiveOrZero(message = "포인트는 양수여야 합니다.")
-    @NotBlank(message = "포인트는 null이거나 공백일 수 없습니다.")
+    @NotNull(message = "포인트는 null일 수 없습니다.")
     private Long giftPoint;
 }

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
-import shop.itbook.itbookfront.membership.dto.response.MembershipResponseDto;
+import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryCouponDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryGradeDetailsResponseDto;
+import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 
 /**
  * @author 최겸준
@@ -36,6 +37,26 @@ public class PointHistoryDetailsGetAdaptor {
     public PointHistoryGradeDetailsResponseDto findPointHistoryDetailsGrade(String apiUrl) {
 
         ResponseEntity<CommonResponseBody<PointHistoryGradeDetailsResponseDto>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return exchange.getBody().getResult();
+    }
+
+    public ReviewResponseDto findPointHistoryDetailsReview(String apiUrl) {
+
+        ResponseEntity<CommonResponseBody<ReviewResponseDto>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return exchange.getBody().getResult();
+    }
+
+    public PointHistoryCouponDetailsResponseDto findPointHistoryDetailsCoupon(String apiUrl) {
+
+        ResponseEntity<CommonResponseBody<PointHistoryCouponDetailsResponseDto>> exchange =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });

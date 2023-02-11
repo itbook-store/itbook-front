@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.elastic.adaptor.impl;
 
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,9 +23,21 @@ public class ProductSearchAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public PageResponse<ProductSampleResponseDto> findProductList(String url) {
+    public PageResponse<ProductSampleResponseDto> findProductPageList(String url) {
 
         ResponseEntity<CommonResponseBody<PageResponse<ProductSampleResponseDto>>>
+            exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + url,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public List<ProductSampleResponseDto> findProductList(String url) {
+
+        ResponseEntity<CommonResponseBody<List<ProductSampleResponseDto>>>
             exchange =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + url,
                 HttpMethod.GET, null,

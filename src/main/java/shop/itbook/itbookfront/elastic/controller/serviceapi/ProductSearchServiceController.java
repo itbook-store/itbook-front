@@ -53,7 +53,7 @@ public class ProductSearchServiceController {
         model.addAttribute("mainCategoryList", mainCategoryList);
 
         PageResponse<ProductSampleResponseDto> productList =
-            productSearchService.findProductList(
+            productSearchService.findProductPageList(
                 String.format("/api/products/search?page=%d&size=%d&name=%s",
                     pageable.getPageNumber(), pageable.getPageSize(), name));
 

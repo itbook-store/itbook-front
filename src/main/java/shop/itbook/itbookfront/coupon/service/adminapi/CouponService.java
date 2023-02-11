@@ -12,5 +12,11 @@ import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 public interface CouponService {
     void addCoupon(CouponInputRequestDto couponInputRequestDto);
 
+    void addOrderTotalCoupon(CouponInputRequestDto couponInputRequestDto);
+
+    void addCategoryCoupon(CouponInputRequestDto couponInputRequestDto);
+
+    void addProductCoupon(CouponInputRequestDto couponInputRequestDto);
+
     PageResponse<CouponListResponseDto> findCouponList(String couponListUrl);
 }

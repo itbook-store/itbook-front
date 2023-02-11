@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>포인트 내역 상세 조회</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">등급적립 상세조회</h1>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">ID</label> <input
+                                type="text" class="form-control" id="title" name="title"
+                                th:value="${details.memberId}" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mainName" class="form-label">이름</label> <input
+                                type="text" class="form-control" id="mainName" name="title"
+                                th:value="${details.memberName}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gradeName" class="form-label">등급 이름</label> <input
+                                type="text" class="form-control" id="gradeName" name="regDate"
+                                th:value="${details.membershipGrade}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gradeMoney" class="form-label">등급 기준 금액</label> <input
+                                type="text" class="form-control" id="gradeMoney" name="regDate"
+                                th:value="${#numbers.formatInteger(details.membershipStandardAmount, 1, 'COMMA')} + '원'" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="membershipPoint" class="form-label">등급별 지급포인트</label> <input
+                                type="text" class="form-control" id="membershipPoint" name="regDate"
+                                th:value="${#numbers.formatInteger(details.membershipPoint, 1, 'COMMA')} + 'P'" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="oldPoint" class="form-label">기존 포인트</label> <input
+                                type="text" class="form-control" id="oldPoint" name="writer"
+                                th:value="${#numbers.formatInteger(details.remainedPoint - details.point, 1, 'COMMA')} + 'P'" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="point" class="form-label">적립된 포인트</label> <input
+                                type="text" class="form-control" id="point" name="writer"
+                                th:value="${#numbers.formatInteger(details.point, 1, 'COMMA')} + 'P'" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="remainedPoint" class="form-label">잔여 포인트</label> <input
+                                type="text" class="form-control" id="remainedPoint" name="writer"
+                                th:value="${#numbers.formatInteger(details.remainedPoint, 1, 'COMMA')} + 'P'" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time" class="form-label">일시</label> <input
+                                type="text" class="form-control" id="time" name="writer"
+                                th:value="${#temporals.format(details.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}" disabled>
+                        </div>
+                        <a th:href="@{/point-histories/show-content/my-point-list(page=${memberPointHistoryPage})}" class="btn btn-outline-secondary">list</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
