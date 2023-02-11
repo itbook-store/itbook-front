@@ -46,12 +46,14 @@
                                         <td class="text-danger"><span th:text="${pointHistory.content}"/>차감</td>
                                         <td><span th:text="${#numbers.formatInteger(pointHistory.remainedPoint, 1, 'COMMA')} + 'P'"/></td>
                                         <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
+                                        <td><button class="btn btn-primary" th:onclick="|location.href='@{/point-histories/{pointHistoryNo}(pointHistoryNo=${pointHistory.pointHistoryNo}, content=${pointHistory.content}, page=${pageResponse.number})}'|">더보기</button></td>
                                     </tr>
                                     <tr th:unless="${pointHistory.isDecrease}" class="table-primary">
                                         <td><span th:text="${#numbers.formatInteger(pointHistory.increaseDecreasePoint, 1, 'COMMA')} + 'P'"/></td>
                                         <td class="text-primary"><span th:text="${pointHistory.content}"/>적립</td>
                                         <td><span th:text="${#numbers.formatInteger(pointHistory.remainedPoint, 1, 'COMMA')} + 'P'"/></td>
                                         <td><span th:text="${#temporals.format(pointHistory.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></td>
+                                        <td><button class="btn btn-primary" th:onclick="|location.href='@{/point-histories/{pointHistoryNo}(pointHistoryNo=${pointHistory.pointHistoryNo}, content=${pointHistory.content}, page=${pageResponse.number})}'|">더보기</button></td>
                                     </tr>
                                     </th:block>
                                     </tbody>
