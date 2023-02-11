@@ -13,10 +13,10 @@ public enum PointIncreaseDecreaseContentEnum {
 
     GIFT("선물", "/admin/point-histories/%d/gift-details", "/point-histories/%d/gift-details"),
     ORDER("주문", "/admin/point-histories/%d/order-details", "/point-histories/%d/order-details"),
-    ORDER_CANCEL("주문취소", "/admin/point-histories/%d/order-details", "/point-histories/%d/order-cancel-details"),
+    ORDER_CANCEL("주문취소", "/admin/point-histories/%d/order-details", "/admin/point-histories/%d/order-details"),
     GRADE("등급", "/admin/point-histories/%d/grade-details", "/point-histories/%d/grade-details"),
     COUPON("쿠폰", "/admin/point-histories/%d/coupon-details", "/point-histories/%d/coupon-details"),
-    REVIEW("리뷰", "/admin/point-histories/%d/review-details", "/point-histories/%d/revie-detailsw");
+    REVIEW("리뷰", "/admin/point-histories/%d/review-details", "/point-histories/%d/review-details");
 
     private final String content;
     private final String adminPagePointHistoryDetailsRedirectUrl;

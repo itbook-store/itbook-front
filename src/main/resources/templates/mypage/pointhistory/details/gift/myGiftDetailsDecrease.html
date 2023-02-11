@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/adminpage/default-layout}">
+      layout:decorate="~{layout/mypage/default-layout}">
 
 
 <head>
@@ -54,7 +54,7 @@
                                   type="text" class="form-control" id="time" name="writer"
                                   th:value="${#temporals.format(details.historyCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}" disabled>
                           </div>
-                          <a th:href="@{/admin/point-histories/show-content/admin-point-list(page=${adminPointHistoryPage})}" class="btn btn-outline-secondary">list</a>
+                          <a th:href="@{/point-histories/show-content/my-point-list(page=${memberPointHistoryPage})}" class="btn btn-outline-secondary">list</a>
                       </form>
                   </div>
               </div>
