@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +37,9 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderPaymentDto tempOrder(@RequestBody OrderAddRequestDto orderAddRequestDto,
-                                     @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
-
-        log.info("제발제발제발: {}", orderAddRequestDto);
+    public OrderPaymentDto orderPaymentStart(@RequestBody OrderAddRequestDto orderAddRequestDto,
+                                             @AuthenticationPrincipal
+                                             UserDetailsDto userDetailsDto) {
 
         Optional<Long> memberNo = Optional.empty();
 
@@ -48,5 +48,14 @@ public class OrderAsyncController {
         }
 
         return orderService.addOrder(orderAddRequestDto, memberNo);
+    }
+
+    @PostMapping("/payment-cancel/{orderNo}")
+    public OrderPaymentDto orderPaymentCancel(@PathVariable("orderNo") Long orderNo) {
+
+        // TODO: 2023/02/11 주문 삭제 처리. 
+
+
+        return null;
     }
 }

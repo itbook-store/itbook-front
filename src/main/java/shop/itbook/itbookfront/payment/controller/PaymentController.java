@@ -48,9 +48,6 @@ public class PaymentController {
         // requestPayment() 메서드에 담아 보낸 amount 값과 successUrl로 돌아온 amount 값이 같은지 확인해보기
         // 값이 다르면 결제 요청을 다시 하기
 
-        log.info("여기제발요: {}", paymentKey);
-        log.info("여기제발요: {}", orderId);
-
         OrderNoResponseDto responseDto =
             paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo);
         if (Objects.isNull(responseDto)) {
@@ -64,9 +61,6 @@ public class PaymentController {
     public String failureHandler(@RequestParam String code, @RequestParam String message,
                                  @RequestParam String orderId, @PathVariable Long orderNo) {
 
-        log.info("실패: {}", orderNo);
-        log.info("실패제발: {}", message);
-        
         PaymentErrorResponseDto
             requestDto = new PaymentErrorResponseDto(code, message);
 
@@ -83,9 +77,6 @@ public class PaymentController {
     @PostMapping("/payment/cancel/{orderNo}")
     public String requestCancelPayment(@PathVariable Long orderNo,
                                        @RequestParam String canceledReason) {
-
-        log.info("취소: {}", orderNo);
-        log.info("취소제발: {}", canceledReason);
 
         paymentService.requestCanceledPayment(orderNo, canceledReason);
         return "redirect:/mypage/list";

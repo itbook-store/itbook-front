@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
@@ -63,13 +64,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void completeOrderPayOfMember(Long orderNo) {
+    public OrderDetailsResponseDto findOrderDetails(Long orderNo) {
+
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
-            .path(String.format("/api/orders/pay-completion/%d", orderNo))
+            .path(String.format("/api/orders/details/%d", orderNo))
             .build();
 
-        orderAdaptor.completeOrderPayOfMember(uriComponents.toUri());
+        return orderAdaptor.findOrderDetails(uriComponents.toUri());
     }
 }
