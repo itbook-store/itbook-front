@@ -6,7 +6,6 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +22,6 @@ import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
-import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
  * @author gwanii
@@ -51,11 +49,11 @@ public class HomeController {
                        UserDetailsDto userDetailsDto) throws IOException {
 
         if (Objects.nonNull(userDetailsDto) &&
-            memberService.findMemberInfo(userDetailsDto.getMemberNo()).getPhoneNumber()
+            memberService.findMember(userDetailsDto.getMemberNo()).getPhoneNumber()
                 .equals(userDetailsDto.getMemberId())) {
 
             model.addAttribute("memberInfo",
-                memberService.findMemberInfo(userDetailsDto.getMemberNo()));
+                memberService.findMember(userDetailsDto.getMemberNo()));
 
             return "signuppage/oauth-signup";
         }
