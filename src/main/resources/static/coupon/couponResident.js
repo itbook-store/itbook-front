@@ -166,7 +166,7 @@ async function showSearchProductList(event) {
     productBox.style.display = "block";
 
     console.log(productName)
-    await fetch(`/async/product/search?name=`+productName, {
+    await fetch(`/async/products/search?name=`+productName, {
         method: "GET"
     })
         .then(response => response.json())
