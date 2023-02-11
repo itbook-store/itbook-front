@@ -49,6 +49,7 @@ function selectHowToShowCoupon(eventTarget) {
                         쿠폰 관리
                     </button>
                     <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupons/list';">쿠폰 전체 조회</a></button>
+                    <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupon/coupon-issues/list';">쿠폰 발급 내역 조회</a></button>
                     <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupons/coupon-addition';">쿠폰 추가</a></button>
         `;
 }
