@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryNoResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 
@@ -28,12 +29,12 @@ public class ProductInquiryAdaptor {
 
     public PageResponse<ProductInquiryResponseDto> findProductInquiryList(String url) {
 
-        ResponseEntity<CommonResponseBody<PageResponse<ProductInquiryResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<PageResponse<ProductInquiryResponseDto>>> responseEntity =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/admin/product-inquiries" + url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
 
-        return exchange.getBody().getResult();
+        return responseEntity.getBody().getResult();
     }
 
     public Long addProductInquiry(ProductInquiryRequestDto requestDto) {
@@ -50,8 +51,18 @@ public class ProductInquiryAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        CommonResponseBody<ProductInquiryNoResponseDto> body = responseEntity.getBody();
+        return responseEntity.getBody().getResult().getProductInquiryNo();
+    }
 
-        return body.getResult().getProductInquiryNo();
+    public ProductInquiryCountResponseDto countProductInquiry() {
+        ResponseEntity<CommonResponseBody<ProductInquiryCountResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/product-inquiries/count",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
     }
 }

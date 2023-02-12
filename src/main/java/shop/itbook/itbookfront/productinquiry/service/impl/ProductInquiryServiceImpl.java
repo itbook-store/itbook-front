@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.productinquiry.adaptor.ProductInquiryAdaptor;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryNoResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
@@ -29,5 +30,11 @@ public class ProductInquiryServiceImpl implements ProductInquiryService {
     public Long addProductInquiry(ProductInquiryRequestDto productInquiryRequestDto) {
 
         return productInquiryAdaptor.addProductInquiry(productInquiryRequestDto);
+    }
+
+    @Override
+    public ProductInquiryCountResponseDto countProductInquiry() {
+
+        return productInquiryAdaptor.countProductInquiry();
     }
 }

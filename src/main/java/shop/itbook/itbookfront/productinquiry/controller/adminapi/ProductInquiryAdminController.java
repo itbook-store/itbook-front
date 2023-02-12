@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
 
@@ -33,6 +34,9 @@ public class ProductInquiryAdminController {
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/product-inquiries/list");
+
+        ProductInquiryCountResponseDto productInquiryCountResponseDto = productInquiryService.countProductInquiry();
+        model.addAttribute("productInquiryCountResponseDto", productInquiryCountResponseDto);
 
         return "adminpage/productinquiry/productInquiry-list";
     }
