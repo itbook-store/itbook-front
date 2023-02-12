@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>구독 주문</title>
+</head>
+<body>
+
+<fieldset>
+    <label>
+        <input type="radio" name="subscription_period" value="6" checked>
+        6개월
+    </label>
+    <label>
+        <input type="radio" name="subscription_period" value="12">
+        1년
+    </label>
+    <div>가격: <span></span>원</div>
+</fieldset>
+
+<button th:onclick="@{/order-sheet}">계속 주문</button>
+</body>
+</html>

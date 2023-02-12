@@ -49,8 +49,8 @@ public class OrderSheetController {
      */
     @PostMapping
     public String orderProductMember(@RequestParam(required = false) List<Long> productNoList,
-        @RequestParam(required = false) List<Integer> productCntList,
-        @ModelAttribute("orderAddRequestDto")
+                                     @RequestParam(required = false) List<Integer> productCntList,
+                                     @ModelAttribute("orderAddRequestDto")
                                      OrderAddRequestDto orderAddRequestDto,
                                      @AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                      Model model) {
@@ -76,7 +76,6 @@ public class OrderSheetController {
 
         Queue<Integer> productCntQueue = new LinkedList<>(productCntList);
 
-
         model.addAttribute("productDetailsList",
             orderSheet.getProductDetailsResponseDtoList());
         model.addAttribute("productCntQueue", productCntQueue);
@@ -84,5 +83,12 @@ public class OrderSheetController {
             orderSheet.getMemberDestinationResponseDtoList());
 
         return "mainpage/ordersheet/orderSheetForm";
+    }
+
+    @PostMapping("/subscription")
+    public String orderSubscriptionSelect(
+        Model model) {
+
+        return "mainpage/ordersheet/subscriptionOrderForm";
     }
 }
