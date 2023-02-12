@@ -15,6 +15,7 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryNoResponseDto;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 
 /**
@@ -60,6 +61,31 @@ public class ProductInquiryAdaptor {
                 gatewayConfig.getGatewayServer() + "/api/admin/product-inquiries/count",
                 HttpMethod.GET,
                 null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public PageResponse<ProductInquiryOrderProductResponseDto> findProductInquiryOrderProductList(String url, Long memberNo) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<ProductInquiryOrderProductResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/product-inquiries/writable/" + memberNo +
+                    url,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public ProductInquiryResponseDto findProductInquiry(Long productInquiryNo) {
+        ResponseEntity<CommonResponseBody<ProductInquiryResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/product-inquiries/view/" +
+                    productInquiryNo,
+                HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
 

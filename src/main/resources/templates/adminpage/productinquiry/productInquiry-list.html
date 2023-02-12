@@ -55,7 +55,8 @@
                                             <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
                                         </td>
                                         <td>
-                                            <button th:if="${productInquiry.isReplied} == false" class="btn btn-primary">답변하기</button>
+                                            <button th:if="${productInquiry.isReplied} == false" class="btn btn-primary"
+                                            th:onclick="|location.href='@{/admin/product-inquiries/view/{productInquiryNo}(productInquiryNo=${productInquiry.productInquiryNo})}'|">답변하기</button>
                                         </td>
                                     </tr>
                                     </tbody>

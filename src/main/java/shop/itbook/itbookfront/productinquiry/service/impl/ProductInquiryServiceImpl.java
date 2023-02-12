@@ -7,6 +7,7 @@ import shop.itbook.itbookfront.productinquiry.adaptor.ProductInquiryAdaptor;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryNoResponseDto;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
 
@@ -36,5 +37,18 @@ public class ProductInquiryServiceImpl implements ProductInquiryService {
     public ProductInquiryCountResponseDto countProductInquiry() {
 
         return productInquiryAdaptor.countProductInquiry();
+    }
+
+    @Override
+    public PageResponse<ProductInquiryOrderProductResponseDto> findProductInquiryOrderProductList(
+        String url, Long memberNo) {
+
+        return productInquiryAdaptor.findProductInquiryOrderProductList(url, memberNo);
+    }
+
+    @Override
+    public ProductInquiryResponseDto findProductInquiry(Long productInquiryNo) {
+
+        return productInquiryAdaptor.findProductInquiry(productInquiryNo);
     }
 }

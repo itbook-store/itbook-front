@@ -4,6 +4,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryNoResponseDto;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 
 /**
@@ -17,4 +18,8 @@ public interface ProductInquiryService {
     Long addProductInquiry(ProductInquiryRequestDto productInquiryRequestDto);
 
     ProductInquiryCountResponseDto countProductInquiry();
+
+    PageResponse<ProductInquiryOrderProductResponseDto> findProductInquiryOrderProductList(String url, Long memberNo);
+
+    ProductInquiryResponseDto findProductInquiry(Long productInquiryNo);
 }
