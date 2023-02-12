@@ -26,28 +26,5 @@ public class OrderAddRequestDto {
     private Integer postcode;
     private String roadNameAddress;
     private String recipientAddressDetails;
-
-    @JsonIgnore
-    private String orderId;
-    @JsonIgnore
-    private String orderName;
-    @JsonIgnore
-    private Long amount;
-
-    @Override
-    public String toString() {
-        return "OrderAddRequestDto{" +
-            "productNoList=" + productNoList +
-            ", productCntList=" + productCntList +
-            ", selectedDeliveryDate=" + selectedDeliveryDate +
-            ", recipientName='" + recipientName + '\'' +
-            ", recipientPhoneNumber='" + recipientPhoneNumber + '\'' +
-            ", postcode=" + postcode +
-            ", roadNameAddress='" + roadNameAddress + '\'' +
-            ", recipientAddressDetails='" + recipientAddressDetails + '\'' +
-            ", orderId='" + orderId + '\'' +
-            ", orderName='" + orderName + '\'' +
-            ", amount=" + amount +
-            '}';
-    }
+    private Long deliveryFee;
 }

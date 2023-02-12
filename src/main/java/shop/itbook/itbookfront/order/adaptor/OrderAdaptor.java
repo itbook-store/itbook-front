@@ -54,7 +54,7 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public <T> OrderPaymentDto addOrderOfMember(URI uri, HttpEntity<T> http) {
+    public <T> OrderPaymentDto addOrder(URI uri, HttpEntity<T> http) {
         ResponseEntity<CommonResponseBody<OrderPaymentDto>> exchange =
             restTemplate.exchange(
                 uri,
@@ -63,6 +63,14 @@ public class OrderAdaptor {
                 });
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public void cancelOrder(URI uri) {
+        restTemplate.exchange(
+            uri,
+            HttpMethod.POST, null,
+            new ParameterizedTypeReference<>() {
+            });
     }
 
     public OrderDetailsResponseDto findOrderDetails(URI uri) {

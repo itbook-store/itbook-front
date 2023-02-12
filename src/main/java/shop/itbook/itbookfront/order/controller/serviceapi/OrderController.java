@@ -60,9 +60,12 @@ public class OrderController {
     }
 
     @GetMapping("/details/{orderNo}")
-    public String orderDetailsView(@PathVariable("orderNo") Long orderNo) {
+    public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
 
-        orderService.findOrderDetails(orderNo);
-        return "hell";
+        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+
+        model.addAttribute("orderDetails", orderDetails);
+
+        return "mypage/order/orderDetailsForm";
     }
 }
