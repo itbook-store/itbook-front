@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 
@@ -20,5 +21,5 @@ public interface OrderService {
     OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
                              Optional<Long> memberNo);
 
-    void completeOrderPayOfMember(Long orderNo);
+    OrderDetailsResponseDto findOrderDetails(Long orderNo);
 }

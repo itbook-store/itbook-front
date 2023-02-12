@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.order.adminapi;
+package shop.itbook.itbookfront.order.controller.adminapi;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

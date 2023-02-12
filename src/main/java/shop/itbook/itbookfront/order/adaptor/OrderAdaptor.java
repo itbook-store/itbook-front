@@ -5,12 +5,15 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
@@ -62,12 +65,20 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public void completeOrderPayOfMember(URI uri) {
-        restTemplate.exchange(
-            uri,
-            HttpMethod.POST, null,
-            new ParameterizedTypeReference<>() {
-            });
-    }
+    public OrderDetailsResponseDto findOrderDetails(URI uri) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> http = new HttpEntity<>(headers);
+
+        ResponseEntity<CommonResponseBody<OrderDetailsResponseDto>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, http,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
 }
