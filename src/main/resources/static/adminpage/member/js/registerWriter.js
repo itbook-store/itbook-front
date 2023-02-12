@@ -15,7 +15,10 @@ function registerWriter() {
         });
     };
 
-    getData();
+    if(!getData()) {
+        return false;
+    }
+
 
     document.getElementById('registerWriterForm').submit();
 }
