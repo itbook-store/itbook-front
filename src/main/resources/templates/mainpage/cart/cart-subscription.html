@@ -97,7 +97,8 @@
                                 </th:block>
 
                                 <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                    <input class="total_price" type="number" readonly th:value="${dto.productDetailsResponseDto.selledPrice * dto.productCount}" />
+                                    <input class="total_price" type="number" readonly style="width: 130px"
+                                           th:value="${dto.productDetailsResponseDto.selledPrice * dto.productCount}" />
                                 </th:block>
 
                             </td>

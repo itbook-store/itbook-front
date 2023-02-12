@@ -1,8 +1,13 @@
 package shop.itbook.itbookfront.auth.handler;
 
+import static shop.itbook.itbookfront.cart.util.CartConstant.COOKIE_NAME;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,6 +24,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import shop.itbook.itbookfront.auth.dto.TokenDto;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.auth.util.AuthUtil;
+import shop.itbook.itbookfront.cart.service.CartService;
 
 /**
  * OAuth2 로그인이 성공적으로 된 후, OAuth2 Server 에서 받은 정보를 통해 Auth서버로 보내 인가를 요청하기위한
@@ -32,6 +38,8 @@ import shop.itbook.itbookfront.auth.util.AuthUtil;
 public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AuthUtil authUtil;
+
+    private final CartService cartService;
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -60,6 +68,17 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             null,
             authorities
         );
+
+        Cookie[] cookies = request.getCookies();
+
+        Cookie cartCookie = Arrays.stream(cookies)
+            .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+            .findFirst()
+            .orElse(
+                new Cookie(COOKIE_NAME, "CID=" + UUID.randomUUID())
+            );
+
+        cartService.loadCartProductForMember(cartCookie.getValue(), userDetailsDto.getMemberNo());
 
         SecurityContextHolder.getContext().setAuthentication(oAuthAuthenticationToken);
 

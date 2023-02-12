@@ -75,8 +75,7 @@ public class SecurityConfig {
         http
             .oauth2Login()
             .loginPage("/login").permitAll()
-            .successHandler(customOAuthSuccessHandler(null))
-//            .successHandler(customLoginSuccessHandler(null))
+            .successHandler(customOAuthSuccessHandler(null, null))
             .failureHandler(customLoginFailureHandler())
             .userInfoEndpoint()
             .userService(customOAuth2UserService(null));
@@ -156,8 +155,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil) {
-        return new CustomOAuthSuccessHandler(authUtil);
+    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil, CartService cartService) {
+        return new CustomOAuthSuccessHandler(authUtil, cartService);
     }
 
     /**
