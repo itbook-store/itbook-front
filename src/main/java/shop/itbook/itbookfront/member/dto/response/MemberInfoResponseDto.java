@@ -24,4 +24,4 @@ public class MemberInfoResponseDto {
     private String email;
     private LocalDateTime memberCreatedAt;
     private Boolean isSocial;
-}
+    private Boolean isWriter;}

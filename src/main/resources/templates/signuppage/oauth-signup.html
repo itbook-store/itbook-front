@@ -30,6 +30,7 @@
                                 <form id = "socialLoginForm" th:action="@{/signup/social}" method="post">
 
                                     <input type="hidden" name="isSocial" value="true">
+                                    <input type="hidden" name="isWriter" value="false">
                                     <input type="hidden" name="memberNo" th:value="${memberInfo.memberNo}">
 
                                     <div class="form-outline mb-4">
