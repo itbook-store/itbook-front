@@ -36,6 +36,7 @@ public class CouponAdminAdaptor {
     private static final String ORDER_TOTAL_COUPON_API_URL = "/api/admin/order-total-coupons";
     private static final String CATEGORY_COUPON_API_URL = "/api/admin/category-coupons";
     private static final String PRODUCT_COUPON_API_URL = "/api/admin/product-coupons";
+    private static final String MEMBERSHIP_COUPON_API_URL = "/api/admin/membership-coupons";
 
     public Long addCoupon(CouponInputRequestDto couponInputRequestDto){
         HttpHeaders headers = new HttpHeaders();
@@ -92,6 +93,18 @@ public class CouponAdminAdaptor {
             = restTemplate.exchange(gatewayConfig.getGatewayServer() + PRODUCT_COUPON_API_URL+"/add",
             HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){
 
+            });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
+    }
+    public Long addMembershipCoupon(int membershipNo, long couponNo){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
+            = restTemplate.exchange(gatewayConfig.getGatewayServer() + MEMBERSHIP_COUPON_API_URL+
+                String.format("/%d/add?membershipNo=%d",couponNo,membershipNo),
+            HttpMethod.POST, null, new ParameterizedTypeReference<>(){
             });
 
         return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();

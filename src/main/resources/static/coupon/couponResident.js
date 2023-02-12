@@ -69,11 +69,15 @@ function selectCouponCoverage() {
 }
 
 function selectCouponDiv(select) {
+    document.getElementById("normalCouponDiv").style.display = 'none';
+    document.getElementById("membershipMonthlyCouponDiv").style.display = 'none';
 
     if (select.value === "일반쿠폰") {
         document.getElementById("normalCouponDiv").style.display = 'block';
+
+    } else if (select.value === "이달의쿠폰등급형") {
+        document.getElementById("membershipMonthlyCouponDiv").style.display = 'block';
     } else {
-        document.getElementById("normalCouponDiv").style.display = 'none';
 
     }
 }

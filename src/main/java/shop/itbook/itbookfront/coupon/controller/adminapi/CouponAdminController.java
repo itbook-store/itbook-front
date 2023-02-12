@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.coupon.controller.adminapi;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -19,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
+import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.CouponCoverageNotSelectException;
+import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
+import shop.itbook.itbookfront.membership.dto.response.MembershipResponseDto;
+import shop.itbook.itbookfront.membership.service.MembershipService;
 
 /**
  * @author 송다혜
@@ -38,6 +44,7 @@ public class CouponAdminController {
 
     private final CouponService couponService;
     private final CategoryService categoryService;
+    private final MembershipService membershipService;
     private static final String DIRECTORY_NAME = "adminpage/couponadmin";
 
     @GetMapping("/coupon-addition")
@@ -45,12 +52,16 @@ public class CouponAdminController {
                                     CouponInputRequestDto couponInputRequestDto, Model model){
         model.addAttribute("mainCategoryList",
             categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
+        model.addAttribute("membershipList", membershipService.getMemberships());
+
         return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
     }
 
     @PostMapping ("/coupon-addition")
     public String couponAdd(@Valid CouponInputRequestDto couponInputRequestDto, Model model,
                             Errors errors, @RequestParam String couponCoverageGroup,
+                            @RequestParam(required = false) String memberId,
+                            @RequestParam(required = false) Integer membership,
                             RedirectAttributes redirectAttributes) {
 
         if(errors.hasErrors()) {
@@ -67,27 +78,30 @@ public class CouponAdminController {
         couponInputRequestDto.setDuplicateUse(false);
 
         try {
-            couponType(couponCoverageGroup, couponInputRequestDto);
-        } catch (CouponCoverageNotSelectException e){
+            Long couponNo = couponType(couponCoverageGroup, couponInputRequestDto);
+            if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
+                couponService.addMembershipCoupon(membership, couponNo);
+            }
+        } catch (CouponCoverageNotSelectException | RestApiServerException |
+                 CategoryNumberNotFoundException | ProductNumberNotFoundException e){
             model.addAttribute("couponInputRequestDto", couponInputRequestDto);
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
 
-        if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
-        }
+
         return "redirect:/admin/coupons/list";
     }
 
-    private void couponType(String coverage, CouponInputRequestDto couponInputRequestDto){
+    private Long couponType(String coverage, CouponInputRequestDto couponInputRequestDto){
         if (coverage.equals("point")){
-            couponService.addCoupon(couponInputRequestDto);
+            return couponService.addCoupon(couponInputRequestDto);
         } else if(coverage.equals("category")){
-            couponService.addCategoryCoupon(couponInputRequestDto);
+            return couponService.addCategoryCoupon(couponInputRequestDto);
         } else if (coverage.equals("product")) {
-            couponService.addProductCoupon(couponInputRequestDto);
+            return couponService.addProductCoupon(couponInputRequestDto);
         } else if (coverage.equals("total")){
-            couponService.addOrderTotalCoupon(couponInputRequestDto);
+            return couponService.addOrderTotalCoupon(couponInputRequestDto);
         } else {
             throw new CouponCoverageNotSelectException();
         }

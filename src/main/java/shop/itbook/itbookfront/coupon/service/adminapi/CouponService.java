@@ -11,13 +11,15 @@ import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
  * @since 1.0
  */
 public interface CouponService {
-    void addCoupon(CouponInputRequestDto couponInputRequestDto);
+    Long addCoupon(CouponInputRequestDto couponInputRequestDto);
 
-    void addOrderTotalCoupon(CouponInputRequestDto couponInputRequestDto);
+    Long addOrderTotalCoupon(CouponInputRequestDto couponInputRequestDto);
 
-    void addCategoryCoupon(CouponInputRequestDto couponInputRequestDto);
+    Long addCategoryCoupon(CouponInputRequestDto couponInputRequestDto);
 
-    void addProductCoupon(CouponInputRequestDto couponInputRequestDto);
+    Long addProductCoupon(CouponInputRequestDto couponInputRequestDto);
 
     PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl);
+
+    void addMembershipCoupon(Integer membership, Long couponNo);
 }
