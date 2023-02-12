@@ -22,7 +22,6 @@ import shop.itbook.itbookfront.member.dto.request.MemberUpdateRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationNoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberDestinationResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
-import shop.itbook.itbookfront.member.dto.response.MemberRecentlyPointResponseDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 
 /**
@@ -42,7 +41,7 @@ public class MemberController {
                              @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
         MemberInfoResponseDto memberInfoResponseDto =
-            memberService.findMemberInfo(userDetailsDto.getMemberNo());
+            memberService.findMember(userDetailsDto.getMemberNo());
 
         model.addAttribute("memberInfoResponseDto", memberInfoResponseDto);
 
@@ -65,7 +64,7 @@ public class MemberController {
                                                @AuthenticationPrincipal
                                                UserDetailsDto userDetailsDto,
                                                Model model) {
-        MemberInfoResponseDto member = memberService.findMemberInfo(userDetailsDto.getMemberNo());
+        MemberInfoResponseDto member = memberService.findMember(userDetailsDto.getMemberNo());
         model.addAttribute("member", member);
 
         return "mypage/member/member-withdraw";
@@ -170,7 +169,7 @@ public class MemberController {
         @Valid MemberPointSendRequestDto memberPointSendRequestDto
         ) {
 
-        Long receiveMemberNo = memberService.findMemberInfo(memberPointSendRequestDto.getReceiveMemberNo()).getMemberNo();
+        Long receiveMemberNo = memberService.findMemberByMemberId(memberPointSendRequestDto.getReceiveMemberId()).getMemberNo();
         memberPointSendRequestDto.setReceiveMemberNo(receiveMemberNo);
 
         memberService.giftPointMember(memberPointSendRequestDto);

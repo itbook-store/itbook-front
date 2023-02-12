@@ -23,6 +23,7 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewNoResponseDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
+import shop.itbook.itbookfront.review.dto.response.UnwrittenReviewOrderProductResponseDto;
 import shop.itbook.itbookfront.review.exception.ReviewAlreadyRegisteredException;
 import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
 import shop.itbook.itbookfront.signin.dto.response.MemberNoResponseDto;
@@ -118,7 +119,7 @@ public class ReviewAdaptor {
 
         restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/delete",
-            HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {
+            HttpMethod.PUT, null, new ParameterizedTypeReference<>() {
             });
     }
 
@@ -162,6 +163,26 @@ public class ReviewAdaptor {
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/reviews/list/product/" + productNo + url,
                 HttpMethod.GET, entity, new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
+
+    public PageResponse<UnwrittenReviewOrderProductResponseDto> getUnwrittenReviewOrderProductList(String url, Long memberNo) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<CommonResponseBody<PageResponse<UnwrittenReviewOrderProductResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/unwritten-list/member/" +
+                    memberNo + url,
+                HttpMethod.GET, entity,
+                new ParameterizedTypeReference<>() {
                 }
             );
 

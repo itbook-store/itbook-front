@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.member.adaptor.serviceapi;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ import shop.itbook.itbookfront.util.ResponseChecker;
  * @author 노수연
  * @since 1.0
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MemberAdaptor {
@@ -55,6 +57,20 @@ public class MemberAdaptor {
         ResponseEntity<CommonResponseBody<MemberInfoResponseDto>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/members/" + memberNo,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public MemberInfoResponseDto getMemberByMemberId(String memberId) {
+        ResponseEntity<CommonResponseBody<MemberInfoResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/members/memberId/" + memberId,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });

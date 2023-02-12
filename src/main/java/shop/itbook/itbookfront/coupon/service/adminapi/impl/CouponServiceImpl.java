@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.adaptor.adminapi.impl.CouponAdminAdaptor;
+import shop.itbook.itbookfront.coupon.dto.request.CategoryCouponRequestDto;
+import shop.itbook.itbookfront.coupon.dto.request.OrderTotalCouponRequestDto;
+import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
+import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
+import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -21,16 +26,64 @@ public class CouponServiceImpl implements CouponService {
     private final CouponAdminAdaptor couponAdminAdaptor;
 
     @Override
-    public void addCoupon(CouponInputRequestDto couponInputRequestDto){
+    public void addCoupon(CouponInputRequestDto couponInputRequestDto) {
+
         Long couponNo = couponAdminAdaptor.addCoupon(couponInputRequestDto);
 
         if (Objects.isNull(couponNo)) {
-            throw new RestApiServerException("해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
+            throw new RestApiServerException(
+                "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
         }
     }
 
     @Override
-    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
+    public void addOrderTotalCoupon(CouponInputRequestDto couponInputRequestDto) {
+
+        OrderTotalCouponRequestDto orderTotalCouponRequestDto =
+            new OrderTotalCouponRequestDto(couponInputRequestDto);
+        Long couponNo = couponAdminAdaptor.addOrderTotalCoupon(orderTotalCouponRequestDto);
+
+        if (Objects.isNull(couponNo)) {
+            throw new RestApiServerException(
+                "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
+        }
+    }
+
+    @Override
+    public void addCategoryCoupon(CouponInputRequestDto couponInputRequestDto) {
+
+        if (Objects.isNull(couponInputRequestDto.getCategoryNo())){
+            throw new CategoryNumberNotFoundException();
+        }
+        CategoryCouponRequestDto categoryCouponRequestDto =
+            new CategoryCouponRequestDto(couponInputRequestDto.getCategoryNo(), couponInputRequestDto);
+        Long couponNo = couponAdminAdaptor.addCategoryCoupon(categoryCouponRequestDto);
+
+        if (Objects.isNull(couponNo)) {
+            throw new RestApiServerException(
+                "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
+        }
+    }
+
+    @Override
+    public void addProductCoupon(CouponInputRequestDto couponInputRequestDto) {
+
+        if (Objects.isNull(couponInputRequestDto.getProductNo())){
+            throw new ProductNumberNotFoundException();
+        }
+
+        ProductCouponRequestDto productCouponRequestDto =
+            new ProductCouponRequestDto(couponInputRequestDto.getProductNo(), couponInputRequestDto);
+        Long couponNo = couponAdminAdaptor.addProductCoupon(productCouponRequestDto);
+
+        if (Objects.isNull(couponNo)) {
+            throw new RestApiServerException(
+                "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");
+        }
+    }
+
+    @Override
+    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl) {
 
         return couponAdminAdaptor.findCouponList(couponListUrl);
     }

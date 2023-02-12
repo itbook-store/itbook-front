@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.elastic.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
@@ -18,7 +19,11 @@ public class ProductSearchServiceImpl implements ProductSearchService {
     private final ProductSearchAdaptor productSearchAdaptor;
 
     @Override
-    public PageResponse<ProductSampleResponseDto> findProductList(String url) {
+    public PageResponse<ProductSampleResponseDto> findProductPageList(String url) {
+        return productSearchAdaptor.findProductPageList(url);
+    }
+    @Override
+    public List<ProductSampleResponseDto> findProductList(String url) {
         return productSearchAdaptor.findProductList(url);
     }
 }

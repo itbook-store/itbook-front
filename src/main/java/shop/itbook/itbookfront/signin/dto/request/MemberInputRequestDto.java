@@ -52,4 +52,8 @@ public class MemberInputRequestDto {
 
     @NotNull(message = "소셜여부는 null값을 허용하지 않습니다.")
     private Boolean isSocial;
+
+    @NotNull(message = "작가여부는 null값을 허용하지 않습니다.")
+    private Boolean isWriter;
+
 }

@@ -60,19 +60,13 @@ public class SignUpServiceImpl implements SignUpService {
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay())
                 .password(passwordEncoder.encode(memberInputRequestDto.getPassword())).phoneNumber(
                     memberInputRequestDto.getPhoneNumber()).email(memberInputRequestDto.getEmail())
-                .isSocial(memberInputRequestDto.getIsSocial()).build();
+                .isSocial(memberInputRequestDto.getIsSocial()).isWriter(memberInputRequestDto.getIsWriter()).build();
 
         signUpAdaptor.addMemberIntoDb(memberRequestDto);
     }
 
     @Override
     public void addSocialMember(MemberSocialRequestDto memberSocialRequestDto) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(memberSocialRequestDto.getPhoneNumber());
-        sb.insert(3, "-");
-        sb.insert(8, "-");
-
-        memberSocialRequestDto.setPhoneNumber(sb.toString());
 
         signUpAdaptor.addSocialMember(memberSocialRequestDto);
     }

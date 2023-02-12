@@ -76,6 +76,8 @@
                                             </td>
                                         </tr>
                                     </table>
+<!--                                   회원은 20000원 이상 주문시 배송비 무료 -->
+                                    <div>배송비: 3000원</div>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +149,7 @@
             <br>
         </div>
 
-        <button class="btn btn-info" id="paymentButton" type="button" onclick="createOrderForPayment()">
+        <button class="btn btn-info" id="paymentButton" type="button" onclick="processPayment()">
             결제하기
         </button>
 <!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
@@ -200,23 +202,50 @@
     </script>
     <script th:inline="javascript">
 
-        let temp = [[${orderAddRequestDto}]];
-        let productCntList = Array.from(document.getElementsByName("productCntList")).map(e => parseInt(e.value));
+        let canceledOrderNo = null;
 
-        async function createOrderForPayment() {
+        let temp = [[${orderAddRequestDto}]];
+
+        function processPayment() {
 
             let orderAddRequestDto = {
                 "productNoList": temp.productNoList,
-                "productCntList": productCntList,
+                "productCntList": temp.productCntList,
                 "postcode": parseInt(document.getElementsByName("postcode")[0].value),
                 "recipientName": document.getElementsByName("recipientName")[0].value,
                 "recipientPhoneNumber": document.getElementsByName("recipientPhoneNumber")[0].value,
                 "roadNameAddress": document.getElementsByName("roadNameAddress")[0].value,
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
-                "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value
+                "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
+                "deliveryFee": 0
             }
 
+            if(canceledOrderNo) {
+                reOrderForPayment(orderAddRequestDto, canceledOrderNo);
+                return
+            }
+            createOrderForPayment(orderAddRequestDto);
+        }
+
+        async function createOrderForPayment(orderAddRequestDto) {
+
             await fetch(`/async/orders/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
+        }
+
+        async function reOrderForPayment(orderAddRequestDto, orderNo) {
+
+            await fetch(`/async/orders/payment-restart/${orderNo}`, {
 
                 method: "POST",
                 headers: {
@@ -243,6 +272,9 @@
                 failUrl: data.failUrl,
             })
                 .catch(function (error) {
+
+                    canceledOrderNo = data.orderNo;
+
                     if (error.code === 'USER_CANCEL') {
                         Swal.fire(
                             '결제가 취소되었습니다.',
@@ -272,6 +304,22 @@
                         console.log(error.code)
                     }
                 })
+        }
+
+        async function cancelOrderForPayment(orderNo) {
+            await fetch(`async/orders/payment-cancel/${orderNo}`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                // 성공적으로 취소 되었다면 204(void 반환값이 204). ok 범위는 200~299
+                .then(response => {
+                    if(response.ok) {
+                        canceledOrderNo = orderNo;
+                    }
+                });
         }
     </script>
 </div>
