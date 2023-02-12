@@ -1,5 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout",
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" ,
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header-fragment">
     <nav class="py-2 bg-light border-bottom">
@@ -13,7 +13,8 @@
 
                 <div id="drop_down_with_links">
                     <button id="trigger">
-                        <i class="fa-solid fa-cart-shopping" style="font-size: 20px; color: #222333; margin-right: 10px;"></i>
+                        <i class="fa-solid fa-cart-shopping"
+                           style="font-size: 20px; color: #222333; margin-right: 10px;"></i>
                         <span class="user">장바구니</span>
                     </button>
 
@@ -23,7 +24,7 @@
                                 <span>일반상품</span>
                             </a>
                         </li>
-                        <li >
+                        <li>
                             <a href="/cart/subscription" class="link">
                                 <span>구독상품</span>
                             </a>
@@ -33,13 +34,13 @@
                 </div>
 
                 <th:block sec:authorize="isAnonymous()">
-                <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
-                <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
+                    <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
+                    <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated()">
-                <li class="nav-item"><a href="/mypage" class="nav-link link-dark px-2">마이페이지</a></li>
-                <li class="nav-item"><a href="/logout" class="nav-link link-dark px-2">로그아웃</a></li>
+                    <li class="nav-item"><a href="/mypage" class="nav-link link-dark px-2">마이페이지</a></li>
+                    <li class="nav-item"><a href="/logout" class="nav-link link-dark px-2">로그아웃</a></li>
                 </th:block>
 
             </ul>
@@ -52,7 +53,7 @@
                 <h1 id="itbook-title">ITBOOK</h1>
             </a>
             <form class="form-inline" method="GET" action="/products/search">
-                <input class="form-control mr-sm-2" type="search" name = "name" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" type="search" name="name" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -88,8 +89,14 @@
         </nav>
     </div>
     <div>
-        <button id="couponButton" type="button">
-            <span class="navbar-toggler-icon"></span><span style="margin-right: 5px" class="text-white">쿠폰</span>
+        <button id="couponButton" type="button" class="navbar-toggler" onclick="location.href='/coupons/month'">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                     class="bi bi-ticket-fill" viewBox="0 0 16 16">
+                <path d="M1.5 3A1.5 1.5 0 0 0 0 4.5V6a.5.5 0 0 0 .5.5 1.5 1.5 0 1 1 0 3 .5.5 0 0 0-.5.5v1.5A1.5 1.5 0 0 0 1.5 13h13a1.5 1.5 0 0 0 1.5-1.5V10a.5.5 0 0 0-.5-.5 1.5 1.5 0 0 1 0-3A.5.5 0 0 0 16 6V4.5A1.5 1.5 0 0 0 14.5 3h-13Z"/>
+                </svg>
+            </span>
+            <span style="margin-right: 5px" class="text-white"> 쿠폰</span>
         </button>
     </div>
 

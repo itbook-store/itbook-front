@@ -5,13 +5,73 @@
 <head>
     <meta charset="UTF-8">
     <title>쿠폰 다운 페이지</title>
-
-    <link rel="stylesheet" href="/mainpage/css/order-write.css">
 </head>
 <body>
 
 <div layout:fragment="content">
+
     <div><h1>선착순 쿠폰</h1></div>
+    <div class="container">
+        <div class="row">
+            <th:block th:each="coupon : ${couponList}">
+                <div class="panel widget">
+                    <div class="row row-table row-flush">
+                        <div class="col-xs-5">
+                            <picture class="lateral-picture">
+                                <img src="https://www.bootdey.com/image/400x400/FFB6C1/000000" alt="">
+                            </picture>
+                        </div>
+                        <div class="col-xs-7 align-middle p-lg">
+                            <div class="pull-right">
+                                <a th:href="@{/coupons/download(couponNo=${coupon.couponNo})}" class="btn-coupon-register btn-primary btn-sm">다운로드</a>
+                            </div>
+                            <p>
+                                <span class="text-lg">16</span>Aug</p>
+                            <p>
+                                <strong th:text="${coupon.name}"></strong>
+                            </p>
+                            <th:block th:if="${coupon.amount!=0}">
+                                <span th:text="${coupon.amount} + '원 할인'"></span>
+                            </th:block>
+                            <th:block th:if="${coupon.percent!=0}">
+                                <span th:text="${coupon.percent} +'% 할인'"></span>
+                            </th:block>
+                            <th:block th:if="${coupon.point!=0}">
+                                <span th:text="${coupon.point} + ' 포인트 적립'"></span>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <!-- END widget-->
+            </th:block>
+<!--            <div class="col-md-6">-->
+<!--                &lt;!&ndash; START widget&ndash;&gt;-->
+<!--            </div>-->
+            <div class="col-md-6">
+                <!-- START widget-->
+                <div class="panel widget">
+                    <div class="row row-table row-flush">
+                        <div class="col-xs-5">
+                            <picture class="lateral-picture">
+                                <img src="https://www.bootdey.com/image/400x400/87CEFA/000000" alt="">
+                            </picture>
+                        </div>
+                        <div class="col-xs-7 align-middle p-lg">
+                            <div class="pull-right"><a href="#" class="btn btn-primary btn-sm">Register</a>
+                            </div>
+                            <p>
+                                <span class="text-lg">16</span>Aug</p>
+                            <p>
+                                <strong>EVENT INVITATION</strong>
+                            </p>
+                            <p>Donec posuere neque in elit luctus tempor consequat enim egestas. Nulla dictum egestas leo at lobortis.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END widget-->
+            </div>
+        </div>
+    </div>
     <div class="box">
         <table>
             <div class="box-title">이달의 쿠폰</div>

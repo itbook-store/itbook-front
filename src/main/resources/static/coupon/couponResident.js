@@ -184,7 +184,7 @@ async function showSearchProductList(event) {
                     let radioBox = document.createElement("input");
                     let radioBoxText = document.createElement("label");
                     radioBox.type = "radio";
-                    radioBox.name = "searchResult";
+                    radioBox.name = "productNo";
                     radioBox.value = productList.productNo;
                     radioBox.style = "margin-right : 4px";
                     radioBoxText.style = "margin-right : 7px";
