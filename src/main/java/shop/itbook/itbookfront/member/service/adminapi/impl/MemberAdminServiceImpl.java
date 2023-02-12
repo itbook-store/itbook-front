@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.adaptor.adminapi.MemberAdminAdaptor;
+import shop.itbook.itbookfront.member.dto.request.MemberRegisterWriterRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
@@ -14,6 +15,7 @@ import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipRespon
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
+import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 
 /**
  * @author 노수연
@@ -29,6 +31,11 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     @Override
     public MemberAdminResponseDto findMember(Long memberNo) {
         return memberAdminAdaptor.getMember(memberNo);
+    }
+
+    @Override
+    public PageResponse<MemberAdminResponseDto> findWriterMembers(String url) {
+        return memberAdminAdaptor.getWriterMembers(url);
     }
 
     @Override
@@ -101,5 +108,18 @@ public class MemberAdminServiceImpl implements MemberAdminService {
     @Override
     public MemberCountByMembershipResponseDto countMemberByMembership() {
         return memberAdminAdaptor.countMemberByMembership();
+    }
+
+    @Override
+    public MemberBooleanResponseDto checkNameExists(String memberId, String name) {
+
+        return memberAdminAdaptor.nameExists(memberId, name);
+    }
+
+
+    @Override
+    public void modifyMemberWriter(MemberRegisterWriterRequestDto memberRegisterWriterRequestDto) {
+
+        memberAdminAdaptor.modifyMemberWriter(memberRegisterWriterRequestDto.getMemberNo());
     }
 }

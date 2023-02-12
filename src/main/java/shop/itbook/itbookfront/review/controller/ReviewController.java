@@ -159,8 +159,6 @@ public class ReviewController {
                 String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
                 userDetailsDto.getMemberNo());
 
-        log.info("!productNo = {}", pageResponse.getContent().get(0).getProductNo());
-
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/review/mypage/list");
 

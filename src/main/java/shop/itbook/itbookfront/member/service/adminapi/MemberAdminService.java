@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.member.service.adminapi;
 
 import java.util.List;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.dto.request.MemberRegisterWriterRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
@@ -9,6 +10,7 @@ import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 
 /**
  * @author 노수연
@@ -17,6 +19,8 @@ import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 public interface MemberAdminService {
 
     PageResponse<MemberAdminResponseDto> findMembers(String url);
+
+    PageResponse<MemberAdminResponseDto> findWriterMembers(String url);
 
     PageResponse<MemberAdminResponseDto> findNormalMembers(String url);
 
@@ -44,4 +48,9 @@ public interface MemberAdminService {
     MemberCountResponseDto countMemberByMemberStatus();
 
     MemberCountByMembershipResponseDto countMemberByMembership();
+
+    MemberBooleanResponseDto checkNameExists(String memberId, String name);
+
+    void modifyMemberWriter(MemberRegisterWriterRequestDto memberRegisterWriterRequestDto);
+
 }
