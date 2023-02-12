@@ -85,7 +85,7 @@ public class BookServiceImpl implements BookService {
     public List<ProductDetailsResponseDto> getNewBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=1", PAGE_OF_ALL_CONTENT,
-                SIZE_OF_ALL_CONTENT)).getContent();
+                6)).getContent();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class BookServiceImpl implements BookService {
     public List<ProductDetailsResponseDto> getDiscountBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=2",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class BookServiceImpl implements BookService {
     public List<ProductDetailsResponseDto> getBestSellerList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=3",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Cacheable(value = "personalRecommendationList")
+//    @Cacheable(value = "personalRecommendationList")
     public List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo) {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=4&memberNo=%d",
@@ -125,7 +125,7 @@ public class BookServiceImpl implements BookService {
     public List<ProductDetailsResponseDto> getPopularBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=5",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
 }

@@ -48,7 +48,7 @@
                                 </tr>
                                 <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>발간일</td>
-                                    <td>[[${product.bookCreatedAt}]]</td>
+                                    <td th:text="${#strings.substring(product.bookCreatedAt, 0, 10)}"></td>
                                 </tr>
                                 <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>페이지 수</td>

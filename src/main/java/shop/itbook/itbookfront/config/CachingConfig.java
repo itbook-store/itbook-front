@@ -49,8 +49,8 @@ public class CachingConfig {
         configurations.put("discountBookList", defaultConfig.entryTtl(Duration.ofDays(1)));
         configurations.put("bestSellerList", defaultConfig.entryTtl(Duration.ofDays(7)));
         configurations.put("recommendationList", defaultConfig.entryTtl(Duration.ofDays(1)));
-        configurations.put("personalRecommendationList",
-            defaultConfig.entryTtl(Duration.ofHours(1)));
+//        configurations.put("personalRecommendationList",
+//            defaultConfig.entryTtl(Duration.ofHours(1)));
         configurations.put("popularBookList", defaultConfig.entryTtl(Duration.ofDays(1)));
 
         return RedisCacheManager.RedisCacheManagerBuilder

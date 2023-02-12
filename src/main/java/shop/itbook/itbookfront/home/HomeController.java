@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.home;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,8 +85,15 @@ public class HomeController {
         List<ProductDetailsResponseDto> bestSeller = bookService.getBestSellerList();
         model.addAttribute("bestSeller", bestSeller);
 
-        List<ProductDetailsResponseDto> recommendation = bookService.getRecommendationList();
-        model.addAttribute("recommendationList", recommendation);
+        if (Optional.ofNullable(userDetailsDto.getMemberNo()).isPresent()) {
+            List<ProductDetailsResponseDto> recommendation =
+                bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
+            model.addAttribute("recommendationList", recommendation);
+        }
+        if (Optional.ofNullable(userDetailsDto.getMemberNo()).isEmpty()) {
+            List<ProductDetailsResponseDto> recommendation = bookService.getRecommendationList();
+            model.addAttribute("recommendationList", recommendation);
+        }
 
         List<ProductDetailsResponseDto> popularBooks = bookService.getPopularBookList();
         model.addAttribute("popularBooks", popularBooks);
