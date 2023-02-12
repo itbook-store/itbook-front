@@ -12,9 +12,9 @@ import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.MembershipGradeNotFoundException;
-import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
+import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 
 /**
  * @author 송다혜
@@ -75,7 +75,7 @@ public class CouponServiceImpl implements CouponService {
     public Long addProductCoupon(CouponInputRequestDto couponInputRequestDto) {
 
         if (Objects.isNull(couponInputRequestDto.getProductNo())){
-            throw new ProductNumberNotFoundException();
+            throw new ProductNotFoundException();
         }
 
         ProductCouponRequestDto productCouponRequestDto =

@@ -26,7 +26,7 @@ import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.CouponCoverageNotSelectException;
 import shop.itbook.itbookfront.coupon.exception.MembershipGradeNotFoundException;
-import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
+import shop.itbook.itbookfront.coupon.exception.ProductCouponNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -84,7 +84,7 @@ public class CouponAdminController {
                 couponService.addMembershipCoupon(couponNo, membership);
             }
         } catch (CouponCoverageNotSelectException | RestApiServerException |
-                 CategoryNumberNotFoundException | ProductNumberNotFoundException
+                 CategoryNumberNotFoundException | ProductCouponNumberNotFoundException
                  | MembershipGradeNotFoundException e){
 
             model.addAttribute("mainCategoryList",

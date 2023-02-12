@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.coupon.controller.adminapi;
 
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Pageable;
@@ -9,12 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponIssueListResponseDto;
-import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
-import shop.itbook.itbookfront.coupon.exception.InvalidPathRequestCouponList;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponIssueAdminService;
 
 /**
