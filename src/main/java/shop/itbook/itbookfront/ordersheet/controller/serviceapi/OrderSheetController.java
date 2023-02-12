@@ -134,7 +134,9 @@ public class OrderSheetController {
         model.addAttribute("productCntQueue", productCntQueue);
         model.addAttribute("memberDestinationList",
             orderSheet.getMemberDestinationResponseDtoList());
-        model.addAttribute("subscription", Boolean.TRUE);
+
+        orderAddRequestDto.setIsSubscription(true);
+        orderAddRequestDto.setSubscriptionPeriod(subscriptionPeriod);
 
         return "mainpage/ordersheet/orderSheetForm";
     }

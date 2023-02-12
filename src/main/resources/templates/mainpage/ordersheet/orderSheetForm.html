@@ -231,12 +231,14 @@
                 "roadNameAddress": document.getElementsByName("roadNameAddress")[0].value,
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
-                "deliveryFee": 0
+                "deliveryFee": 0,
+                "isSubscription": temp.isSubscription,
+                "subscriptionPeriod": temp.subscriptionPeriod
             }
 
             console.log(orderAddRequestDto);
 
-            if(canceledOrderNo) {
+            if(canceledOrderNo && !temp.isSubscription) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
                 return
             }
