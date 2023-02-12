@@ -5,28 +5,39 @@
       layout:decorate="~{layout/mypage/default-layout}">
 <head>
     <style>
-        <style type=”text/css”>
-                          body{
-                              text-align: center;
-                              display: block;
-                              margin: 0 auto;
-                              font-size: 16px;
-                              color: #999;
-                          }
-        h1{
+        <
+        style type
+
+        =
+        ”text
+
+        /
+        css” >
+        body {
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            font-size: 16px;
+            color: #999;
+        }
+
+        h1 {
             font-family: ‘Oswald’, sans-serif;
             font-size: 30px;
             color: #216182;
         }
+
         label {
             display: block;
             margin-top: 20px;
             letter-spacing: 2px;
         }
+
         form {
             margin: 0 auto;
             width: 459px;
         }
+
         input, textarea {
             width: 439px;
             height: 27px;
@@ -38,15 +49,17 @@
             font-size: 0.9em;
             color: #3a3a3a;
         }
-        input:focus, textarea:focus{
+
+        input:focus, textarea:focus {
             border: 1px solid #97d6eb;
         }
 
-        textarea{
+        textarea {
             height: 60px;
             background-color: #efefef;
         }
-        #submit{
+
+        #submit {
             width: 127px;
             height: 48px;
             text-align: center;
@@ -54,30 +67,30 @@
             margin-top: 20px;
             cursor: pointer;
         }
-        #submit:hover{
+
+        #submit:hover {
             color: #fff;
             background-color: #216282;
             opacity: 0.9;
         }
+
         #cancel {
-            width: 127px; height: 48px;
+            width: 127px;
+            height: 48px;
             text-align: center;
             border: none;
             margin-top: 20px;
             cursor: pointer;
         }
-        #cancel:hover{
+
+        #cancel:hover {
             color: #fff;
             background-color: #216282;
             opacity: 0.9;
         }
 
         광고
-
         이 광고 신고
-
-
-
         .modal {
             position: fixed;
             left: 0;
@@ -90,6 +103,7 @@
             transform: scale(1.1);
             transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
         }
+
         .modal-content {
             position: absolute;
             top: 50%;
@@ -101,6 +115,7 @@
             height: 350px;
             border-radius: 0.5rem;
         }
+
         .close-button {
             float: right;
             width: 1.5rem;
@@ -110,9 +125,11 @@
             border-radius: 0.25rem;
             background-color: lightgray;
         }
+
         .close-button:hover {
             background-color: darkgray;
         }
+
         .show-modal {
             opacity: 1;
             visibility: visible;
@@ -120,7 +137,7 @@
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
 
-        </style>
+    </style>
     </style>
 
     <meta charset="UTF-8">
@@ -187,10 +204,11 @@
                                             <!--                                               style="text-decoration-line: none; color: black;"-->
                                             <!--                                               class="table-link text-warning">-->
                                             <span class="fa-stack">
+                                        <a th:href="@{/orders/details/{orderNo}(orderNo=${ord.orderNo})}">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                                            </span>
                                             </a>
+                                            </span>
                                             <a href="#" class="table-link danger">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -199,11 +217,11 @@
                                             </a>
                                         </td>
                                         <td>
-<!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
-<!--                                            <a-->
-<!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                                <button class="trigger">취소</button>
-<!--                                            </a>-->
+                                            <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
+                                            <!--                                            <a-->
+                                            <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
+                                            <button class="trigger">취소</button>
+                                            <!--                                            </a>-->
                                         </td>
                                         <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
                                         <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
@@ -224,14 +242,14 @@
                                             <label for="canceledReason">결제 취소 사유 입력</label>
                                             <input type="text" name="canceledReason" id="canceledReason"
                                                    placeholder="취소 사유를 입력해주세요." required="required">
-<!--                                            <label for="cancelReason">결제 취소 사유 선택</label>-->
-<!--                                            <select name="cancelReason" id="cancelReason">-->
-<!--                                                <option value="everything">고객 변심</option>-->
-<!--                                                <option value="orderNo">상품 옵션 변경</option>-->
-<!--                                                <option value="name">입고지연</option>-->
-<!--                                                <option value="phoneNumber">상품품절</option>-->
-<!--                                                <option value="trackingNo">송장번호</option>-->
-<!--                                            </select>-->
+                                            <!--                                            <label for="cancelReason">결제 취소 사유 선택</label>-->
+                                            <!--                                            <select name="cancelReason" id="cancelReason">-->
+                                            <!--                                                <option value="everything">고객 변심</option>-->
+                                            <!--                                                <option value="orderNo">상품 옵션 변경</option>-->
+                                            <!--                                                <option value="name">입고지연</option>-->
+                                            <!--                                                <option value="phoneNumber">상품품절</option>-->
+                                            <!--                                                <option value="trackingNo">송장번호</option>-->
+                                            <!--                                            </select>-->
                                         </form>
                                     </div>
                                 </div>
