@@ -29,8 +29,7 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {
         BadRequestException.class,
-        MethodArgumentNotValidException.class,
-        InvalidPaymentException.class})
+        MethodArgumentNotValidException.class})
     public String badRequestException400(Exception e) {
         log.error("badRequestException400 {}", e);
         return "/error/400error";

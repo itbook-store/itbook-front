@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -19,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
  */
 @Getter
 @AllArgsConstructor
-public class ProductRequestDto {
+public class ProductAddRequestDto {
 
     @NotBlank(message = "상품 이름은 공백이 아닌 문자를 하나 이상 포함해야 됩니다.")
     @Length(max = 255, message = "상품 이름 길이는 1자-255자가 되어야 합니다.")

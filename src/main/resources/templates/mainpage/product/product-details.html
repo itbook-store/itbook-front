@@ -34,27 +34,31 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-product">
                                 <tbody>
-                                <tr>
+                                <tr th:if="${product.isPointApplying} == true">
                                     <td>포인트 적립율</td>
-                                    <td>[[${product.increasePointPercent}]]%</td>
+                                    <td>
+                                        <span>[[${product.increasePointPercent}]]%</span>
+                                    <span th:if="${product.isPointApplyingBasedSellingPrice} == true">&nbsp;(판매가 기준)</span>
+                                    <span th:unless="${product.isPointApplyingBasedSellingPrice} == true">&nbsp;(실구매가 기준)</span>
+                                    </td>
                                 </tr>
-                                <tr>
+                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>ISBN</td>
                                     <td>[[${product.isbn}]]</td>
                                 </tr>
-                                <tr>
+                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>발간일</td>
-                                    <td>[[${product.bookCreatedAt}]]</td>
+                                    <td th:text="${#strings.substring(product.bookCreatedAt, 0, 10)}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>페이지 수</td>
                                     <td>[[${product.pageCount}]]p</td>
                                 </tr>
-                                <tr>
+                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>작가</td>
                                     <td>[[${product.authorName}]]</td>
                                 </tr>
-                                <tr>
+                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
                                     <td>출판사</td>
                                     <td>[[${product.publisherName}]]</td>
                                 </tr>
@@ -119,6 +123,9 @@
                         </div>
                     </button>
                 </div>
+            </div>
+            <div class="card-footer" style="margin-top: 15px">
+                <i class="fa-sharp fa-solid fa-eye" style="margin-left: 20px"> &nbsp; [[${product.dailyHits}]]</i>
             </div>
         </div>
     </div>

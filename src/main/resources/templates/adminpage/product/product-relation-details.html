@@ -15,11 +15,11 @@
     <h2>연관 상품</h2>
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
-            <a th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
+            <a style="text-decoration: none; " th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
                 <button style="width: auto;" class="btn btn-primary ml-1">수정
                 </button>
             </a>
-            <a th:href="@{|/admin/products/relation|}">
+            <a style="text-decoration: none; " th:href="@{|/admin/products/relation|}">
                 <input style="margin-left: 20px" class="btn btn-secondary"
                        type="button" id="editButton" value="뒤로가기"/></a>
             <div class="row" style="margin-top: 20px">
@@ -30,7 +30,8 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <h5 class="h6 mb-2"><a th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
+                        <h5 class="h6 mb-2"><a style="text-decoration: none; "
+                                               th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
                             [[${rp.productName}]]</a></h5>
                         <h5 class="h6 mb-2">[[${rp.authorName}]]</a></h5>
                         <h5 class="h6 mb-2"><[[${rp.publisherName}]]></a></h5>

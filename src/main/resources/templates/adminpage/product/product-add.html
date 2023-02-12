@@ -31,69 +31,71 @@
     <hr>
 
     <div class="form">
-        <form class="form-horizontal" id = "addProductForm" name="form" method="post" action="/admin/products/add"
+        <form class="form-horizontal" id="addProductForm" name="form" method="post" action="/admin/products/add"
               enctype="multipart/form-data" modelattribute="requestDto">
-            <div>
-                <div id="form-product">
-                    <div class="mb-3">
-                        <label for="productName">상품명</label>
-                        <input id="productName" name="productName" class="form-control input-md" required=""
-                               type="text" placeholder="등록할 상품명을 입력하세요">
+            <div id="form-product" style="width: 50%">
+                <div class="mb-3">
+                    <label for="productName">상품명</label>
+                    <input id="productName" name="productName" class="form-control input-md" required=""
+                           type="text" placeholder="등록할 상품명을 입력하세요">
+                </div>
+
+                <div class="mb-3">
+                    <label for="simpleDescription">간단 설명</label>
+                    <textarea id="simpleDescription" name="simpleDescription"
+                              class="form-control input-md" required="" type="text"
+                              placeholder="상품에 대한 간단한 설명을 입력하세요"
+                              rows="4" cols="50"></textarea>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="detailsDescription">상세 설명</label>
+                    <textarea class="form-control" id="detailsDescription" name="detailsDescription"
+                              placeholder="상품에 대한 상세한 설명을 입력하세요"></textarea>
+                </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-6">
+                        <label>상품 노출 여부 (판매 여부)</label>
+                        <fieldset>
+                            YES <input type="radio" name="isSelled" required="" value="true" checked/>
+                            NO <input type="radio" name="isSelled" required="" value="false"/>
+                        </fieldset>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="simpleDescription">간단 설명</label>
-                        <input id="simpleDescription" name="simpleDescription"
-                               class="form-control input-md" required="" type="text"
-                               placeholder="상품에 대한 간단한 설명을 입력하세요">
+                    <div class="col-md-6">
+                        <label>강제 품절 설정 여부</label>
+                        <fieldset>
+                            YES <input type="radio" name="isForceSoldOut" required="" value="true"/>
+                            NO <input type="radio" name="isForceSoldOut" required="" value="false" checked/>
+                        </fieldset>
                     </div>
+                </div>
 
-
-                    <div class="mb-3">
-                        <label for="detailsDescription">상세 설명</label>
-                        <textarea class="form-control" id="detailsDescription" name="detailsDescription"
-                                  placeholder="상품에 대한 상세한 설명을 입력하세요"></textarea>
-                    </div>
-
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label>상품 노출 여부 (판매 여부)</label>
-                            <fieldset>
-                                YES <input type="radio" name="isSelled" required="" value="true" checked/>
-                                NO <input type="radio" name="isSelled" required="" value="false"/>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-6">
-                            <label>강제 품절 설정 여부</label>
-                            <fieldset>
-                                YES <input type="radio" name="isForceSoldOut" required="" value="true"/>
-                                NO <input type="radio" name="isForceSoldOut" required="" value="false" checked/>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-8">
-                            <label style="margin-right: 5px">카테고리</label>
-                            <select id="mainCategory" name="mainCategory">
-                                <!--                        <option th:value="select" th:text="선택"></option>-->
-                                <option th:each="mainCategory: ${mainCategoryList}"
-                                        th:value="${mainCategory.categoryNo}" th:text="${mainCategory.categoryName}">
-                                </option>
-                            </select>
-                            <button style="margin-left: 5px" class="btn btn-light btn-sm" type="button"
-                                    onclick="showSubCategory(event)">하위 카테고리 펼치기
-                            </button>
-                            <div id="categoryCheckBox" style="display:none">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-8">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-7">
+                                <label style="margin-right: 5px">카테고리</label>
+                                <select id="mainCategory" name="mainCategory">
+                                    <!--                        <option th:value="select" th:text="선택"></option>-->
+                                    <option th:each="mainCategory: ${mainCategoryList}"
+                                            th:value="${mainCategory.categoryNo}"
+                                            th:text="${mainCategory.categoryName}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <button style="margin-left: 5px" class="btn btn-light btn-sm"
+                                        onclick="showSubCategory(event)">하위 카테고리 펼치기
+                                </button>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <div id="categoryCheckBox" style="display:none">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="stock">재고(개)</label>
-                            <input id="stock" name="stock" class="form-control input-md" required="" type="text"
-                                   placeholder="상품 재고">
-                        </div>
                     </div>
-
                     <div class="row gx-3 mb-3">
                         <div class="col-md-3">
                             <label>포인트 적립 여부</label>
@@ -113,51 +115,64 @@
                             <label>포인트 적립 기준</label>
                             <fieldset>
                                 <fieldset>
-                                    판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="true"/>
-                                    실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice" value="false"/>
+                                    판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                                  value="true"/>
+                                    실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                                   value="false"/>
                                 </fieldset>
                             </fieldset>
                         </div>
                     </div>
                     <div class="row gx-3 mb-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="rawPrice">매입 원가(원)</label>
-                            <input id="rawPrice" name="rawPrice" class="form-control input-md" required="" type="text">
+                            <input id="rawPrice" name="rawPrice"
+                                   class="form-control input-md" required="" type="text">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="fixedPrice">정가(원)</label>
                             <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
                                    type="text">
                         </div>
-                    </div>
-
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="discountPercent">할인율(%)</label>
-                            <input id="discountPercent" name="discountPercent" class="form-control input-md" required=""
+                            <input id="discountPercent" name="discountPercent" class="form-control input-md"
+                                   required=""
                                    type="text">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <label>구독 상품 여부</label>
                             <fieldset>
-                                YES <input type="radio" name="isSubscription" required=""  value="true"/>
-                                NO <input type="radio" name="isSubscription" required="" value="false"/>
+                                YES <input type="radio" name="isSubscription" required=""
+                                           value="true"/>
+                                NO <input type="radio" name="isSubscription" required=""
+                                          value="false" checked/>
                             </fieldset>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="stock">재고(개)</label>
+                            <input id="stock" name="stock" class="form-control input-md" required="" type="text"
+                            >
                         </div>
                     </div>
 
-                    <div class="row gx-3 mb-3">
-                        <label>썸네일 사진 선택</label>
-                        <input type="file" value="파일 선택" name="fileThumbnails" required="" accept="image/*"/>
-                    </div>
                 </div>
-
-                <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit"
-                       value="등록하기"/>
             </div>
+            <div class="row gx-3 mb-3">
+                <label>썸네일 사진 선택</label>
+                <input type="file" value="파일 선택" name="fileThumbnails" required="" accept="image/*"/>
+            </div>
+            <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit"
+                   value="등록하기"/>
         </form>
     </div>
+    </form>
+</div>
+<div>
+
 </div>
 </body>
 </html>

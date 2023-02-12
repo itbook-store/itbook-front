@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.home;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
+import shop.itbook.itbookfront.product.service.BookService;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -32,6 +34,7 @@ import shop.itbook.itbookfront.product.service.ProductService;
 @Slf4j
 public class HomeController {
     private final ProductService productService;
+    private final BookService bookService;
 
     private final CategoryService categoryService;
 
@@ -71,21 +74,27 @@ public class HomeController {
         List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
             "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
         model.addAttribute("productTypeList", productTypeList);
-        
 
-        List<ProductDetailsResponseDto> newBooks = productService.getBooksByProductTypes(1);
+
+        List<ProductDetailsResponseDto> newBooks = bookService.getNewBookList();
         model.addAttribute("newBooks", newBooks);
 
-        List<ProductDetailsResponseDto> discountBooks = productService.getBooksByProductTypes(2);
+        List<ProductDetailsResponseDto> discountBooks = bookService.getDiscountBookList();
         model.addAttribute("discountBooks", discountBooks);
 
-        List<ProductDetailsResponseDto> bestSeller = productService.getBooksByProductTypes(3);
+        List<ProductDetailsResponseDto> bestSeller = bookService.getBestSellerList();
         model.addAttribute("bestSeller", bestSeller);
 
-        List<ProductDetailsResponseDto> recommendation = productService.getBooksByProductTypes(4);
-        model.addAttribute("recommendationList", recommendation);
+        if (Objects.nonNull(userDetailsDto)) {
+            List<ProductDetailsResponseDto> recommendation =
+                bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
+            model.addAttribute("recommendationList", recommendation);
+        } else {
+            List<ProductDetailsResponseDto> recommendation = bookService.getRecommendationList();
+            model.addAttribute("recommendationList", recommendation);
+        }
 
-        List<ProductDetailsResponseDto> popularBooks = productService.getBooksByProductTypes(5);
+        List<ProductDetailsResponseDto> popularBooks = bookService.getPopularBookList();
         model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
