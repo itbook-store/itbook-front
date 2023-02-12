@@ -21,5 +21,5 @@ public interface CouponService {
 
     PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl);
 
-    void addMembershipCoupon(Integer membership, Long couponNo);
+    void addMembershipCoupon(Long couponNo, String membershipGrade);
 }

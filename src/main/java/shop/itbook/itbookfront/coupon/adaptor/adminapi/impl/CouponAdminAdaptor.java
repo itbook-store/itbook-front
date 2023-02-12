@@ -97,13 +97,13 @@ public class CouponAdminAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
-    public Long addMembershipCoupon(int membershipNo, long couponNo){
+    public Long addMembershipCoupon(Long couponNo, String membershipGrade){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
             = restTemplate.exchange(gatewayConfig.getGatewayServer() + MEMBERSHIP_COUPON_API_URL+
-                String.format("/%d/add?membershipNo=%d",couponNo,membershipNo),
+                String.format("/%d/add?membershipGrade=%s",couponNo,membershipGrade),
             HttpMethod.POST, null, new ParameterizedTypeReference<>(){
             });
 

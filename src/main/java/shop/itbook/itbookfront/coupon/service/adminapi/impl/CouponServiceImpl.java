@@ -11,6 +11,7 @@ import shop.itbook.itbookfront.coupon.dto.request.OrderTotalCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
+import shop.itbook.itbookfront.coupon.exception.MembershipGradeNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
@@ -96,13 +97,13 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void addMembershipCoupon(Integer membership, Long couponNo) {
+    public void addMembershipCoupon(Long couponNo, String membershipGrade) {
 
-        if (Objects.isNull(membership)){
-            throw new ProductNumberNotFoundException();
+        if (Objects.isNull(membershipGrade)){
+            throw new MembershipGradeNotFoundException();
         }
 
-        couponAdminAdaptor.addMembershipCoupon(membership, couponNo);
+        couponAdminAdaptor.addMembershipCoupon(couponNo, membershipGrade);
         if (Objects.isNull(couponNo)) {
             throw new RestApiServerException(
                 "해당 서버에서 정상적인 등록 번호를 보내지 않았습니다. 등록이 이루어졌는지 확인이 필요합니다.");

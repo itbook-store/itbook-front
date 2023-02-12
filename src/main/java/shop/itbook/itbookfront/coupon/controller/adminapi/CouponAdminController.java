@@ -25,6 +25,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.CategoryNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.CouponCoverageNotSelectException;
+import shop.itbook.itbookfront.coupon.exception.MembershipGradeNotFoundException;
 import shop.itbook.itbookfront.coupon.exception.ProductNumberNotFoundException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
@@ -61,7 +62,7 @@ public class CouponAdminController {
     public String couponAdd(@Valid CouponInputRequestDto couponInputRequestDto, Model model,
                             Errors errors, @RequestParam String couponCoverageGroup,
                             @RequestParam(required = false) String memberId,
-                            @RequestParam(required = false) Integer membership,
+                            @RequestParam(required = false) String membership,
                             RedirectAttributes redirectAttributes) {
 
         if(errors.hasErrors()) {
@@ -80,10 +81,15 @@ public class CouponAdminController {
         try {
             Long couponNo = couponType(couponCoverageGroup, couponInputRequestDto);
             if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
-                couponService.addMembershipCoupon(membership, couponNo);
+                couponService.addMembershipCoupon(couponNo, membership);
             }
         } catch (CouponCoverageNotSelectException | RestApiServerException |
-                 CategoryNumberNotFoundException | ProductNumberNotFoundException e){
+                 CategoryNumberNotFoundException | ProductNumberNotFoundException
+                 | MembershipGradeNotFoundException e){
+
+            model.addAttribute("mainCategoryList",
+                categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
+            model.addAttribute("membershipList", membershipService.getMemberships());
             model.addAttribute("couponInputRequestDto", couponInputRequestDto);
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");

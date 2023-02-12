@@ -56,7 +56,7 @@
                                 <select id='selectMembership' name="membership">
                                     <option value="">회원 등급을 선택해주세요.</option>
                                     <option th:each="membership: ${membershipList}"
-                                            th:value="${membership.membershipNo}"
+                                            th:value="${membership.membershipGrade}"
                                             th:text="${membership.membershipGrade}">
                                     </option>
                                 </select>
@@ -220,7 +220,12 @@
             </form>
         </div>
     </div>
-
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            alert(failMessage);
+        }
+    </script>
 </div>
 </html>
 
