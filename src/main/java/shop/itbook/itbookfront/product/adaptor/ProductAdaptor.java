@@ -91,7 +91,7 @@ public class ProductAdaptor {
                               ProductModifyRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        if (!Objects.isNull(thumbnails)) {
+        if (Objects.nonNull(thumbnails)) {
             params.add("thumbnails", thumbnails.getResource());
         }
         params.add("requestDto", requestDto);

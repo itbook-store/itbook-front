@@ -38,10 +38,10 @@ public class BookAdaptor {
                            BookModifyRequestDto requestDto) {
 
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        if (!Objects.isNull(thumbnails)) {
+        if (Objects.nonNull(thumbnails)) {
             params.add("thumbnails", thumbnails.getResource());
         }
-        if (!Objects.isNull(ebook)) {
+        if (Objects.nonNull(ebook)) {
             params.add("ebook", ebook.getResource());
         }
         params.add("requestDto", requestDto);

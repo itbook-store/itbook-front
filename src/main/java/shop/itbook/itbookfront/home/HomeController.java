@@ -85,12 +85,11 @@ public class HomeController {
         List<ProductDetailsResponseDto> bestSeller = bookService.getBestSellerList();
         model.addAttribute("bestSeller", bestSeller);
 
-        if (Optional.ofNullable(userDetailsDto.getMemberNo()).isPresent()) {
+        if (Objects.nonNull(userDetailsDto)) {
             List<ProductDetailsResponseDto> recommendation =
                 bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
             model.addAttribute("recommendationList", recommendation);
-        }
-        if (Optional.ofNullable(userDetailsDto.getMemberNo()).isEmpty()) {
+        } else {
             List<ProductDetailsResponseDto> recommendation = bookService.getRecommendationList();
             model.addAttribute("recommendationList", recommendation);
         }
