@@ -55,10 +55,6 @@ public class BookAdaptor {
             gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
             HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
             });
-
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(response.getBody()).getHeader();
-        ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
 
     public Long addBook(
@@ -85,8 +81,8 @@ public class BookAdaptor {
                 throw new InvalidInputException();
             }
         }
-        CommonResponseBody<ProductNoResponseDto> body = response.getBody();
-        return body.getResult().getProductNo();
+        return Objects.requireNonNull(response.getBody()).getResult().getProductNo();
+
     }
 
 

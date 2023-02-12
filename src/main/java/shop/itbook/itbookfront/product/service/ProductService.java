@@ -1,6 +1,9 @@
 package shop.itbook.itbookfront.product.service;
 
 import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
@@ -43,4 +46,9 @@ public interface ProductService {
 
 
     void changeBooleanField(Long productNo, String fieldName);
+
+    void updateDailyHits(Long productNo);
+
+    Cookie checkCookieForDailyHits(Long productNo, HttpServletRequest request,
+                                   HttpServletResponse response);
 }

@@ -70,8 +70,9 @@ public class ProductAdaptor {
                 throw new InvalidInputException();
             }
         }
-        CommonResponseBody<ProductNoResponseDto> body = response.getBody();
-        return body.getResult().getProductNo();
+
+        return Objects.requireNonNull(response.getBody()).getResult().getProductNo();
+
     }
 
     public PageResponse<ProductDetailsResponseDto> findProductList(String url) {
@@ -82,10 +83,8 @@ public class ProductAdaptor {
 
                 });
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
+
     }
 
     public void modifyProduct(Long productNo, MultipartFile thumbnails,
@@ -102,14 +101,11 @@ public class ProductAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
+        restTemplate.exchange(
             gateway.getGatewayServer() + "/api/admin/products/" + productNo,
             HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
             });
 
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(response.getBody()).getHeader();
-        ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
 
 
@@ -127,10 +123,8 @@ public class ProductAdaptor {
             }
         }
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
+
     }
 
     public PageResponse<CategoryDetailsResponseDto> findCategoryList(String url) {
@@ -141,10 +135,8 @@ public class ProductAdaptor {
 
                 });
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
+
     }
 
     public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
@@ -155,10 +147,8 @@ public class ProductAdaptor {
 
                 });
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
+
     }
 
     public PageResponse<ProductRelationResponseDto> findRelationProductList(String url) {
@@ -169,10 +159,8 @@ public class ProductAdaptor {
 
                 });
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
+
     }
 
     public void modifyRelationProduct(Long basedProductNo, ProductRelationRequestDto requestDto) {
@@ -181,17 +169,13 @@ public class ProductAdaptor {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<ProductRelationRequestDto> entity = new HttpEntity(requestDto, headers);
-        ResponseEntity<CommonResponseBody<Void>> exchange =
-            restTemplate.exchange(
-                gateway.getGatewayServer() +
-                    String.format("/api/products/relation/%d/edit", basedProductNo),
-                HttpMethod.POST,
-                entity, new ParameterizedTypeReference<>() {
-                });
+        restTemplate.exchange(
+            gateway.getGatewayServer() +
+                String.format("/api/products/relation/%d/edit", basedProductNo),
+            HttpMethod.POST,
+            entity, new ParameterizedTypeReference<>() {
+            });
 
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(exchange.getBody()).getHeader();
-        ResponseChecker.checkFail(exchange.getStatusCode(), header.getResultMessage());
     }
 
     public void changeBooleanField(Long productNo, String fieldName) {
@@ -202,13 +186,23 @@ public class ProductAdaptor {
             .queryParam("fieldName", fieldName)
             .build();
 
-        ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
+        restTemplate.exchange(
+            uriComponents.toUriString(), HttpMethod.PUT, null,
+            new ParameterizedTypeReference<>() {
+            });
+    }
+
+    public void changeDailyHits(Long productNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gateway.getGatewayServer())
+            .path(String.format("/api/admin/products/modify-dailyhits/%d", productNo))
+            .build();
+
+        restTemplate.exchange(
             uriComponents.toUriString(), HttpMethod.PUT, null,
             new ParameterizedTypeReference<>() {
             });
 
-        CommonResponseBody.CommonHeader header =
-            Objects.requireNonNull(response.getBody()).getHeader();
-        ResponseChecker.checkFail(response.getStatusCode(), header.getResultMessage());
     }
 }

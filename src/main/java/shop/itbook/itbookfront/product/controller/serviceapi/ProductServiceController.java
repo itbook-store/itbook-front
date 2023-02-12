@@ -4,7 +4,11 @@ import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
 import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +52,8 @@ public class ProductServiceController {
     private final CategoryService categoryService;
 
     private final ReviewService reviewService;
+    private final String DAILYHITS_COOKIENAME = "ITBOOK-VIEW";
+
 
     @GetMapping(params = {"categoryNo", "categoryName"})
     public String productListByCategory(@RequestParam Integer categoryNo,
@@ -125,7 +132,11 @@ public class ProductServiceController {
     @GetMapping("/{productNo}")
     public String getProductDetails(@PathVariable Long productNo, Model model,
                                     RedirectAttributes redirectAttributes,
-                                    @PageableDefault Pageable pageable) {
+                                    @PageableDefault Pageable pageable,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) {
+
+        productService.checkCookieForDailyHits(productNo, request, response);
 
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
@@ -148,14 +159,16 @@ public class ProductServiceController {
                         productNo, pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", relationProductList);
 
-            PageResponse<ReviewResponseDto> reviewPageResponse = reviewService.findReviewListByProductNo(
-                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
-                productNo);
+            PageResponse<ReviewResponseDto> reviewPageResponse =
+                reviewService.findReviewListByProductNo(
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()),
+                    productNo);
 
             int totalStarPoint = 0;
             double avgStarPoint;
 
-            for(ReviewResponseDto review : reviewPageResponse.getContent()) {
+            for (ReviewResponseDto review : reviewPageResponse.getContent()) {
                 totalStarPoint += review.getStarPoint();
             }
 
@@ -163,7 +176,7 @@ public class ProductServiceController {
                 String.valueOf(reviewPageResponse.getContent().size()));
 
             model.addAttribute("reviewPageResponse", reviewPageResponse);
-            model.addAttribute("paginationUrl", "/products/"+productNo);
+            model.addAttribute("paginationUrl", "/products/" + productNo);
 
             model.addAttribute("avgStarPoint", avgStarPoint);
 
@@ -175,5 +188,4 @@ public class ProductServiceController {
 
         return "mainpage/product/product-details";
     }
-    
 }
