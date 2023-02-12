@@ -8,10 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import shop.itbook.itbookfront.membership.dto.response.MembershipResponseDto;
 import shop.itbook.itbookfront.pointhistory.adapter.PointHistoryDetailsGetAdaptor;
+import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryCouponDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryGradeDetailsResponseDto;
+import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 
 /**
  * @author 최겸준
@@ -50,15 +51,6 @@ public class PointHistoryAdminDetailsGetController {
         return "재원님이 만든 page";
     }
 
-    @GetMapping("/{pointHistoryNo}/order-cancel-details")
-    public String orderCancelDetails(@PathVariable Long pointHistoryNo) {
-
-        pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGift(
-            "/api/admin/point-histories/" + pointHistoryNo + "/order-details");
-
-        return "재원님";
-    }
-
     @GetMapping("/{pointHistoryNo}/grade-details")
     public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session) {
 
@@ -66,28 +58,34 @@ public class PointHistoryAdminDetailsGetController {
             pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGrade(
                 "/api/admin/point-histories/" + pointHistoryNo + "/grade-details");
 
-
         model.addAttribute("details", pointHistoryGradeDetailsResponseDto);
         model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
 
         return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
     }
 
-
     @GetMapping("/{pointHistoryNo}/coupon-details")
-    public String couponDetails(@PathVariable Long pointHistoryNo, Model model) {
+    public String couponDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session) {
 
-        return "내가만든 뷰";
+        PointHistoryCouponDetailsResponseDto pointHistoryCouponDetailsResponseDto =
+            pointHistoryDetailsGetAdaptor.findPointHistoryDetailsCoupon(
+                "/api/admin/point-histories/" + pointHistoryNo + "/coupon-details");
+
+
+        model.addAttribute("details", pointHistoryCouponDetailsResponseDto);
+        model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
+
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/coupon/adminGradeDetailsIncrease");
     }
-
-
 
     @GetMapping("/{pointHistoryNo}/review-details")
-    public String reviewDetails(@PathVariable Long pointHistoryNo) {
+    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model) {
 
-        // 가져오는로직
-        return "수연님이 만든 뷰";
+        ReviewResponseDto reviewResponseDto =
+            pointHistoryDetailsGetAdaptor.findPointHistoryDetailsReview(
+                "/api/admin/point-histories/" + pointHistoryNo + "/review-details");
+
+        model.addAttribute("reviewResponseDto", reviewResponseDto);
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/review/adminReviewDetailsIncrease");
     }
-
-
 }

@@ -65,3 +65,23 @@
     </nav>
 
 </th:block>
+
+
+<!--<th:block th:if="${!#lists.isEmpty(pageResponse.content)}">-->
+<!--    <div style="margin-left: 35%">-->
+
+<!--        <button type="button" style="margin-right: 5px" th:if="${true}" class="btn btn-info"-->
+<!--                th:onclick="|location.href='@{${paginationUrl}(page=0)}'|"> << </button>-->
+<!--        <button type="button" style="margin-right: 5px" th:if="${pageResponse.previous}" class="btn btn-info"-->
+<!--                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number - 1})}'|"> <-->
+<!--        </button>-->
+
+<!--        <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"></span>-->
+
+<!--        <button type="button" style="margin-left: 5px" th:if="${pageResponse.next}" class="btn btn-info"-->
+<!--                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number + 1})}'|"> >-->
+<!--        </button>-->
+<!--        <button type="button" style="margin-left: 5px" th:if="${true}" class="btn btn-info"-->
+<!--                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.totalPages - 1})}'|"> >></button>-->
+<!--    </div>-->
+<!--</th:block>-->

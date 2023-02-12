@@ -40,9 +40,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberInfoResponseDto findMemberInfo(Long memberNo) {
+    public MemberInfoResponseDto findMember(Long memberNo) {
 
         return memberAdaptor.getMemberInfo(memberNo);
+    }
+
+    @Override
+    public MemberInfoResponseDto findMemberByMemberId(String memberId) {
+
+        return memberAdaptor.getMemberByMemberId(memberId);
     }
 
     @Override

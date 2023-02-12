@@ -146,6 +146,8 @@
     <section>
         <div>
             <h4>도서 리뷰</h4>
+            별점 : <span th:if="${reviewPageResponse.getContent().size() != 0}" th:text="${avgStarPoint}"></span>
+            <span th:if="${reviewPageResponse.getContent().size() == 0}">0</span> / 5
             <hr>
             <div>
                 <div class="container bootstrap snippets bootdey">

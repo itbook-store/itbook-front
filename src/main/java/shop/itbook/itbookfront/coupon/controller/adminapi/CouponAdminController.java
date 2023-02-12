@@ -59,26 +59,51 @@ public class CouponAdminController {
 
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
-        model.addAttribute("string", couponInputRequestDto.toString());
         couponInputRequestDto.setDuplicateUse(false);
 
-        couponService.addCoupon(couponInputRequestDto);
 
+        couponType(couponInputRequestDto);
+
+        if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
+        }
         return "redirect:/admin/coupons";
     }
 
+    private void couponType(CouponInputRequestDto couponInputRequestDto){
+        if (couponInputRequestDto.getPoint() != 0 ){
+            couponService.addCoupon(couponInputRequestDto);
+//        }
+//        else if("category"){
+//            couponService.addCategoryCoupon(couponInputRequestDto);
+//        }
+//        else if ("product") {
+//            couponService.addProductCoupon(couponInputRequestDto);
+        } else {
+            couponService.addOrderTotalCoupon(couponInputRequestDto);
+        }
+    }
+    @PostMapping("/coupon-addition/coupon-type")
+    public String couponTypeAdd(){
+//         "먼슬리 쿠폰으로 가는 로직추가";
+        return Strings.concat(DIRECTORY_NAME, "/gradecoupon");
+
+
+    }
     @GetMapping
     public String couponList(Model model, @RequestParam(required = false) String coverage,
-                             @PageableDefault Pageable pageable)
-        throws InvalidPathRequestCouponList {
+                             @PageableDefault Pageable pageable) throws InvalidPathRequestCouponList {
+
         PageResponse<CouponListResponseDto> couponList = null;
         if(Objects.isNull(coverage)) {
             couponList =
                 couponService.findCouponList(
                     String.format("/api/admin/coupons?page=%d&size=%d",
                     pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", couponList);
+            model.addAttribute("paginationUrl", "/admin/coupons");
+            return Strings.concat(DIRECTORY_NAME, "/couponList");
         }
-        else if(coverage.equals("카테고리쿠폰")){
+        else if(coverage.equals("category")){
             couponList =
                 couponService.findCouponList(
                     String.format("/api/admin/category-coupons?page=%d&size=%d",
@@ -89,7 +114,7 @@ public class CouponAdminController {
         }
         model.addAttribute("pageResponse", couponList);
         model.addAttribute("paginationUrl",
-            String.format("/admin/products?coverage=%s", coverage));
+            String.format("/admin/coupons?coverage=%s", coverage));
         return Strings.concat(DIRECTORY_NAME, "/couponList");
     }
 
