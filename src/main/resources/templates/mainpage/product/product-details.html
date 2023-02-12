@@ -83,8 +83,23 @@
                     <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
                     <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
                     <!--                    </form>-->
-                    <button sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded" th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
-                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기</button>
+<!--                    <form id="dk" method="post"-->
+<!--                          th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
+                    <form id="dk" method="post"
+                          th:action="@{/order-sheet}">
+                        <input type="text" th:value="${product.productNo}" name="productNoList"/>
+                        <input type="text" th:value="1" name="productCntList"/>
+                        <input type="text" th:value="4470" name="productNoList"/>
+                        <input type="text" th:value="2" name="productCntList"/>
+                        <!--                        <span th:each="item : ${testList}">-->
+                        <!--                            <input type="text" th:value="${item.productNo}" name="productNo"/>-->
+                        <!--                            <input type="text" th:value="${item.productCnt}" name="productCnt"/>    -->
+                        <!--                        </span>-->
+                    </form>
+                    <button form="dk" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
+                            th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
+                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
+                    </button>
                     <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
                         <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
@@ -96,7 +111,8 @@
                                     <div class="modal-footer">
                                         <a class="btn btn-info" id="modalY">예</a>
                                         <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
-                                        <a class="btn btn-dark block" id="modalN" type="button" data-dismiss="modal">취소</a>
+                                        <a class="btn btn-dark block" id="modalN" type="button"
+                                           data-dismiss="modal">취소</a>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +187,9 @@
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
                                                 <td>
                                                     <button class="btn btn-primary"
-                                                            th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">상세보기</button>
+                                                            th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
+                                                        상세보기
+                                                    </button>
                                                 </td>
 
                                             </tr>
