@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryCountResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
+import shop.itbook.itbookfront.productinquiryreply.dto.request.ProductInquiryReplyRequestDto;
 
 /**
  * @author 노수연
@@ -24,7 +25,7 @@ import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
 @RequiredArgsConstructor
 public class ProductInquiryAdminController {
 
-    public final ProductInquiryService productInquiryService;
+    private final ProductInquiryService productInquiryService;
 
     @GetMapping("/list")
     public String productInquiryList(@PageableDefault Pageable pageable,
@@ -48,6 +49,7 @@ public class ProductInquiryAdminController {
         ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiry(productInquiryNo);
 
         model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
+        model.addAttribute("productInquiryReplyRequestDto", new ProductInquiryReplyRequestDto());
 
         return "adminpage/productinquiry/productInquiry-detail";
     }

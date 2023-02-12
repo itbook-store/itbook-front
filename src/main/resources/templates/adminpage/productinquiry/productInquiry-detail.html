@@ -20,6 +20,20 @@
         <div>
             <hr>
             <h4>답변 작성</h4>
+            <form class="mb-3" id="productInquiryForm" name="productInquiryReplyForm"  method="post"
+                  th:object="${productInquiryReplyRequestDto}" th:action="@{/admin/product-inquiries/reply/add}">
+
+                <input type="hidden" name="productInquiryNo" th:value="${productInquiryResponseDto.productInquiryNo}">
+                <input type="hidden" name="memberNo" th:value="${productInquiryResponseDto.memberNo}">
+
+                <label for="title" class="form-label">답변제목</label>
+                <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}"><br/>
+
+                <label for="content" class="form-label">답변내용</label>
+                <textarea class="col-auto form-control" type="text" id="content"
+                           th:field="*{productInquiryReplyContent}"></textarea>
+                <button class="btn btn-primary" type="submit">등록하기</button>
+            </form>
 
         </div>
     </div>
