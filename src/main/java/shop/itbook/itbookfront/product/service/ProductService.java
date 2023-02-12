@@ -1,16 +1,20 @@
 package shop.itbook.itbookfront.product.service;
 
 import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
-import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
@@ -20,17 +24,9 @@ import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
  * @since 1.0
  */
 public interface ProductService {
-    Long addBook(MultipartFile thumbnails, MultipartFile ebook,
-                 BookRequestDto requestDto);
-
-    Long addProduct(MultipartFile thumbnails, ProductRequestDto requestDto);
+    Long addProduct(MultipartFile thumbnails, ProductAddRequestDto requestDto);
 
     PageResponse<ProductDetailsResponseDto> getProductList(String url);
-
-    void removeProduct(Long productNo);
-
-    void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                       BookRequestDto requestDto);
 
     ProductDetailsResponseDto getProduct(Long productNo);
 
@@ -41,14 +37,18 @@ public interface ProductService {
 
     PageResponse<ProductRelationResponseDto> findRelationProductList(String url);
 
-    SearchBookDetailsDto searchBook(String url);
 
+    void modifyProduct(Long productNo, MultipartFile thumbnails,
+                       ProductModifyRequestDto requestDto);
 
-    ProductBooleanResponseDto checkIsbnExists(String url);
 
     void modifyRelationProduct(Long basedProductNo, ProductRelationRequestDto requestDto);
 
-    @Cacheable(value = "productTypes", key = "#id")
-    List<ProductDetailsResponseDto> getBooksByProductTypes(Integer id);
 
+    void changeBooleanField(Long productNo, String fieldName);
+
+    void updateDailyHits(Long productNo);
+
+    Cookie checkCookieForDailyHits(Long productNo, HttpServletRequest request,
+                                   HttpServletResponse response);
 }

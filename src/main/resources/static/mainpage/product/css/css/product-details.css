@@ -126,8 +126,3 @@ body{margin-top:20px;}
 .text-primary {
     color: #00baee !important;
 }
-
-.modal{
-    position: fixed;
-    transform: translateY(33%);
-}
