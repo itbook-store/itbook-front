@@ -149,7 +149,7 @@
             <br>
         </div>
 
-        <button class="btn btn-info" id="paymentButton" type="button" onclick="createOrderForPayment()">
+        <button class="btn btn-info" id="paymentButton" type="button" onclick="processPayment()">
             결제하기
         </button>
 <!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
@@ -206,11 +206,7 @@
 
         let temp = [[${orderAddRequestDto}]];
 
-        async function createOrderForPayment() {
-
-            if(canceledOrderNo) {
-                return
-            }
+        function processPayment() {
 
             let orderAddRequestDto = {
                 "productNoList": temp.productNoList,
@@ -224,7 +220,32 @@
                 "deliveryFee": 0
             }
 
+            if(canceledOrderNo) {
+                reOrderForPayment(orderAddRequestDto, canceledOrderNo);
+                return
+            }
+            createOrderForPayment(orderAddRequestDto);
+        }
+
+        async function createOrderForPayment(orderAddRequestDto) {
+
             await fetch(`/async/orders/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
+        }
+
+        async function reOrderForPayment(orderAddRequestDto, orderNo) {
+
+            await fetch(`/async/orders/payment-restart/${orderNo}`, {
 
                 method: "POST",
                 headers: {
@@ -251,6 +272,8 @@
                 failUrl: data.failUrl,
             })
                 .catch(function (error) {
+
+                    canceledOrderNo = data.orderNo;
 
                     if (error.code === 'USER_CANCEL') {
                         Swal.fire(

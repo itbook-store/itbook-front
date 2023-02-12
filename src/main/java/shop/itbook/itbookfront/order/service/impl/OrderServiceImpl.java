@@ -64,6 +64,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto, Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/orders/%d", orderNo))
+            .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
+
+        return orderAdaptor.addOrder(uriComponents.toUri(), http);
+    }
+
+    @Override
     public void cancelOrder(Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder

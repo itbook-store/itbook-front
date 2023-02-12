@@ -21,6 +21,9 @@ public interface OrderService {
     OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
                              Optional<Long> memberNo);
 
+    OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto,
+                            Long orderNo);
+
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
 
     void cancelOrder(Long orderNo);
