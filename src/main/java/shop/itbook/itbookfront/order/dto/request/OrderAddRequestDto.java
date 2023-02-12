@@ -17,8 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 public class OrderAddRequestDto {
 
-    private List<Long> productNoList;
-    private List<Integer> productCntList;
+    private List<ProductDetailsDto> productDetailsDtoList;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate selectedDeliveryDate;
     private String recipientName;
@@ -27,4 +26,7 @@ public class OrderAddRequestDto {
     private String roadNameAddress;
     private String recipientAddressDetails;
     private Long deliveryFee;
+    private Long orderTotalCouponNo;
+    private Long decreasePoint;
+
 }

@@ -51,7 +51,7 @@
                                         </tr>
                                         <tr th:each="product : ${productDetailsList}">
                                             <td>
-                                                <input class="no-input" type="hidden" name="productNoList"
+                                                <input class="no-input" type="hidden" name="productNo"
                                                        th:value="${product.productNo}">
                                                 <span th:text="${product.productName}"></span>
                                             </td>
@@ -66,7 +66,7 @@
                                                        readonly>
                                             </td>
                                             <td>
-                                                <input class="no-input" name="productCntList"
+                                                <input class="no-input" name="productCnt"
                                                        type="text" th:value="${productCntQueue.peek()}">
                                             </td>
                                             <td>
@@ -206,11 +206,25 @@
 
         let temp = [[${orderAddRequestDto}]];
 
+        // for문
+        let productNoList = temp.productNoList;
+        let productCntList = temp.productCntList;
+
+        function ProductDetailsDto(productNo, productCnt) {
+            this.productNo = productNo;
+            this.productCnt = productCnt;
+        }
+
+        let productDetailList = [];
+        productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
+        productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
+
+        console.log(productDetailList);
+
         function processPayment() {
 
             let orderAddRequestDto = {
-                "productNoList": temp.productNoList,
-                "productCntList": temp.productCntList,
+                "productDetailsDtoList": productDetailList,
                 "postcode": parseInt(document.getElementsByName("postcode")[0].value),
                 "recipientName": document.getElementsByName("recipientName")[0].value,
                 "recipientPhoneNumber": document.getElementsByName("recipientPhoneNumber")[0].value,
@@ -219,6 +233,8 @@
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0
             }
+
+            console.log(orderAddRequestDto);
 
             if(canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
