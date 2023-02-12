@@ -1,21 +1,16 @@
 package shop.itbook.itbookfront.cart.service.impl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.cart.adaptor.CartAdaptor;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
-import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
-import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.cart.service.CartService;
-import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * 장바구니의 비지니스 로직을 담당하는 서비스 클래스 입니다.
@@ -28,89 +23,68 @@ import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final RedisTemplate<String, Integer> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private final CartAdaptor cartAdaptor;
 
     @Override
-    public boolean addProductAnonymousToCart(String cookieValue, Integer productNo) {
+    public List<Object> getCartList(String cookieValue) {
 
-        Set<Integer> productNoSet = redisTemplate.opsForSet().members(cookieValue);
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(cookieValue);
+        entries.remove("memberNo");
 
-        if (Objects.nonNull(productNoSet) && productNoSet.contains(productNo)) {
-            return false;
+        return new ArrayList<>(entries.values());
+    }
+
+
+    @Override
+    public boolean addCartProduct(String cookieValue, Integer productNo) {
+        CartProductDetailsResponseDto cartProductDetailsResponseDto =
+            cartAdaptor.addCartProduct(productNo);
+
+        return redisTemplate.opsForHash()
+            .putIfAbsent(cookieValue, String.valueOf(productNo), cartProductDetailsResponseDto);
+    }
+
+    @Override
+    public void deleteCartProduct(String cookieValue, Integer productNo) {
+        redisTemplate.opsForHash().delete(cookieValue, String.valueOf(productNo));
+    }
+
+    @Override
+    public void deleteAllCartProduct(String cookieValue, List<Integer> productNoList) {
+        productNoList.forEach(
+            productNo -> redisTemplate.opsForHash().delete(cookieValue, String.valueOf(productNo))
+        );
+    }
+
+    @Override
+    public void modifyCart(String cookieValue, Integer productNo, Integer productCount) {
+
+        CartProductDetailsResponseDto cartProductDetailsResponseDto =
+            (CartProductDetailsResponseDto) redisTemplate.opsForHash()
+                .get(cookieValue, String.valueOf(productNo));
+
+        if (Objects.nonNull(cartProductDetailsResponseDto)) {
+            cartProductDetailsResponseDto.setProductCount(productCount);
+            redisTemplate.opsForHash().put(cookieValue, String.valueOf(productNo), cartProductDetailsResponseDto);
         }
 
-        redisTemplate.opsForSet().add(cookieValue, productNo);
-
-        return true;
     }
 
     @Override
-    public boolean addProductMemberToCart(CartMemberRequestDto cartMemberRequestDto) {
-        return cartAdaptor.addProductInCart(cartMemberRequestDto);
-    }
+    public void loadCartProductForMember(String cookieValue, Long memberNo) {
 
-    @Override
-    public List<ProductDetailsResponseDto> getCartListAnonymous(String cookieValue) {
-        Set<Integer> productNoSet = redisTemplate.opsForSet().members(cookieValue);
+        redisTemplate.opsForHash().putIfAbsent(cookieValue, "memberNo", memberNo);
 
-        if (Objects.isNull(productNoSet) || productNoSet.isEmpty()) {
-            return Collections.emptyList();
-        }
+        List<CartProductDetailsResponseDto> allCart = cartAdaptor.getProductListMember(memberNo);
 
-        List<Integer> collect = productNoSet.stream().collect(Collectors.toList());
-
-        StringTokenizer st = new StringTokenizer(collect.toString(), "[]");
-        StringBuilder sb = new StringBuilder();
-        while (st.hasMoreTokens()) {
-            sb.append(st.nextToken());
-
-            if (!st.hasMoreTokens()) {
-                break;
-            }
-            sb.append(", ");
-        }
-
-        return cartAdaptor.getProductListAnonymous(String.valueOf(sb));
-    }
-
-    @Override
-    public List<CartProductDetailsResponseDto> getCartListMember(CartMemberNoRequestDto cartMemberNoRequestDto) {
-        return cartAdaptor.getProductListMember(cartMemberNoRequestDto);
-    }
-
-    @Override
-    public void deleteProductAnonymousToCart(String cookieValue, Integer productNo) {
-        Set<Integer> productNoSet = redisTemplate.opsForSet().members(cookieValue);
-
-        if (Objects.nonNull(productNoSet) || productNoSet.isEmpty()) {
-            redisTemplate.opsForSet().remove(cookieValue, productNo);
-        }
-    }
-
-    @Override
-    public void deleteAllProductAnonymousToCart(String cookieValue) {
-        Set<Integer> productNoSet = redisTemplate.opsForSet().members(cookieValue);
-
-        if (Objects.nonNull(productNoSet)) {
-            productNoSet.forEach(o -> redisTemplate.opsForSet().remove(cookieValue, o));
-
-        }
-    }
-
-    @Override
-    public void deleteProductMemberToCart(CartMemberRequestDto cartMemberRequestDto) {
-        cartAdaptor.deleteProductInCart(cartMemberRequestDto);
-    }
-
-    @Override
-    public void deleteAllProductMemberToCart(CartMemberNoRequestDto cartMemberNoRequestDto) {
-        cartAdaptor.deleteAllProductInCart(cartMemberNoRequestDto);
-    }
-
-    @Override
-    public void modifyProductCountToCart(CartMemberRequestDto cartMemberRequestDto) {
-        cartAdaptor.modifyProductCountInCart(cartMemberRequestDto);
+        allCart.forEach(
+            cart -> redisTemplate.opsForHash()
+                .putIfAbsent(
+                    cookieValue,
+                    String.valueOf(cart.getProductDetailsResponseDto().getProductNo()),
+                    cart)
+        );
     }
 }
