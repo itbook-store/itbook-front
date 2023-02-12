@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
 
 
@@ -12,6 +13,7 @@ import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
  * @author 이하늬
  * @since 1.0
  */
+@ToString
 
 @AllArgsConstructor
 @NoArgsConstructor
