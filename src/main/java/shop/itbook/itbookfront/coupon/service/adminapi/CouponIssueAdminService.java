@@ -8,5 +8,5 @@ import shop.itbook.itbookfront.coupon.dto.response.AdminCouponIssueListResponseD
  * @since 1.0
  */
 public interface CouponIssueAdminService {
-    PageResponse<AdminCouponIssueListResponseDto> findAllCouponIssueList(String couponPageableUrl);
+    PageResponse<AdminCouponIssueListResponseDto> findAllCouponIssueList(Integer page, Integer size);
 }

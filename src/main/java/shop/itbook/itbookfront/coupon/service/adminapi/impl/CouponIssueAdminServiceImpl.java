@@ -19,7 +19,7 @@ public class CouponIssueAdminServiceImpl implements CouponIssueAdminService {
 
     @Override
     public PageResponse<AdminCouponIssueListResponseDto> findAllCouponIssueList(
-        String couponPageableUrl){
-        return couponIssueAdminAdaptor.findCouponIssueList(couponPageableUrl);
+        Integer page, Integer size){
+        return couponIssueAdminAdaptor.findCouponIssueList(page, size);
     }
 }

@@ -26,6 +26,7 @@ function selectCouponOption() {
         divNone('amount');
         divNone('percent');
         document.getElementById("couponCoverageDiv").style.display = 'none';
+        document.getElementById('pointCoverageRadio').checked = true;
     } else if (radioCheck('percent')) {
         divBlock('percent');
         divBlock('min');
@@ -34,6 +35,8 @@ function selectCouponOption() {
         divNone('point');
         divNone('amount');
         document.getElementById("couponCoverageDiv").style.display = 'block';
+        document.getElementById('pointCoverageRadio').checked = false;
+
 
     } else {
         divBlock('amount');
@@ -43,6 +46,8 @@ function selectCouponOption() {
         divNone('percent');
         divNull('max');
         document.getElementById("couponCoverageDiv").style.display = 'block';
+        document.getElementById('pointCoverageRadio').checked = false;
+
 
     }
 }

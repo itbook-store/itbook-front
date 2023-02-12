@@ -25,10 +25,11 @@ public class CouponIssueAdminAdaptor {
     private final GatewayConfig gatewayConfig;
     private static final String BASE_API_URL = "/api/admin/coupon-issues";
 
-    public PageResponse<AdminCouponIssueListResponseDto> findCouponIssueList(String couponPageableUrl){
+    public PageResponse<AdminCouponIssueListResponseDto> findCouponIssueList(Integer page, Integer size){
 
         ResponseEntity<CommonResponseBody<PageResponse<AdminCouponIssueListResponseDto>>> exchange =
-            restTemplate.exchange(gatewayConfig.getGatewayServer() + BASE_API_URL+couponPageableUrl,
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + BASE_API_URL+
+                String.format("/list?page=%d&size=%d",page,size),
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });

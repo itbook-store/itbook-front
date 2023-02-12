@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
+import shop.itbook.itbookfront.coupon.exception.CouponCoverageNotSelectException;
 import shop.itbook.itbookfront.coupon.service.adminapi.CouponService;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
@@ -47,7 +49,9 @@ public class CouponAdminController {
     }
 
     @PostMapping ("/coupon-addition")
-    public String couponAdd(@Valid CouponInputRequestDto couponInputRequestDto, Model model, Errors errors) {
+    public String couponAdd(@Valid CouponInputRequestDto couponInputRequestDto, Model model,
+                            Errors errors, @RequestParam String couponCoverageGroup,
+                            RedirectAttributes redirectAttributes) {
 
         if(errors.hasErrors()) {
 
@@ -62,25 +66,30 @@ public class CouponAdminController {
         }
         couponInputRequestDto.setDuplicateUse(false);
 
-
-        couponType(couponInputRequestDto);
+        try {
+            couponType(couponCoverageGroup, couponInputRequestDto);
+        } catch (CouponCoverageNotSelectException e){
+            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
+        }
 
         if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
         }
-        return "redirect:/admin/coupons";
+        return "redirect:/admin/coupons/list";
     }
 
-    private void couponType(CouponInputRequestDto couponInputRequestDto){
-        if (couponInputRequestDto.getPoint() != 0 ){
+    private void couponType(String coverage, CouponInputRequestDto couponInputRequestDto){
+        if (coverage.equals("point")){
             couponService.addCoupon(couponInputRequestDto);
-//        }
-//        else if("category"){
-//            couponService.addCategoryCoupon(couponInputRequestDto);
-//        }
-//        else if ("product") {
-//            couponService.addProductCoupon(couponInputRequestDto);
-        } else {
+        } else if(coverage.equals("category")){
+            couponService.addCategoryCoupon(couponInputRequestDto);
+        } else if (coverage.equals("product")) {
+            couponService.addProductCoupon(couponInputRequestDto);
+        } else if (coverage.equals("total")){
             couponService.addOrderTotalCoupon(couponInputRequestDto);
+        } else {
+            throw new CouponCoverageNotSelectException();
         }
     }
     @PostMapping("/coupon-addition/coupon-type")

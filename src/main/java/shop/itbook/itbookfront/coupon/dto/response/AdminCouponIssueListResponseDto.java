@@ -15,16 +15,20 @@ import lombok.NoArgsConstructor;
 public class AdminCouponIssueListResponseDto {
 
     private Long couponIssueNo;
+    private Long memberNo;
+    private String memberId;
+    private Long couponNo;
     private String name;
     private String code;
-    private Long amount;
-    private Integer percent;
     private Long point;
-    private String couponTypeName;
-    private String usageStatusName;
+    private String couponType;
+    private Long productNo;
+    private String productName;
+    private Integer categoryNo;
+    private String categoryName;
+    private String parentCategoryName;
+
     private LocalDateTime couponIssueCreatedAt;
     private LocalDateTime couponExpiredAt;
     private LocalDateTime couponUsageCreatedAt;
-    private String categoryName;
-    private String productName;
 }

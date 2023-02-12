@@ -132,7 +132,7 @@
                                 쿠폰 적용범위
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="allProductRadio"
+                                           id="allProductRadio" value="total"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="allProductRadio">
                                         전체
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="categoryRadio"
+                                           id="categoryRadio" value="category"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="categoryRadio">
                                         카테고리
@@ -148,10 +148,17 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="oneProductRadio"
+                                           id="oneProductRadio" value="product"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="oneProductRadio">
                                         상품
+                                    </label>
+                                </div>
+                                <div class="form-check" style="display:none;">
+                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                           id="pointCoverageRadio" value="point">
+                                    <label class="form-check-label" for="pointCoverageRadio">
+                                        포인트
                                     </label>
                                 </div>
                                 <div id="selectCategoryDiv" style="display:none;">

@@ -27,7 +27,6 @@ import shop.itbook.itbookfront.coupon.service.adminapi.CouponIssueAdminService;
 public class CouponIssueAdminController {
 
     private final CouponIssueAdminService couponIssueAdminService;
-    private final CategoryService categoryService;
     private static final String DIRECTORY_NAME = "adminpage/couponadmin";
 
     @GetMapping("/list")
@@ -35,10 +34,9 @@ public class CouponIssueAdminController {
 
         PageResponse<AdminCouponIssueListResponseDto> couponIssueList =
                 couponIssueAdminService.findAllCouponIssueList(
-                    String.format("/api/admin/coupon-issues?page=%d&size=%d",
-                        pageable.getPageNumber(), pageable.getPageSize()));
-            model.addAttribute("pageResponse", couponIssueList);
-            model.addAttribute("paginationUrl", "/admin/coupon/coupon-issues/list");
-            return Strings.concat(DIRECTORY_NAME, "/couponList");
+                        pageable.getPageNumber(), pageable.getPageSize());
+        model.addAttribute("pageResponse", couponIssueList);
+        model.addAttribute("paginationUrl", "/admin/coupon/coupon-issues/list");
+        return Strings.concat(DIRECTORY_NAME, "/couponIssueList");
     }
 }

@@ -31,9 +31,9 @@
                 <th style="width: 10%"><span>타입</span></th>
                 <th style="width: 15%"><span>이름</span></th>
                 <th style="width: 19%"><span>코드</span></th>
-                <th><span>쿠폰혜택</span></th>
-                <th><span>사용처</span></th>
-                <th><span>발급수량</span></th>
+                <th style="width: 9%"><span>쿠폰혜택</span></th>
+                <th><span>적용범위</span></th>
+                <th style="width: 9%"><span>발급수량</span></th>
                 <th style="width: 17%"><span>발급기간</span></th>
             </tr>
             </thead>
@@ -65,8 +65,8 @@
                     포인트 쿠폰
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.categoryName)}">
-                    <span th:text="${coupon.categoryNo}"></span>.
-                    <span th:text="${coupon.categoryName}"></span>
+                    <span th:text="${coupon.parentCategoryName}"></span><br>
+                    - <span th:text="${coupon.categoryName}"></span>
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.productName)}">
                     <span th:text="${coupon.productNo}"></span>.
