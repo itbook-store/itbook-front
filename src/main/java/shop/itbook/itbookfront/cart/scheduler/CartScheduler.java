@@ -28,6 +28,8 @@ public class CartScheduler {
 
     private final CartAdaptor cartAdaptor;
 
+    private static final String MEMBER_NO = "memberNo";
+
     @Scheduled(cron = "0 0 0 * * *")
     public void saveAllCartByRedis() {
 
@@ -44,14 +46,14 @@ public class CartScheduler {
         );
 
         List<Map<Object, Object>> filteredMapList = redisHashMapList.stream()
-            .filter(map -> map.containsKey("memberNo"))
+            .filter(map -> map.containsKey(MEMBER_NO))
             .collect(Collectors.toList());
 
         List<CartMemberRequestDto> list = new ArrayList<>();
 
         for (Map<Object, Object> map : filteredMapList) {
-             Integer memberNo = (Integer) map.get("memberNo");
-            map.remove("memberNo");
+             Integer memberNo = (Integer) map.get(MEMBER_NO);
+            map.remove(MEMBER_NO);
             for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 CartProductDetailsResponseDto value =
                     (CartProductDetailsResponseDto) entry.getValue();
