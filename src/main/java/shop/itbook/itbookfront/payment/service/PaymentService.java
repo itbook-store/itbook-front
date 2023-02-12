@@ -1,7 +1,7 @@
 package shop.itbook.itbookfront.payment.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import shop.itbook.itbookfront.payment.dto.response.OrderNoResponseDto;
+import shop.itbook.itbookfront.payment.dto.request.PaymentCanceledRequestDto;
+import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 
 /**
  * The interface Payment service.
@@ -26,18 +26,21 @@ public interface PaymentService {
     /**
      * 샵 서버를 통해 토스에 결제 승인 요청을 하는 기능을 담당합니다.
      *
+     * @param paymentKey the payment key
+     * @param orderId    the order id
+     * @param amount     the amount
+     * @param orderNo    the order no
      * @return the payment response dto . payment data response dto
      */
-    OrderNoResponseDto requestApprovePayment(
+    OrderResponseDto requestApprovePayment(
         String paymentKey, String orderId, Long amount, Long orderNo);
 
     /**
      * 샵 서버를 통해 토스에 결제 취소 요청을 하는 기능을 담당합니다.
      *
-     * @param orderNo        the order no
-     * @param canceledReason the canceled reason
+     * @param requestDto the request dto
      * @return the order no response dto
      */
-    OrderNoResponseDto requestCanceledPayment(
-        Long orderNo, String canceledReason);
+    OrderResponseDto requestCanceledPayment(
+        PaymentCanceledRequestDto requestDto);
 }

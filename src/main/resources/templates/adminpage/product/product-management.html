@@ -7,33 +7,33 @@
 <head>
     <style>
         .toggleSwitch {
-            width: 50px;
-            height: 25px;
+            width: 35px;
+            height: 20px;
             display: block;
             position: relative;
             border-radius: 30px;
             background-color: #fff;
-            box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+            box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.38);
             cursor: pointer;
         }
 
         .toggleSwitch .toggleButton {
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             position: absolute;
             top: 30%;
-            left: 4px;
+            left: 3px;
             transform: translateY(-25%);
             border-radius: 50%;
-            background: #f03d3d;
+            background: rgb(104, 104, 171);
         }
 
-        #toggle:checked ~ .toggleSwitch {
-            background: #f03d3d;
+        .toggle:checked ~ .toggleSwitch {
+            background: rgb(104, 104, 171);
         }
 
-        #toggle:checked ~ .toggleSwitch .toggleButton {
-            left: calc(100% - 24px);
+        .toggle:checked ~ .toggleSwitch .toggleButton {
+            left: calc(100% - 19px);
             background: #fff;
         }
 
@@ -52,9 +52,12 @@
 <div layout:fragment="content">
     <div class="content">
 
-        <h2> 상품 관리 <button style="width: auto; margin-left: 90%" class="btn btn-secondary mt-3"
-                           onclick="location.href='/admin/products/select-add-product-type'">상품 등록
-        </button></h2>
+        <h2> 상품 관리
+            <button style="width: auto; margin-left: 90%" class="btn btn-secondary mt-3"
+                    onclick="location.href='/admin/products/select-add-product-type'">상품 등록
+            </button>
+        </h2>
+        <hr>
 
         <div class="container bootstrap snippets bootdey">
             <div class="row">
@@ -62,37 +65,68 @@
                     <div class="main-box no-header clearfix">
                         <div class="main-box-body clearfix">
                             <div class="table-responsive">
-                                <table class="table user-list">
+                                <table class="table user-list table-hover">
                                     <thead style="text-align: center">
                                     <tr style="text-align: center!important;">
-                                        <th >상품코드</th>
-                                        <th >상품명</th>
-                                        <th >정가</th>
-                                        <th >판매가</th>
-                                        <th >삭제</span></th>
+                                        <th>상품코드</th>
+                                        <th>상품명</th>
+                                        <th>정가</th>
+                                        <th>판매가</th>
+                                        <th>판매</span></th>
+                                        <th>강제품절</span></th>
+                                        <th>삭제</span></th>
+                                        <th>수정</span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:if="${not #lists.isEmpty(pageResponse)}"
                                         th:each="product : ${pageResponse.content}">
-                                        <td  style="text-align: center" th:text="${product.productNo}"></td>
-                                        <td><strong>
-                                            <span style="text-align: left" th:text="${product.productName}"
-                                                  th:onclick="|location.href='@{/products/{productNo}(productNo=${product.productNo})}'|"></span>
-                                        </strong>
+                                        <td style="text-align: center" th:text="${product.productNo}"></td>
+                                        <td style="text-align: left">
+                                            <a th:href="|@{/products/{productNo}(productNo=${product.productNo})}|"
+                                            style="text-decoration: none; color: #000000">
+                                                <span th:text="${product.productName}"></span>
+                                            </a>
                                         </td>
-                                        <td><strong><span style="text-align: center">
+                                        <td><span style="text-align: center">
                                             [[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                                        </span></strong></td>
+                                        </span></td>
                                         <td>
-                                            <strong><span style="text-align: center">[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span></strong>
+                                            <span style="text-align: center">[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
                                         </td>
-                                        <td>
-                                            <input type="checkbox" id="toggle" hidden>
-                                            <label for="toggle" class="toggleSwitch" style="margin: auto">
-                                                <span class="toggleButton"
-                                                      th:onclick="|location.href='@{/admin/products/{productNo}/delete(productNo=${product.productNo})}'|"></span>
+                                        <td style="width: 7%">
+                                            <input type="checkbox" class="toggle" hidden
+                                                   th:checked="${product.isSelled}">
+                                            <label class="toggleSwitch" style="margin: auto"
+                                                   th:onclick="|location.href='@{/admin/products/{productNo}/stop-selled(productNo=${product.productNo})}'|">
+                                                <span class="toggleButton"></span>
                                             </label>
+                                        </td>
+                                        <td style="width: 7%">
+                                            <input type="checkbox" class="toggle" hidden
+                                                   th:checked="${product.isForceSoldOut}">
+                                            <label class="toggleSwitch" style="margin: auto"
+                                                   th:onclick="|location.href='@{/admin/products/{productNo}/force-sold-out(productNo=${product.productNo})}'|">
+                                                <span class="toggleButton"></span>
+                                            </label>
+                                        </td>
+                                        <td style="width: 7%">
+                                            <input type="checkbox" class="toggle" hidden
+                                                   th:checked="${product.isDeleted}">
+                                            <label class="toggleSwitch" style="margin: auto"
+                                                   th:onclick="|location.href='@{/admin/products/{productNo}/delete(productNo=${product.productNo})}'|">
+                                                <span class="toggleButton"></span>
+                                            </label>
+                                        </td>
+                                        <td style="width: 5%">
+                                            <button class="btn btn-dark btn-sm" th:if="${product.isbn == null}"
+                                                    th:onclick="|location.href='@{/admin/products/{productNo}/modify(productNo=${product.productNo})}'|">
+                                                edit
+                                            </button>
+                                            <button class="btn btn-dark btn-sm" th:unless="${product.isbn == null}"
+                                                    th:onclick="|location.href='@{/admin/products/books/{productNo}/modify(productNo=${product.productNo})}'|">
+                                                edit
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>

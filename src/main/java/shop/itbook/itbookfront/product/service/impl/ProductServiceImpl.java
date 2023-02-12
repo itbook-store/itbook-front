@@ -1,23 +1,23 @@
 package shop.itbook.itbookfront.product.service.impl;
 
-import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
-
-import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.ProductAdaptor;
-import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
+import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
-import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
-import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
+import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
-import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
 /**
@@ -28,20 +28,17 @@ import shop.itbook.itbookfront.product.service.ProductService;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
-    private final Integer MAIN_EXPOSED_LIMIT_NUM = 6;
+    private final String DAILYHITS_COOKIENAME = "ITBOOK-VIEW";
+    private final Integer ONEHOUR = 60 * 60;
 
-    @Override
-    public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
-                        BookRequestDto requestDto) {
-        return productAdaptor.addBook(thumbnails, ebook, requestDto);
-    }
 
     @Override
     public Long addProduct(MultipartFile thumbnails,
-                           ProductRequestDto requestDto) {
+                           ProductAddRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, requestDto);
     }
 
@@ -56,14 +53,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void removeProduct(Long productNo) {
-        productAdaptor.removeProduct(productNo);
-    }
-
-    @Override
-    public void modifyProduct(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
-                              BookRequestDto requestDto) {
-        productAdaptor.modifyProduct(productNo, thumbnails, ebook, requestDto);
+    public void modifyProduct(Long productNo, MultipartFile thumbnails,
+                              ProductModifyRequestDto requestDto) {
+        productAdaptor.modifyProduct(productNo, thumbnails, requestDto);
     }
 
     @Override
@@ -88,22 +80,46 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public SearchBookDetailsDto searchBook(String url) {
-        return productAdaptor.searchBook(url);
+    public void changeBooleanField(Long productNo, String fieldName) {
+        productAdaptor.changeBooleanField(productNo, fieldName);
     }
 
     @Override
-    public ProductBooleanResponseDto checkIsbnExists(String url) {
-
-        return productAdaptor.isbnExists(url);
+    public void updateDailyHits(Long productNo) {
+        productAdaptor.changeDailyHits(productNo);
     }
 
     @Override
-    @Cacheable(value = "productTypes", key = "#id")
-    public List<ProductDetailsResponseDto> getBooksByProductTypes(Integer id) {
-        return this.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                PAGE_OF_ALL_CONTENT, MAIN_EXPOSED_LIMIT_NUM, id)).getContent();
+    public Cookie checkCookieForDailyHits(Long productNo, HttpServletRequest request,
+                                          HttpServletResponse response) {
+
+        Cookie[] cookies = request.getCookies();
+        Optional<Cookie> cookieOrigin =
+            Arrays.stream(cookies).filter(c -> c.getName().equals(DAILYHITS_COOKIENAME))
+                .findFirst();
+
+        if (cookieOrigin.isEmpty()) {
+            Cookie newCookie = new Cookie(DAILYHITS_COOKIENAME, String.valueOf(productNo));
+            newCookie.setMaxAge(ONEHOUR);
+            newCookie.setPath("/");
+            this.updateDailyHits(productNo);
+            log.info("newCookie: " + newCookie.getValue());
+            response.addCookie(newCookie);
+            return newCookie;
+        }
+
+        Cookie cookie = cookieOrigin.get();
+        if (!cookie.getValue().contains(String.valueOf(productNo))) {
+            this.updateDailyHits(productNo);
+            cookie.setMaxAge(ONEHOUR);
+            cookie.setPath("/");
+            cookie.setValue(cookie.getValue() + "/" + productNo);
+            log.info("cookie: " + cookie.getValue());
+            response.addCookie(cookie);
+            return cookie;
+        }
+        log.info("통과: " + cookie.getValue());
+        return cookie;
     }
 
 }
