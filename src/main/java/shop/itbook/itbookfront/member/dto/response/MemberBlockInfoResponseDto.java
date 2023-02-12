@@ -20,6 +20,8 @@ public class MemberBlockInfoResponseDto {
     private String phoneNumber;
     private String email;
     private LocalDateTime memberCreatedAt;
+    private Boolean isSocial;
+    private Boolean isWriter;
     private String statusChangedReason;
     private LocalDateTime memberStatusHistoryCreatedAt;
 }

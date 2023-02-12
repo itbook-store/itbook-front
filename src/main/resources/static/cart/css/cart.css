@@ -227,3 +227,7 @@ select:focus-visible {
     margin-top: 20px;
 }
 
+.product_isSelled {
+    font-size: 16px;
+}
+

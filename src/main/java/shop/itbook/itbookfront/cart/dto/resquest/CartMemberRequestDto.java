@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.cart.dto.resquest;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,27 +16,18 @@ import lombok.ToString;
 @ToString
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CartMemberRequestDto {
 
     @NotNull(message = "회원번호는 필수 입니다.")
-    private Integer memberNo;
+    private Long memberNo;
 
     @NotNull(message = "상품번호는 필수 입니다.")
-    private Integer productNo;
+    private Long productNo;
 
     @NotNull(message = "수량은 필수 입니다.")
     @Positive(message = "수량은 음수일 수 없습니다.")
     private Integer productCount;
 
-    public CartMemberRequestDto(Integer memberNo, Integer productNo) {
-        this.memberNo = memberNo;
-        this.productNo = productNo;
-        this.productCount = 1;
-    }
 
-    public CartMemberRequestDto(Integer memberNo, Integer productNo, Integer productCount) {
-        this.memberNo = memberNo;
-        this.productNo = productNo;
-        this.productCount = productCount;
-    }
 }

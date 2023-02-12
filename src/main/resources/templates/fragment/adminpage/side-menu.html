@@ -19,6 +19,12 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectWriterSideMenu(this)">
+                    작가 관리
+                </button>
+            </li>
+            <li class="mb-1">
+                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="showProductSubMenu(this)">
                     상품(도서) 관리
                 </button>
@@ -80,7 +86,6 @@
         </ul>
     </div>
     <script th:src="@{/fragment/adminpage/js/sideMenu.js}"></script>
-    <script th:src="@{/adminpage/member/js/memberSideMenuList.js}"></script>
 </div>
 
 

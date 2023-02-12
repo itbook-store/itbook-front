@@ -208,8 +208,6 @@ public class MemberAdaptor {
         HttpEntity<MemberPointSendRequestDto> httpEntity =
             new HttpEntity<>(memberPointSendRequestDto, headers);
 
-        log.info("memberPointSendRequestDto = {}", memberPointSendRequestDto);
-
         ResponseEntity<CommonResponseBody<GiftIncreaseDecreasePointHistoryNoResponseDto>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/members/" +
