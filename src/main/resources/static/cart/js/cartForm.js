@@ -13,8 +13,17 @@ async function deleteProduct(productNo) {
 async function deleteAllProduct() {
 
     if (window.confirm("전체 상품을 삭제하시겠습니까?")) {
-        await fetch(`/async/cart/delete/all-product`, {
-            method: "GET",
+
+        let productNoInputList = document.querySelectorAll("input[name=productNo]");
+
+        let productNoList = [];
+
+        productNoInputList.forEach(
+            o => productNoList.push(o.value)
+        );
+
+        await fetch(`/async/cart/delete/all-product?productNo=${productNoList}`, {
+            method: "POST",
         })
             .then(data => {
                 location.reload();
@@ -25,32 +34,35 @@ async function deleteAllProduct() {
 async function changeProductCount(productNo, input) {
 
     let productStock = Number(input.dataset.stock);
-    let memberNo = document.querySelector(".memberNo");
+    // let memberNo = document.querySelector(".memberNo");
 
     if(!input.value.match(/[0-9]/)) {
-        input.value = '';
+        input.value = '1';
         alert("수량은 숫자만 입력 가능합니다.")
         return;
     }
 
     if (input.value > productStock){
-        input.value = '';
+        input.value = '1';
         alert("상품의 재고보다 많이 구매하실 수 없습니다.")
         return;
     }
 
-    let data = {
-        "memberNo": Number(memberNo.value),
-        "productNo": Number(productNo),
-        "productCount": Number(input.value)
-    };
+    // let data = {
+        // "memberNo": Number(memberNo.value),
+    //     "productNo": Number(productNo),
+    //     "productCount": Number(input.value)
+    // };
 
-    await fetch(`/async/cart/change/product-count`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+    productNo = Number(productNo);
+    let productCount = Number(input.value);
+
+    await fetch(`/async/cart/change/product-count?productNo=${productNo}&productCount=${productCount}`, {
+        method: "POST"
+        // headers: {
+        //     'Content-Type': 'application/json'
+        // },
+        // body: JSON.stringify(data)
     })
         .then(data => {
             let totalPrice = input.parentElement.parentElement.parentElement.parentElement.querySelector(".total_price");

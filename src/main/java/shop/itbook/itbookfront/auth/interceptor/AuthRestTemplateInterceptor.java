@@ -40,6 +40,11 @@ public class AuthRestTemplateInterceptor implements ClientHttpRequestInterceptor
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (Objects.isNull(authentication)) {
+            return execution.execute(request, body);
+        }
+
         Object principal = authentication.getPrincipal();
 
         if (!(principal instanceof UserDetailsDto)) {

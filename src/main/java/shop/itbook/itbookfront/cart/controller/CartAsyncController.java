@@ -2,21 +2,16 @@ package shop.itbook.itbookfront.cart.controller;
 
 import static shop.itbook.itbookfront.cart.util.CartConstant.COOKIE_NAME;
 
+import java.util.List;
 import javax.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
-import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
-import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 
 /**
@@ -34,91 +29,32 @@ public class CartAsyncController {
     private final CartService cartService;
 
     @GetMapping("/add-product")
-    public boolean productAddToCart(@AuthenticationPrincipal Object principal,
-                                 @CookieValue(value = COOKIE_NAME)Cookie cookie,
-                                 @RequestParam(value = "productNo")Integer productNo) {
+    public boolean productAddToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                    @RequestParam(value = "productNo") Integer productNo) {
 
-        if (checkTypeUserDetailsDto(principal)) {
-
-            UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
-            CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
-                userDetailsDto.getMemberNo().intValue(),
-                productNo
-            );
-
-            return cartService.addProductMemberToCart(cartMemberRequestDto);
-        }
-
-        return cartService.addProductAnonymousToCart(cookie.getValue(), productNo);
+        return cartService.addCartProduct(cookie.getValue(), productNo);
     }
 
     @GetMapping("/delete-product")
-    public void productDeleteToCart(@AuthenticationPrincipal Object principal,
-                                    @CookieValue(value = COOKIE_NAME) Cookie cookie,
+    public void productDeleteToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                     @RequestParam(value = "productNo") Integer productNo) {
 
-        if (checkTypeUserDetailsDto(principal)) {
-            UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
-            CartMemberRequestDto cartMemberRequestDto = new CartMemberRequestDto(
-                userDetailsDto.getMemberNo().intValue(),
-                productNo
-            );
-
-            cartService.deleteProductMemberToCart(cartMemberRequestDto);
-            return;
-        }
-
-        cartService.deleteProductAnonymousToCart(cookie.getValue(), productNo);
+        cartService.deleteCartProduct(cookie.getValue(), productNo);
     }
+//
+    @PostMapping("/delete/all-product")
+    public void productDeleteAllToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                       @RequestParam(value = "productNo") List<Integer> productNoList) {
 
-    @GetMapping("/delete/all-product")
-    public void productDeleteAllToCart(@AuthenticationPrincipal Object principal,
-                                       @CookieValue(value = COOKIE_NAME) Cookie cookie) {
+        cartService.deleteAllCartProduct(cookie.getValue(), productNoList);
 
-
-        if (checkTypeUserDetailsDto(principal)) {
-            UserDetailsDto userDetailsDto = getUserDetailsDto(principal);
-
-            cartService.deleteAllProductMemberToCart(
-                new CartMemberNoRequestDto(userDetailsDto.getMemberNo())
-            );
-            return;
-        }
-
-        cartService.deleteAllProductAnonymousToCart(cookie.getValue());
     }
 
     @PostMapping("/change/product-count")
-    public void productCountChangeInCart(Authentication authentication,
-                                         @RequestBody CartMemberRequestDto cartMemberRequestDto) {
-
-        if (!authentication.isAuthenticated()) {
-            return;
-        }
-
-        UserDetailsDto userDetailsDto = (UserDetailsDto) authentication.getPrincipal();
-
-        if (!checkValidMember(cartMemberRequestDto, userDetailsDto)) {
-            return;
-        }
-
-        cartService.modifyProductCountToCart(cartMemberRequestDto);
-
+    public void productCountChangeInCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                         @RequestParam(value = "productNo") Integer productNo,
+                                         @RequestParam(value = "productCount") Integer productCount) {
+        cartService.modifyCart(cookie.getValue(), productNo, productCount);
     }
-
-    private static boolean checkValidMember(CartMemberRequestDto cartMemberRequestDto,
-                                    UserDetailsDto userDetailsDto) {
-        return userDetailsDto.getMemberNo()
-            .equals(Long.valueOf(cartMemberRequestDto.getMemberNo()));
-    }
-
-    private boolean checkTypeUserDetailsDto(Object principal) {
-        return principal instanceof UserDetailsDto;
-    }
-
-    private UserDetailsDto getUserDetailsDto(Object principal) {
-        return (UserDetailsDto) principal;
-    }
-
 
 }

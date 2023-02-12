@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -23,7 +24,7 @@ import shop.itbook.itbookfront.order.service.OrderService;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("async/orders")
+@RequestMapping("/async/orders")
 @Slf4j
 public class OrderAsyncController {
 
@@ -37,7 +38,9 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderPaymentDto orderPaymentStart(@RequestBody OrderAddRequestDto orderAddRequestDto,
+    public OrderPaymentDto orderPaymentStart(
+                                             @RequestBody
+                                             OrderAddRequestDto orderAddRequestDto,
                                              @AuthenticationPrincipal
                                              UserDetailsDto userDetailsDto) {
 

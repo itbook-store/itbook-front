@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
@@ -46,10 +47,10 @@ public class OrderSheetController {
      * @param orderAddRequestDto 주문하기 위해 주문서에서 작성해야할 값들이 있는 Dto
      * @return 주문 작성 페이지
      */
-    @GetMapping
-    public String orderProductMember(@RequestParam("productNoList") List<Long> productNoList,
-                                     @RequestParam("productCntList") List<Integer> productCntList,
-                                     @ModelAttribute("orderAddRequestDto")
+    @PostMapping
+    public String orderProductMember(@RequestParam(required = false) List<Long> productNoList,
+        @RequestParam(required = false) List<Integer> productCntList,
+        @ModelAttribute("orderAddRequestDto")
                                      OrderAddRequestDto orderAddRequestDto,
                                      @AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                      Model model) {
