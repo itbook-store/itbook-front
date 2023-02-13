@@ -15,8 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductDetailsDto {
     private Long productNo;
-    private Long productCnt;
-    private Long categoryCouponIssueNo;
-    private Long productCouponIssueNo;
-
+    private Integer productCnt;
+    private Long couponIssueNo;
 }
