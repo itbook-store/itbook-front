@@ -65,7 +65,7 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public void cancelOrder(URI uri) {
+    public void postNullBodyReturnVoid(URI uri) {
         restTemplate.exchange(
             uri,
             HttpMethod.POST, null,

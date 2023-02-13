@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.ordersheet.controller.serviceapi;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
+import shop.itbook.itbookfront.order.dto.request.ProductDetailsDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.exception.InvalidOrderException;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
@@ -42,7 +44,7 @@ public class OrderSheetController {
     private final CategoryService categoryService;
 
     /**
-     * 회원의 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
+     * 상품 주문시 해당 상품의 정보와 회원일 경우 배송지 정보를 불러옵니다.
      *
      * @param productNoList      주문하려는 제품의 번호 리스트
      * @param productCntList     주문하려는 제품의 개수 리스트
@@ -75,7 +77,6 @@ public class OrderSheetController {
         OrderSheetResponseDto orderSheet =
             orderSheetService.findOrderSheetCartProducts(productNoList, productCntList,
                 memberNo);
-
 
         Queue<Integer> productCntQueue = new LinkedList<>(productCntList);
 
@@ -135,13 +136,18 @@ public class OrderSheetController {
         model.addAttribute("memberDestinationList",
             orderSheet.getMemberDestinationResponseDtoList());
 
+        List<ProductDetailsDto> productDetailsDtoList = new ArrayList<>();
+        productDetailsDtoList.add(
+            new ProductDetailsDto(productNoList.get(0), productCntList.get(0), null));
+
+        orderAddRequestDto.setProductDetailsDtoList(productDetailsDtoList);
         orderAddRequestDto.setIsSubscription(true);
         orderAddRequestDto.setSubscriptionPeriod(subscriptionPeriod);
 
         return "mainpage/ordersheet/orderSheetForm";
     }
 
-    @GetMapping("/subscription")
+    @GetMapping("/subscription/select-period")
     public String orderSubscriptionPeriodSelect(@RequestParam("productNo") Long productNo,
                                                 @RequestParam("productCnt") Integer productCnt,
                                                 Model model) {

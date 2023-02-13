@@ -54,6 +54,8 @@
                                                 <input class="no-input" type="hidden" name="productNo"
                                                        th:value="${product.productNo}">
                                                 <span th:text="${product.productName}"></span>
+                                                <span th:text="${orderAddRequestDto.subscriptionPeriod}"></span>
+                                                <span> 개월</span>
                                             </td>
                                             <td>
                                                 <input class="no-input" type="text"
@@ -122,16 +124,16 @@
 
                 <div class="address-tab">
                     <input type="number" id="sample4_postcode" readonly placeholder="우편번호"
-                           name="postcode">
+                           name="postcode" value="12345">
                     <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
                     <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
-                           name="roadNameAddress">
+                           name="roadNameAddress" value="제발특별시 제발동 제발">
                     <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
-                           name="recipientAddressDetails">
+                           name="recipientAddressDetails" value="제발">
                     <input type="text" placeholder="수령인 이름"
-                           name="recipientName">
+                           name="recipientName" value="정기구독">
                     <input type="text" placeholder="수령인 연락처"
-                           name="recipientPhoneNumber">
+                           name="recipientPhoneNumber" value="10101230123">
                 </div>
 
             </div>
@@ -216,8 +218,9 @@
         }
 
         let productDetailList = [];
-        productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
-        productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
+        productDetailList.push(new ProductDetailsDto(temp.productDetailsDtoList[0].productNo
+            , temp.productDetailsDtoList[0].productCnt));
+        // productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
 
         console.log(productDetailList);
 
@@ -232,20 +235,45 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
+                "decreasePoint": 0,
                 "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod
             }
 
             console.log(orderAddRequestDto);
 
-            if(canceledOrderNo && !temp.isSubscription) {
+            if(temp.isSubscription) {
+                orderSubscription(orderAddRequestDto);
+                return;
+            }
+
+            if(canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
                 return
             }
             createOrderForPayment(orderAddRequestDto);
         }
 
+        async function orderSubscription(orderAddRequestDto) {
+
+            await fetch(`/async/orders/subscription/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
+                .then(() => completeSubscriptionPayment())
+        }
+
         async function createOrderForPayment(orderAddRequestDto) {
+
+            let subscriptionStartOrderNo = 0;
 
             await fetch(`/async/orders/payment-start`, {
 
@@ -258,7 +286,9 @@
                 .then(response => response.json())
                 .then(data => {
                     doPaymentProcessByCard(data);
+                    subscriptionStartOrderNo = data.orderNo;
                 })
+                .then(() => completeSubscriptionPayment(subscriptionStartOrderNo));
         }
 
         async function reOrderForPayment(orderAddRequestDto, orderNo) {
@@ -322,6 +352,21 @@
                         console.log(error.code)
                     }
                 })
+        }
+
+        async function completeSubscriptionPayment(orderNo) {
+            await fetch(`async/orders/subscription/payment-completion/${orderNo}`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => {
+                    if(response.ok) {
+                        console.log("Complete Subscription");
+                    }
+                });
         }
 
         async function cancelOrderForPayment(orderNo) {
