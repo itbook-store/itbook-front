@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponNoResponseDto;
+import shop.itbook.itbookfront.coupon.dto.response.OrderCouponSimpleListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDto;
 import shop.itbook.itbookfront.coupon.exception.AlreadyAddedCouponIssueMemberCouponException;
 import shop.itbook.itbookfront.coupon.exception.NotPointCouponException;
@@ -99,4 +100,21 @@ public class CouponIssueAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
+
+    public List<OrderCouponSimpleListResponseDto> getProductCategoryCoupon(
+        String getCouponIssuesUrl) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<CommonResponseBody<List<OrderCouponSimpleListResponseDto>>> exchange
+            = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + getCouponIssuesUrl,
+            HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+
+            });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+
 }

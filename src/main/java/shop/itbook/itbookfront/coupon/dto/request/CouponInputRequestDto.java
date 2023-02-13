@@ -1,9 +1,11 @@
 package shop.itbook.itbookfront.coupon.dto.request;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,6 +36,7 @@ public class CouponInputRequestDto {
     private Long amount;
 
     @NotNull(message = "정률 쿠폰의 할인률을 입력해주세요.")
+    @Max(value = 100, message = "할인률이 100% 이상 일 수는 없습니다.")
     @PositiveOrZero(message = "할인률이 음수일 수는 없습니다.")
     private Integer percent;
 
