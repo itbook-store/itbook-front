@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.product.service.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,6 @@ import shop.itbook.itbookfront.product.service.ProductService;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
@@ -112,7 +112,6 @@ public class ProductServiceImpl implements ProductService {
             newCookie.setMaxAge(ONEHOUR);
             newCookie.setPath("/");
             this.updateDailyHits(productNo);
-            log.info("newCookie: " + newCookie.getValue());
             response.addCookie(newCookie);
             return newCookie;
         }
@@ -123,11 +122,9 @@ public class ProductServiceImpl implements ProductService {
             cookie.setMaxAge(ONEHOUR);
             cookie.setPath("/");
             cookie.setValue(cookie.getValue() + "/" + productNo);
-            log.info("cookie: " + cookie.getValue());
             response.addCookie(cookie);
             return cookie;
         }
-        log.info("통과: " + cookie.getValue());
         return cookie;
     }
 

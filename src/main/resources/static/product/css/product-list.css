@@ -856,7 +856,23 @@
     opacity: 1
 }
 
-.product-grid4 .product-discount-label, .product-grid4 .product-new-label {
+.product-grid4 .product-discount-label {
+    color: #fff;
+    background-color: #16a085;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 45px;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    transition: all .3s
+}
+
+.product-grid4 .product-new-label {
     color: #fff;
     background-color: #16a085;
     font-size: 13px;
