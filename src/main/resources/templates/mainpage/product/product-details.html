@@ -169,15 +169,15 @@
                                         <table class="table user-list">
                                             <thead>
                                             <tr>
-                                                <th></th>
-                                                <th><span></span></th>
-                                                <th><span></span></th>
+                                                <th><span>사진</span></th>
+                                                <th><span>내용</span></th>
+                                                <th><span>별점</span></th>
                                                 <th><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td><img width="100px;" th:src="${review.image}"></td>
+                                                <td class="text-center"><img width="100px;" th:src="${review.image}"></td>
                                                 <td><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
                                                 <td>
