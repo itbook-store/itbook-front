@@ -62,17 +62,17 @@
     <div style="margin-left: 35%">
 
         <button type="button" style="margin-right: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=0)}'|"> << </button>
+                th:onclick="|location.href='@{${productPaginationUrl}(page=0)}'|"> << </button>
         <button type="button" style="margin-right: 5px" th:if="${productInquiryPageResponse.previous}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${productInquiryPageResponse.number - 1})}'|"> <
+                th:onclick="|location.href='@{${productPaginationUrl}(page=${productInquiryPageResponse.number - 1})}'|"> <
         </button>
 
         <span th:text="${productInquiryPageResponse.number + 1} + ' / ' + ${productInquiryPageResponse.totalPages}"></span>
 
         <button type="button" style="margin-left: 5px" th:if="${productInquiryPageResponse.next}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${productInquiryPageResponse.number + 1})}'|"> >
+                th:onclick="|location.href='@{${productPaginationUrl}(page=${productInquiryPageResponse.number + 1})}'|"> >
         </button>
         <button type="button" style="margin-left: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${productInquiryPageResponse.totalPages - 1})}'|"> >></button>
+                th:onclick="|location.href='@{${productPaginationUrl}(page=${productInquiryPageResponse.totalPages - 1})}'|"> >></button>
     </div>
 </th:block>
