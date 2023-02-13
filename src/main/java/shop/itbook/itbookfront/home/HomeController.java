@@ -76,13 +76,13 @@ public class HomeController {
         model.addAttribute("productTypeList", productTypeList);
 
 
-        List<ProductDetailsResponseDto> newBooks = bookService.getNewBookList();
+        List<ProductDetailsResponseDto> newBooks = bookService.getProductTypeList(1);
         model.addAttribute("newBooks", newBooks);
 
-        List<ProductDetailsResponseDto> discountBooks = bookService.getDiscountBookList();
+        List<ProductDetailsResponseDto> discountBooks = bookService.getProductTypeList(2);
         model.addAttribute("discountBooks", discountBooks);
 
-        List<ProductDetailsResponseDto> bestSeller = bookService.getBestSellerList();
+        List<ProductDetailsResponseDto> bestSeller = bookService.getProductTypeList(3);
         model.addAttribute("bestSeller", bestSeller);
 
         if (Objects.nonNull(userDetailsDto)) {
@@ -90,11 +90,11 @@ public class HomeController {
                 bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
             model.addAttribute("recommendationList", recommendation);
         } else {
-            List<ProductDetailsResponseDto> recommendation = bookService.getRecommendationList();
+            List<ProductDetailsResponseDto> recommendation = bookService.getProductTypeList(4);
             model.addAttribute("recommendationList", recommendation);
         }
 
-        List<ProductDetailsResponseDto> popularBooks = bookService.getPopularBookList();
+        List<ProductDetailsResponseDto> popularBooks = bookService.getProductTypeList(5);
         model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");

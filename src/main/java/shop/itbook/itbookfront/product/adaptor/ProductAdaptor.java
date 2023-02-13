@@ -29,6 +29,7 @@ import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductSalesRankResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.exception.InvalidInputException;
@@ -204,5 +205,18 @@ public class ProductAdaptor {
             new ParameterizedTypeReference<>() {
             });
 
+    }
+
+    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
+        String sortingCriteria) {
+        ResponseEntity<CommonResponseBody<PageResponse<ProductSalesRankResponseDto>>> response =
+            restTemplate.exchange(
+                gateway.getGatewayServer()
+                    + String.format("/api/admin/products/sales-rank?sortingCriteria=%s",
+                    sortingCriteria), HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+
+                });
+
+        return Objects.requireNonNull(response.getBody()).getResult();
     }
 }

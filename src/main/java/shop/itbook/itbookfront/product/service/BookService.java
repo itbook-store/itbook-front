@@ -30,15 +30,19 @@ public interface BookService {
     List<ProductDetailsResponseDto> getProductTypeListByTypeNo(Integer productTypeNo,
                                                                Long memberNo);
 
-    List<ProductDetailsResponseDto> getNewBookList();
-
-    List<ProductDetailsResponseDto> getDiscountBookList();
-
-    List<ProductDetailsResponseDto> getBestSellerList();
-
-    List<ProductDetailsResponseDto> getRecommendationList();
+//    List<ProductDetailsResponseDto> getNewBookList();
+//
+//    List<ProductDetailsResponseDto> getDiscountBookList();
+//
+//    List<ProductDetailsResponseDto> getBestSellerList();
+//
+//    List<ProductDetailsResponseDto> getRecommendationList();
+//
+//    List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo);
+//
+//    List<ProductDetailsResponseDto> getPopularBookList();
 
     List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo);
 
-    List<ProductDetailsResponseDto> getPopularBookList();
+    List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo);
 }
