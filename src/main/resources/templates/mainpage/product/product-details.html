@@ -84,25 +84,12 @@
                             th:if="${product.isForceSoldOut == true or product.stock == 0}">
                         품절
                     </button>
-                    <!--                    <form id="purchase" method="post" th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
-                    <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
-                    <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
-                    <!--                    </form>-->
-<!--                    <form id="dk" method="post"-->
-<!--                          th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
-                    <form id="dk" method="post"
-                          th:action="@{/order-sheet}">
+                    <form id="productPaymentRequestForm" method="post"
+                          action="/order-sheet">
                         <input type="text" th:value="${product.productNo}" name="productNoList"/>
                         <input type="text" th:value="1" name="productCntList"/>
-                        <input type="text" th:value="4470" name="productNoList"/>
-                        <input type="text" th:value="2" name="productCntList"/>
-                        <!--                        <span th:each="item : ${testList}">-->
-                        <!--                            <input type="text" th:value="${item.productNo}" name="productNo"/>-->
-                        <!--                            <input type="text" th:value="${item.productCnt}" name="productCnt"/>    -->
-                        <!--                        </span>-->
                     </form>
-                    <button form="dk" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
-                            th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
+                    <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
                     </button>
                     <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"

@@ -5,6 +5,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
@@ -53,5 +55,7 @@ public interface ProductService {
     Cookie checkCookieForDailyHits(Long productNo, HttpServletRequest request,
                                    HttpServletResponse response);
 
-    PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(String sortingCriteria);
+    PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
+        @PageableDefault Pageable pageable,
+        String sortingCriteria);
 }
