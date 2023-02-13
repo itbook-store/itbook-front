@@ -39,7 +39,7 @@
                     <table class="table table-hover table-md align-middle">
                         <thead>
                         <tr>
-                            <th>상품정보</th>
+                            <th style="width: 550px">상품정보</th>
                             <th>판매금액</th>
                             <th style="width: 80px; text-align: center">수량</th>
                             <th style="text-align: center">쿠폰</th>
@@ -67,49 +67,121 @@
                                     </div>
                                 </td>
 
+                                <th:block th:with="productCount=${productCntQueue.peek()}">
                                 <!-- 상품 수량-->
                                 <td>
-                                    <p class="product_count" th:text="${productCntQueue.peek()}"></p>
+                                    <p class="product_count" th:text="${productCount}"></p>
                                     <!--                                <input class="product_count" type="number" readonly th:value="${productCntQueue.peek()}">-->
                                 </td>
 
                                 <!-- 쿠폰 적용 버튼-->
                                 <td style="text-align: center">
-                                    <!-- TODO -> 이런식으로 Jquery로 Ajax통신해서 사용가능한 쿠폰 리스트 받아오기 -->
-                                    <button class="btn coupon_btn" type="button" th:attr="data-url=|/coupon/useage/1070/${product.productNo}|">쿠폰 적용하기</button>
-                                    <div id="product_coupon_modal" class="modal fade" tabindex="-1" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Modal</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                </div>
-                                                <div class="modal-body couponList">
-                                                </div>
-                                                <div class="modal-footer">
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <th:block sec:authorize="isAuthenticated()">
+                                    <div style="display: flex; flex-direction: column; align-items: center">
+                                    <input type="hidden" name="couponNo" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
+                                    <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
+                                    <button class="btn coupon_btn" type="button"
+                                            th:attr="data-url=|/async/coupon-issues/${product.productNo}|,
+                                             data-no=${product.productNo},
+                                             data-price=${product.selledPrice},
+                                             data-count=${productCount}">
+                                        쿠폰 적용하기
+                                    </button>
                                     </div>
+                                    </th:block>
+                                    <th:block sec:authorize="isAnonymous()">
+                                    <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
+                                    </th:block>
+
                                 </td>
+                                </th:block>
 
                                 <!-- 상품 총 가격-->
                                 <td style="text-align: center">
-                                    <p class="product_total_price"
-                                       th:text="${product.selledPrice} * ${productCntQueue.poll()}"></p>
-                                    <!--                                <input class="product_total_price" type="number" readonly th:value="${product.selledPrice} * ${productCntQueue.poll()}">-->
+                                    <th:block th:with="selledPrice=${product.selledPrice}, productCount = ${productCntQueue.poll()}">
+                                    <p class="product_total_price" th:text="${selledPrice} * ${productCount}"></p>
+                                    </th:block>
                                 </td>
 
                             </tr>
                         </th:block>
                         </tbody>
                     </table>
+
+                    <!-- 쿠폰 모달 -->
+                    <div class="modal fade" id="product_coupon_modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="product_coupon_modalLabel">잇북 쿠폰 목록</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <table class="table table-hover table-md align-middle">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 80px"></th>
+                                            <th style="width: 470px">쿠폰 이름</th>
+                                            <th>할인 금액</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody class="coupon_list_table_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    <button type="button" id="coupon_select_btn" class="btn btn-primary">선택하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="amount_coupon_container" style="margin-top: 30px">
                     <div class="box-title">주문 총액 쿠폰</div>
                     <div class="box-content">
-                        <button id="order_amount_coupon_btn">주문 쿠폰 적용하기</button>
+
+                        <input type="hidden" name="orderTotalCouponNo" id="orderTotalCouponNo">
+                        <input type="hidden" id="orderTotalCouponAmount">
+                        <input readonly id="order_total_coupon_name">
+
+                        <button id="order_amount_coupon_btn" type="button" th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기</button>
+
+                        <div class="modal fade" id="order_total_coupon_modal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="order_total_coupon_modal_title">잇북 주문 총액 쿠폰 목록</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table class="table table-hover table-md align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 80px"></th>
+                                                <th style="width: 470px">쿠폰 이름</th>
+                                                <th style="text-align: center">할인 금액</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody class="order_total_coupon_list_table_body">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" id="order_total_coupon_select_btn" class="btn btn-primary">선택하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

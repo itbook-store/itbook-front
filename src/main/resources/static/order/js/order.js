@@ -5,42 +5,279 @@ document.addEventListener("DOMContentLoaded", function () {
     orderRealAmountPrice = getOrderProductTotalPriceBeforeDiscount();
     setOrderRealAmountTag();
     setTotalDiscountPriceTag();
-    console.log(orderRealAmountPrice);
 });
 
+/* 쿠폰 함수 */
 $('.coupon_btn').click(function(){
-    var url = $(this).data("url");
-    console.log(url);
+    let url = $(this).data("url");
+    let productNo = Number($(this).data("no"));
+    let productSelledPrice = Number($(this).data("price"));
+    let productCount = Number($(this).data("count"));
+
+    let couponInfoTagList = this.parentNode.children;
+    let couponNoInput = couponInfoTagList[0];
+    let couponApplyPriceInput = couponInfoTagList[1];
+    let couponApplyNameInput = couponInfoTagList[2];
+
+    let totalPriceTag = this.parentNode.parentNode.parentNode.children[4].children[0];
+
     $.ajax({
         type: "GET",
-        url: '/async/cart/test',
+        url: url,
         dataType: 'json',
         success: function(res) {
 
-            console.log(res);
 
-            console.log(res.memberNo);
+            let couponTableBody = document.querySelector(".coupon_list_table_body");
 
-            // get the ajax response data
-            // var data = res.body;
+            couponTableBody.innerHTML = '';
 
-            // console.log(data);
-            //
-            // console.log(data.memberNo);
+            for (let i = 0; i < res.length; i++) {
 
-            // update modal content
-            $('.modal-body.couponList').text(res.memberNo);
+                let html;
 
-            // $('.modal-body').text(data.someval);
-            // show modal
+                if (res[i].amount === 0) {
+                    html =
+                    `
+                        <tr>
+                            <td>
+                                <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
+                            </td>
+                            <td class="coupon_name">${res[i].name}</td>
+                            <td class="coupon_discount coupon_percent">
+                                <div class="coupon_discount_price_box">
+                                    <p class="percent">${res[i].percent}</p>
+                                    <p style="margin-left: 10px !important;">%</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    html =
+                    `
+                        <tr>
+                            <td>
+                                <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
+                            </td>
+                            <td class="coupon_name">${res[i].name}</td>
+                            <td class="coupon_discount coupon_percent">
+                                <div class="coupon_discount_price_box">
+                                    <p class="won">${res[i].amount}</p>
+                                    <p style="margin-left: 10px !important;">원</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                let tr = document.createElement("tr");
+                tr.innerHTML = html;
+
+                couponTableBody.appendChild(tr);
+            }
+
             $('#product_coupon_modal').modal('show');
+
+            let couponSelectBtn = document.querySelector("#coupon_select_btn");
+
+            couponSelectBtn.addEventListener("click", function () {
+
+                let selectedRadioInput = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked");
+
+                if (selectedRadioInput === null || selectedRadioInput === undefined) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '쿠폰이 선택되지 않았습니다.',
+                        text: '다시 선택해 주세요.',
+                    })
+                    return;
+                }
+
+                let selectedCouponInfoTagList = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").parentNode.parentNode.children;
+
+                let couponName = selectedCouponInfoTagList[1].innerText;
+                let couponDiscountPolicyTag = selectedCouponInfoTagList[2].children[0].children[0];
+
+                let discountPolicy;
+                if (couponDiscountPolicyTag.classList.contains("won")) {
+                    discountPolicy = "won";
+                } else {
+                    discountPolicy = "percent";
+                }
+
+                let couponDiscountAmount = Number(couponDiscountPolicyTag.innerText.replace(',', ''));
+
+                let originTotalPrice = productSelledPrice * productCount;
+
+                let discountApplyPrice;
+                if (discountPolicy === "won") {
+                    discountApplyPrice = couponDiscountAmount;
+                    totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount).toLocaleString();
+                } else {
+                    if (productCount === 1) {
+                        discountApplyPrice = Number(originTotalPrice * (couponDiscountAmount / 100));
+                        totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice).toLocaleString();
+                    } else {
+                        discountApplyPrice = Number(productSelledPrice * (couponDiscountAmount / 100));
+                        totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1))).toLocaleString();
+                    }
+                }
+
+                totalDiscountPrice -= couponApplyPriceInput.value;
+                totalDiscountPrice += discountApplyPrice;
+
+                couponNoInput.value = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").value;
+                couponApplyNameInput.value = couponName;
+                couponApplyPriceInput.value = discountApplyPrice;
+
+                setOrderRealAmountTag();
+                setTotalDiscountPriceTag();
+
+                $('#product_coupon_modal').modal('hide');
+
+            });
 
         },
         error:function(request, status, error) {
             console.log("ajax call went wrong:" + request.responseText);
         }
     });
+
 });
+
+
+/* 주문 총액 쿠폰 함수 */
+$('#order_amount_coupon_btn').click(function () {
+    let url = $(this).data("url");
+
+    let orderTotalCouponNoInput = document.querySelector("#orderTotalCouponNo");
+    console.log(orderTotalCouponNoInput);
+    let orderTotalCouponNameInput = document.querySelector("#order_total_coupon_name");
+    console.log(orderTotalCouponNameInput);
+    let orderTotalCouponAmountInput = document.querySelector("#orderTotalCouponAmount");
+    console.log(orderTotalCouponAmountInput);
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: 'json',
+        success: function(res) {
+            console.log(res);
+
+            let couponTableBody = document.querySelector(".order_total_coupon_list_table_body");
+            couponTableBody.innerHTML = "";
+
+            for (let i = 0; i < res.length; i++) {
+
+                let html;
+
+                if (res[i].amount === 0) {
+                    html =
+                        `
+                        <tr>
+                            <td>
+                                <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
+                            </td>
+                            <td class="coupon_name">${res[i].name}</td>
+                            <td class="coupon_discount coupon_percent">
+                                <div class="coupon_discount_price_box">
+                                    <p class="percent">${res[i].percent}</p>
+                                    <p style="margin-left: 10px !important;">%</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    html =
+                        `
+                        <tr>
+                            <td>
+                                <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
+                            </td>
+                            <td class="coupon_name">${res[i].name}</td>
+                            <td class="coupon_discount coupon_percent">
+                                <div class="coupon_discount_price_box">
+                                    <p class="won">10,000</p>
+                                    <p style="margin-left: 10px !important;">원</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                let tr = document.createElement("tr");
+                tr.innerHTML = html;
+
+                couponTableBody.appendChild(tr);
+            }
+
+            $('#order_total_coupon_modal').modal('show');
+
+            let orderTotalCouponSelectBtn = document.querySelector("#order_total_coupon_select_btn");
+
+            orderTotalCouponSelectBtn.addEventListener("click", function () {
+
+                let selectedRadioInput = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked");
+
+                if (selectedRadioInput === null || selectedRadioInput === undefined) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '쿠폰이 선택되지 않았습니다.',
+                        text: '다시 선택해 주세요.',
+                    })
+                    return;
+                }
+
+                let productTotalPriceAmount = 0;
+                let productTotalPriceList = document.querySelectorAll(".product_total_price");
+
+                for (let i = 1; i < productTotalPriceList.length; i++) {
+                    productTotalPriceAmount += Number(productTotalPriceList[i].innerHTML);
+                }
+
+                let selectedCouponInfoTagList = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked").parentNode.parentNode.children;
+
+                let couponName = selectedCouponInfoTagList[1].innerText;
+                let couponDiscountPolicyTag = selectedCouponInfoTagList[2].children[0].children[0];
+
+                let discountPolicy;
+                if (couponDiscountPolicyTag.classList.contains("won")) {
+                    discountPolicy = "won";
+                } else {
+                    discountPolicy = "percent";
+                }
+
+                let couponDiscountAmount = Number(couponDiscountPolicyTag.innerText.replace(',', ''));
+
+                let discountApplyPrice;
+                if (discountPolicy === "won") {
+                    discountApplyPrice = couponDiscountAmount;
+                } else {
+                    discountApplyPrice = Number(productTotalPriceAmount * (couponDiscountAmount / 100));
+                }
+
+                totalDiscountPrice -= Number(orderTotalCouponAmountInput.value);
+                totalDiscountPrice += Number(discountApplyPrice);
+
+                orderTotalCouponNoInput.value = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked").value;
+                orderTotalCouponNameInput.value = couponName;
+                orderTotalCouponAmountInput.value = Number(discountApplyPrice);
+
+                setOrderRealAmountTag();
+                setTotalDiscountPriceTag();
+
+                $('#order_total_coupon_modal').modal('hide');
+
+            });
+
+        },
+        error:function(request, status, error) {
+            console.log("ajax call went wrong:" + request.responseText);
+        }
+    })
+
+});
+
 
 /* 할인 전 주문 총 금액 구하는 함수*/
 function getOrderProductTotalPriceBeforeDiscount() {
@@ -103,22 +340,21 @@ pointApplyBtn.addEventListener("click", function () {
                 totalDiscountPrice = orderRealAmountPrice;
 
                 myPointTag.innerText = myPoint.toLocaleString();
-                orderRealAmountPrice = 0;
+                // orderRealAmountPrice = 0;
 
             } else {
-                orderRealAmountPrice = orderRealAmountPrice - myPoint;
+                // orderRealAmountPrice = orderRealAmountPrice - myPoint;
                 pointApplyInput.value = myPoint.toLocaleString();
 
                 /* 총 할인 금액 계산 */
-                totalDiscountPrice = myPoint;
+                totalDiscountPrice += myPoint;
 
                 myPoint = 0;
                 myPointTag.innerText = myPoint;
             }
 
-
-            setOrderRealAmountTag();
             setTotalDiscountPriceTag();
+            setOrderRealAmountTag();
 
             Swal.fire('포인트 적용 성공!', '', 'success');
 
@@ -146,7 +382,7 @@ pointCancelBtn.addEventListener("click", function () {
             /* 총 할인 금액 계산 */
             totalDiscountPrice -= applyPoint;
 
-            orderRealAmountPrice += applyPoint;
+            // orderRealAmountPrice += applyPoint;
             pointApplyInput.value = 0;
 
             let existingMyPoint = Number(myPointTag.innerText.replace(',', ''));
@@ -170,7 +406,11 @@ function setOrderRealAmountTag() {
         orderRealAmountPrice = 0;
     }
 
-    orderRealAmountTag.innerHTML = orderRealAmountPrice.toLocaleString();
+    if ((orderRealAmountPrice - totalDiscountPrice) < 0) {
+        orderRealAmountPrice = 0;
+    }
+
+    orderRealAmountTag.innerHTML = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
 }
 
 
