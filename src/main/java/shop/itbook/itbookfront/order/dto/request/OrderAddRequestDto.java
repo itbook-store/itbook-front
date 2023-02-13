@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -28,5 +27,6 @@ public class OrderAddRequestDto {
     private Long deliveryFee;
     private Long orderTotalCouponNo;
     private Long decreasePoint;
-
+    private Boolean isSubscription;
+    private Integer subscriptionPeriod;
 }
