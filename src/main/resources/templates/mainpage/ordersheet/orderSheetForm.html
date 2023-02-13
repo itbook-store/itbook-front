@@ -78,7 +78,7 @@
                                 <td style="text-align: center">
                                     <th:block sec:authorize="isAuthenticated()">
                                     <div class="coupon_box" style="display: flex; flex-direction: column; align-items: center" th:attr="data-valid=${product.productNo}">
-                                    <input type="hidden" name="couponNo" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
                                     <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
                                     <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
                                     <button class="btn coupon_btn" type="button" onclick="couponModalFunc(this)"
@@ -446,16 +446,22 @@
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
-        function ProductDetailsDto(productNo, productCnt) {
+        function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
             this.productNo = productNo;
             this.productCnt = productCnt;
+            this.couponIssueNo = couponIssueNo;
         }
 
         let productDetailList = [];
+
+        for (let i = 0; i < productNoList.length; i++) {
+            productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i]));
+        }
+
         // productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
         // productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
 
-        console.log(productDetailList);
+        // console.log(productDetailList);
 
         function processPayment() {
 
