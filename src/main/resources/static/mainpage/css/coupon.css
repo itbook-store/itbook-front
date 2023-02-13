@@ -1,0 +1,75 @@
+/*body {*/
+/*    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
+/*    font-size: 14px;*/
+/*    line-height: 1.52857143;*/
+/*    color: #515253;*/
+/*    background-color: #f5f7fa;*/
+/*    margin-top:20px;*/
+/*}*/
+
+.widget .panel, .widget.panel {
+    overflow: hidden;
+}
+
+.widget {
+    margin-bottom: 20px;
+    border: 0;
+}
+
+.row-table {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.row-flush>[class*=col-] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.row-table>[class*=col-] {
+    display: table-cell;
+    float: none;
+    table-layout: fixed;
+    vertical-align: middle;
+}
+
+.widget .lateral-picture {
+    position: relative;
+    display: block;
+    height: 200px;
+    width: auto;
+    overflow: hidden;
+}
+
+.widget .lateral-picture>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    width: auto;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.p-lg {
+    padding: 15px!important;
+}
+
+.btn-coupon-register {
+    border-radius: 3px;
+    font-size: 13px;
+    border-color: transparent;
+    -webkit-appearance: none;
+    outline: 0!important;
+    -webkit-transition: all .1s;
+    -o-transition: all .1s;
+    transition: all .1s;
+}
+.pull-right {
+    float: right !important;
+}

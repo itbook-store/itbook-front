@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.adaptor.serviceapi.impl.CouponIssueAdaptor;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
+import shop.itbook.itbookfront.coupon.dto.response.OrderCouponSimpleListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDto;
 import shop.itbook.itbookfront.coupon.service.serviceapi.CouponIssueService;
 
@@ -39,5 +40,11 @@ public class CouponIssueServiceImpl implements CouponIssueService {
     @Override
     public List<CouponListResponseDto> getCouponsByCouponType(String couponsByCouponTypeUrl){
         return couponIssueAdaptor.getCouponsByCouponType(couponsByCouponTypeUrl);
+    }
+
+    @Override
+    public List<OrderCouponSimpleListResponseDto> getProductCategoryCoupon(String getCouponIssuesUrl){
+
+        return couponIssueAdaptor.getProductCategoryCoupon(getCouponIssuesUrl);
     }
 }
