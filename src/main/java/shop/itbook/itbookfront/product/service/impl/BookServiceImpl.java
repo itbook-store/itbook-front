@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.adaptor.BookAdaptor;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
@@ -81,39 +79,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Cacheable(value = "newBookList")
-    public List<ProductDetailsResponseDto> getNewBookList() {
-        return productService.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=1", PAGE_OF_ALL_CONTENT,
-                6)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "discountBookList")
-    public List<ProductDetailsResponseDto> getDiscountBookList() {
-        return productService.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=2",
-                PAGE_OF_ALL_CONTENT, 6)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "bestSellerList")
-    public List<ProductDetailsResponseDto> getBestSellerList() {
-        return productService.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=3",
-                PAGE_OF_ALL_CONTENT, 6)).getContent();
-    }
-
-    @Override
-    @Cacheable(value = "recommendationList")
-    public List<ProductDetailsResponseDto> getRecommendationList() {
-        return productService.getProductList(
-            String.format("/api/products?page=%d&size=%d&productTypeNo=4",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
-    }
-
-    @Override
-//    @Cacheable(value = "personalRecommendationList")
+    @Cacheable(value = "personalRecommendationList", key = "#memberNo")
     public List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo) {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=4&memberNo=%d",
@@ -121,7 +87,48 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Cacheable(value = "popularBookList")
+    @Cacheable(value = "productTypeList", key = "#productTypeNo")
+    public List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo) {
+        switch (productTypeNo) {
+            case 1:
+                return this.getNewBookList();
+            case 2:
+                return this.getDiscountBookList();
+            case 3:
+                return this.getBestSellerList();
+            case 4:
+                return this.getRecommendationList();
+            case 5:
+                return this.getPopularBookList();
+            default:
+                return null;
+        }
+    }
+
+    public List<ProductDetailsResponseDto> getNewBookList() {
+        return productService.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=1", PAGE_OF_ALL_CONTENT,
+                6)).getContent();
+    }
+
+    public List<ProductDetailsResponseDto> getDiscountBookList() {
+        return productService.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=2",
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
+    }
+
+    public List<ProductDetailsResponseDto> getBestSellerList() {
+        return productService.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=3",
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
+    }
+
+    public List<ProductDetailsResponseDto> getRecommendationList() {
+        return productService.getProductList(
+            String.format("/api/products?page=%d&size=%d&productTypeNo=4",
+                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+    }
+
     public List<ProductDetailsResponseDto> getPopularBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=5",

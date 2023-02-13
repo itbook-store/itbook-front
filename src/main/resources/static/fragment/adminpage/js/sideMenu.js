@@ -36,6 +36,13 @@ function showProductSubMenu(eventTarget) {
                     연관상품 관리
                 </a>
             </button>
+
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
+                <a href="/admin/products/sales-rank" style="text-decoration: none; color:inherit;">
+                    상품 판매순위
+                </a>
+            </button>
         `;
 
 }
