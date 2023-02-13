@@ -95,7 +95,6 @@ public class CouponAdminController {
             return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
         }
 
-
         return "redirect:/admin/coupons/list";
     }
 
@@ -112,13 +111,7 @@ public class CouponAdminController {
             throw new CouponCoverageNotSelectException();
         }
     }
-    @PostMapping("/coupon-addition/coupon-type")
-    public String couponTypeAdd(){
-//         "먼슬리 쿠폰으로 가는 로직추가";
-        return Strings.concat(DIRECTORY_NAME, "/gradecoupon");
 
-
-    }
     @GetMapping("/list")
     public String couponList(Model model, @RequestParam(required = false) String coverage,
                              @PageableDefault Pageable pageable) throws InvalidPathRequestCouponList {
