@@ -221,7 +221,6 @@
                                                 <th class="text-right"><span>작성자</span></th>
                                                 <th><span></span></th>
                                                 <th><span></span></th>
-
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -249,8 +248,11 @@
                                                         <button th:if="${memberIsWriter} == true and ${productInquiry.isReplied} == false" class="btn btn-secondary"
                                                                 th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
                                                     </div>
+                                                    <div sec:authorize="hasAuthority('ADMIN')">
+                                                        <button th:if="${productInquiry.isReplied} == false" class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
+                                                    </div>
                                                 </td>
-
                                             </tr>
                                             </tbody>
                                         </table>
