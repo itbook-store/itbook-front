@@ -85,14 +85,14 @@ public class HomeController {
         List<ProductDetailsResponseDto> bestSeller = bookService.getProductTypeList(3);
         model.addAttribute("bestSeller", bestSeller);
 
+        List<ProductDetailsResponseDto> recommendation;
         if (Objects.nonNull(userDetailsDto)) {
-            List<ProductDetailsResponseDto> recommendation =
+            recommendation =
                 bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
-            model.addAttribute("recommendationList", recommendation);
         } else {
-            List<ProductDetailsResponseDto> recommendation = bookService.getProductTypeList(4);
-            model.addAttribute("recommendationList", recommendation);
+            recommendation = bookService.getProductTypeList(4);
         }
+        model.addAttribute("recommendationList", recommendation);
 
         List<ProductDetailsResponseDto> popularBooks = bookService.getProductTypeList(5);
         model.addAttribute("popularBooks", popularBooks);
