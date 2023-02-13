@@ -3,6 +3,8 @@ package shop.itbook.itbookfront.product.adaptor;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -208,12 +210,14 @@ public class ProductAdaptor {
     }
 
     public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
-        String sortingCriteria) {
+        @PageableDefault Pageable pageable, String sortingCriteria) {
         ResponseEntity<CommonResponseBody<PageResponse<ProductSalesRankResponseDto>>> response =
             restTemplate.exchange(
                 gateway.getGatewayServer()
-                    + String.format("/api/admin/products/sales-rank?sortingCriteria=%s",
-                    sortingCriteria), HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                    + String.format(
+                    "/api/admin/products/sales-rank?sortingCriteria=%s&page=%d&size=%d",
+                    sortingCriteria, pageable.getPageNumber(), pageable.getPageSize()),
+                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
 
                 });
 
