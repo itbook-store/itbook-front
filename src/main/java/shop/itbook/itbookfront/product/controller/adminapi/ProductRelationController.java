@@ -29,7 +29,7 @@ import shop.itbook.itbookfront.product.service.ProductService;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/admin/products/relation")
-public class ProductRelationAdminController {
+public class ProductRelationController {
 
     private final ProductService productService;
 
