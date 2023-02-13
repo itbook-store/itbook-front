@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.productinquiryreply.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -13,6 +14,7 @@ import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.productinquiryreply.dto.request.ProductInquiryReplyRequestDto;
 import shop.itbook.itbookfront.productinquiryreply.dto.response.ProductInquiryReplyNoResponseDto;
+import shop.itbook.itbookfront.productinquiryreply.dto.response.ProductInquiryReplyResponseDto;
 
 /**
  * @author 노수연
@@ -40,5 +42,17 @@ public class ProductInquiryReplyAdaptor {
                 });
 
         return responseEntity.getBody().getResult().getProductInquiryReplyNo();
+    }
+
+    public List<ProductInquiryReplyResponseDto> findProductInquiryReplyList(Long productInquiryNo) {
+
+        ResponseEntity<CommonResponseBody<List<ProductInquiryReplyResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/product-inquiries/reply/view/" +
+                    productInquiryNo, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
     }
 }

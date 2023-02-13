@@ -51,4 +51,11 @@ public class ProductInquiryServiceImpl implements ProductInquiryService {
 
         return productInquiryAdaptor.findProductInquiry(productInquiryNo);
     }
+
+    @Override
+    public PageResponse<ProductInquiryResponseDto> findProductInquiryListByMemberNo(String url,
+                                                                                    Long memberNo) {
+
+        return productInquiryAdaptor.findProductInquiryListByMemberNo(url, memberNo);
+    }
 }

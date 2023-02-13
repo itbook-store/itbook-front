@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.productinquiryreply.controller;
+package shop.itbook.itbookfront.productinquiryreply.controller.adminapi;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

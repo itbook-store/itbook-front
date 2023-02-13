@@ -55,7 +55,7 @@ function clickProductInquiry(eventTarget) {
             </button><br />
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="#" style="text-decoration: none; color:inherit;">
+                <a href="/product-inquiries/mypage/list" style="text-decoration: none; color:inherit;">
                     나의 상품문의 목록
                 </a>
             </button>

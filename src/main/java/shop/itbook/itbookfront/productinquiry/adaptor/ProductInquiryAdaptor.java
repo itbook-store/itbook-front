@@ -91,4 +91,14 @@ public class ProductInquiryAdaptor {
 
         return responseEntity.getBody().getResult();
     }
+
+    public PageResponse<ProductInquiryResponseDto> findProductInquiryListByMemberNo(String url, Long memberNo) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<ProductInquiryResponseDto>>> responseEntity =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + "/api/product-inquiries/list/" + memberNo + url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
+    }
 }
