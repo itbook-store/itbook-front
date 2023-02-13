@@ -95,9 +95,11 @@ public class OrderAsyncController {
      *
      * @param orderNo 구독 주문 첫 번째 시퀀스의 주문 번호
      */
-    @PostMapping("/subscription/payment-complete/{orderNo}")
+    @PostMapping("/subscription/payment-completion/{orderNo}")
     public void completeSubscriptionPayment(
         @PathVariable("orderNo") Long orderNo) {
+
+        log.info("제발유");
 
         orderService.completeOrderSubscription(orderNo);
     }

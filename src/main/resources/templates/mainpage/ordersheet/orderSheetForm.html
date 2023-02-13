@@ -273,8 +273,6 @@
 
         async function createOrderForPayment(orderAddRequestDto) {
 
-            let subscriptionStartOrderNo = 0;
-
             await fetch(`/async/orders/payment-start`, {
 
                 method: "POST",
@@ -286,9 +284,7 @@
                 .then(response => response.json())
                 .then(data => {
                     doPaymentProcessByCard(data);
-                    subscriptionStartOrderNo = data.orderNo;
                 })
-                .then(() => completeSubscriptionPayment(subscriptionStartOrderNo));
         }
 
         async function reOrderForPayment(orderAddRequestDto, orderNo) {
@@ -352,21 +348,6 @@
                         console.log(error.code)
                     }
                 })
-        }
-
-        async function completeSubscriptionPayment(orderNo) {
-            await fetch(`async/orders/subscription/payment-completion/${orderNo}`, {
-
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(response => {
-                    if(response.ok) {
-                        console.log("Complete Subscription");
-                    }
-                });
         }
 
         async function cancelOrderForPayment(orderNo) {

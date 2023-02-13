@@ -7,11 +7,6 @@
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
-
-    <style>
-
-    </style>
-
 </head>
 <body>
 <div layout:fragment="content">
@@ -201,6 +196,7 @@
     </section>
     <script src="/cart/js/cartAddProduct.js"></script>
     <script th:inline="javascript">
+
         $('#purchase').click(function (e) {
             e.preventDefault();
             $('#nonMemberModal').modal("show");
@@ -209,7 +205,17 @@
             const productNoList = [[${product.productNo}]];
             const productCntList = [1];
 
-            location.href = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;
+            let url = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;
+
+            let form = document.createElement('form');
+            form.setAttribute('method','post');
+            form.setAttribute('action', url);
+            document.characterSet = "utf-8";
+
+            document.body.append(form);
+
+            form.submit();
+
             $('#nonMemberModal').modal("hide");
         })
         $('#modalN').click(function () {
