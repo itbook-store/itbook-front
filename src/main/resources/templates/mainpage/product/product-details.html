@@ -169,15 +169,15 @@
                                         <table class="table user-list">
                                             <thead>
                                             <tr>
-                                                <th></th>
-                                                <th><span></span></th>
-                                                <th><span></span></th>
+                                                <th><span>사진</span></th>
+                                                <th><span>내용</span></th>
+                                                <th><span>별점</span></th>
                                                 <th><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td><img width="100px;" th:src="${review.image}"></td>
+                                                <td class="text-center"><img width="100px;" th:src="${review.image}"></td>
                                                 <td><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
                                                 <td>
@@ -221,7 +221,6 @@
                                                 <th class="text-right"><span>작성자</span></th>
                                                 <th><span></span></th>
                                                 <th><span></span></th>
-
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -249,8 +248,11 @@
                                                         <button th:if="${memberIsWriter} == true and ${productInquiry.isReplied} == false" class="btn btn-secondary"
                                                                 th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
                                                     </div>
+                                                    <div sec:authorize="hasAuthority('ADMIN')">
+                                                        <button th:if="${productInquiry.isReplied} == false" class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
+                                                    </div>
                                                 </td>
-
                                             </tr>
                                             </tbody>
                                         </table>
@@ -260,7 +262,7 @@
                         </div>
                     </div>
                 </div>
-                <th:block th:include="component/reviewPageFooter"></th:block>
+                <th:block th:include="component/productInquiryPageFooter"></th:block>
             </div>
         </div>
     </section>

@@ -174,7 +174,7 @@ public class ProductServiceController {
             double avgStarPoint = reviewService.calculateStarAvg(reviewPageResponse);
 
             model.addAttribute("reviewPageResponse", reviewPageResponse);
-            model.addAttribute("paginationUrl", "/products/" + productNo);
+            model.addAttribute("reviewPaginationUrl", "/products/" + productNo);
 
             model.addAttribute("avgStarPoint", avgStarPoint);
 
@@ -189,7 +189,7 @@ public class ProductServiceController {
                     productNo);
 
             model.addAttribute("productInquiryPageResponse", productInquiryResponse);
-            model.addAttribute("paginationUrl", "/products/" + productNo);
+            model.addAttribute("productPaginationUrl", "/products/" + productNo);
 
 
         } catch (ProductNotFoundException e) {

@@ -116,4 +116,6 @@ public class ProductInquiryController {
 
         return "mypage/productinquiry/productInquiry-details-writer";
     }
+
+
 }
