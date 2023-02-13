@@ -1,8 +1,5 @@
 /* [spinnerStart 시작 이벤트 호출] */
-function spinnerStart(){
-    console.log("");
-    console.log("[spinnerStart] : " + "[start]");
-    console.log("");
+function spinnerStart() {
 
     // [로딩 부모 컨테이너 동적 생성]
     var createLayDiv = document.createElement("div");
@@ -32,7 +29,7 @@ function spinnerStart(){
         radius: 42, // 내부 원의 반지름 [The radius of the inner circle]
         scale: 0.85, // 스피너의 전체 크기 지정 [Scales overall size of the spinner]
         corners: 1, // 모서리 라운드 [Corner roundness (0..1)]
-        color: '#003399', // 로딩 CSS 색상 [CSS color or array of colors]
+        color: '#6868ab', // 로딩 CSS 색상 [CSS color or array of colors]
         fadeColor: 'transparent', // 로딩 CSS 색상 [CSS color or array of colors]
         opacity: 0.05, // 선 불투명도 [Opacity of the lines]
         rotate: 0, // 회전 오프셋 각도 [The rotation offset]
@@ -50,19 +47,13 @@ function spinnerStart(){
 };
 
 
-
-
 /* [spinnerStop 중지 이벤트 호출] */
-function spinnerStop(){
-    console.log("");
-    console.log("[spinnerStop] : " + "[start]");
-    console.log("");
+function spinnerStop() {
     try {
         // [로딩 부모 컨테이너 삭제 실시]
         var tagId = document.getElementById("spinnerLay1000");
         document.body.removeChild(tagId); //body에서 삭제 실시
-    }
-    catch (exception) {
+    } catch (exception) {
         // console.error("catch : " + "not find spinnerLay1000");
     }
 
@@ -164,77 +155,84 @@ function checkCategoryCount() {
     console.log("cnt: " + cnt);
 
     if (cnt < 1) {
-        alert("카테고리는 최소 1개 지정해야만 합니다.");
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
         return false;
     } else
         return true;
 }
 
+
 async function showSearchResults(event) {
 
     event.preventDefault();
 
+    let numberExpression = /[0-9]/;
     let isbn = document.getElementById('isbn').value;
     console.log(isbn);
 
-    let isExistsInDb = false;
-    let isExistsInAladin = false;
+    if (!numberExpression.test(isbn)) {
+        alert("isbn 입력 형식이 올바르지 않습니다. 다시 입력해주세요!"); //false
+    } else {
 
-    spinnerStart();
+        let isExistsInDb = false;
+        let isExistsInAladin = false;
 
-    await fetch(`/async/books/exist-db?isbn=${isbn}`, {
-        method: "GET"
-    })
-        .then(response => response.json())
-        .then(data => {
-            isExistsInDb = data.isExists;
-        });
+        spinnerStart();
 
-    await fetch(`/async/books/exist-aladin?isbn=${isbn}`, {
-        method: "GET"
-    })
-        .then(response => response.json())
-        .then(data => {
-            isExistsInAladin = data.isExists;
-        });
-
-    document.getElementById('search-results').style.display = "block";
-
-    // 알라딘에 존재하고 db에 없으면 등록 가능
-    if (isExistsInAladin && !isExistsInDb) {
-        let bookTitle;
-        await fetch(`/async/books?isbn=${isbn}`, {
+        await fetch(`/async/books/exist-db?isbn=${isbn}`, {
             method: "GET"
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('productName').value = data.title;
-                document.getElementById('authorName').value = data.author;
-                document.getElementById('simpleDescription').value = unEntity(data.description);
-                document.getElementById('fixedPrice').value = data.priceStandard;
-                document.getElementById('publisherName').value = data.publisher;
-                document.getElementById('pageCount').value = data.subInfo.itemPage;
-                console.log(data.subInfo.itemPage);
-                document.getElementById('bookCreatedAt').value = data.pubDate;
-
+                isExistsInDb = data.isExists;
             });
-        document.getElementById('isbnFailed').style.display = 'none';
-        document.getElementById('isbnSuccessful').style.display = 'block';
-        document.getElementById('confirmBook').disabled = true;
-        document.getElementById('isbn').readOnly = true;
-        document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
-    } else { // 등록 실패
-        document.getElementById('isbn').value = '';
-        document.getElementById('isbnFailed').style.display = 'block';
-        document.getElementById('isbnSuccessful').style.display = 'none';
-        document.getElementById('confirmBook').disabled = false;
-        document.getElementById('isbn').readOnly = false;
-        document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
+
+        await fetch(`/async/books/exist-aladin?isbn=${isbn}`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                isExistsInAladin = data.isExists;
+            });
+
+        document.getElementById('search-results').style.display = "block";
+
+        // 알라딘에 존재하고 db에 없으면 등록 가능
+        if (isExistsInAladin && !isExistsInDb) {
+            let bookTitle;
+            await fetch(`/async/books?isbn=${isbn}`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('productName').value = data.title;
+                    document.getElementById('authorName').value = data.author;
+                    document.getElementById('simpleDescription').value = unEntity(data.description);
+                    document.getElementById('fixedPrice').value = data.priceStandard;
+                    document.getElementById('publisherName').value = data.publisher;
+                    document.getElementById('pageCount').value = data.subInfo.itemPage;
+                    console.log(data.subInfo.itemPage);
+                    document.getElementById('bookCreatedAt').value = data.pubDate;
+
+                });
+            document.getElementById('isbnFailed').style.display = 'none';
+            document.getElementById('isbnSuccessful').style.display = 'block';
+            document.getElementById('confirmBook').disabled = true;
+            document.getElementById('isbn').readOnly = true;
+            document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
+        } else { // 등록 실패
+            document.getElementById('isbn').value = '';
+            document.getElementById('isbnFailed').style.display = 'block';
+            document.getElementById('isbnSuccessful').style.display = 'none';
+            document.getElementById('confirmBook').disabled = false;
+            document.getElementById('isbn').readOnly = false;
+            document.getElementById('isbnRetypeBtn').style.visibility = 'visible';
+        }
+        spinnerStop();
     }
-    spinnerStop();
 }
 
-function unEntity(str){
+function unEntity(str) {
     return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 }
 
@@ -253,15 +251,6 @@ function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
     document.getElementById('publisherName').value = '';
     document.getElementById('pageCount').value = '';
     document.getElementById('bookCreatedAt').value = '';
-}
-
-function showBookForm(mainCategoryName) {
-    let bookFormDiv = document.getElementById("form-book");
-    if (mainCategoryName.includes("도서")) {
-        bookFormDiv.style.display = "block";
-    } else {
-        bookFormDiv.style.display = "none";
-    }
 }
 
 function addBookSubmit() {

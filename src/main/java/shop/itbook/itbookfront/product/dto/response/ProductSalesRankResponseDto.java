@@ -1,4 +1,4 @@
-package shop.itbook.itbookfront.payment.dto.response;
+package shop.itbook.itbookfront.product.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,12 @@ import lombok.Setter;
  * @author 이하늬
  * @since 1.0
  */
+@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class OrderNoResponseDto {
-    Long orderNo;
+public class ProductSalesRankResponseDto {
+    Long productNo;
+    String productName;
+    Integer count;
 }

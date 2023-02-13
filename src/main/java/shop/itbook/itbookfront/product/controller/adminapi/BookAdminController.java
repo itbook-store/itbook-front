@@ -8,11 +8,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
-import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.request.BookRequestDto;
-import shop.itbook.itbookfront.product.dto.request.ProductRequestDto;
-import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
+import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
+import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
 import shop.itbook.itbookfront.product.exception.InvalidInputException;
+import shop.itbook.itbookfront.product.service.BookService;
+import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
@@ -42,19 +39,20 @@ import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 @Slf4j
 @RequestMapping("/admin/products/books")
 public class BookAdminController {
-    private final ProductServiceImpl productService;
+    private final BookService bookService;
+    private final ProductService productService;
     private final CategoryService categoryService;
     private static final String PRODUCT_REDIRECT_URL = "redirect:/admin/products";
 
 
     @PostMapping("/add")
-    public String addBook(@ModelAttribute @Valid BookRequestDto requestDto,
+    public String addBook(@ModelAttribute @Valid BookAddRequestDto requestDto,
                           @RequestPart(value = "fileThumbnails") MultipartFile thumbnails,
                           @RequestPart(value = "fileEbook", required = false)
                           MultipartFile ebook, RedirectAttributes redirectAttributes) {
 
         try {
-            productService.addBook(thumbnails, ebook, requestDto);
+            bookService.addBook(thumbnails, ebook, requestDto);
         } catch (InvalidInputException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
@@ -74,6 +72,47 @@ public class BookAdminController {
 
         model.addAttribute("mainCategoryList", categoryList);
         return "adminpage/product/book-add";
+    }
+
+    @PostMapping("/{productNo}/modify")
+    public String modifyBook(@ModelAttribute @Valid BookModifyRequestDto requestDto,
+                             @PathVariable Long productNo,
+                             @RequestPart(value = "fileThumbnails", required = false)
+                             MultipartFile thumbnails,
+                             @RequestPart(value = "fileEbook", required = false)
+                             MultipartFile ebook, RedirectAttributes redirectAttributes) {
+
+        bookService.modifyBook(productNo, thumbnails, ebook, requestDto);
+
+        return PRODUCT_REDIRECT_URL;
+    }
+
+
+    @GetMapping("/{productNo}/modify")
+    public String getModifyBookForm(Model model, @PathVariable Long productNo) {
+        setUpToModify(model, productNo, productService, categoryService);
+        return "adminpage/product/book-modify";
+    }
+
+    private void setUpToModify(Model model,
+                               @PathVariable Long productNo,
+                               ProductService productService,
+                               CategoryService categoryService) {
+        model.addAttribute("product", productService.getProduct(productNo));
+
+        List<CategoryDetailsResponseDto> categoryListByProductNo =
+            productService.getCategoryList(
+                String.format("/api/admin/products?page=%d&size=%d&productNo=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, productNo)).getContent();
+        model.addAttribute("productCategoryList", categoryListByProductNo);
+
+        model.addAttribute("mainCategoryList",
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent());
+
+        model.addAttribute("parentCategoryName",
+            categoryListByProductNo.get(0).getParentCategoryName());
     }
 
 }
