@@ -5,12 +5,12 @@
       layout:decorate="~{layout/mypage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>작성가능한 상품문의 목록</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <h2>작성가능한 리뷰 목록</h2>
+        <h2>작성가능한 상품문의 목록</h2>
         <hr>
         <div class="container bootstrap snippets bootdey">
             <div class="row">
@@ -29,14 +29,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="unwrittenReviewOrderProduct : ${pageResponse.getContent()}">
-                                        <td><span th:text="${unwrittenReviewOrderProduct.orderProductNo}"></span></td>
-                                        <td><img width="100px;" th:src="${unwrittenReviewOrderProduct.thumbnailUrl}"></td>
-                                        <td><span th:text="${unwrittenReviewOrderProduct.name}" th:onclick="|location.href='@{/products/{productNo}(productNo=${unwrittenReviewOrderProduct.productNo})}'|"></span></td>
-                                        <td><span th:text="${#temporals.format(unwrittenReviewOrderProduct.orderCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span></td>
+                                    <tr th:each="writableOrderProduct : ${pageResponse.getContent()}">
+                                        <td><span th:text="${writableOrderProduct.orderProductNo}"></span></td>
+                                        <td><img width="100px;" th:src="${writableOrderProduct.thumbnailUrl}"></td>
+                                        <td><span th:text="${writableOrderProduct.name}" th:onclick="|location.href='@{/products/{productNo}(productNo=${writableOrderProduct.productNo})}'|"></span></td>
+                                        <td><span th:text="${#temporals.format(writableOrderProduct.orderCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span></td>
                                         <td>
                                             <button class="btn btn-light"
-                                                    th:onclick="|location.href= '@{/review/mypage/{orderProductNo}/{productNo}/write(orderProductNo = ${unwrittenReviewOrderProduct.orderProductNo}, productNo=${unwrittenReviewOrderProduct.productNo})}'|">리뷰작성</button>
+                                                    th:onclick="|location.href= '@{/product-inquiries/{productNo}/add(productNo = ${writableOrderProduct.productNo})}'|">상품문의 작성</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -47,7 +47,6 @@
                 </div>
             </div>
         </div>
-        <th:block th:include="component/pageFooter"></th:block>
     </div>
 </div>
 </body>
