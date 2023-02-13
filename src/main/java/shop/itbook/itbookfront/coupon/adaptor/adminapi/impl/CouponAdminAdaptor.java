@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.coupon.dto.request.CategoryCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.CouponInputRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.OrderTotalCouponRequestDto;
 import shop.itbook.itbookfront.coupon.dto.request.ProductCouponRequestDto;
+import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.CouponNoResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
@@ -35,6 +36,7 @@ public class CouponAdminAdaptor {
     private static final String ORDER_TOTAL_COUPON_API_URL = "/api/admin/order-total-coupons";
     private static final String CATEGORY_COUPON_API_URL = "/api/admin/category-coupons";
     private static final String PRODUCT_COUPON_API_URL = "/api/admin/product-coupons";
+    private static final String MEMBERSHIP_COUPON_API_URL = "/api/admin/membership-coupons";
 
     public Long addCoupon(CouponInputRequestDto couponInputRequestDto){
         HttpHeaders headers = new HttpHeaders();
@@ -95,9 +97,21 @@ public class CouponAdminAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
-    public PageResponse<CouponListResponseDto> findCouponList(String couponListUrl){
+    public Long addMembershipCoupon(Long couponNo, String membershipGrade){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<CommonResponseBody<PageResponse<CouponListResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange
+            = restTemplate.exchange(gatewayConfig.getGatewayServer() + MEMBERSHIP_COUPON_API_URL+
+                String.format("/%d/add?membershipGrade=%s",couponNo,membershipGrade),
+            HttpMethod.POST, null, new ParameterizedTypeReference<>(){
+            });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
+    }
+    public PageResponse<AdminCouponListResponseDto> findCouponList(String couponListUrl){
+
+        ResponseEntity<CommonResponseBody<PageResponse<AdminCouponListResponseDto>>> exchange =
         restTemplate.exchange(gatewayConfig.getGatewayServer() + couponListUrl,
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {

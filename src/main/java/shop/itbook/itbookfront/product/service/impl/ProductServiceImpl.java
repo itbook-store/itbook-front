@@ -17,6 +17,7 @@ import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductSalesRankResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.service.ProductService;
 
@@ -72,6 +73,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
         return productAdaptor.findProductTypeList(url);
+    }
+
+    @Override
+    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
+        String sortingCriteria) {
+        return productAdaptor.findSalesRankProductList(sortingCriteria);
     }
 
     @Override
