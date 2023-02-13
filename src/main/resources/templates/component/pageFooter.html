@@ -13,20 +13,13 @@
         }
 
         .pagination > li > a, .pagination > li > span {
-            background-color: #ccc;
+            background-color: #6868ab;
             padding: 3px 9px;
             color: #fff;
             border: 0px;
             text-decoration-line: none;
         }
 
-        .pagination > li > a {
-            margin-right: 5px;
-        }
-
-        .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-            background-color: #6868ab;
-        }
     </style>
 </head>
 
@@ -59,20 +52,24 @@
 
 
 <th:block th:if="${!#lists.isEmpty(pageResponse.content)}">
-    <div style="margin-left: 35%">
+    <nav class="row gallery-bottom">
+        <ul class="pagination">
 
-        <button type="button" style="margin-right: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=0)}'|"> << </button>
-        <button type="button" style="margin-right: 5px" th:if="${pageResponse.previous}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number - 1})}'|"> <
-        </button>
+            <li th:if="${true}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=0)}"><span><<</span></a>
+            </li>
+            <li th:if="${pageResponse.previous}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.number - 1})}"><span><</span></a>
+            </li>
 
-        <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"></span>
+            <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"></span>
 
-        <button type="button" style="margin-left: 5px" th:if="${pageResponse.next}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number + 1})}'|"> >
-        </button>
-        <button type="button" style="margin-left: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.totalPages - 1})}'|"> >></button>
-    </div>
+            <li th:if="${pageResponse.next}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.number + 1})}"><span>></span></a>
+            </li>
+            <li th:if="${true}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.totalPages - 1})}"><span>>></span></a>
+            </li>
+        </ul>
+    </nav>
 </th:block>

@@ -22,7 +22,6 @@ import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductNoResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.exception.InvalidInputException;
-import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
  * @author 이하늬
@@ -51,10 +50,18 @@ public class BookAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> response = restTemplate.exchange(
-            gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
-            HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
-            });
+        try {
+            restTemplate.exchange(
+                gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
+                HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
+                });
+        } catch (BadRequestException e) {
+            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
+                throw new InvalidInputException();
+            }
+        }
+
+
     }
 
     public Long addBook(
@@ -92,9 +99,6 @@ public class BookAdaptor {
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
-
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 
@@ -104,9 +108,6 @@ public class BookAdaptor {
                 gateway.getGatewayServer() + url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(response.getStatusCode(),
-            Objects.requireNonNull(response.getBody()).getHeader().getResultMessage());
 
         return Objects.requireNonNull(response.getBody()).getResult();
     }

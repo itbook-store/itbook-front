@@ -21,69 +21,90 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <h2>회원 등급별 회원 통계</h2>
+        <h2>상품 판매현황</h2>
         <hr>
-        일반 : <span th:text="${count.getCommonCnt()}"></span>명<br>
-        화이트 : <span th:text="${count.getWhiteCnt()}"></span>명<br>
-        실버 : <span th:text="${count.getSilverCnt()}"></span>명<br>
-        골드 : <span th:text="${count.getGoldCnt()}"></span>명<br>
-        플래티넘 : <span th:text="${count.getPlatinumCnt()}"></span>명<br><br>
-
-        <input type="hidden" id="commonCnt" th:value="${count.getCommonCnt()}">
-        <input type="hidden" id="whiteCnt" th:value="${count.getWhiteCnt()}">
-        <input type="hidden" id="silverCnt" th:value="${count.getSilverCnt()}">
-        <input type="hidden" id="goldCnt" th:value="${count.getGoldCnt()}">
-        <input type="hidden" id="platinumCnt" th:value="${count.getPlatinumCnt()}">
 
         <div class="container">
-            <div class="row my-3">
-                <div class="col-12">
-                    <h4>회원 등급별 통계 차트</h4>
+            <div class="row my-2">
+                <div class="col-lg-5">
+                    <div class="card bg-light mb-3">
+                        <div class="card-body">
+                            <canvas id="productStatisticsCanceled"></canvas>
+                        </div>
+                        <div class="card-footer text-center"><span>취소(건) - 환불 완료, 주문 취소</span>
+                            <a href="/admin/products/sales-rank?sortingCriteria=취소건"
+                               class="btn btn-sm btn-dark">상세보기</a></div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card bg-light mb-3">
+                        <div class="card-body">
+                            <canvas id="productStatisticsCompleted"></canvas>
+                        </div>
+                        <div class="card-footer text-center"><span>완료(건) - 구매 확정</span>
+                            <a href="/admin/products/sales-rank?sortingCriteria=완료건"
+                               class="btn btn-sm btn-dark">상세보기</a></div>
+                    </div>
                 </div>
             </div>
             <div class="row my-2">
-                <div class="col-lg-6">
-                    <div class="card">
+                <div class="col-lg-5">
+                    <div class="card bg-light mb-3">
                         <div class="card-body">
-                            <canvas id="membershipStatistics"></canvas>
+                            <canvas id="productStatisticsTotalAmount"></canvas>
                         </div>
+                        <div class="card-footer text-center"><span>매출 합계 - 구매 확정</span>
+                            <a href="/admin/products/sales-rank?sortingCriteria=매출합계"
+                               class="btn btn-sm btn-dark">상세보기</a></div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card bg-light mb-3">
+                        <div class="card-body">
+                            <canvas id="productStatisticsSellingPrice"></canvas>
+                        </div>
+                        <div class="card-footer text-center"><span>판매 금액 - 구매 확정</span>
+                            <a href="/admin/products/sales-rank?sortingCriteria=판매금액"
+                               class="btn btn-sm btn-dark">상세보기</a></div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
+    <script>
 
-            let ctx = document.getElementById('membershipStatistics');
+        drawRankList();
 
-            let commonCnt = document.getElementById('commonCnt').value * 1;
-            let whiteCnt = document.getElementById('whiteCnt').value * 1;
-            let silverCnt = document.getElementById('silverCnt').value * 1;
-            let goldCnt = document.getElementById('goldCnt').value * 1;
-            let platinumCnt = document.getElementById('platinumCnt').value * 1;
+        async function drawRankList() {
 
-            new Chart(ctx, {
-                type: 'bar',
+            let canceledProductName = [];
+            let canceledProductCount = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=취소건`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (canceledProductName.length >= 5) {
+                            return true
+                        }
+                        canceledProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        canceledProductCount.push(productList.count);
+                    });
+                });
+
+            let ctx1 = document.getElementById('productStatisticsCanceled');
+
+            new Chart(ctx1, {
+                type: 'horizontalBar',
                 data: {
-                    labels: ['일반', '화이트', '실버', '골드', '플래티넘'],
+                    labels: canceledProductName,
                     datasets: [{
-                        label: '회원 등급별 회원 수',
-                        data: [commonCnt, whiteCnt, silverCnt, goldCnt, platinumCnt],
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
+                        label: '취소(건) 수',
+                        data: canceledProductCount,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
                     }]
                 },
                 options: {
@@ -97,8 +118,112 @@
                 }
             });
 
-        </script>
-    </div>
+            let completedProductName = [];
+            let completedProductCount = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=완료건`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (canceledProductName.length >= 5) {
+                            return true
+                        }
+                        completedProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        completedProductCount.push(productList.count);
+                    });
+                });
+
+
+            let ctx2 = document.getElementById('productStatisticsCompleted');
+
+            new Chart(ctx2, {
+                type: 'horizontalBar',
+                data: {
+                    labels: completedProductName,
+                    datasets: [{
+                        label: '완료(건) 수',
+                        data: completedProductCount,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            let totalAmountProductName = [];
+            let totalAmountPrice = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=매출합계`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (totalAmountProductName.length >= 5) {
+                            return true
+                        }
+                        totalAmountProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        totalAmountPrice.push(productList.price);
+                    });
+                });
+
+            let ctx3 = document.getElementById('productStatisticsTotalAmount');
+
+            new Chart(ctx3, {
+                type: 'doughnut',
+                data: {
+                    labels: totalAmountProductName,
+                    datasets: [{
+                        label: '매출합계',
+                        data: totalAmountPrice,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                }
+            });
+
+            let SellingPriceProductName = [];
+            let SellingPricePrice = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=판매금액`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (SellingPriceProductName.length >= 5) {
+                            return true
+                        }
+                        SellingPriceProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        SellingPricePrice.push(productList.price);
+                    });
+                });
+
+            let ctx4 = document.getElementById('productStatisticsSellingPrice');
+
+            new Chart(ctx4, {
+                type: 'doughnut',
+                data: {
+                    labels: SellingPriceProductName,
+                    datasets: [{
+                        label: '판매금액',
+                        data: SellingPricePrice,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                }
+            });
+        }
+
+    </script>
+</div>
 </div>
 </body>
 </html>

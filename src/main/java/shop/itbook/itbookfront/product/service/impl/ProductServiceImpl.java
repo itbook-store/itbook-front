@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
@@ -76,9 +78,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
-        String sortingCriteria) {
-        return productAdaptor.findSalesRankProductList(sortingCriteria);
+    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList
+        (@PageableDefault Pageable pageable, String sortingCriteria) {
+        return productAdaptor.findSalesRankProductList(pageable, sortingCriteria);
     }
 
     @Override
