@@ -46,9 +46,6 @@ function sendPoint() {
     let recentlyPoint = document.getElementById('recentlyPoint').innerText * 1;
     let inputPoint = document.getElementById('giftPoint').value * 1;
 
-    console.log(recentlyPoint);
-    console.log(inputPoint)
-
     if(document.getElementById('findBtn').disabled == false) {
         alert("아이디 찾기 버튼을 눌러 유효한 아이디를 입력해주세요.")
         return false;

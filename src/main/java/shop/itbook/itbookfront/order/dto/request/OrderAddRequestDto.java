@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -17,8 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 public class OrderAddRequestDto {
 
-    private List<Long> productNoList;
-    private List<Integer> productCntList;
+    private List<ProductDetailsDto> productDetailsDtoList;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate selectedDeliveryDate;
     private String recipientName;
@@ -26,28 +24,9 @@ public class OrderAddRequestDto {
     private Integer postcode;
     private String roadNameAddress;
     private String recipientAddressDetails;
-
-    @JsonIgnore
-    private String orderId;
-    @JsonIgnore
-    private String orderName;
-    @JsonIgnore
-    private Long amount;
-
-    @Override
-    public String toString() {
-        return "OrderAddRequestDto{" +
-            "productNoList=" + productNoList +
-            ", productCntList=" + productCntList +
-            ", selectedDeliveryDate=" + selectedDeliveryDate +
-            ", recipientName='" + recipientName + '\'' +
-            ", recipientPhoneNumber='" + recipientPhoneNumber + '\'' +
-            ", postcode=" + postcode +
-            ", roadNameAddress='" + roadNameAddress + '\'' +
-            ", recipientAddressDetails='" + recipientAddressDetails + '\'' +
-            ", orderId='" + orderId + '\'' +
-            ", orderName='" + orderName + '\'' +
-            ", amount=" + amount +
-            '}';
-    }
+    private Long deliveryFee;
+    private Long orderTotalCouponNo;
+    private Long decreasePoint;
+    private Boolean isSubscription;
+    private Integer subscriptionPeriod;
 }

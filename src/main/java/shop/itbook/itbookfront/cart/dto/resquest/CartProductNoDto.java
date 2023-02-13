@@ -1,18 +1,17 @@
-package shop.itbook.itbookfront.payment.dto.response;
+package shop.itbook.itbookfront.cart.dto.resquest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
- * @author 이하늬
+ * @author 강명관
  * @since 1.0
  */
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderNoResponseDto {
-    Long orderNo;
+public class CartProductNoDto {
+
+    private Object productNo;
 }

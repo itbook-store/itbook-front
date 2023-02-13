@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +15,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.dto.request.MemberRegisterWriterRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberSearchRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
 import shop.itbook.itbookfront.member.dto.response.MemberAdminResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 
 /**
  * @author 노수연
@@ -35,6 +40,8 @@ import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 public class MemberAdminController {
 
     private final MemberAdminService memberAdminService;
+
+    private final MemberService memberService;
 
     @GetMapping()
     public String memberList(Model model, @PageableDefault Pageable pageable,
@@ -49,6 +56,17 @@ public class MemberAdminController {
         model.addAttribute("paginationUrl", "/admin/members");
 
         return "adminpage/member/admin-member-list";
+    }
+
+    @GetMapping("/writer")
+    public String writerMemberList(Model model, @PageableDefault Pageable pageable) {
+        PageResponse<MemberAdminResponseDto> pageResponse = memberAdminService.findWriterMembers(
+            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/admin/members/block");
+
+        return "adminpage/member/admin-member-writer-list";
     }
 
     @GetMapping("/block")
@@ -157,7 +175,7 @@ public class MemberAdminController {
         return "adminpage/member/admin-member-list";
     }
 
-    @GetMapping("withdraw/search")
+    @GetMapping("/withdraw/search")
     public String withdrawMemberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                        Model model, @PageableDefault Pageable pageable) {
 
@@ -179,14 +197,15 @@ public class MemberAdminController {
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            "/admin/members/withdraw/search?searchRequirement=" + memberSearchRequestDto.getSearchRequirement() +
+            "/admin/members/withdraw/search?searchRequirement=" +
+                memberSearchRequestDto.getSearchRequirement() +
                 "&searchWord=" + memberSearchRequestDto.getSearchWord());
 
 
         return "adminpage/member/admin-member-withdraw-list";
     }
 
-    @GetMapping("block/search")
+    @GetMapping("/block/search")
     public String blockMemberSearch(@Valid MemberSearchRequestDto memberSearchRequestDto,
                                     Model model, @PageableDefault Pageable pageable) {
 
@@ -208,7 +227,8 @@ public class MemberAdminController {
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl",
-            "/admin/members/block/search?searchRequirement=" + memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
+            "/admin/members/block/search?searchRequirement=" +
+                memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
                 memberSearchRequestDto.getSearchWord());
 
         return "adminpage/member/admin-member-block-list";
@@ -234,5 +254,28 @@ public class MemberAdminController {
         model.addAttribute("count", count);
 
         return "adminpage/member/admin-member-membership-statistics";
+    }
+
+    @GetMapping("/register/writer")
+    public String memberRegisterWriterForm(Model model, @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
+
+        MemberRegisterWriterRequestDto memberRegisterWriterRequestDto = new MemberRegisterWriterRequestDto();
+
+        model.addAttribute("memberId", userDetailsDto.getMemberId());
+        model.addAttribute("memberRegisterWriterRequestDto", memberRegisterWriterRequestDto);
+
+        return "adminpage/member/admin-member-writer-register";
+    }
+
+    @PostMapping("/writer/register")
+    public String memberRegisterWriter(
+        @Valid @ModelAttribute MemberRegisterWriterRequestDto memberRegisterWriterRequestDto) {
+
+        MemberInfoResponseDto member = memberService.findMemberByMemberId(memberRegisterWriterRequestDto.getMemberId());
+        memberRegisterWriterRequestDto.setMemberNo(member.getMemberNo());
+
+        memberAdminService.modifyMemberWriter(memberRegisterWriterRequestDto);
+
+        return "redirect:/admin/members/writer";
     }
 }

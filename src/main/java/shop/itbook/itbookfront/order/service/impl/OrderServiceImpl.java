@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
@@ -59,17 +60,44 @@ public class OrderServiceImpl implements OrderService {
 
         HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
 
-        return orderAdaptor.addOrderOfMember(uriComponents.toUri(), http);
+        return orderAdaptor.addOrder(uriComponents.toUri(), http);
     }
 
     @Override
-    public void completeOrderPayOfMember(Long orderNo) {
+    public OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto, Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
-            .path(String.format("/api/orders/pay-completion/%d", orderNo))
+            .path(String.format("/api/orders/%d", orderNo))
             .build();
 
-        orderAdaptor.completeOrderPayOfMember(uriComponents.toUri());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
+
+        return orderAdaptor.addOrder(uriComponents.toUri(), http);
+    }
+
+    @Override
+    public void cancelOrder(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/orders/cancel/%d", orderNo))
+            .build();
+
+        orderAdaptor.cancelOrder(uriComponents.toUri());
+    }
+
+    @Override
+    public OrderDetailsResponseDto findOrderDetails(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/orders/details/%d", orderNo))
+            .build();
+
+        return orderAdaptor.findOrderDetails(uriComponents.toUri());
     }
 }

@@ -22,6 +22,7 @@ import shop.itbook.itbookfront.member.dto.response.MemberBlockInfoResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
 import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
+import shop.itbook.itbookfront.signin.dto.response.MemberBooleanResponseDto;
 import shop.itbook.itbookfront.util.ResponseChecker;
 
 /**
@@ -46,6 +47,23 @@ public class MemberAdminAdaptor {
         ResponseEntity<CommonResponseBody<PageResponse<MemberAdminResponseDto>>> responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/admin/members" + url, HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
+
+    public PageResponse<MemberAdminResponseDto> getWriterMembers(String url) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<CommonResponseBody<PageResponse<MemberAdminResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/members/writer/list" + url, HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<>() {
                 }
@@ -272,5 +290,36 @@ public class MemberAdminAdaptor {
             responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
+    }
+
+    public MemberBooleanResponseDto nameExists(String memberId, String name) {
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/members/register-check/memberId/" + memberId +"/name/" + name,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return getMemberBooleanResponseDto(responseEntity);
+    }
+
+    public MemberBooleanResponseDto getMemberBooleanResponseDto(
+        ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity) {
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
+
+        return responseEntity.getBody().getResult();
+    }
+
+    public void modifyMemberWriter(Long memberNo) {
+        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/admin/members/modify/writer/" + memberNo, HttpMethod.PUT,
+            null, new ParameterizedTypeReference<>() {
+            }
+        );
+
+        ResponseChecker.checkFail(responseEntity.getStatusCode(),
+            responseEntity.getBody().getHeader().getResultMessage());
     }
 }

@@ -169,12 +169,8 @@ public class MemberController {
         @Valid MemberPointSendRequestDto memberPointSendRequestDto
         ) {
 
-        log.info("memberPointSendRequestDto = {}", memberPointSendRequestDto);
         Long receiveMemberNo = memberService.findMemberByMemberId(memberPointSendRequestDto.getReceiveMemberId()).getMemberNo();
         memberPointSendRequestDto.setReceiveMemberNo(receiveMemberNo);
-
-        log.info("!receiveMemberNo = {}", receiveMemberNo);
-        log.info("!memberPointSendRequestDto = {}", memberPointSendRequestDto);
 
         memberService.giftPointMember(memberPointSendRequestDto);
 

@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.cart.adaptor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
+import shop.itbook.itbookfront.cart.dto.response.CartResponseDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
@@ -41,53 +45,12 @@ public class CartAdaptor {
     private static final String PRODUCT_LIST_ANONYMOUS_API = "/api/products/";
 
 
-    public boolean addProductInCart(CartMemberRequestDto cartMemberRequestDto) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + BASE_API_URL,
-                HttpMethod.POST,
-                new HttpEntity<>(cartMemberRequestDto, headers),
-                new ParameterizedTypeReference<>() {
-                }
-            );
-
-        SuccessfulResponseDto result = Objects.requireNonNull(exchange.getBody()).getResult();
-
-        return result.getIsSuccessful();
-    }
-
-    public List<ProductDetailsResponseDto> getProductListAnonymous(String productNoList) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        ResponseEntity<CommonResponseBody<PageResponse<ProductDetailsResponseDto>>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + PRODUCT_LIST_ANONYMOUS_API + productNoList +"?page=0&size=100",
-            HttpMethod.GET,
-            new HttpEntity<>(productNoList, headers),
-            new ParameterizedTypeReference<>() {
-            }
-        );
-
-        Objects.requireNonNull(exchange.getBody());
-
-        List<ProductDetailsResponseDto> content = Objects.requireNonNull(exchange.getBody().getResult()).getContent();
-        content.stream().forEach(dto -> dto.setSelledPrice(
-            (long) (dto.getFixedPrice() * ((100 - dto.getDiscountPercent()) * 0.01))));
-
-        return Objects.requireNonNull(exchange.getBody()).getResult().getContent();
-    }
-
-    public List<CartProductDetailsResponseDto> getProductListMember(CartMemberNoRequestDto cartMemberNoRequestDto) {
+    public List<CartProductDetailsResponseDto> getProductListMember(Long memberNo) {
 
         ResponseEntity<CommonResponseBody<List<CartProductDetailsResponseDto>>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + BASE_API_URL +"/" + cartMemberNoRequestDto.getMemberNo(),
+            gatewayConfig.getGatewayServer() + BASE_API_URL +"/" + memberNo,
             HttpMethod.GET,
-            new HttpEntity<>(cartMemberNoRequestDto),
+            null,
             new ParameterizedTypeReference<>() {
             }
         );
@@ -103,44 +66,43 @@ public class CartAdaptor {
         return result;
     }
 
-    public void deleteProductInCart(CartMemberRequestDto cartMemberRequestDto) {
+    public CartProductDetailsResponseDto addCartProduct(Integer productNo) {
+
+        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> exchange = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/admin/products/" + productNo,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        ProductDetailsResponseDto result = Objects.requireNonNull(exchange.getBody()).getResult();
+
+        return new CartProductDetailsResponseDto(1, result);
+
+    }
+
+    public void saveAllCart(List<CartMemberRequestDto> redisHashMapList) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + BASE_API_URL,
-            HttpMethod.DELETE,
-            new HttpEntity<>(cartMemberRequestDto, headers),
-            new ParameterizedTypeReference<>() {
-            }
-        );
+        try {
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + BASE_API_URL +"/save-all",
+                HttpMethod.POST,
+                new HttpEntity<>(redisHashMapList, headers),
+                new ParameterizedTypeReference<>() {
+                }
+            );
+        } catch (BadRequestException e) {
+            log.error("BadRequestException {}", e.getMessage());
+        } catch (RestApiServerException e) {
+            log.error("RestApiServerException {}", e.getMessage());
+        }
+
+
     }
 
-    public void deleteAllProductInCart(CartMemberNoRequestDto cartMemberNoRequestDto) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + BASE_API_URL + "/" + cartMemberNoRequestDto.getMemberNo(),
-            HttpMethod.DELETE,
-            new HttpEntity<>(cartMemberNoRequestDto, headers),
-            new ParameterizedTypeReference<>() {
-            }
-        );
-    }
-
-    public void modifyProductCountInCart(CartMemberRequestDto cartMemberRequestDto) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + BASE_API_URL,
-            HttpMethod.PUT,
-            new HttpEntity<>(cartMemberRequestDto, headers),
-            new ParameterizedTypeReference<>() {
-            }
-        );
-    }
 }

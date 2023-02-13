@@ -14,11 +14,13 @@ import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.filter.CustomAuthorizationFilter;
 import shop.itbook.itbookfront.auth.handler.CustomAccessDeniedHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLoginFailureHandler;
+import shop.itbook.itbookfront.auth.handler.CustomLoginSuccessHandler;
 import shop.itbook.itbookfront.auth.handler.CustomLogoutHandler;
 import shop.itbook.itbookfront.auth.handler.CustomOAuthSuccessHandler;
 import shop.itbook.itbookfront.auth.manager.CustomAuthenticationManager;
 import shop.itbook.itbookfront.auth.service.CustomOauthService;
 import shop.itbook.itbookfront.auth.util.AuthUtil;
+import shop.itbook.itbookfront.cart.service.CartService;
 
 /**
  * 스프링 시큐리티 설정을 위한 클래스 입니다.
@@ -56,6 +58,7 @@ public class SecurityConfig {
             .usernameParameter("memberId")
             .passwordParameter("password")
             .defaultSuccessUrl("/")
+            .successHandler(customLoginSuccessHandler(null))
             .failureHandler(customLoginFailureHandler());
 
         http
@@ -72,7 +75,7 @@ public class SecurityConfig {
         http
             .oauth2Login()
             .loginPage("/login").permitAll()
-            .successHandler(customOAuthSuccessHandler(null))
+            .successHandler(customOAuthSuccessHandler(null, null))
             .failureHandler(customLoginFailureHandler())
             .userInfoEndpoint()
             .userService(customOAuth2UserService(null));
@@ -152,8 +155,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil) {
-        return new CustomOAuthSuccessHandler(authUtil);
+    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil, CartService cartService) {
+        return new CustomOAuthSuccessHandler(authUtil, cartService);
     }
 
     /**
@@ -175,5 +178,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationFailureHandler customLoginFailureHandler() {
         return new CustomLoginFailureHandler();
+    }
+
+    @Bean
+    AuthenticationSuccessHandler customLoginSuccessHandler(CartService cartService) {
+        return new CustomLoginSuccessHandler(cartService);
     }
 }

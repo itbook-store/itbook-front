@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/adminpage/member/js/registerWriter.js"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>작가 등록</h2>
+        <hr>
+        <form id="registerWriterForm" method="post" th:action="@{/admin/members/writer/register}">
+            <input type="hidden" name="memberNo" value="-1">
+            <input type="hidden" id="checkMemberId", th:value="${memberId}">
+
+            <div>
+                <input type="text" id="writerName">
+             </div>
+            <div class="form-outline mb-4">
+                <label class="form-label">등록할 회원 아이디</label>
+                <input type="text" id="findMemberId" name="memberId" class="form-control form-control-lg">
+                <div id="existsMemberMsg" style = "display:none;">등록할 수 있는 회원입니다.</div>
+                <div id="notExistsMemberMsg" style = "display:none;">존재하지 않는 회원입니다.</div>
+                <button type="button" id="findBtn" class="btn btn-light" onclick="findMember()">확인</button>
+                <button type="button" id="reFindBtn" class="btn btn-dark" onclick="reFindMember()" style="display: none;">다시찾기</button>
+            </div>
+            <button id="sendBtn" type="button" onclick="registerWriter()" class="btn btn-primary" disabled>등록하기</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
