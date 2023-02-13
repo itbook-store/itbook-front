@@ -7,6 +7,13 @@
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <style>
+
+    </style>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -19,136 +26,162 @@
                     <div class="white-box text-center">
                         <img th:src="${product.fileThumbnailsUrl}" class="img-details-thumbnail"></div>
                 </div>
-                <div class="col-lg-7 col-md-7 col-sm-6">
-                    <!--                    <h4 class="box-title mt-5">Product description</h4>-->
-                    <p th:if="${not #strings.equals(product.detailsDescription, null)}">
-                        [[${product.detailsDescription}]]</p>
 
+                <div class="col-lg-7 col-md-7 col-sm-6">
                     <div class="col-lg-11 col-md-11 col-sm-10">
-                        <h5 class="box-title mt-5">상세 정보</h5>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-product">
-                                <tbody>
-                                <tr th:if="${product.isPointApplying} == true">
-                                    <td>포인트 적립율</td>
-                                    <td>
-                                        <span>[[${product.increasePointPercent}]]%</span>
+
+                        <div th:if="${not #strings.equals(product.detailsDescription, null)}"
+                             style="margin-block: 20px">
+                            [[${product.detailsDescription}]]
+                        </div>
+
+                        <table class="table table-borderless" style="margin-top:10px">
+                            <tbody>
+                            <tr>
+                                <td>정가</td>
+                                <td>
+                                    <span>[[${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')}]]원</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>판매가</td>
+                                <td>
+                                    <span th:text="${#numbers.formatInteger(product.selledPrice, 1, 'COMMA')}">원</span>
+                                    <span>([[${product.discountPercent}]]%,</span>
+                                    <span th:text="|${#numbers.formatInteger(product.fixedPrice - product.selledPrice, 1, 'COMMA')}원 할인)|"></span>
+                                </td>
+                            </tr>
+                            <tr th:if="${product.isPointApplying} == true">
+                                <td>포인트 적립</td>
+                                <td>
+                                    <span>[[${product.increasePointPercent}]]%</span>
                                     <span th:if="${product.isPointApplyingBasedSellingPrice} == true">&nbsp;(판매가 기준)</span>
                                     <span th:unless="${product.isPointApplyingBasedSellingPrice} == true">&nbsp;(실구매가 기준)</span>
-                                    </td>
-                                </tr>
-                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
-                                    <td>ISBN</td>
-                                    <td>[[${product.isbn}]]</td>
-                                </tr>
-                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
-                                    <td>발간일</td>
-                                    <td th:text="${#strings.substring(product.bookCreatedAt, 0, 10)}"></td>
-                                </tr>
-                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
-                                    <td>페이지 수</td>
-                                    <td>[[${product.pageCount}]]p</td>
-                                </tr>
-                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
-                                    <td>작가</td>
-                                    <td>[[${product.authorName}]]</td>
-                                </tr>
-                                <tr th:if = "${not #strings.equals(product.isbn, null)}">
-                                    <td>출판사</td>
-                                    <td>[[${product.publisherName}]]</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5"
-                                  data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
-                    <small style="font-size: 15pt; margin-left: 10%" class="text-success"
-                           th:text="|(${product.discountPercent}%off)|"></small>
-
-
-                    <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
-                            data-original-title="Add to cart"
-                            th:attr="productNo=${product.productNo}"
-                            th:onclick="addProduct(this.getAttribute('productNo'))">
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
-                    <button class="btn btn-danger"
-                            th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                        품절
-                    </button>
-                    <form id="productPaymentRequestForm" method="post"
-                          action="/order-sheet">
-                        <input type="text" th:value="${product.productNo}" name="productNoList"/>
-                        <input type="text" th:value="1" name="productCntList"/>
-                    </form>
-                    <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
-                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
-                    </button>
-                    <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"
-                            th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
-                        <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header"></div>
-                                    <div class="modal-body">비회원으로 주문하시겠습니까?</div>
-                                    <div class="modal-footer">
-                                        <a class="btn btn-info" id="modalY">예</a>
-                                        <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
-                                        <a class="btn btn-dark block" id="modalN" type="button"
-                                           data-dismiss="modal">취소</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>배송료</td>
+                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--                        <div class="product-rating mb-2">-->
+                        <!--                            <i class="fas fa-star"></i>-->
+                        <!--                            <i class="fas fa-star"></i>-->
+                        <!--                            <i class="fas fa-star"></i>-->
+                        <!--                            <i class="fas fa-star"></i>-->
+                        <!--                            <i class="fas fa-star mr-0"></i>-->
+                        <!--                        </div>-->
+                        <div style="text-align: center">
+                            <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
+                                    data-original-title="Add to cart" style="display :inline-block;"
+                                    th:attr="productNo=${product.productNo}"
+                                    th:onclick="addProduct(this.getAttribute('productNo'))">
+                                <i class="fa fa-shopping-cart"></i> <span style="margin-left: 10px">장바구니 담기</span>
+                            </button>
+                            <button class="btn btn-danger" style="display :inline-block;"
+                                    th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                                품절
+                            </button>
+                            <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()"
+                                    class="btn btn-primary btn-rounded" style="display :inline-block;"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
+                            </button>
+                            <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}"
+                                    style="display :inline-block;">구매하기
+                                <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header"></div>
+                                            <div class="modal-body">비회원으로 주문하시겠습니까?</div>
+                                            <div class="modal-footer">
+                                                <a class="btn btn-info" id="modalY">예</a>
+                                                <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
+                                                <a class="btn btn-dark block" id="modalN" type="button"
+                                                   data-dismiss="modal">취소</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
+                            <form id="productPaymentRequestForm" method="post"
+                                  action="/order-sheet">
+                                <input type="hidden" th:value="${product.productNo}" name="productNoList"/>
+                                <input type="hidden" th:value="1" name="productCntList"/>
+                            </form>
                         </div>
-                    </button>
+                    </div>
+                </div>
+
+                <!--                <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5"-->
+                <!--                              data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>-->
+                <!--                <small style="font-size: 15pt; margin-left: 10%" class="text-success"-->
+                <!--                       th:text="|(${product.discountPercent}%off)|"></small>-->
+
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <span style="margin-left:20px">주제 분류&nbsp;|&nbsp;</span><span id="parentCategoryName"></span><span
+                    id="childCategoryName"></span>
+                <i class="fa-sharp fa-solid fa-eye" style="margin-left: 20px"> &nbsp; [[${product.dailyHits}]]</i>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-white btn-default"><i class="fa fa-star"></i> Add to wishlist</button>
+                    <button th:if="${not #strings.equals(product.isbn, null)}" class="btn btn-white btn-default">
+                        <span th:text="|ISBN ${product.isbn}|"></span></button>
                 </div>
             </div>
-            <div class="card-footer" style="margin-top: 15px">
-                <i class="fa-sharp fa-solid fa-eye" style="margin-left: 20px"> &nbsp; [[${product.dailyHits}]]</i>
+        </div>
+        <div class="row" th:if="${not #strings.equals(product.isbn, null)}">
+            <div class="col-sm-10 col-md-10 col-lg-10" style="margin-inline: auto; margin-block:20px">
+                <table class="table-borderless">
+                    <tbody>
+                    <tr style="text-align: center">
+                        <td>작가</td>
+                        <td>[[${product.authorName}]]</td>
+                        <td>출판사</td>
+                        <td>[[${product.publisherName}]]</td>
+                        <td>페이지 수</td>
+                        <td>[[${product.pageCount}]]p</td>
+                        <td>발간일</td>
+                        <td th:text="${#strings.substring(product.bookCreatedAt, 0, 10)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
           integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
-            <h2>연관 상품</h2>
+            <h4>연관 상품</h4>
             <div class="row">
-                <div class="col-sm-2 col-lg-2 mb-2-6" th:each="rp: ${pageResponse.content}">
+                <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2" th:each="rp: ${pageResponse.content}">
                     <div class="card-wrapper mb-2">
-                        <div class="card-img"><img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                        <div class="card-img"><img class="img-thumbnail-sm" th:src="${rp.fileThumbnailsUrl}" alt="...">
                         </div>
                         <div class="card-body">
                             <div>
-                                <a href="#">
-                                    <i class="bg-white p-3 rounded-circle fa fa-shopping-cart font-weight-600"></i></a>
+                                <a th:href="|@{/products/{productNo}(productNo=${rp.productNo})}|">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <h5 class="h6 mb-2"><a th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
-                            [[${rp.productName}]] ([[${rp.authorName}]])</a></h5>
-                        <div class="product-rating mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star mr-0"></i>
-                        </div>
-                        <h6 class="mb-0 text-primary">[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') +
-                            '원'}]]([[${rp.discountPercent}]]%)</h6>
                     </div>
                 </div>
             </div>
         </div>
         <th:block th:include="component/pageFooter"></th:block>
     </section>
+
     <section>
-        <div>
+        <div class="container">
             <h4>도서 리뷰</h4>
             별점 : <span th:if="${reviewPageResponse.getContent().size() != 0}" th:text="${avgStarPoint}"></span>
             <span th:if="${reviewPageResponse.getContent().size() == 0}">0</span> / 5
@@ -163,15 +196,16 @@
                                         <table class="table user-list">
                                             <thead>
                                             <tr>
-                                                <th></th>
-                                                <th><span></span></th>
-                                                <th><span></span></th>
+                                                <th><span>사진</span></th>
+                                                <th><span>내용</span></th>
+                                                <th><span>별점</span></th>
                                                 <th><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td><img width="100px;" th:src="${review.image}"></td>
+                                                <td class="text-center"><img width="100px;" th:src="${review.image}">
+                                                </td>
                                                 <td><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
                                                 <td>
@@ -194,8 +228,88 @@
             </div>
         </div>
     </section>
+    <section>
+        <div>
+            <p></p>
+            <h4>상품 문의</h4>
+            <hr>
+            <div>
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box no-header clearfix">
+                                <div class="main-box-body clearfix">
+                                    <div class="table-responsive">
+                                        <table class="table user-list">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-left"><span>답변여부</span></th>
+                                                <th><span>답변제목</span></th>
+                                                <th class="text-right"><span>공개여부</span></th>
+                                                <th class="text-right"><span>작성자</span></th>
+                                                <th><span></span></th>
+                                                <th><span></span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="productInquiry : ${productInquiryPageResponse.getContent()}">
+                                                <td class="text-left">
+                                                    <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
+                                                </td>
+                                                <td style="width: 20%;">
+                                                    <strong>
+                                                        <span th:text="${productInquiry.isPublic} ? ${productInquiry.title} : '비공개 게시글입니다.'"></span>
+                                                    </strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span th:text="${productInquiry.isPublic} ? '공개' : '비공개'"></span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span th:text="${productInquiry.memberId}"></span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <button th:if="${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
+                                                            class="btn btn-primary"
+                                                            th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
+                                                        상세보기
+                                                    </button>
+                                                    <br>
+                                                </td>
+                                                <td class="text-left">
+                                                    <div th:if="${memberName} != null and ${#strings.contains(productInquiry.authorName, memberName)}">
+                                                        <button th:if="${memberIsWriter} == true and ${productInquiry.isReplied} == false"
+                                                                class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
+                                                            답변하기
+                                                        </button>
+                                                    </div>
+                                                    <div sec:authorize="hasAuthority('ADMIN')">
+                                                        <button th:if="${productInquiry.isReplied} == false"
+                                                                class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
+                                                            답변하기
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:include="component/productInquiryPageFooter"></th:block>
+            </div>
+        </div>
+    </section>
     <script src="/cart/js/cartAddProduct.js"></script>
     <script th:inline="javascript">
+        let productNo = [[${product.productNo}]];
+        setCategory(productNo);
+
+        console.log(productNo);
 
         $('#purchase').click(function (e) {
             e.preventDefault();
@@ -221,7 +335,33 @@
         $('#modalN').click(function () {
             $('#nonMemberModal').modal("hide");
         })
+
+        async function setCategory(productNo) {
+            let parentCategoryNameDiv = document.getElementById("parentCategoryName");
+            let childCategoryNameDiv = document.getElementById("childCategoryName");
+
+            let childCategoryList = "";
+            let parentCategoryName;
+            await fetch(`/async/products/categories/${productNo}`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(category => {
+                        childCategoryList += category.categoryName + " ";
+                        parentCategoryName = category.parentCategoryName + " > ";
+                    });
+                });
+
+            console.log(parentCategoryName);
+            console.log(childCategoryList);
+
+            parentCategoryNameDiv.textContent = parentCategoryName;
+            childCategoryNameDiv.textContent = childCategoryList;
+
+        }
     </script>
+
 </div>
 </body>
 </html>

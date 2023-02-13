@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <style>
@@ -13,66 +11,35 @@
         }
 
         .pagination > li > a, .pagination > li > span {
-            background-color: #ccc;
+            background-color: #6868ab;
             padding: 3px 9px;
             color: #fff;
             border: 0px;
             text-decoration-line: none;
         }
 
-        .pagination > li > a {
-            margin-right: 5px;
-        }
-
-        .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-            background-color: #6868ab;
-        }
     </style>
 </head>
 
-<!--<th:block th:if="${!#lists.isEmpty(pageResponse.content)}">-->
-
-<!--    <nav  class="row gallery-bottom">-->
-<!--        <ul class="pagination"-->
-<!--            th:with="start=${T(java.lang.Math).floor(pageResponse.number/10)*10 + 1},-->
-<!--                    last=(${start + 9 < (pageResponse.totalPages -1) ? start + 9 : pageResponse.totalPages })">-->
-<!--            <li>-->
-<!--                <a th:href="@{${paginationUrl}(page=0)}" aria-label="First">-->
-<!--                    <span aria-hidden="true">First</span>-->
-<!--                </a>-->
-<!--            </li>-->
-
-<!--            <li th:each="page: ${#numbers.sequence(start, last)}"-->
-<!--                th:class="${page == pageResponse.number + 1} ? 'active'">-->
-<!--                <a th:text="${page}" th:href="@{${paginationUrl}(page=${page}-1)}"></a>-->
-<!--            </li>-->
-
-<!--            <li>-->
-<!--                <a th:href="@{${paginationUrl}(page=${pageResponse.totalPages}-1)}" aria-label="Last">-->
-<!--                    <span aria-hidden="true">Last</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-
-<!--</th:block>-->
-
-
 <th:block th:if="${!#lists.isEmpty(pageResponse.content)}">
-    <div style="margin-left: 35%">
+    <div class="row gallery-bottom">
+        <ul class="pagination">
 
-        <button type="button" style="margin-right: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=0)}'|"> << </button>
-        <button type="button" style="margin-right: 5px" th:if="${pageResponse.previous}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number - 1})}'|"> <
-        </button>
+            <li th:if="${true}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=0)}"><span><<</span></a>
+            </li>
+            <li th:if="${pageResponse.previous}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.number - 1})}"><span><</span></a>
+            </li>
 
-        <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"></span>
+            <span th:text="${pageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"></span>
 
-        <button type="button" style="margin-left: 5px" th:if="${pageResponse.next}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.number + 1})}'|"> >
-        </button>
-        <button type="button" style="margin-left: 5px" th:if="${true}" class="btn btn-info"
-                th:onclick="|location.href='@{${paginationUrl}(page=${pageResponse.totalPages - 1})}'|"> >></button>
+            <li th:if="${pageResponse.next}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.number + 1})}"><span>></span></a>
+            </li>
+            <li th:if="${true}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${paginationUrl}(page=${pageResponse.totalPages - 1})}"><span>>></span></a>
+            </li>
+        </ul>
     </div>
 </th:block>

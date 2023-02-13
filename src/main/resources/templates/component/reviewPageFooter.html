@@ -1,5 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        .gallery-bottom .pagination {
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            background-color: #6868ab;
+            padding: 3px 9px;
+            color: #fff;
+            border: 0px;
+            text-decoration-line: none;
+        }
+
+    </style>
+</head>
+
+
 <th:block th:if="${!#lists.isEmpty(reviewPageResponse.content)}">
-    <button type = "button" th:if="${reviewPageResponse.previous}" class="btn btn-primary" th:onclick="|location.href='@{${paginationUrl}(page=${reviewPageResponse.number - 1})}'|" > < </button>
-    <span th:text="${reviewPageResponse.number + 1} + ' / ' + ${pageResponse.totalPages}"/>
-    <button type = "button" th:if="${reviewPageResponse.next}" class="btn btn-primary" th:onclick="|location.href='@{${paginationUrl}(page=${reviewPageResponse.number + 1})}'|" > > </button>
+    <div class="row gallery-bottom">
+        <ul class="pagination">
+
+            <li th:if="${true}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${reviewPaginationUrl}(page=0)}"><span><<</span></a>
+            </li>
+            <li th:if="${reviewPageResponse.previous}" style="margin-right: 5px" class="page-item">
+                <a th:href="@{${reviewPaginationUrl}(page=${reviewPageResponse.number - 1})}"><span><</span></a>
+            </li>
+
+            <span th:text="${reviewPageResponse.number + 1} + ' / ' + ${reviewPageResponse.totalPages}"></span>
+
+            <li th:if="${reviewPageResponse.next}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${reviewPaginationUrl}(page=${reviewPageResponse.number + 1})}"><span>></span></a>
+            </li>
+            <li th:if="${true}" style="margin-left: 5px" class="page-item">
+                <a th:href="@{${reviewPaginationUrl}(page=${reviewPageResponse.totalPages - 1})}"><span>>></span></a>
+            </li>
+
+
+        </ul>
+    </div>
 </th:block>
