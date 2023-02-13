@@ -7,7 +7,8 @@
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <style>
 
     </style>
@@ -83,25 +84,12 @@
                             th:if="${product.isForceSoldOut == true or product.stock == 0}">
                         품절
                     </button>
-                    <!--                    <form id="purchase" method="post" th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
-                    <!--                    <input type="submit" class="btn btn-primary btn-rounded" form="purchase"-->
-                    <!--                            th:unless="${product.isForceSoldOut == true or product.stock == 0}" value="구매하기">-->
-                    <!--                    </form>-->
-<!--                    <form id="dk" method="post"-->
-<!--                          th:action="@{/order-sheet(productNoList=${product.productNo},productCntList=1)}">-->
-                    <form id="dk" method="post"
-                          th:action="@{/order-sheet}">
+                    <form id="productPaymentRequestForm" method="post"
+                          action="/order-sheet">
                         <input type="text" th:value="${product.productNo}" name="productNoList"/>
                         <input type="text" th:value="1" name="productCntList"/>
-                        <input type="text" th:value="2283" name="productNoList"/>
-                        <input type="text" th:value="2" name="productCntList"/>
-                        <!--                        <span th:each="item : ${testList}">-->
-                        <!--                            <input type="text" th:value="${item.productNo}" name="productNo"/>-->
-                        <!--                            <input type="text" th:value="${item.productCnt}" name="productCnt"/>    -->
-                        <!--                        </span>-->
                     </form>
-                    <button form="dk" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
-                            th:onclick="|location.href='@{/order-sheet(productNoList=${product.productNo},productCntList=1)}'|"
+                    <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()" class="btn btn-primary btn-rounded"
                             th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
                     </button>
                     <button sec:authorize="isAnonymous()" id="purchase" class="btn btn-primary btn-rounded"
@@ -181,15 +169,15 @@
                                         <table class="table user-list">
                                             <thead>
                                             <tr>
-                                                <th></th>
-                                                <th><span></span></th>
-                                                <th><span></span></th>
+                                                <th><span>사진</span></th>
+                                                <th><span>내용</span></th>
+                                                <th><span>별점</span></th>
                                                 <th><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td><img width="100px;" th:src="${review.image}"></td>
+                                                <td class="text-center"><img width="100px;" th:src="${review.image}"></td>
                                                 <td><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
                                                 <td>
@@ -209,6 +197,72 @@
                     </div>
                 </div>
                 <th:block th:include="component/reviewPageFooter"></th:block>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div>
+            <p></p>
+            <h4>상품 문의</h4>
+            <hr>
+            <div>
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box no-header clearfix">
+                                <div class="main-box-body clearfix">
+                                    <div class="table-responsive">
+                                        <table class="table user-list">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-left"><span>답변여부</span></th>
+                                                <th><span>답변제목</span></th>
+                                                <th class="text-right"><span>공개여부</span></th>
+                                                <th class="text-right"><span>작성자</span></th>
+                                                <th><span></span></th>
+                                                <th><span></span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="productInquiry : ${productInquiryPageResponse.getContent()}">
+                                                <td class="text-left">
+                                                    <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
+                                                </td>
+                                                <td style="width: 20%;">
+                                                    <strong>
+                                                        <span th:text="${productInquiry.isPublic} ? ${productInquiry.title} : '비공개 게시글입니다.'"></span>
+                                                    </strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span th:text="${productInquiry.isPublic} ? '공개' : '비공개'"></span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span th:text="${productInquiry.memberId}"></span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <button th:if="${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})" class="btn btn-primary"
+                                                            th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">상세보기</button><br>
+                                                </td>
+                                                <td class="text-left">
+                                                    <div th:if="${memberName} != null and ${#strings.contains(productInquiry.authorName, memberName)}">
+                                                        <button th:if="${memberIsWriter} == true and ${productInquiry.isReplied} == false" class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
+                                                    </div>
+                                                    <div sec:authorize="hasAuthority('ADMIN')">
+                                                        <button th:if="${productInquiry.isReplied} == false" class="btn btn-secondary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/writer/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">답변하기</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:include="component/productInquiryPageFooter"></th:block>
             </div>
         </div>
     </section>

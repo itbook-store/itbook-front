@@ -1,12 +1,15 @@
 package shop.itbook.itbookfront.product.controller.adminapi;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductSalesRankResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 import shop.itbook.itbookfront.product.service.BookService;
 import shop.itbook.itbookfront.product.service.ProductService;
@@ -41,4 +44,5 @@ public class BookAsyncController {
         return bookService.checkIsbnExists(
             "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
     }
+
 }

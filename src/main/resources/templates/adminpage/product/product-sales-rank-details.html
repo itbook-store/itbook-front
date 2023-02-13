@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>[[${sortingCriteria}]] 판매현황</h2>
+        <hr>
+
+        <div class="container bootstrap snippets bootdey">
+            <div th:if="${!#lists.isEmpty(pageResponse.content)}" class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list table-hover">
+                                    <thead style="text-align: center">
+                                    <tr style="text-align: center!important;">
+                                        <th>상품코드</th>
+                                        <th>상품명</th>
+                                        <th>[[${sortingCriteria}]] 수</th>
+                                        <th>[[${sortingCriteria}]] 금액</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${not #lists.isEmpty(pageResponse)}"
+                                        th:each="product : ${pageResponse.content}">
+                                        <td style="text-align: center" th:text="${product.productNo}"></td>
+                                        <td style="text-align: left">
+                                            <a th:href="|@{/products/{productNo}(productNo=${product.productNo})}|"
+                                               style="text-decoration: none; color: #000000">
+                                                <span th:text="${product.productName}"></span>
+                                            </a>
+                                        </td>
+                                        <td style="text-align: center" th:text="${product.count}"></td>
+                                        <td style="text-align: center" th:text="${product.price}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${!#lists.isEmpty(pageResponse.content)}" class="row">
+                <div class="col-lg-12">
+                    <p>해당 데이터가 없습니다.</p>
+                </div>
+            </div>
+            <th:block th:include="component/pageFooter"></th:block>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

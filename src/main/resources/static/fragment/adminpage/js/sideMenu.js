@@ -40,7 +40,7 @@ function showProductSubMenu(eventTarget) {
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
                 <a href="/admin/products/sales-rank" style="text-decoration: none; color:inherit;">
-                    상품 판매순위
+                    상품 판매현황
                 </a>
             </button>
         `;
