@@ -38,14 +38,22 @@ public class CouponMainController {
             String.format("/api/admin/coupons/list/all/%s", "이달의쿠폰예약형"));
 
         model.addAttribute("couponList", couponList);
-        return DIRECTORY_NAME + "/coupon-event";
+        return DIRECTORY_NAME + "/monthly-coupon-event";
     }
+    @GetMapping("/membership")
+    public String couponOfMembership(Model model) {
 
+        List<CouponListResponseDto> couponList = couponIssueService.getCouponsByCouponType(
+            String.format("/api/admin/coupons/list/all/%s", "이달의쿠폰예약형"));
+
+        model.addAttribute("couponList", couponList);
+        return DIRECTORY_NAME + "/membership-coupon-event";
+    }
     @GetMapping("/download")
     public String couponOfMonth(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                 @RequestParam("couponNo") Long couponNo,
                                 RedirectAttributes redirectAttributes) {
-        if(Objects.isNull(userDetailsDto.getMemberNo())){
+        if(Objects.isNull(userDetailsDto)){
             redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
             return "redirect:/login";
         }
@@ -56,7 +64,10 @@ public class CouponMainController {
                     userDetailsDto.getMemberNo()));
         } catch (AlreadyAddedCouponIssueMemberCouponException | UnableToCreateCouponException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/coupons/month";
+
         }
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/coupons/month";
     }
 }
