@@ -1,9 +1,11 @@
 package shop.itbook.itbookfront.coupon.controller.serviceapi;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,12 @@ public class CouponMainController {
     public String couponOfMonth(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                 @RequestParam("couponNo") Long couponNo,
                                 RedirectAttributes redirectAttributes) {
+        if(Objects.isNull(userDetailsDto.getMemberNo())){
+            redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
         try {
+
             couponIssueService.addCouponIssueByCouponType(
                 String.format("/api/coupon-issues/%d/%d/add", couponNo,
                     userDetailsDto.getMemberNo()));

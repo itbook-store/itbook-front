@@ -45,13 +45,9 @@ public class CachingConfig {
                     new GenericJackson2JsonRedisSerializer())); // 캐시 데이터 값 직렬화 시 JSON 메시지로 저장
 
         Map<String, RedisCacheConfiguration> configurations = new HashMap<>();
-        configurations.put("newBookList", defaultConfig.entryTtl(Duration.ofDays(1)));
-        configurations.put("discountBookList", defaultConfig.entryTtl(Duration.ofDays(1)));
-        configurations.put("bestSellerList", defaultConfig.entryTtl(Duration.ofDays(7)));
-        configurations.put("recommendationList", defaultConfig.entryTtl(Duration.ofDays(1)));
-//        configurations.put("personalRecommendationList",
-//            defaultConfig.entryTtl(Duration.ofHours(1)));
-        configurations.put("popularBookList", defaultConfig.entryTtl(Duration.ofDays(1)));
+        configurations.put("productTypeList", defaultConfig.entryTtl(Duration.ofDays(1)));
+        configurations.put("personalRecommendationList",
+            defaultConfig.entryTtl(Duration.ofHours(1)));
 
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(redisConnectionFactory) // 사용할 레디스커넥션팩토리 객체 설정

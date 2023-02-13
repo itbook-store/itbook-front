@@ -18,6 +18,8 @@ public interface OrderService {
     PageResponse<OrderListMemberViewResponseDto> findOrderListOfMemberPageResponse(
         Pageable pageable, Long memberNo);
 
+    PageResponse<OrderListMemberViewResponseDto> findOrderListAll(Pageable pageable);
+
     OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
                              Optional<Long> memberNo);
 

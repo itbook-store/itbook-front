@@ -16,6 +16,7 @@ import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
+import shop.itbook.itbookfront.product.dto.response.ProductSalesRankResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 
@@ -51,4 +52,6 @@ public interface ProductService {
 
     Cookie checkCookieForDailyHits(Long productNo, HttpServletRequest request,
                                    HttpServletResponse response);
+
+    PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(String sortingCriteria);
 }
