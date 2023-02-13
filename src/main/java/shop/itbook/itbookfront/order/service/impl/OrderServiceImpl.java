@@ -130,4 +130,9 @@ public class OrderServiceImpl implements OrderService {
 
         return orderAdaptor.findOrderDetails(uriComponents.toUri());
     }
+
+    @Override
+    public PageResponse<OrderListMemberViewResponseDto> findOrderListAll(Pageable pageable) {
+        return null;
+    }
 }
