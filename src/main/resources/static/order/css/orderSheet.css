@@ -1,0 +1,286 @@
+p {
+    margin: 0 !important;
+}
+
+#order_container {
+    margin-top: 40px;
+}
+
+.order_title {
+    display: flex;
+    /*align-items: center;*/
+    padding-bottom: 10px;
+    border-bottom: solid 2px #6868ab;
+}
+
+.order_title i {
+    margin-right: 10px;
+    font-size: 50px;
+}
+
+.order_title p {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.product-box{
+    margin-top: 30px;
+}
+
+
+.product_info {
+    display: flex;
+    align-items: center;
+}
+
+.product_img {
+    width: 100px;
+    height: 140px;
+    margin-right: 10px;
+}
+
+.box-title {
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 10px;
+    border-left: solid 1px #6868ab;
+    margin-bottom: 13px;
+}
+
+.product_priceBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.product_priceBox .fixed_price {
+    margin-bottom: 5px;
+    text-decoration: line-through;
+    color: #51585e;
+}
+
+.product_priceBox .discount_price {
+    color: blue;
+    font-weight: bold;
+}
+
+table thead tr th {
+    color: #51585e;
+    font-size: 14px;
+}
+
+.product_count {
+    width: 80px;
+    border: none;
+    text-align: center;
+}
+
+.coupon_btn {
+    background-color: #6868ab !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    border-radius: 3em !important;
+}
+
+#destination_list_btn {
+    background-color: #6868ab !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    margin-top: 30px;
+}
+
+.product_total_price {
+    border: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.product_info {
+
+}
+
+.order_payment_section {
+    width: 300px;
+    height: 300px;
+    background-color: black;
+}
+
+.product_amount_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 135px;
+    background-color: #FAFAFA;
+    border-top: solid 1px #DEE2E6;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.product_amount_plainText {
+    color: #51585e;
+    font-size: 20px;
+}
+
+.product_amount_box i {
+    font-size: 30px;
+}
+
+#product_origin_price,
+.product_delivery_price,
+#total_discount_price {
+    font-size: 25px;
+}
+
+.product_real_amount {
+    color: #e60022;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.member_delivery_box {
+    display: flex;
+    align-items: center;
+}
+
+.destination_container {
+    display: flex;
+    align-items: center;
+}
+
+.destination_box {
+    display: flex;
+    align-items: center;
+    height: 35px;
+}
+
+.destination_box input {
+    border: solid 1px #e5e5e5;
+    padding-left: 7px;
+    width: 400px;
+}
+
+.destination_text {
+    width: 160px;
+}
+
+/* radio button */
+[type="radio"] {
+    vertical-align: middle;
+    appearance: none;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 50%;
+    width: 1.25em;
+    height: 1.25em;
+    transition: border 0.5s ease-in-out;
+    margin-right: 13px;
+}
+
+[type="radio"]:checked {
+    border: 0.4em solid tomato;
+}
+
+[type="radio"]:focus-visible {
+    outline-offset: max(2px, 0.1em);
+    outline: max(2px, 0.1em) dotted tomato;
+}
+
+[type="radio"]:hover {
+    box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+    cursor: pointer;
+}
+
+.box-content {
+    margin-top: 30px;
+    border: solid 1px #DEE2E6;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.delivery_select_box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.delivery_select_box p {
+    margin-right: 20px !important;
+}
+
+.delivery_select_box input {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 160px;
+}
+
+.delivery_info_box {
+    font-size: 0.9em;
+    color: #979797;
+}
+
+.payment_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6f42c1 !important;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    width: 250px;
+    height: 70px;
+    border-radius: 30px;
+}
+
+.point_container {
+    margin-top: 30px;
+}
+
+.point_myPointBox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.point_apply_box {
+    display: flex;
+    align-items: center;
+}
+
+.point_apply_box #point_apply_btn {
+    background-color: #6868ab !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    margin-left: 10px;
+}
+
+#point_apply_btn {
+    margin-right: 10px;
+}
+
+#point_cancel_btn {
+    background-color: #afabab !important;
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+#myPoint {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#point_apply_input {
+    padding-left: 10px;
+    height: 38px;
+}
+
+
+#order_amount_coupon_btn {
+    background-color: #6868ab !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    border-radius: 3em !important;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
+    border: none;
+}
