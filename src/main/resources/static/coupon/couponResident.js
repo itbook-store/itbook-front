@@ -26,6 +26,7 @@ function selectCouponOption() {
         divNone('amount');
         divNone('percent');
         document.getElementById("couponCoverageDiv").style.display = 'none';
+        document.getElementById('pointCoverageRadio').checked = true;
     } else if (radioCheck('percent')) {
         divBlock('percent');
         divBlock('min');
@@ -34,6 +35,8 @@ function selectCouponOption() {
         divNone('point');
         divNone('amount');
         document.getElementById("couponCoverageDiv").style.display = 'block';
+        document.getElementById('pointCoverageRadio').checked = false;
+
 
     } else {
         divBlock('amount');
@@ -43,6 +46,8 @@ function selectCouponOption() {
         divNone('percent');
         divNull('max');
         document.getElementById("couponCoverageDiv").style.display = 'block';
+        document.getElementById('pointCoverageRadio').checked = false;
+
 
     }
 }
@@ -64,11 +69,15 @@ function selectCouponCoverage() {
 }
 
 function selectCouponDiv(select) {
+    document.getElementById("normalCouponDiv").style.display = 'none';
+    document.getElementById("membershipMonthlyCouponDiv").style.display = 'none';
 
     if (select.value === "일반쿠폰") {
         document.getElementById("normalCouponDiv").style.display = 'block';
+
+    } else if (select.value === "이달의쿠폰등급형") {
+        document.getElementById("membershipMonthlyCouponDiv").style.display = 'block';
     } else {
-        document.getElementById("normalCouponDiv").style.display = 'none';
 
     }
 }
@@ -175,7 +184,7 @@ async function showSearchProductList(event) {
                     let radioBox = document.createElement("input");
                     let radioBoxText = document.createElement("label");
                     radioBox.type = "radio";
-                    radioBox.name = "searchResult";
+                    radioBox.name = "productNo";
                     radioBox.value = productList.productNo;
                     radioBox.style = "margin-right : 4px";
                     radioBoxText.style = "margin-right : 7px";

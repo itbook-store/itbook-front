@@ -25,7 +25,8 @@
                         <div class="border-top my-3"></div>
                         <div class="form-group">
                             <label for='selectCoupon'>쿠폰 종류</label>
-                            <select id='selectCoupon' th:field="${couponInputRequestDto.couponType}" onchange="selectCouponDiv(this)">
+                            <select id='selectCoupon' th:field="${couponInputRequestDto.couponType}"
+                                    onchange="selectCouponDiv(this)">
                                 <option value="">쿠폰의 종류를 선택해주세요.</option>
                                 <option value="일반쿠폰">일반쿠폰</option>
                                 <option value="웰컴쿠폰">웰컴 쿠폰</option>
@@ -37,7 +38,7 @@
                         <div class="alert alert-light">
                             <div id="normalCouponDiv" style="display:none;">
                                 일반쿠폰
-                                <input type="text" class="form-control form-control-lg" id="memberId"
+                                <input type="text" class="form-control form-control-lg" name="memberId"
                                        th:field="${couponInputRequestDto.userId}"/>
                                 <button type="button" onclick="checkMemberId()" id="memberIdCheckBtn">아이디 확인</button>
                                 <button type="button"
@@ -50,16 +51,14 @@
                         </div>
                         <div class="alert alert-light">
                             <div id="membershipMonthlyCouponDiv" style="display:none;">
-                                이달의 쿠폰 -등급형-
-                                <label for='selectMembership'>쿠폰 종류</label>
-<!--                                <select id='selectMembership' th:field="${couponInputRequestDto.membershipGrade}" onchange="selectMembershipDiv(this)">-->
-                                <select id='selectMembership'>
-                                    <option value="">쿠폰의 종류를 선택해주세요.</option>
-                                    <option value="일반쿠폰">일반</option>
-                                    <option value="웰컴쿠폰">실버</option>
-                                    <option value="이달의쿠폰예약형">골드</option>
-                                    <option value="이달의쿠폰등급형">플레티넘</option>
-                                    <option value="생일쿠폰">다이아</option>
+
+                                <label for='selectMembership'>등급 선택</label>
+                                <select id='selectMembership' name="membership">
+                                    <option value="">회원 등급을 선택해주세요.</option>
+                                    <option th:each="membership: ${membershipList}"
+                                            th:value="${membership.membershipGrade}"
+                                            th:text="${membership.membershipGrade}">
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -132,7 +131,7 @@
                                 쿠폰 적용범위
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="allProductRadio"
+                                           id="allProductRadio" value="total"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="allProductRadio">
                                         전체
@@ -140,7 +139,7 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="categoryRadio"
+                                           id="categoryRadio" value="category"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="categoryRadio">
                                         카테고리
@@ -148,10 +147,17 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="custom-control-input" type="radio" name="couponCoverageGroup"
-                                           id="oneProductRadio"
+                                           id="oneProductRadio" value="product"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="oneProductRadio">
                                         상품
+                                    </label>
+                                </div>
+                                <div class="form-check" style="display:none;">
+                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                           id="pointCoverageRadio" value="point">
+                                    <label class="form-check-label" for="pointCoverageRadio">
+                                        포인트
                                     </label>
                                 </div>
                                 <div id="selectCategoryDiv" style="display:none;">
@@ -185,7 +191,8 @@
 
                         <div class="alert alert-light">
                             <label for="totalQuantity">수량</label>
-                            <input class="form-control" type="text" id="totalQuantity" placeholder="입력하지 않으면 무제한으로 발급됩니다."
+                            <input class="form-control" type="text" id="totalQuantity"
+                                   placeholder="입력하지 않으면 무제한으로 발급됩니다."
                                    th:field="${couponInputRequestDto.totalQuantity}">
                         </div>
                         <div class="alert alert-light">
@@ -205,12 +212,20 @@
 
 
                     </div>
-                    <input class="btn btn-primary" style="margin-left: 20px" type="submit" th:formaction="@{/admin/coupons/coupon-addition}" value="등록하기"/>
+                    <div id="defaultButtonDiv">
+                        <input class="btn btn-primary" style="margin-left: 20px" type="submit"
+                               th:formaction="@{/admin/coupons/coupon-addition}" value="등록하기"/>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            alert(failMessage);
+        }
+    </script>
 </div>
 </html>
 

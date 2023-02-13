@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.coupon.service.serviceapi;
 import java.util.List;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.CouponListResponseDto;
+import shop.itbook.itbookfront.coupon.dto.response.OrderCouponSimpleListResponseDto;
 import shop.itbook.itbookfront.coupon.dto.response.UserCouponIssueListResponseDto;
 
 /**
@@ -18,4 +19,6 @@ public interface CouponIssueService {
     Long addCouponIssueByCouponType(String couponIssueByCouponTypeUrl);
 
     List<CouponListResponseDto> getCouponsByCouponType(String couponsByCouponTypeUrl);
+
+    List<OrderCouponSimpleListResponseDto> getProductCategoryCoupon(String getCouponIssuesUrl);
 }
