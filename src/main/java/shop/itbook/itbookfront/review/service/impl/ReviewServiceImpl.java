@@ -67,4 +67,19 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewAdaptor.getUnwrittenReviewOrderProductList(url, memberNo);
     }
+
+    @Override
+    public Double calculateStarAvg(PageResponse<ReviewResponseDto> reviewPageResponse) {
+        int totalStarPoint = 0;
+        double avgStarPoint;
+
+        for (ReviewResponseDto review : reviewPageResponse.getContent()) {
+            totalStarPoint += review.getStarPoint();
+        }
+
+        avgStarPoint = totalStarPoint / Double.parseDouble(
+            String.valueOf(reviewPageResponse.getContent().size()));
+
+        return avgStarPoint;
+    }
 }

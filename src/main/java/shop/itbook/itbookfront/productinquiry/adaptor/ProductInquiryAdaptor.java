@@ -101,4 +101,16 @@ public class ProductInquiryAdaptor {
 
         return responseEntity.getBody().getResult();
     }
+
+    public PageResponse<ProductInquiryResponseDto> findProductInquiryListByProductNo(String url, Long productNo) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<ProductInquiryResponseDto>>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/product-inquiries/product/list/" +
+                    productNo + url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return responseEntity.getBody().getResult();
+    }
 }

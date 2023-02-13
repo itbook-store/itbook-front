@@ -34,6 +34,8 @@ import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
 import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
+import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
+import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
 import shop.itbook.itbookfront.review.service.ReviewService;
@@ -50,8 +52,9 @@ public class ProductServiceController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
-
     private final ReviewService reviewService;
+    private final ProductInquiryService productInquiryService;
+
     private final String DAILYHITS_COOKIENAME = "ITBOOK-VIEW";
 
 
@@ -165,7 +168,7 @@ public class ProductServiceController {
                         pageable.getPageSize()),
                     productNo);
 
-            int totalStarPoint = 0;
+            /*int totalStarPoint = 0;
             double avgStarPoint;
 
             for (ReviewResponseDto review : reviewPageResponse.getContent()) {
@@ -173,12 +176,23 @@ public class ProductServiceController {
             }
 
             avgStarPoint = totalStarPoint / Double.parseDouble(
-                String.valueOf(reviewPageResponse.getContent().size()));
+                String.valueOf(reviewPageResponse.getContent().size()));*/
+
+            double avgStarPoint = reviewService.calculateStarAvg(reviewPageResponse);
 
             model.addAttribute("reviewPageResponse", reviewPageResponse);
             model.addAttribute("paginationUrl", "/products/" + productNo);
 
             model.addAttribute("avgStarPoint", avgStarPoint);
+
+            PageResponse<ProductInquiryResponseDto> productInquiryResponse =
+                productInquiryService.findProductInquiryListByProductNo(String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                        pageable.getPageSize()),
+                    productNo);
+
+            model.addAttribute("productInquiryPageResponse", productInquiryResponse);
+            model.addAttribute("paginationUrl", "/products/" + productNo);
+
 
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());

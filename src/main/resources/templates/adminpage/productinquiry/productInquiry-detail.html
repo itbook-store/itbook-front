@@ -24,7 +24,7 @@
                   th:object="${productInquiryReplyRequestDto}" th:action="@{/admin/product-inquiries/reply/add}">
 
                 <input type="hidden" name="productInquiryNo" th:value="${productInquiryResponseDto.productInquiryNo}">
-                <input type="hidden" name="memberNo" th:value="${productInquiryResponseDto.memberNo}">
+                <input type="hidden" name="memberNo" value="-1">
 
                 <label for="title" class="form-label">답변제목</label>
                 <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}"><br/>

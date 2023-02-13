@@ -56,13 +56,13 @@
                 <div class="form-check form-check-inline mb-0 me-4">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions"
                            id="private"
-                           value="true" th:field="${productInquiryRequestDto.isPublic}" checked/>
+                           value="false" th:field="${productInquiryRequestDto.isPublic}"/>
                     <label class="form-check-label" for="private">비공개</label>
                 </div>
                 <div class="form-check form-check-inline mb-0 me-4">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions"
                            id="open"
-                           value="false" th:field="${productInquiryRequestDto.isPublic}"/>
+                           value="true" th:field="${productInquiryRequestDto.isPublic}"/>
                     <label class="form-check-label" for="open">공개</label>
                 </div>
             </div>
