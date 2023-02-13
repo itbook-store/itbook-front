@@ -15,12 +15,9 @@ function registerWriter() {
         });
     };
 
-    if(!getData()) {
-        return false;
+    if(getData() == false) {
+        document.getElementById('registerWriterForm').submit();
     }
-
-
-    document.getElementById('registerWriterForm').submit();
 }
 
 async function findName() {

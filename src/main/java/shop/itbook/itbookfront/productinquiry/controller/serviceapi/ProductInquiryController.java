@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestD
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
+import shop.itbook.itbookfront.productinquiryreply.dto.request.ProductInquiryReplyRequestDto;
 import shop.itbook.itbookfront.productinquiryreply.dto.response.ProductInquiryReplyResponseDto;
 import shop.itbook.itbookfront.productinquiryreply.service.ProductInquiryReplyService;
 
@@ -103,5 +104,16 @@ public class ProductInquiryController {
         model.addAttribute("productInquiryReplyResponseDtoList", productInquiryReplyResponseDtoList);
 
         return "mypage/productinquiry/productInquiry-details";
+    }
+
+    @GetMapping("/view/writer/{productInquiryNo}")
+    public String productInquiryDetailsForWriter(@PathVariable("productInquiryNo") Long productInquiryNo, Model model) {
+
+        ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiry(productInquiryNo);
+
+        model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
+        model.addAttribute("productInquiryReplyRequestDto", new ProductInquiryReplyRequestDto());
+
+        return "mypage/productinquiry/productInquiry-details-writer";
     }
 }

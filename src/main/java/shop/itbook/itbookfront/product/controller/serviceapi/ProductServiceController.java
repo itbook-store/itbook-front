@@ -29,6 +29,7 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
@@ -54,6 +55,7 @@ public class ProductServiceController {
     private final CategoryService categoryService;
     private final ReviewService reviewService;
     private final ProductInquiryService productInquiryService;
+    private final MemberService memberService;
 
     private final String DAILYHITS_COOKIENAME = "ITBOOK-VIEW";
 
@@ -136,6 +138,7 @@ public class ProductServiceController {
     public String getProductDetails(@PathVariable Long productNo, Model model,
                                     RedirectAttributes redirectAttributes,
                                     @PageableDefault Pageable pageable,
+                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                     HttpServletRequest request,
                                     HttpServletResponse response) {
 
@@ -168,16 +171,6 @@ public class ProductServiceController {
                         pageable.getPageSize()),
                     productNo);
 
-            /*int totalStarPoint = 0;
-            double avgStarPoint;
-
-            for (ReviewResponseDto review : reviewPageResponse.getContent()) {
-                totalStarPoint += review.getStarPoint();
-            }
-
-            avgStarPoint = totalStarPoint / Double.parseDouble(
-                String.valueOf(reviewPageResponse.getContent().size()));*/
-
             double avgStarPoint = reviewService.calculateStarAvg(reviewPageResponse);
 
             model.addAttribute("reviewPageResponse", reviewPageResponse);
@@ -185,6 +178,11 @@ public class ProductServiceController {
 
             model.addAttribute("avgStarPoint", avgStarPoint);
 
+            if(userDetailsDto != null) {
+                model.addAttribute("memberIdLoggedIn", userDetailsDto.getMemberId());
+                model.addAttribute("memberName", memberService.findMember(userDetailsDto.getMemberNo()).getName());
+                model.addAttribute("memberIsWriter", memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter());
+            }
             PageResponse<ProductInquiryResponseDto> productInquiryResponse =
                 productInquiryService.findProductInquiryListByProductNo(String.format("?page=%d&size=%d", pageable.getPageNumber(),
                         pageable.getPageSize()),
