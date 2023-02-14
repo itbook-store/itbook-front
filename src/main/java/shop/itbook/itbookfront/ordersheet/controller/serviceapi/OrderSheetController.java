@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.ordersheet.controller.serviceapi;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +22,10 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.request.OrderFormDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
+import shop.itbook.itbookfront.order.dto.request.ProductDetailsDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.exception.InvalidOrderException;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
@@ -43,11 +46,8 @@ public class OrderSheetController {
     private final CategoryService categoryService;
 
     /**
-     * 회원의 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
+     * 상품 주문시 해당 상품의 정보와 회원일 경우 배송지 정보를 불러옵니다.
      *
-     * @param productNoList      주문하려는 제품의 번호 리스트
-     * @param productCntList     주문하려는 제품의 개수 리스트
-     * @param orderAddRequestDto 주문하기 위해 주문서에서 작성해야할 값들이 있는 Dto
      * @return 주문 작성 페이지
      */
     @PostMapping
@@ -57,8 +57,6 @@ public class OrderSheetController {
         @AuthenticationPrincipal UserDetailsDto userDetailsDto,
         Model model) {
 
-        // TODO: 2023/02/08 포인트 받아오기
-        // TODO: 2023/02/08 사용가능한 쿠폰 받아오기
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories").getContent();
 
@@ -73,7 +71,8 @@ public class OrderSheetController {
         }
 
         OrderSheetResponseDto orderSheet =
-            orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(), orderSheetFormDto.getProductCntList(),
+            orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(),
+                orderSheetFormDto.getProductCntList(),
                 memberNo);
 
         Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
@@ -90,28 +89,25 @@ public class OrderSheetController {
     /**
      * 회원의 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
      *
-     * @param productNoList      주문하려는 제품의 번호 리스트
-     * @param productCntList     주문하려는 제품의 개수 리스트
      * @param orderAddRequestDto 주문하기 위해 주문서에서 작성해야할 값들이 있는 Dto
      * @return 주문 작성 페이지
      */
     @PostMapping("/subscription")
     @SuppressWarnings("java:S5411")
-    public String orderProductMember(@RequestParam List<Long> productNoList,
-                                     @RequestParam List<Integer> productCntList,
-                                     @RequestParam(value = "subscriptionPeriod")
-                                     Integer subscriptionPeriod,
-                                     @ModelAttribute("orderAddRequestDto")
-                                     OrderAddRequestDto orderAddRequestDto,
-                                     @AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                                     Model model) {
+    public String orderSubscription(
+        @RequestParam(value = "subscriptionPeriod")
+        Integer subscriptionPeriod,
+        @ModelAttribute("orderSheetFormDto")
+        OrderSheetFormDto orderSheetFormDto,
+        @ModelAttribute("orderAddRequestDto")
+        OrderAddRequestDto orderAddRequestDto,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        Model model) {
 
         if (Objects.nonNull(subscriptionPeriod)) {
             log.info("제발: {}", subscriptionPeriod);
         }
 
-        // TODO: 2023/02/08 포인트 받아오기
-        // TODO: 2023/02/08 사용가능한 쿠폰 받아오기
         Optional<Long> memberNo = Optional.empty();
 
         if (Objects.nonNull(userDetailsDto)) {
@@ -119,14 +115,15 @@ public class OrderSheetController {
         }
 
         OrderSheetResponseDto orderSheet =
-            orderSheetService.findOrderSheetCartProducts(productNoList, productCntList,
+            orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(),
+                orderSheetFormDto.getProductCntList(),
                 memberNo);
 
         if (!orderSheet.getProductDetailsResponseDtoList().get(0).getIsSubscription()) {
             throw new InvalidOrderException();
         }
 
-        Queue<Integer> productCntQueue = new LinkedList<>(productCntList);
+        Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
 
         model.addAttribute("productDetailsList",
             orderSheet.getProductDetailsResponseDtoList());
@@ -134,13 +131,18 @@ public class OrderSheetController {
         model.addAttribute("memberDestinationList",
             orderSheet.getMemberDestinationResponseDtoList());
 
-        orderAddRequestDto.setIsSubscription(true);
+//        List<ProductDetailsDto> productDetailsDtoList = new ArrayList<>();
+//        productDetailsDtoList.add(
+//            new ProductDetailsDto(productNoList.get(0), productCntList.get(0), null));
+
+//        orderAddRequestDto.setProductDetailsDtoList(productDetailsDtoList);
+        orderAddRequestDto.setIsSubscription(Boolean.TRUE);
         orderAddRequestDto.setSubscriptionPeriod(subscriptionPeriod);
 
         return "mainpage/ordersheet/orderSheetForm";
     }
 
-    @GetMapping("/subscription")
+    @GetMapping("/subscription/select-period")
     public String orderSubscriptionPeriodSelect(@RequestParam("productNo") Long productNo,
                                                 @RequestParam("productCnt") Integer productCnt,
                                                 Model model) {
