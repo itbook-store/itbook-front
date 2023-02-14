@@ -5,13 +5,35 @@
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
     <style>
-        a { text-decoration:none !important }
-        a:hover { text-decoration:none !important }
+        a {
+            text-decoration: none !important
+        }
+
+        a:hover {
+            text-decoration: none !important
+        }
+
+        .img-effect:hover {
+            opacity: 0.9;
+            cursor: pointer;
+            border-radius: 0px;
+            -webkit-transform: scale(1.2, 1.2);
+            -webkit-transition-timing-function: ease-out;
+            -moz-transform: scale(1.2, 1.2);
+            -moz-transition-timing-function: ease-out;
+            -ms-transform: scale(1.20, 1.20);
+            -ms-transition-timing-function: ease-out;
+
+            -webkit-transition-duration: 500ms;
+            -moz-transition-duration: 500ms;
+            -ms-transition-duration: 500ms;
+
+        }
     </style>
     <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
-<!--    <link href="/mainpage/css/floating-button.css" rel="stylesheet">-->
+    <!--    <link href="/mainpage/css/floating-button.css" rel="stylesheet">-->
     <link href="/mainpage/css/bubbler.css" rel="stylesheet">
     <title>ItBook</title>
 </head>
@@ -45,35 +67,46 @@
     <div class="main" style="margin-inline: 10%;">
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(newBooks)}">
-            <h2 style="text-align: left">신간 도서 <a th:href="@{/products(productTypeNo=${1}, productTypeName=${'신간'})}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            <h2 style="text-align: left">신간 도서 <a th:href="@{/products(productTypeNo=${1}, productTypeName=${'신간'})}"
+                                                  style="text-decoration-line: none; color: #000000">
+                <i class="fa-solid fa-circle-plus"></i>
             </a></h2>
             <hr>
             <div class="col-md-2" th:each="product : ${newBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
-                            <a><i class="fa fa-shopping-cart"></i></a>
+                        <th:block sec:authorize="isAnonymous()">
+                            <li><a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a></li>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a>
+                            </li>
+                        </th:block>
+
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                    <span class="product-discount-label" th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                    <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
                 <div class="product-content">
                     <h3 class="title">
                         [[${product.productName}]]
                     </h3>
-                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA')}]]원</span>
+                        <span>([[${product.discountPercent}]]%)</span>
                     </div>
                 </div>
             </div>
@@ -81,128 +114,153 @@
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBooks)}">
             <h2 style="text-align: left"> 할인 도서
-                <a th:href="@{/products(productTypeNo=${2}, productTypeName=${'할인'})}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                <a th:href="@{/products(productTypeNo=${2}, productTypeName=${'할인'})}"
+                   style="text-decoration-line: none; color: #000000">
+                    <i class="fa-solid fa-circle-plus"></i>
                 </a></h2>
             <hr>
             <div class="col-md-2" th:each="product : ${discountBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
-                            <a><i class="fa fa-shopping-cart"></i></a>
+                        <th:block sec:authorize="isAnonymous()">
+                            <li><a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a></li>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a>
+                            </li>
+                        </th:block>
+
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                    <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
                 <div class="product-content">
                     <h3 class="title">
                         [[${product.productName}]]
                     </h3>
-                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA')}]]원</span>
+                        <span>([[${product.discountPercent}]]%)</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(bestSeller)}">
-            <h2 style="text-align: left">베스트셀러 <a th:href="@{/products(productTypeNo=${3}, productTypeName=${'베스트셀러'})}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
-            </a> </h2>
+            <h2 style="text-align: left">베스트셀러 <a th:href="@{/products(productTypeNo=${3}, productTypeName=${'베스트셀러'})}"
+                                                  style="text-decoration-line: none; color: #000000">
+                <i class="fa-solid fa-circle-plus"></i>
+            </a></h2>
             <hr>
             <div class="col-md-2" th:each="product : ${bestSeller}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
                         <th:block sec:authorize="isAnonymous()">
-                        <li><a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                            <li><a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a></li>
                         </th:block>
 
                         <th:block sec:authorize="isAuthenticated()">
                             <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
                                 th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
-                                <a data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a>
+                                <a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a>
                             </li>
                         </th:block>
 
-                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
-                            <a><i class="fa fa-shopping-cart"></i></a>
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                    <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
                 <div class="product-content">
                     <h3 class="title">
                         [[${product.productName}]]
                     </h3>
-                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA')}]]원</span>
+                        <span>([[${product.discountPercent}]]%)</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(popularBooks)}">
-            <h2 style="text-align: left">인기 도서 <a th:href="@{/products(productTypeNo=${5}, productTypeName=${'인기'})}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+            <h2 style="text-align: left">인기 도서 <a th:href="@{/products(productTypeNo=${5}, productTypeName=${'인기'})}"
+                                                  style="text-decoration-line: none; color: #000000">
+                <i class="fa-solid fa-circle-plus"></i>
             </a></h2>
             <hr>
             <div class="col-md-2" th:each="product, count : ${popularBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
-                        <img class="img-thumbnail" th:src="${product.fileThumbnailsUrl}">
+                        <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
                     </a>
                     <ul class="social">
                         <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
-                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li class="addCartBtn" th:attr="productNo=${product.productNo}" th:onclick="addProduct(this.getAttribute('productNo'))">
-                            <a><i class="fa fa-shopping-cart"></i></a>
+                        <th:block sec:authorize="isAnonymous()">
+                            <li><a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a></li>
+                        </th:block>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                <a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a>
+                            </li>
+                        </th:block>
+
+                        <li class="addCartBtn" th:attr="productNo=${product.productNo}"
+                            th:onclick="addProduct(this.getAttribute('productNo'))">
+                            <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
                     <span class="product-discount-label"
                           th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                     품절</span>
-                    <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                    <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
                 <div class="product-content">
                     <h3 class="title">
                         [[${product.productName}]]
                     </h3>
-                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                    <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
+                        <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA')}]]원</span>
+                        <span>([[${product.discountPercent}]]%)</span>
                     </div>
                 </div>
             </div>
         </div>
 
 
-
     </div>
     <script src="/mainpage/js/slider.js"></script>
     <script src="/cart/js/cartAddProduct.js"></script>
-<!--    <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>-->
+    <!--    <script type="text/javascript" src="/mainpage/js/bubbler.js"></script>-->
     <script type="text/javascript" src="/mainpage/js/script.js"></script>
-<!--    <script src="/cart/js/cartHeader.js"></script>-->
+    <!--    <script src="/cart/js/cartHeader.js"></script>-->
     <script src="/bookmark/js/bookmarkAdd.js"></script>
 
 </div>

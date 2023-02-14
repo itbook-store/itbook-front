@@ -51,6 +51,10 @@ public class CartScheduler {
 
         List<CartMemberRequestDto> list = new ArrayList<>();
 
+        if (filteredMapList.isEmpty()) {
+            return;
+        }
+
         for (Map<Object, Object> map : filteredMapList) {
              Integer memberNo = (Integer) map.get(MEMBER_NO);
             map.remove(MEMBER_NO);
