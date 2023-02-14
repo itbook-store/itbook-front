@@ -24,6 +24,7 @@ import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 import shop.itbook.itbookfront.review.dto.response.UnwrittenReviewOrderProductResponseDto;
@@ -99,6 +100,7 @@ public class ReviewController {
 
         try {
             reviewResponseDto = reviewService.findReview(orderProductNo);
+            log.info("reviewResponseDto = {}", reviewResponseDto);
         } catch (ReviewNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }

@@ -449,6 +449,7 @@
         let canceledOrderNo = null;
 
         let temp = [[${orderSheetFormDto}]];
+        let subsTemp = [[${orderAddRequestDto}]];
 
         // for문
         let productNoList = temp.productNoList;
@@ -485,19 +486,42 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": temp.isSubscription,
-                "subscriptionPeriod": temp.subscriptionPeriod,
+                "isSubscription": subsTemp.isSubscription,
+                "subscriptionPeriod": subsTemp.subscriptionPeriod,
                 "decreasePoint" :  document.getElementById("point_apply_input").value,
                 "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
 
-            if(canceledOrderNo && !temp.isSubscription) {
+            if(subsTemp.isSubscription) {
+                orderSubscription(orderAddRequestDto);
+                return;
+            }
+
+            if(canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
                 return
             }
             createOrderForPayment(orderAddRequestDto);
+        }
+
+        async function orderSubscription(orderAddRequestDto) {
+
+            console.log("제발제발제발요");
+
+            await fetch(`/async/orders/subscription/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
         }
 
         async function createOrderForPayment(orderAddRequestDto) {

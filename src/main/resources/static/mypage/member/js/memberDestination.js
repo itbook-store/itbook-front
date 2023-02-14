@@ -45,6 +45,7 @@ function validationCheck() {
         || !checkRecipientAddressDetails(detailAddress)) {
         return false;
     } else {
+        alert("배송지를 등록하였습니다.");
         document.getElementById("memberDestinationForm").submit();
     }
 }
@@ -64,6 +65,7 @@ function modifyValidationCheck() {
         || !checkRecipientAddressDetails(detailAddress)) {
         return false;
     } else {
+        alert("배송지가 수정되었습니다.");
         document.getElementById("modifyMemberDestinationForm").submit();
     }
 }

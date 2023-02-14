@@ -89,6 +89,10 @@
                                     th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                 품절
                             </button>
+                            <button th:if="${product.isSubscription}"
+                                    class="btn btn-primary btn-rounded" style="display :inline-block;"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}" th:onclick="|location.href= '@{/order-sheet/subscription/select-period(productNo = ${product.productNo}, productCnt = ${1})}'|">구독하기
+                            </button>
                             <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()"
                                     class="btn btn-primary btn-rounded" style="display :inline-block;"
                                     th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
@@ -323,7 +327,6 @@
 
             let form = document.getElementById("productPaymentRequestForm");
             form.submit();
-            // location.href = "/order-sheet?productNoList=" + productNoList + "&productCntList=" + productCntList;
             $('#nonMemberModal').modal("hide");
         })
         $('#modalN').click(function () {

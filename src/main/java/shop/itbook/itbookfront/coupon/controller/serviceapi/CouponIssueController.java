@@ -1,6 +1,8 @@
 package shop.itbook.itbookfront.coupon.controller.serviceapi;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +29,12 @@ public class CouponIssueController {
 
     @GetMapping("/all")
     public String findAllCouponIssueListByMemberId(Model model,
-                                                   @AuthenticationPrincipal UserDetailsDto userDetailsDto){
+                                                   @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                                   @PageableDefault Pageable pageable){
 
         PageResponse<UserCouponIssueListResponseDto> userCouponIssueList =
-            couponIssueService.findUserAllCouponIssueList("/api/coupon-issues/"+ userDetailsDto.getMemberNo());
+            couponIssueService.findUserAllCouponIssueList(String.format("/api/coupon-issues/%d?page=%d&size=%d",
+                userDetailsDto.getMemberNo(),pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("pageResponse", userCouponIssueList);
         model.addAttribute("paginationUrl",

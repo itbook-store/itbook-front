@@ -23,6 +23,11 @@ public interface OrderService {
     OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
                              Optional<Long> memberNo);
 
+    OrderPaymentDto addOrderSubscription(OrderAddRequestDto orderAddRequestDto,
+                                         Optional<Long> memberNo);
+
+    void completeOrderSubscription(Long orderNo);
+
     OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto,
                             Long orderNo);
 
