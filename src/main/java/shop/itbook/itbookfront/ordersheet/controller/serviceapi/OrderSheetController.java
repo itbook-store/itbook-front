@@ -22,6 +22,8 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
+import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
 import shop.itbook.itbookfront.order.dto.request.ProductDetailsDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.exception.InvalidOrderException;
@@ -51,12 +53,11 @@ public class OrderSheetController {
      * @return 주문 작성 페이지
      */
     @PostMapping
-    public String orderSubscription(@RequestParam("productNo") List<Long> productNoList,
-                                    @RequestParam("productCnt") List<Integer> productCntList,
-                                    @ModelAttribute("orderAddRequestDto")
-                                    OrderAddRequestDto orderAddRequestDto,
-                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                                    Model model) {
+    public String orderProductMember(
+        @ModelAttribute("orderSheetFormDto")
+        OrderSheetFormDto orderSheetFormDto,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        Model model) {
 
         // TODO: 2023/02/08 포인트 받아오기
         // TODO: 2023/02/08 사용가능한 쿠폰 받아오기
@@ -74,17 +75,10 @@ public class OrderSheetController {
         }
 
         OrderSheetResponseDto orderSheet =
-            orderSheetService.findOrderSheetCartProducts(productNoList, productCntList,
+            orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(), orderSheetFormDto.getProductCntList(),
                 memberNo);
 
-        Queue<Integer> productCntQueue = new LinkedList<>(productCntList);
-
-        List<ProductDetailsDto> productDetailsDtoList = new ArrayList<>(productCntList.size());
-        for (int i = 0; i < productNoList.size(); i++) {
-            productDetailsDtoList.add(
-                new ProductDetailsDto(productNoList.get(i), productCntList.get(i), null));
-        }
-        orderAddRequestDto.setProductDetailsDtoList(productDetailsDtoList);
+        Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
 
         model.addAttribute("productDetailsList",
             orderSheet.getProductDetailsResponseDtoList());

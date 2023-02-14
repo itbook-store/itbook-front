@@ -31,7 +31,7 @@
             <p>주문서 작성</p>
         </div>
 
-        <form id="orderForm" class="product-info" method="post" th:object="${orderAddRequestDto}">
+        <form id="orderForm" class="product-info" method="post" th:object="${orderSheetFormDto}">
             <div class="product-box">
                 <div class="box-title">주문 상품</div>
 
@@ -78,7 +78,7 @@
                                 <td style="text-align: center">
                                     <th:block sec:authorize="isAuthenticated()">
                                     <div class="coupon_box" style="display: flex; flex-direction: column; align-items: center" th:attr="data-valid=${product.productNo}">
-                                    <input type="hidden" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" class="couponIssueNo" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
                                     <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
                                     <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
                                     <button class="btn coupon_btn" type="button" onclick="couponModalFunc(this)"
@@ -192,13 +192,14 @@
                     <div class="box-content">
                         <div class="point_myPointBox">
                             <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                            <p id="myPoint">7,000</p>
+                            <p id="myPoint">7000</p>
                             <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                         </div>
                         <div class="point_apply_box">
                             <input type="text"
                                    onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                    value="0" readonly
+                                   name="decreasePoint"
                                    id="point_apply_input"
                             >
                             <button type="button" id="point_apply_btn" class="btn">적용하기</button>
@@ -440,30 +441,29 @@
 
         let canceledOrderNo = null;
 
-        let temp = [[${orderAddRequestDto}]];
+        let temp = [[${orderSheetFormDto}]];
 
         // for문
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
-        function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
-            this.productNo = productNo;
-            this.productCnt = productCnt;
-            this.couponIssueNo = couponIssueNo;
-        }
-
-        let productDetailList = [];
-
-        for (let i = 0; i < productNoList.length; i++) {
-            productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i]));
-        }
-
-        // productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
-        // productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
-
-        // console.log(productDetailList);
 
         function processPayment() {
+
+            function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
+                this.productNo = productNo;
+                this.productCnt = productCnt;
+                this.couponIssueNo = couponIssueNo;
+            }
+
+            let productDetailList = [];
+
+            let couponTagList = document.querySelectorAll(".couponIssueNo");
+
+
+            for (let i = 0; i < productNoList.length; i++) {
+                productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
+            }
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
@@ -476,7 +476,9 @@
                 "deliveryFee": 0,
                 "decreasePoint": 0,
                 "isSubscription": temp.isSubscription,
-                "subscriptionPeriod": temp.subscriptionPeriod
+                "subscriptionPeriod": temp.subscriptionPeriod,
+                "decreasePoint" :  document.getElementById("point_apply_input").value,
+                "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
