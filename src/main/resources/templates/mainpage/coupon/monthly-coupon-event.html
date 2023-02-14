@@ -33,7 +33,7 @@
 
                                 <div class="col-xs-5">
                                     <picture class="lateral-picture">
-                                        <img src="https://www.bootdey.com/image/400x400/FFB6C1/000000" alt="">
+                                        <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
                                     </picture>
                                 </div>
                                 <div class="col-xs-7 align-middle p-lg">
@@ -45,6 +45,7 @@
                                         <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
                                         th:text="${coupon.name}"></h1>
                                     </p>
+                                    <p>
                                     <th:block th:if="${coupon.amount!=0}">
                                         <span th:text="${coupon.amount} + '원 할인'"></span>
                                     </th:block>
@@ -54,6 +55,7 @@
                                     <th:block th:if="${coupon.point!=0}">
                                         <span th:text="${coupon.point} + ' 포인트 적립'"></span>
                                     </th:block>
+                                    </p>
                                     <p>
                                         <span th:text="${#temporals.format(coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
                                         다운 가능
@@ -71,7 +73,7 @@
 
                                     <div class="col-xs-5">
                                         <picture class="lateral-picture">
-                                            <img src="https://www.bootdey.com/image/400x400/FFB6C1/000000" alt="">
+                                            <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
                                         </picture>
                                     </div>
                                     <div class="col-xs-7 align-middle p-lg">
