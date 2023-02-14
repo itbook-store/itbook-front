@@ -309,14 +309,14 @@ function couponModalFunc(trigger) {
                 let discountApplyPrice;
                 if (discountPolicy === "won") {
                     discountApplyPrice = couponDiscountAmount;
-                    totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount).toLocaleString();
+                    totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount);
                 } else {
                     if (productCount === 1) {
                         discountApplyPrice = Number(originTotalPrice * (couponDiscountAmount / 100));
-                        totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice).toLocaleString();
+                        totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice);
                     } else {
                         discountApplyPrice = Number(productSelledPrice * (couponDiscountAmount / 100));
-                        totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1))).toLocaleString();
+                        totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1)));
                     }
                 }
 
@@ -506,7 +506,7 @@ function getOrderProductTotalPriceBeforeDiscount() {
         return;
     }
 
-    orderOriginPrice.innerHTML = String(temp.toLocaleString());
+    orderOriginPrice.innerHTML = String(temp);
     return temp;
 }
 
@@ -531,17 +531,17 @@ pointApplyBtn.addEventListener("click", function () {
 
             if (myPoint >= orderRealAmountPrice) {
                 myPoint = myPoint - orderRealAmountPrice;
-                pointApplyInput.value = Number(orderRealAmountPrice.toLocaleString());
+                pointApplyInput.value = Number(orderRealAmountPrice);
 
                 /* 총 할인 금액 계산 */
                 totalDiscountPrice = orderRealAmountPrice;
 
-                myPointTag.innerText = myPoint.toLocaleString();
+                myPointTag.innerText = myPoint;
                 // orderRealAmountPrice = 0;
 
             } else {
                 // orderRealAmountPrice = orderRealAmountPrice - myPoint;
-                pointApplyInput.value = myPoint.toLocaleString();
+                pointApplyInput.value = myPoint;
 
                 /* 총 할인 금액 계산 */
                 totalDiscountPrice += myPoint;
@@ -583,7 +583,7 @@ pointCancelBtn.addEventListener("click", function () {
             pointApplyInput.value = 0;
 
             let existingMyPoint = Number(myPointTag.innerText.replace(',', ''));
-            myPointTag.innerText = Number(existingMyPoint + applyPoint).toLocaleString();
+            myPointTag.innerText = Number(existingMyPoint + applyPoint);
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
@@ -607,7 +607,7 @@ function setOrderRealAmountTag() {
         orderRealAmountPrice = 0;
     }
 
-    orderRealAmountTag.innerHTML = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    orderRealAmountTag.innerHTML = (orderRealAmountPrice - totalDiscountPrice);
 }
 
 
@@ -619,7 +619,7 @@ function setTotalDiscountPriceTag() {
         totalDiscountPriceTag = 0;
     }
 
-    totalDiscountPriceTag.innerHTML = totalDiscountPrice.toLocaleString();
+    totalDiscountPriceTag.innerHTML = totalDiscountPrice;
 
 }
 
