@@ -1,8 +1,10 @@
 let orderRealAmountPrice = 0;
 let totalDiscountPrice = 0;
+const deliveryFee = 3000;
 
 document.addEventListener("DOMContentLoaded", function () {
     orderRealAmountPrice = getOrderProductTotalPriceBeforeDiscount();
+    orderRealAmountPrice += deliveryFee;
     setOrderRealAmountTag();
     setTotalDiscountPriceTag();
 });
@@ -309,14 +311,14 @@ function couponModalFunc(trigger) {
                 let discountApplyPrice;
                 if (discountPolicy === "won") {
                     discountApplyPrice = couponDiscountAmount;
-                    totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount).toLocaleString();
+                    totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount);
                 } else {
                     if (productCount === 1) {
                         discountApplyPrice = Number(originTotalPrice * (couponDiscountAmount / 100));
-                        totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice).toLocaleString();
+                        totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice);
                     } else {
                         discountApplyPrice = Number(productSelledPrice * (couponDiscountAmount / 100));
-                        totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1))).toLocaleString();
+                        totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1)));
                     }
                 }
 
@@ -331,7 +333,6 @@ function couponModalFunc(trigger) {
                 setTotalDiscountPriceTag();
 
                 $('#product_coupon_modal').modal('hide');
-                return;
 
             });
 
@@ -348,18 +349,14 @@ $('#order_amount_coupon_btn').click(function () {
     let url = $(this).data("url");
 
     let orderTotalCouponNoInput = document.querySelector("#orderTotalCouponNo");
-    console.log(orderTotalCouponNoInput);
     let orderTotalCouponNameInput = document.querySelector("#order_total_coupon_name");
-    console.log(orderTotalCouponNameInput);
     let orderTotalCouponAmountInput = document.querySelector("#orderTotalCouponAmount");
-    console.log(orderTotalCouponAmountInput);
 
     $.ajax({
         type: "GET",
         url: url,
         dataType: 'json',
         success: function(res) {
-            console.log(res);
 
             let couponTableBody = document.querySelector(".order_total_coupon_list_table_body");
             couponTableBody.innerHTML = "";
@@ -428,7 +425,7 @@ $('#order_amount_coupon_btn').click(function () {
                 let productTotalPriceAmount = 0;
                 let productTotalPriceList = document.querySelectorAll(".product_total_price");
 
-                for (let i = 1; i < productTotalPriceList.length; i++) {
+                for (let i = 0; i < productTotalPriceList.length; i++) {
                     productTotalPriceAmount += Number(productTotalPriceList[i].innerHTML);
                 }
 
@@ -453,8 +450,8 @@ $('#order_amount_coupon_btn').click(function () {
                     discountApplyPrice = Number(productTotalPriceAmount * (couponDiscountAmount / 100)).toFixed();
                 }
 
-                totalDiscountPrice -= Number(orderTotalCouponAmountInput.value).toFixed();
-                totalDiscountPrice += Number(discountApplyPrice).toFixed();
+                totalDiscountPrice -= Number(orderTotalCouponAmountInput.value);
+                totalDiscountPrice += Number(discountApplyPrice);
 
                 orderTotalCouponNoInput.value = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked").value;
                 orderTotalCouponNameInput.value = couponName;
@@ -506,7 +503,7 @@ function getOrderProductTotalPriceBeforeDiscount() {
         return;
     }
 
-    orderOriginPrice.innerHTML = String(temp.toLocaleString());
+    orderOriginPrice.innerHTML = String(temp);
     return temp;
 }
 
@@ -531,17 +528,17 @@ pointApplyBtn.addEventListener("click", function () {
 
             if (myPoint >= orderRealAmountPrice) {
                 myPoint = myPoint - orderRealAmountPrice;
-                pointApplyInput.value = Number(orderRealAmountPrice.toLocaleString());
+                pointApplyInput.value = Number(orderRealAmountPrice);
 
                 /* 총 할인 금액 계산 */
                 totalDiscountPrice = orderRealAmountPrice;
 
-                myPointTag.innerText = myPoint.toLocaleString();
+                myPointTag.innerText = myPoint;
                 // orderRealAmountPrice = 0;
 
             } else {
                 // orderRealAmountPrice = orderRealAmountPrice - myPoint;
-                pointApplyInput.value = myPoint.toLocaleString();
+                pointApplyInput.value = myPoint;
 
                 /* 총 할인 금액 계산 */
                 totalDiscountPrice += myPoint;
@@ -583,7 +580,7 @@ pointCancelBtn.addEventListener("click", function () {
             pointApplyInput.value = 0;
 
             let existingMyPoint = Number(myPointTag.innerText.replace(',', ''));
-            myPointTag.innerText = Number(existingMyPoint + applyPoint).toLocaleString();
+            myPointTag.innerText = Number(existingMyPoint + applyPoint);
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
@@ -598,6 +595,7 @@ pointCancelBtn.addEventListener("click", function () {
 function setOrderRealAmountTag() {
 
     let orderRealAmountTag = document.querySelector("#order_real_amount");
+    let paymentBtnAmountPriceTag = document.querySelector("#payment_btn_amount_price");
 
     if (orderRealAmountPrice < 0) {
         orderRealAmountPrice = 0;
@@ -607,7 +605,9 @@ function setOrderRealAmountTag() {
         orderRealAmountPrice = 0;
     }
 
-    orderRealAmountTag.innerHTML = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    let paymentPrice = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    orderRealAmountTag.innerHTML = paymentPrice;
+    paymentBtnAmountPriceTag.innerHTML = paymentPrice;
 }
 
 
@@ -616,10 +616,10 @@ function setTotalDiscountPriceTag() {
     let totalDiscountPriceTag = document.querySelector("#total_discount_price");
 
     if (totalDiscountPrice < 0) {
-        totalDiscountPriceTag = 0;
+        totalDiscountPriceTag.innerText = 0;
     }
 
-    totalDiscountPriceTag.innerHTML = totalDiscountPrice.toLocaleString();
+    totalDiscountPriceTag.innerHTML = totalDiscountPrice;
 
 }
 
@@ -654,11 +654,8 @@ destinationListBtn.addEventListener("click", function () {
     $('input[type=radio][name="destination_info"]').on('change', function() {
         let selectedInfo = document.querySelector("#destinationModal input[name='destination_info']:checked").parentElement.children[1].children;
 
-
         for (let i = 0; i < selectedInfo.length; i++) {
-            console.log(selectedInfo[i]);
-            console.log(selectedInfo[i].childNodes[3].value)
-            addressArray.push(selectedInfo[i].childNodes[3].value);
+            addressArray.push(selectedInfo[i].children[1].value);
         }
 
     });
@@ -680,6 +677,8 @@ destinationListBtn.addEventListener("click", function () {
 
         let actualDestinationInfoList = document.querySelector(".actual_destination").children;
 
+        console.log(actualDestinationInfoList)
+
         for (let i = 0; i < actualDestinationInfoList.length; i++) {
             actualDestinationInfoList[i].children[1].readOnly = true;
             actualDestinationInfoList[i].children[1].value = addressArray[i];
@@ -692,3 +691,27 @@ destinationListBtn.addEventListener("click", function () {
     });
 
 });
+
+
+function checkValidAddress() {
+
+    let addressInputList = document.querySelectorAll(".actual_destination input");
+
+    let result = true;
+
+    for (let i = 0; i < addressInputList.length; i++) {
+        if (addressInputList[i].value === null || addressInputList[i].value === '') {
+            result = false;
+        }
+    }
+
+    if (!result) {
+        Swal.fire({
+            icon: 'error',
+            title: '배송지가 선택되지 않았습니다.',
+            text: '다시 선택해 주세요.',
+        })
+    }
+
+    return result;
+}

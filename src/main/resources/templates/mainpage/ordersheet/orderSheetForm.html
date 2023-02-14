@@ -31,7 +31,7 @@
             <p>주문서 작성</p>
         </div>
 
-        <form id="orderForm" class="product-info" method="post" th:object="${orderAddRequestDto}">
+        <form id="orderForm" class="product-info" method="post" th:object="${orderSheetFormDto}">
             <div class="product-box">
                 <div class="box-title">주문 상품</div>
 
@@ -78,7 +78,7 @@
                                 <td style="text-align: center">
                                     <th:block sec:authorize="isAuthenticated()">
                                     <div class="coupon_box" style="display: flex; flex-direction: column; align-items: center" th:attr="data-valid=${product.productNo}">
-                                    <input type="hidden" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" class="couponIssueNo" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
                                     <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
                                     <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
                                     <button class="btn coupon_btn" type="button" onclick="couponModalFunc(this)"
@@ -148,10 +148,15 @@
                     <div class="box-content">
 
                         <input type="hidden" name="orderTotalCouponNo" id="orderTotalCouponNo">
-                        <input type="hidden" id="orderTotalCouponAmount">
+                        <input type="hidden" id="orderTotalCouponAmount" value="0">
                         <input readonly id="order_total_coupon_name">
 
+                        <th:block sec:authorize="isAuthenticated()">
                         <button id="order_amount_coupon_btn" type="button" th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기</button>
+                        </th:block>
+                        <th:block sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
+                        </th:block>
 
                         <div class="modal fade" id="order_total_coupon_modal" tabindex="-1" role="dialog">
                             <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -190,20 +195,28 @@
                 <div class="point_container">
                     <div class="box-title">잇북 포인트</div>
                     <div class="box-content">
+
+                        <th:block sec:authorize="isAuthenticated()">
                         <div class="point_myPointBox">
                             <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                            <p id="myPoint">7,000</p>
+                            <p id="myPoint" th:text="${myPoint}">7000</p>
                             <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                         </div>
                         <div class="point_apply_box">
                             <input type="text"
                                    onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                    value="0" readonly
+                                   name="decreasePoint"
                                    id="point_apply_input"
                             >
                             <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                             <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
                         </div>
+                        </th:block>
+
+                        <th:block sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-dark" disabled>비회원은 포인트 사용이 불가합니다.</button>
+                        </th:block>
                     </div>
                 </div>
 
@@ -223,7 +236,7 @@
                     <i class="fa-solid fa-minus"></i>
 
                     <p class="product_amount_plainText">총 할인금액</p>
-                    <p id="total_discount_price" class="product_total_discount_price">0</p>
+                    <p id="total_discount_price" class="product_total_discount_price"></p>
                     <p class="product_amount_plainText">원</p>
 
                     <i class="fa-solid fa-equals"></i>
@@ -260,35 +273,30 @@
                                                 <div class="destination_box">
                                                     <p class="destination_text">수령인 이름</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientName"
                                                            th:value="${dst.recipientName}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">수령인 핸드폰번호</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientPhoneNumber"
                                                            th:value="${dst.recipientPhoneNumber}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">우편번호</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="postcode"
                                                            th:value="${dst.postcode}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">도로명 주소</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="roadNameAddress"
                                                            th:value="${dst.roadNameAddress}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">상세 주소</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientAddressDetails"
                                                            th:value="${dst.recipientAddressDetails}">
                                                 </div>
                                             </div>
@@ -381,7 +389,7 @@
 
                 <div style="display: flex; justify-content: center; margin-bottom: 100px">
                     <div class="payment_btn" id="paymentButton" onclick="processPayment()">
-                        <p>24,000</p>
+                        <p id="payment_btn_amount_price">24,000</p>
                         <p style="margin: 0 5px !important;">원</p>
                         <p>결제하기</p>
                     </div>
@@ -440,30 +448,47 @@
 
         let canceledOrderNo = null;
 
-        let temp = [[${orderAddRequestDto}]];
+        let temp = [[${orderSheetFormDto}]];
+        let subsTemp = [[${orderAddRequestDto}]];
 
         // for문
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
-        function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
-            this.productNo = productNo;
-            this.productCnt = productCnt;
-            this.couponIssueNo = couponIssueNo;
-        }
-
-        let productDetailList = [];
-
-        for (let i = 0; i < productNoList.length; i++) {
-            productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i]));
-        }
-
-        // productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
-        // productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
-
-        // console.log(productDetailList);
 
         function processPayment() {
+
+            if (!checkValidAddress()) {
+                return;
+            };
+
+            function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
+                this.productNo = productNo;
+                this.productCnt = productCnt;
+                this.couponIssueNo = couponIssueNo;
+            }
+
+            let productDetailList = [];
+
+            let couponTagList = document.querySelectorAll(".couponIssueNo");
+
+
+            for (let i = 0; i < productNoList.length; i++) {
+                productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
+            }
+
+            let isSub = false;
+            let period = 0;
+
+            if(subsTemp != null) {
+                if(subsTemp.isSubscription) {
+                    isSub = subsTemp.isSubscription;
+                }
+                if(subsTemp.subscriptionPeriod) {
+                    period = subsTemp.subscriptionPeriod;
+                }
+            }
+
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
@@ -474,17 +499,42 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": temp.isSubscription,
-                "subscriptionPeriod": temp.subscriptionPeriod
+                "isSubscription": isSub,
+                "subscriptionPeriod": period,
+                "decreasePoint" :  document.getElementById("point_apply_input").value,
+                "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
 
-            if(canceledOrderNo && !temp.isSubscription) {
+            if(subsTemp != null && subsTemp.isSubscription) {
+                orderSubscription(orderAddRequestDto);
+                return;
+            }
+
+            if(canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
                 return
             }
             createOrderForPayment(orderAddRequestDto);
+        }
+
+        async function orderSubscription(orderAddRequestDto) {
+
+            console.log("제발제발제발요");
+
+            await fetch(`/async/orders/subscription/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    doPaymentProcessByCard(data);
+                })
         }
 
         async function createOrderForPayment(orderAddRequestDto) {

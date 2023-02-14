@@ -295,6 +295,8 @@ table thead tr th {
 }
 
 #point_apply_input {
+    border: solid 1px #c0bfbf;
+    border-radius: 10px;
     padding-left: 10px;
     height: 38px;
 }

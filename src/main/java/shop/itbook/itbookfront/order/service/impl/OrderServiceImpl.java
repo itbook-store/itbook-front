@@ -64,11 +64,41 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderPaymentDto addOrderSubscription(OrderAddRequestDto orderAddRequestDto,
+                                                Optional<Long> memberNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path("/api/orders/subscription")
+            .queryParamIfPresent("memberNo", memberNo)
+            .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
+
+        return orderAdaptor.addOrder(uriComponents.toUri(), http);
+    }
+
+    @Override
+    public void completeOrderSubscription(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path("/api/orders/subscription/completion")
+            .queryParam("orderNo", orderNo)
+            .build();
+
+        orderAdaptor.postNullBodyReturnVoid(uriComponents.toUri());
+    }
+
+    @Override
     public OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto, Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
-            .path(String.format("/api/orders/%d", orderNo))
+            .path(String.format("/api/orders/re-order/%d", orderNo))
             .build();
 
         HttpHeaders headers = new HttpHeaders();
@@ -87,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
             .path(String.format("/api/orders/cancel/%d", orderNo))
             .build();
 
-        orderAdaptor.cancelOrder(uriComponents.toUri());
+        orderAdaptor.postNullBodyReturnVoid(uriComponents.toUri());
     }
 
     @Override

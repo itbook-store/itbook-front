@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.review.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * 리뷰 데이터를 받아올 dto 입니다.
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  * @since 1.0
  */
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewResponseDto {
@@ -20,6 +22,8 @@ public class ReviewResponseDto {
     private Long productNo;
 
     private String productName;
+
+    private String thumbnailUrl;
 
     private Long memberNo;
 
