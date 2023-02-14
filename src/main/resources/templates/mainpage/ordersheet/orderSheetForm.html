@@ -477,6 +477,19 @@
                 productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
             }
 
+            let isSub = false;
+            let period = 0;
+
+            if(subsTemp != null) {
+                if(subsTemp.isSubscription) {
+                    isSub = subsTemp.isSubscription;
+                }
+                if(subsTemp.subscriptionPeriod) {
+                    period = subsTemp.subscriptionPeriod;
+                }
+            }
+
+
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
                 "postcode": parseInt(document.getElementsByName("postcode")[0].value),
@@ -486,15 +499,15 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": subsTemp.isSubscription,
-                "subscriptionPeriod": subsTemp.subscriptionPeriod,
+                "isSubscription": isSub,
+                "subscriptionPeriod": period,
                 "decreasePoint" :  document.getElementById("point_apply_input").value,
                 "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
 
-            if(subsTemp.isSubscription) {
+            if(subsTemp != null && subsTemp.isSubscription) {
                 orderSubscription(orderAddRequestDto);
                 return;
             }
