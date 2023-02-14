@@ -598,6 +598,7 @@ pointCancelBtn.addEventListener("click", function () {
 function setOrderRealAmountTag() {
 
     let orderRealAmountTag = document.querySelector("#order_real_amount");
+    let paymentBtnAmountPriceTag = document.querySelector("#payment_btn_amount_price");
 
     if (orderRealAmountPrice < 0) {
         orderRealAmountPrice = 0;
@@ -607,7 +608,9 @@ function setOrderRealAmountTag() {
         orderRealAmountPrice = 0;
     }
 
-    orderRealAmountTag.innerHTML = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    let paymentPrice = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    orderRealAmountTag.innerHTML = paymentPrice;
+    paymentBtnAmountPriceTag.innerHTML = paymentPrice;
 }
 
 

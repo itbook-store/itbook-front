@@ -381,7 +381,7 @@
 
                 <div style="display: flex; justify-content: center; margin-bottom: 100px">
                     <div class="payment_btn" id="paymentButton" onclick="processPayment()">
-                        <p>24,000</p>
+                        <p id="payment_btn_amount_price">24,000</p>
                         <p style="margin: 0 5px !important;">원</p>
                         <p>결제하기</p>
                     </div>
@@ -446,6 +446,9 @@
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
+        let coupontTagList = document.querySelectorAll("[name=couponIssueNo]");
+
+
         function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
             this.productNo = productNo;
             this.productCnt = productCnt;
@@ -455,7 +458,7 @@
         let productDetailList = [];
 
         for (let i = 0; i < productNoList.length; i++) {
-            productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i]));
+            productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i]), coupontTagList[i].value);
         }
 
         // productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
