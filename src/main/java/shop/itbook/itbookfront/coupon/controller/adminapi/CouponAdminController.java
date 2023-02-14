@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -59,22 +60,26 @@ public class CouponAdminController {
     }
 
     @PostMapping ("/coupon-addition")
-    public String couponAdd(@Valid CouponInputRequestDto couponInputRequestDto, Model model,
+    public String couponAdd(@ModelAttribute @Valid CouponInputRequestDto couponInputRequestDto, Model model,
                             Errors errors, @RequestParam String couponCoverageGroup,
                             @RequestParam(required = false) String memberId,
                             @RequestParam(required = false) String membership,
                             RedirectAttributes redirectAttributes) {
 
-        if(errors.hasErrors()) {
-
-            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
-
-            Map<String, String> validatorResult = validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
-
-            return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
+//        if(errors.hasErrors()) {
+//            for(FieldError error : errors.getFieldErrors())
+//            {
+//                String fieldName = String.format("valid_%s",error.getField());
+//                redirectAttributes.addFlashAttribute("failMessage",error.getDefaultMessage());
+//            }
+//            model.addAttribute("mainCategoryList",
+//                categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
+//            model.addAttribute("membershipList", membershipService.getMemberships());
+//            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
+//            return "redirect:/admin/coupons/coupon-addition";
+//        }
+        if(Objects.isNull(couponInputRequestDto.getTotalQuantity())){
+            couponInputRequestDto.setTotalQuantity(0L);
         }
         couponInputRequestDto.setDuplicateUse(false);
 
@@ -92,7 +97,7 @@ public class CouponAdminController {
             model.addAttribute("membershipList", membershipService.getMemberships());
             model.addAttribute("couponInputRequestDto", couponInputRequestDto);
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return Strings.concat(DIRECTORY_NAME, "/couponAddForm");
+            return "redirect:/admin/coupons/coupon-addition";
         }
 
         return "redirect:/admin/coupons/list";
@@ -149,17 +154,5 @@ public class CouponAdminController {
         model.addAttribute("paginationUrl",
             String.format("/admin/coupons/list?coverage=%s", coverage));
         return Strings.concat(DIRECTORY_NAME, "/couponList");
-    }
-
-    public Map<String, String> validateHandling(Errors errors) {
-        Map<String, String> validatorResult = new HashMap<>();
-
-        for(FieldError error : errors.getFieldErrors())
-        {
-            String fieldName = String.format("valid_%s",error.getField());
-            validatorResult.put(fieldName,error.getDefaultMessage());
-        }
-
-        return validatorResult;
     }
 }
