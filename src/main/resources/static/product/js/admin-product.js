@@ -261,6 +261,40 @@ function addBookSubmit() {
         alert("카테고리는 최소 1개를 지정해야만 합니다.");
         return false;
     } else {
+        Swal.fire('도서 등록 성공!', '', 'success');
+        return true;
+    }
+}
+
+function modifyBookSubmit() {
+    if (document.getElementById("confirmBook").disabled == false) {
+        alert("등록 가능한 isbn인지 확인이 필요합니다.");
+        return false;
+    } else if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        Swal.fire('도서 수정 성공!', '', 'success');
+        return true;
+    }
+}
+
+function addProductSubmit() {
+    if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        Swal.fire('상품 등록 성공!', '', 'success');
+        return true;
+    }
+}
+
+function modifyProductSubmit() {
+    if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        Swal.fire('상품 수정 성공!', '', 'success');
         return true;
     }
 }

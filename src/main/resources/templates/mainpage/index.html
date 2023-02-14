@@ -95,7 +95,8 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label" th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                    <span class="product-discount-label"
+                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
                                     품절</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
@@ -143,7 +144,7 @@
                         </li>
                     </ul>
                     <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
                                     품절</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
@@ -190,7 +191,7 @@
                         </li>
                     </ul>
                     <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
                                     품절</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
@@ -237,7 +238,7 @@
                         </li>
                     </ul>
                     <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true or product.stock == 0}">
+                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
                                     품절</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>

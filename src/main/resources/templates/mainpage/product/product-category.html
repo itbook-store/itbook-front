@@ -42,13 +42,13 @@
                                     품절</span>
                             <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                         </div>
-                        <ul class="rating" style="text-align: center">
-                            <li style="float: left" class="fa fa-star"></li>
-                            <li style="float: left" class="fa fa-star"></li>
-                            <li style="float: left" class="fa fa-star"></li>
-                            <li style="float: left" class="fa fa-star"></li>
-                            <li style="float: left" class="fa fa-star"></li>
-                        </ul>
+<!--                        <ul class="rating" style="text-align: center">-->
+<!--                            <li style="float: left" class="fa fa-star"></li>-->
+<!--                            <li style="float: left" class="fa fa-star"></li>-->
+<!--                            <li style="float: left" class="fa fa-star"></li>-->
+<!--                            <li style="float: left" class="fa fa-star"></li>-->
+<!--                            <li style="float: left" class="fa fa-star"></li>-->
+<!--                        </ul>-->
                         <div class="product-content">
                             <h3 class="title">[[${product.productName}]]</h3>
                             <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
