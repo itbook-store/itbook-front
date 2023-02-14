@@ -148,10 +148,15 @@
                     <div class="box-content">
 
                         <input type="hidden" name="orderTotalCouponNo" id="orderTotalCouponNo">
-                        <input type="hidden" id="orderTotalCouponAmount">
+                        <input type="hidden" id="orderTotalCouponAmount" value="0">
                         <input readonly id="order_total_coupon_name">
 
+                        <th:block sec:authorize="isAuthenticated()">
                         <button id="order_amount_coupon_btn" type="button" th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기</button>
+                        </th:block>
+                        <th:block sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
+                        </th:block>
 
                         <div class="modal fade" id="order_total_coupon_modal" tabindex="-1" role="dialog">
                             <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -223,7 +228,7 @@
                     <i class="fa-solid fa-minus"></i>
 
                     <p class="product_amount_plainText">총 할인금액</p>
-                    <p id="total_discount_price" class="product_total_discount_price">0</p>
+                    <p id="total_discount_price" class="product_total_discount_price"></p>
                     <p class="product_amount_plainText">원</p>
 
                     <i class="fa-solid fa-equals"></i>

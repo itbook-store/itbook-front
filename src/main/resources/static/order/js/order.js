@@ -1,8 +1,10 @@
 let orderRealAmountPrice = 0;
 let totalDiscountPrice = 0;
+const deliveryFee = 3000;
 
 document.addEventListener("DOMContentLoaded", function () {
     orderRealAmountPrice = getOrderProductTotalPriceBeforeDiscount();
+    orderRealAmountPrice += deliveryFee;
     setOrderRealAmountTag();
     setTotalDiscountPriceTag();
 });
@@ -331,7 +333,6 @@ function couponModalFunc(trigger) {
                 setTotalDiscountPriceTag();
 
                 $('#product_coupon_modal').modal('hide');
-                return;
 
             });
 
@@ -348,18 +349,14 @@ $('#order_amount_coupon_btn').click(function () {
     let url = $(this).data("url");
 
     let orderTotalCouponNoInput = document.querySelector("#orderTotalCouponNo");
-    console.log(orderTotalCouponNoInput);
     let orderTotalCouponNameInput = document.querySelector("#order_total_coupon_name");
-    console.log(orderTotalCouponNameInput);
     let orderTotalCouponAmountInput = document.querySelector("#orderTotalCouponAmount");
-    console.log(orderTotalCouponAmountInput);
 
     $.ajax({
         type: "GET",
         url: url,
         dataType: 'json',
         success: function(res) {
-            console.log(res);
 
             let couponTableBody = document.querySelector(".order_total_coupon_list_table_body");
             couponTableBody.innerHTML = "";
@@ -428,7 +425,7 @@ $('#order_amount_coupon_btn').click(function () {
                 let productTotalPriceAmount = 0;
                 let productTotalPriceList = document.querySelectorAll(".product_total_price");
 
-                for (let i = 1; i < productTotalPriceList.length; i++) {
+                for (let i = 0; i < productTotalPriceList.length; i++) {
                     productTotalPriceAmount += Number(productTotalPriceList[i].innerHTML);
                 }
 
@@ -453,8 +450,8 @@ $('#order_amount_coupon_btn').click(function () {
                     discountApplyPrice = Number(productTotalPriceAmount * (couponDiscountAmount / 100)).toFixed();
                 }
 
-                totalDiscountPrice -= Number(orderTotalCouponAmountInput.value).toFixed();
-                totalDiscountPrice += Number(discountApplyPrice).toFixed();
+                totalDiscountPrice -= Number(orderTotalCouponAmountInput.value);
+                totalDiscountPrice += Number(discountApplyPrice);
 
                 orderTotalCouponNoInput.value = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked").value;
                 orderTotalCouponNameInput.value = couponName;
@@ -619,7 +616,7 @@ function setTotalDiscountPriceTag() {
     let totalDiscountPriceTag = document.querySelector("#total_discount_price");
 
     if (totalDiscountPrice < 0) {
-        totalDiscountPriceTag = 0;
+        totalDiscountPriceTag.innerText = 0;
     }
 
     totalDiscountPriceTag.innerHTML = totalDiscountPrice.toLocaleString();
@@ -659,8 +656,6 @@ destinationListBtn.addEventListener("click", function () {
 
 
         for (let i = 0; i < selectedInfo.length; i++) {
-            console.log(selectedInfo[i]);
-            console.log(selectedInfo[i].childNodes[3].value)
             addressArray.push(selectedInfo[i].childNodes[3].value);
         }
 
