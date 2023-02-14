@@ -266,35 +266,30 @@
                                                 <div class="destination_box">
                                                     <p class="destination_text">수령인 이름</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientName"
                                                            th:value="${dst.recipientName}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">수령인 핸드폰번호</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientPhoneNumber"
                                                            th:value="${dst.recipientPhoneNumber}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">우편번호</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="postcode"
                                                            th:value="${dst.postcode}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">도로명 주소</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="roadNameAddress"
                                                            th:value="${dst.roadNameAddress}">
                                                 </div>
 
                                                 <div class="destination_box">
                                                     <p class="destination_text">상세 주소</p>
                                                     <input type="text" placeholder="수령인 이름"
-                                                           name="recipientAddressDetails"
                                                            th:value="${dst.recipientAddressDetails}">
                                                 </div>
                                             </div>
@@ -454,6 +449,10 @@
 
 
         function processPayment() {
+
+            if (!checkValidAddress()) {
+                return;
+            };
 
             function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
                 this.productNo = productNo;

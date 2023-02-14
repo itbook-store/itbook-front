@@ -654,9 +654,8 @@ destinationListBtn.addEventListener("click", function () {
     $('input[type=radio][name="destination_info"]').on('change', function() {
         let selectedInfo = document.querySelector("#destinationModal input[name='destination_info']:checked").parentElement.children[1].children;
 
-
         for (let i = 0; i < selectedInfo.length; i++) {
-            addressArray.push(selectedInfo[i].childNodes[3].value);
+            addressArray.push(selectedInfo[i].children[1].value);
         }
 
     });
@@ -678,6 +677,8 @@ destinationListBtn.addEventListener("click", function () {
 
         let actualDestinationInfoList = document.querySelector(".actual_destination").children;
 
+        console.log(actualDestinationInfoList)
+
         for (let i = 0; i < actualDestinationInfoList.length; i++) {
             actualDestinationInfoList[i].children[1].readOnly = true;
             actualDestinationInfoList[i].children[1].value = addressArray[i];
@@ -690,3 +691,27 @@ destinationListBtn.addEventListener("click", function () {
     });
 
 });
+
+
+function checkValidAddress() {
+
+    let addressInputList = document.querySelectorAll(".actual_destination input");
+
+    let result = true;
+
+    for (let i = 0; i < addressInputList.length; i++) {
+        if (addressInputList[i].value === null || addressInputList[i].value === '') {
+            result = false;
+        }
+    }
+
+    if (!result) {
+        Swal.fire({
+            icon: 'error',
+            title: '배송지가 선택되지 않았습니다.',
+            text: '다시 선택해 주세요.',
+        })
+    }
+
+    return result;
+}
