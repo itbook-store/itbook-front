@@ -12,14 +12,27 @@
     <div class="content">
         <h2>작성한 상품문의</h2>
         <hr>
-        <hr>
-        <h5>제목</h5>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>상품명</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center"><img width="100px;" th:src="${productInquiryResponseDto.thumbnailUrl}"></td>
+                <td th:text="${productInquiryResponseDto.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h4>제목</h4>
         <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
-        <h5>내용</h5>
+        <h4>내용</h4>
         <p th:text="${productInquiryResponseDto.content}"></p>
         <div>
             <hr>
-            <h4>답변 작성</h4>
+            <h3>답변 작성</h3>
             <form class="mb-3" id="productInquiryForm" name="productInquiryReplyForm"  method="post"
                   th:object="${productInquiryReplyRequestDto}" th:action="@{/admin/product-inquiries/reply/add}">
 

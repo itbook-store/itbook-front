@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/mypage/default-layout}">
+      layout:decorate="~{layout/mainpage/default-layout}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,16 +10,31 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
+        <p></p>
         <h2>작성한 상품문의</h2>
         <hr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>상품명</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center"><img width="100px;" th:src="${productInquiryResponseDto.thumbnailUrl}"></td>
+                <td th:text="${productInquiryResponseDto.name}"></td>
+            </tr>
+            </tbody>
+        </table>
         <hr>
-        <h5>제목</h5>
+        <h4>제목</h4>
         <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
-        <h5>내용</h5>
+        <h4>내용</h4>
         <p th:text="${productInquiryResponseDto.content}"></p>
         <div>
             <hr>
-            <h4>답변 작성</h4>
+            <h3>답변 작성</h3>
             <form class="mb-3" id="productInquiryForm" name="productInquiryReplyForm"  method="post"
                   th:object="${productInquiryReplyRequestDto}" th:action="@{/product-inquiries/reply/add}">
 
