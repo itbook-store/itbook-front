@@ -32,7 +32,7 @@
                                     <tr th:each="unwrittenReviewOrderProduct : ${pageResponse.getContent()}">
                                         <td><span th:text="${unwrittenReviewOrderProduct.orderProductNo}"></span></td>
                                         <td><img width="100px;" th:src="${unwrittenReviewOrderProduct.thumbnailUrl}"></td>
-                                        <td><span th:text="${unwrittenReviewOrderProduct.name}"></span></td>
+                                        <td><span th:text="${unwrittenReviewOrderProduct.name}" th:onclick="|location.href='@{/products/{productNo}(productNo=${unwrittenReviewOrderProduct.productNo})}'|"></span></td>
                                         <td><span th:text="${#temporals.format(unwrittenReviewOrderProduct.orderCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span></td>
                                         <td>
                                             <button class="btn btn-light"

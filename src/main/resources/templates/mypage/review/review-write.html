@@ -14,9 +14,6 @@
         <h2>리뷰작성</h2>
         <hr>
         <div>
-
-        </div>
-        <div>
             <form class="mb-3" enctype="multipart/form-data" id="reviewForm" name="reviewForm"  method="post"
                 th:object="${reviewRequestDto}" th:action="@{/review/add}">
 
@@ -53,7 +50,7 @@
                     <h5>사진 첨부하기</h5>
                     <input type="file" value="파일 선택" name="images" accept="image/*"/>
                 </div>
-                <button class="btn btn-primary" type="submit">작성 완료</button>
+                <button class="btn btn-primary" type="submit" onclick="alert('리뷰 작성 완료하였습니다.')">작성 완료</button>
             </form>
         </div>
     </div>

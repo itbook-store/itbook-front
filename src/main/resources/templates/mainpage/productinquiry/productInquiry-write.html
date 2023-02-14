@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/mainpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 문의 작성</title>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script type="text/javascript" src="/mainpage/productinquiry/js/productInquiry.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <p></p>
+    <h2>상품 문의 작성하기</h2>
+    <hr>
+    <div>
+        <form class="mb-3" enctype="multipart/form-data" id="productInquiryForm" name="productInquiryForm"  method="post"
+              th:object="${productInquiryRequestDto}" th:action="@{/product-inquiries/add}">
+
+            <input type="hidden" name="memberNo" th:value="${productInquiryRequestDto.memberNo}">
+            <input type="hidden" name="productNo" th:value="${productInquiryRequestDto.productNo}">
+            <input type="hidden" id="content" name="content">
+
+            <div>
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" th:field="*{title}"><br/>
+
+<!--                <label for="content" class="form-label">내용</label>-->
+<!--                <textarea class="col-auto form-control" type="text" id="content"-->
+<!--                          placeholder="문의하실 내용을 입력하세요" th:field="*{content}"></textarea>-->
+                <div id="editor"></div>
+                <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+                <script>
+                    const Editor = toastui.Editor;
+
+                    const editor = new Editor({
+                        el: document.querySelector('#editor'),
+                        height: '500px',
+                        initialEditType: 'markdown',
+                        previewStyle: 'vertical'
+                    });
+
+                    function productInquiryFormSubmit() {
+
+                        const editorBody = editor.getMarkdown();
+
+                        $('#content').attr('value',editorBody);
+
+                        alert("상품문의를 성공적으로 등록하였습니다.")
+                        document.getElementById("productInquiryForm").submit();
+                    }
+                </script>
+
+            </div>
+            <div>
+                <div class="form-check form-check-inline mb-0 me-4">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                           id="private"
+                           value="false" th:field="${productInquiryRequestDto.isPublic}"/>
+                    <label class="form-check-label" for="private">비공개</label>
+                </div>
+                <div class="form-check form-check-inline mb-0 me-4">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                           id="open"
+                           value="true" th:field="${productInquiryRequestDto.isPublic}"/>
+                    <label class="form-check-label" for="open">공개</label>
+                </div>
+            </div>
+            <hr>
+
+            <button class="btn btn-primary" type="button" onclick="productInquiryFormSubmit()">작성 완료</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

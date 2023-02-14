@@ -21,6 +21,7 @@ import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
+import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.exception.InvalidOrderException;
@@ -50,12 +51,11 @@ public class OrderSheetController {
      * @return 주문 작성 페이지
      */
     @PostMapping
-    public String orderProductMember(@RequestParam(required = false) List<Long> productNoList,
-                                     @RequestParam(required = false) List<Integer> productCntList,
-                                     @ModelAttribute("orderAddRequestDto")
-                                     OrderAddRequestDto orderAddRequestDto,
-                                     @AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                                     Model model) {
+    public String orderProductMember(
+        @ModelAttribute("orderSheetFormDto")
+        OrderSheetFormDto orderSheetFormDto,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        Model model) {
 
         // TODO: 2023/02/08 포인트 받아오기
         // TODO: 2023/02/08 사용가능한 쿠폰 받아오기
@@ -73,11 +73,10 @@ public class OrderSheetController {
         }
 
         OrderSheetResponseDto orderSheet =
-            orderSheetService.findOrderSheetCartProducts(productNoList, productCntList,
+            orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(), orderSheetFormDto.getProductCntList(),
                 memberNo);
 
-
-        Queue<Integer> productCntQueue = new LinkedList<>(productCntList);
+        Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
 
         model.addAttribute("productDetailsList",
             orderSheet.getProductDetailsResponseDtoList());

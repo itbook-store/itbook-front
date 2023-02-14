@@ -13,156 +13,393 @@
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="/mainpage/css/orderSheet.css">
-    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" href="/order/css/orderSheet.css">
+
+    <!-- bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<!--    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">-->
 
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="order-title"><b>주 문</b> 하 기</div>
-    <form id="orderForm"
-          class="product-info" method="post" th:object="${orderAddRequestDto}">
-        <div class="product-box">
-            <div class="box-title table">주문 상품 정보</div>
-            <div class="container bootstrap snippets bootdey">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="main-box no-header clearfix">
-                            <div class="main-box-body clearfix">
-                                <div class="table-responsive">
-                                    <table>
-                                        <tr>
-                                            <th>
-                                                상품명
-                                            </th>
-                                            <th>
-                                                정가
-                                            </th>
-                                            <th>
-                                                판매가
-                                            </th>
-                                            <th>
-                                                수량
-                                            </th>
-                                            <th>
-                                                합계
-                                            </th>
-                                        </tr>
-                                        <tr th:each="product : ${productDetailsList}">
-                                            <td>
-                                                <input class="no-input" type="hidden" name="productNo"
-                                                       th:value="${product.productNo}">
-                                                <span th:text="${product.productName}"></span>
-                                            </td>
-                                            <td>
-                                                <input class="no-input" type="text"
-                                                       th:value="${product.fixedPrice}"
-                                                       readonly>
-                                            </td>
-                                            <td>
-                                                <input class="no-input" type="text"
-                                                       th:value="${product.selledPrice}"
-                                                       readonly>
-                                            </td>
-                                            <td>
-                                                <input class="no-input" name="productCnt"
-                                                       type="text" th:value="${productCntQueue.peek()}">
-                                            </td>
-                                            <td>
-                                                <input class="no-input" type="text"
-                                                       th:value="${product.selledPrice} * ${productCntQueue.poll()}"
-                                                       readonly>
-                                            </td>
-                                        </tr>
-                                    </table>
-<!--                                   회원은 20000원 이상 주문시 배송비 무료 -->
-                                    <div>배송비: 3000원</div>
+    <div id="order_container">
+
+        <div class="order_title">
+            <i class="fa-solid fa-file"></i>
+            <p>주문서 작성</p>
+        </div>
+
+        <form id="orderForm" class="product-info" method="post" th:object="${orderSheetFormDto}">
+            <div class="product-box">
+                <div class="box-title">주문 상품</div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-md align-middle">
+                        <thead>
+                        <tr>
+                            <th style="width: 550px">상품정보</th>
+                            <th>판매금액</th>
+                            <th style="width: 80px; text-align: center">수량</th>
+                            <th style="text-align: center">쿠폰</th>
+                            <th style="text-align: center; width: 140px">총 금액</th>
+                        </tr>
+
+                        </thead>
+                        <tbody class="table_body" id="general_product">
+                        <th:block th:if="${not #lists.isEmpty(productDetailsList)}">
+                            <tr class="table_line" th:each="product : ${productDetailsList}">
+
+                                <!-- 상품 정보-->
+                                <td>
+                                    <div class="product_info">
+                                        <img class="product_img" th:src="${product.fileThumbnailsUrl}" alt="">
+                                        <p class="product_title" th:text="${product.productName}"></p>
+                                    </div>
+                                </td>
+
+                                <!-- 상품 가격 -->
+                                <td>
+                                    <div class="product_priceBox">
+                                        <p class="fixed_price" th:text="${product.fixedPrice}"></p>
+                                        <p class="discount_price" th:text="${product.selledPrice}"></p>
+                                    </div>
+                                </td>
+
+                                <th:block th:with="productCount=${productCntQueue.peek()}">
+                                <!-- 상품 수량-->
+                                <td>
+                                    <p class="product_count" th:text="${productCount}"></p>
+                                    <!--                                <input class="product_count" type="number" readonly th:value="${productCntQueue.peek()}">-->
+                                </td>
+
+                                <!-- 쿠폰 적용 버튼-->
+                                <td style="text-align: center">
+                                    <th:block sec:authorize="isAuthenticated()">
+                                    <div class="coupon_box" style="display: flex; flex-direction: column; align-items: center" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" class="couponIssueNo" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
+                                    <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
+                                    <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
+                                    <button class="btn coupon_btn" type="button" onclick="couponModalFunc(this)"
+                                            th:attr="data-url=|/async/coupon-issues/${product.productNo}|,
+                                             data-no=${product.productNo},
+                                             data-price=${product.selledPrice},
+                                             data-count=${productCount}">
+                                        쿠폰 적용하기
+                                    </button>
+                                    </div>
+                                    </th:block>
+                                    <th:block sec:authorize="isAnonymous()">
+                                    <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
+                                    </th:block>
+
+                                </td>
+                                </th:block>
+
+                                <!-- 상품 총 가격-->
+                                <td style="text-align: center">
+                                    <th:block th:with="selledPrice=${product.selledPrice}, productCount = ${productCntQueue.poll()}">
+                                    <p class="product_total_price" th:text="${selledPrice} * ${productCount}"></p>
+                                    </th:block>
+                                </td>
+
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+
+                    <!-- 쿠폰 모달 -->
+<!--                    <div class="modal fade" id="product_coupon_modal" tabindex="-1" role="dialog">-->
+<!--                        <div class="modal-dialog modal-dialog-scrollable modal-lg">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h5 class="modal-title" id="product_coupon_modalLabel">잇북 쿠폰 목록</h5>-->
+<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+
+<!--                                    <table class="table table-hover table-md align-middle">-->
+<!--                                        <thead>-->
+<!--                                        <tr>-->
+<!--                                            <th style="width: 80px"></th>-->
+<!--                                            <th style="width: 470px">쿠폰 이름</th>-->
+<!--                                            <th>할인 금액</th>-->
+<!--                                        </tr>-->
+<!--                                        </thead>-->
+
+<!--                                        <tbody class="coupon_list_table_body">-->
+<!--                                        </tbody>-->
+<!--                                    </table>-->
+<!--                                </div>-->
+<!--                                <div class="modal-footer">-->
+<!--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
+<!--                                    <button type="button" id="coupon_select_btn" class="btn btn-primary">선택하기</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div id="modalBox"></div>
+
+                </div>
+
+                <div class="amount_coupon_container" style="margin-top: 30px">
+                    <div class="box-title">주문 총액 쿠폰</div>
+                    <div class="box-content">
+
+                        <input type="hidden" name="orderTotalCouponNo" id="orderTotalCouponNo">
+                        <input type="hidden" id="orderTotalCouponAmount">
+                        <input readonly id="order_total_coupon_name">
+
+                        <button id="order_amount_coupon_btn" type="button" th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기</button>
+
+                        <div class="modal fade" id="order_total_coupon_modal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="order_total_coupon_modal_title">잇북 주문 총액 쿠폰 목록</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table class="table table-hover table-md align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 80px"></th>
+                                                <th style="width: 470px">쿠폰 이름</th>
+                                                <th style="text-align: center">할인 금액</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody class="order_total_coupon_list_table_body">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" id="order_total_coupon_select_btn" class="btn btn-primary">선택하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="point_container">
+                    <div class="box-title">잇북 포인트</div>
+                    <div class="box-content">
+                        <div class="point_myPointBox">
+                            <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
+                            <p id="myPoint">7000</p>
+                            <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
+                        </div>
+                        <div class="point_apply_box">
+                            <input type="text"
+                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                   value="0" readonly
+                                   name="decreasePoint"
+                                   id="point_apply_input"
+                            >
+                            <button type="button" id="point_apply_btn" class="btn">적용하기</button>
+                            <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product_amount_box">
+                    <p class="product_amount_plainText">주문상품금액</p>
+                    <!-- 여기는 그냥 총 판매가 더해주기 -->
+                    <p id="product_origin_price">26,000</p>
+                    <p class="product_amount_plainText">원</p>
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <p class="product_amount_plainText">총 배송비</p>
+                    <p class="product_delivery_price">3,000</p>
+                    <p class="product_amount_plainText">원</p>
+
+                    <i class="fa-solid fa-minus"></i>
+
+                    <p class="product_amount_plainText">총 할인금액</p>
+                    <p id="total_discount_price" class="product_total_discount_price">0</p>
+                    <p class="product_amount_plainText">원</p>
+
+                    <i class="fa-solid fa-equals"></i>
+
+                    <p class="product_amount_plainText">최종 결제금액</p>
+                    <p id="order_real_amount" class="product_real_amount">24,000</p>
+                    <p class="product_amount_plainText">원</p>
+
+                </div>
+
+                <div class="address-box">
+                    <div class="box-title">주문고객 / 배송지 정보</div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id="destination_list_btn" class="btn">
+                        나의 배송지 선택하기
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="destinationModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">나의 배송지 목록</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <th:block sec:authorize="isAuthenticated()">
+                                    <div th:each="dst : ${memberDestinationList}">
+
+                                        <div class="destination_container">
+                                            <input type="radio" name="destination_info" id="destination_info">
+                                            <div>
+                                                <div class="destination_box">
+                                                    <p class="destination_text">수령인 이름</p>
+                                                    <input type="text" placeholder="수령인 이름"
+                                                           name="recipientName"
+                                                           th:value="${dst.recipientName}">
+                                                </div>
+
+                                                <div class="destination_box">
+                                                    <p class="destination_text">수령인 핸드폰번호</p>
+                                                    <input type="text" placeholder="수령인 이름"
+                                                           name="recipientPhoneNumber"
+                                                           th:value="${dst.recipientPhoneNumber}">
+                                                </div>
+
+                                                <div class="destination_box">
+                                                    <p class="destination_text">우편번호</p>
+                                                    <input type="text" placeholder="수령인 이름"
+                                                           name="postcode"
+                                                           th:value="${dst.postcode}">
+                                                </div>
+
+                                                <div class="destination_box">
+                                                    <p class="destination_text">도로명 주소</p>
+                                                    <input type="text" placeholder="수령인 이름"
+                                                           name="roadNameAddress"
+                                                           th:value="${dst.roadNameAddress}">
+                                                </div>
+
+                                                <div class="destination_box">
+                                                    <p class="destination_text">상세 주소</p>
+                                                    <input type="text" placeholder="수령인 이름"
+                                                           name="recipientAddressDetails"
+                                                           th:value="${dst.recipientAddressDetails}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    </th:block>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    <button type="button" id="destination_select_btn" class="btn btn-primary">선택하기</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="address-box">
-            <div class="box-title">배송지 정보 입력</div>
-            <div class="box-content">
-                <br/>
+                    <div class="box-content">
 
-                <div class="address-tab">
-                    <div class="button-tabs ">
-                        <button type="button" id="member-address-tab" class="btn btn-primary">배송지 선택</button>
-                        <button type="button" id="direct-address-tab" class="btn btn-primary">직접 입력</button>
-                    </div>
-                    <th:block sec:authorize="isAuthenticated()" th:if="${!memberDestinationList.isEmpty()}">
-                        <div th:each="dst : ${memberDestinationList}">
-                            <input type="radio" name="address-radio" id="select-address">
-                            <label for="select-address">
-                                <input type="number" readonly placeholder="우편번호"
-                                       name="postcode"
-                                       th:value="${dst.postcode}">
-                                <input type="text" size="50" readonly placeholder="도로명주소"
-                                       name="roadNameAddress"
-                                       th:value="${dst.roadNameAddress}">
-                                <input type="text" size="30" placeholder="상세주소"
-                                       name="recipientAddressDetails"
-                                       th:value="${dst.recipientAddressDetails}" readonly>
-                                <input type="text" placeholder="수령인 이름"
-                                       name="recipientName"
-                                       th:value="${dst.recipientName}">
-                                <input type="text" placeholder="수령인 연락처"
-                                       name="recipientPhoneNumber"
-                                       th:value="${dst.recipientPhoneNumber}">
-                            </label>
+                        <div class="destination_container">
+                            <div class="actual_destination">
+                                <div class="destination_box">
+                                    <p class="destination_text">수령인 이름</p>
+                                    <input type="text" placeholder="수령인 이름"
+                                           name="recipientName">
+                                </div>
+
+                                <div class="destination_box">
+                                    <p class="destination_text">수령인 핸드폰번호</p>
+                                    <input type="text" placeholder="수령인 핸드폰번호"
+                                           name="recipientPhoneNumber">
+                                </div>
+
+                                <div class="destination_box">
+                                    <p class="destination_text">우편번호</p>
+                                    <input type="text" placeholder="우편번호"
+                                           id="sample4_postcode"
+                                           name="postcode" readonly>
+                                    <input id="postcodeSearchBtn" class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="width: 100px; margin-left: 10px">
+                                </div>
+
+                                <div class="destination_box">
+                                    <p class="destination_text">도로명 주소</p>
+                                    <input type="text" placeholder="도로명 주소"
+                                           id="sample4_roadAddress"
+                                           name="roadNameAddress" readonly>
+                                </div>
+
+                                <div class="destination_box">
+                                    <p class="destination_text">상세 주소</p>
+                                    <input type="text" placeholder="상세 주소"
+                                           name="recipientAddressDetails">
+                                </div>
+                            </div>
                         </div>
-                    </th:block>
+
+<!--                        <div class="address-tab">-->
+<!--                            <input type="number" id="sample4_postcode" readonly placeholder="우편번호"-->
+<!--                                   name="postcode">-->
+<!--                            <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">-->
+<!--                            <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"-->
+<!--                                   name="roadNameAddress">-->
+<!--                            <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"-->
+<!--                                   name="recipientAddressDetails">-->
+<!--                            <input type="text" placeholder="수령인 이름"-->
+<!--                                   name="recipientName">-->
+<!--                            <input type="text" placeholder="수령인 연락처"-->
+<!--                                   name="recipientPhoneNumber">-->
+<!--                        </div>-->
+
+                    </div>
                 </div>
 
-                <div class="address-tab">
-                    <input type="number" id="sample4_postcode" readonly placeholder="우편번호"
-                           name="postcode">
-                    <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
-                    <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"
-                           name="roadNameAddress">
-                    <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"
-                           name="recipientAddressDetails">
-                    <input type="text" placeholder="수령인 이름"
-                           name="recipientName">
-                    <input type="text" placeholder="수령인 연락처"
-                           name="recipientPhoneNumber">
+                <div class="delivery-box">
+                    <div class="box-title">배송 희망일 선택</div>
+                    <div class="box-content">
+
+                        <div class="delivery_select_box">
+                            <p>희망 날짜 선택</p>
+                            <input type="date" id="currentDate" name="selectedDeliveryDate">
+                        </div>
+
+                        <div class="delivery_info_box">
+                            <p>날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.</p>
+                            <p>제주 또는 도서산간지역의 경우 추가 배송비가 부여 될 수 있습니다.</p>
+                            <p>추가 배송비 결제 및 입금이 진행되지 않을 경우 배송이 지연될 수 있습니다.</p>
+                        </div>
+                    </div>
+                    <br>
                 </div>
 
+                <div style="display: flex; justify-content: center; margin-bottom: 100px">
+                    <div class="payment_btn" id="paymentButton" onclick="processPayment()">
+                        <p>24,000</p>
+                        <p style="margin: 0 5px !important;">원</p>
+                        <p>결제하기</p>
+                    </div>
+                </div>
+                <!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
+                <!--            가상계좌 결제-->
+                <!--        </button>-->
+                <!--    all box end-->
             </div>
-        </div>
-        <div class="delivery-box">
-            <div class="box-title">배송 희망일 선택</div>
-            <div class="box-content">
-                <div>날짜를 선택하세요:
-                    <input type="date" id="currentDate" name="selectedDeliveryDate">
-                    <p>
-                        날씨나 택배사 사정에 따라 배송이 지연될 수 있습니다.
-                    </p>
-                </div>
-            </div>
-            <br>
-        </div>
-
-        <button class="btn btn-info" id="paymentButton" type="button" onclick="processPayment()">
-            결제하기
-        </button>
-<!--        <button class="btn btn-info" type="button" onclick="doPaymentProcessByVirtualAccount()">-->
-<!--            가상계좌 결제-->
-<!--        </button>-->
-        <!--    all box end-->
-    </form>
+        </form>
+    </div>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script>
         let currentDate = new Date;
         let maxDate = new Date;
-        maxDate.setDate(currentDate.getDate() + 30);
+        maxDate.setDate(currentDate.getDate() + 7);
         document.getElementById('currentDate').value = currentDate.toISOString().slice(0, 10);
         document.getElementById('currentDate').min = currentDate.toISOString().slice(0, 10);
         document.getElementById('currentDate').max = maxDate.toISOString().slice(0, 10);
@@ -204,24 +441,29 @@
 
         let canceledOrderNo = null;
 
-        let temp = [[${orderAddRequestDto}]];
+        let temp = [[${orderSheetFormDto}]];
 
         // for문
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
-        function ProductDetailsDto(productNo, productCnt) {
-            this.productNo = productNo;
-            this.productCnt = productCnt;
-        }
-
-        let productDetailList = [];
-        productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
-        productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
-
-        console.log(productDetailList);
 
         function processPayment() {
+
+            function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
+                this.productNo = productNo;
+                this.productCnt = productCnt;
+                this.couponIssueNo = couponIssueNo;
+            }
+
+            let productDetailList = [];
+
+            let couponTagList = document.querySelectorAll(".couponIssueNo");
+
+
+            for (let i = 0; i < productNoList.length; i++) {
+                productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
+            }
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
@@ -233,7 +475,9 @@
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
                 "isSubscription": temp.isSubscription,
-                "subscriptionPeriod": temp.subscriptionPeriod
+                "subscriptionPeriod": temp.subscriptionPeriod,
+                "decreasePoint" :  document.getElementById("point_apply_input").value,
+                "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
@@ -340,6 +584,9 @@
                 });
         }
     </script>
+
+
+    <script src="/order/js/order.js"></script>
 </div>
 </body>
 </html>

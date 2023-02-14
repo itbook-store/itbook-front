@@ -31,4 +31,6 @@ public interface ReviewService {
 
     PageResponse<UnwrittenReviewOrderProductResponseDto> findUnwrittenReviewOrderProductList(String url,
                                                                                              Long memberNo);
+
+    Double calculateStarAvg(PageResponse<ReviewResponseDto> reviewPageResponse);
 }

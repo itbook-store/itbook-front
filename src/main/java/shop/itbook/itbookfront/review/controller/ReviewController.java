@@ -24,6 +24,7 @@ import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.review.dto.request.ReviewRequestDto;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 import shop.itbook.itbookfront.review.dto.response.UnwrittenReviewOrderProductResponseDto;
@@ -48,20 +49,14 @@ public class ReviewController {
     @GetMapping("/mypage/list")
     public String mypageReviewList(Model model,
                                    @PageableDefault Pageable pageable,
-                                   RedirectAttributes redirectAttributes,
                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        try {
-            PageResponse<ReviewResponseDto> pageResponse = reviewService.findReviewListByMemberNo(
-                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
-                userDetailsDto.getMemberNo());
+        PageResponse<ReviewResponseDto> pageResponse = reviewService.findReviewListByMemberNo(
+            String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
+            userDetailsDto.getMemberNo());
 
-            model.addAttribute("pageResponse", pageResponse);
-            model.addAttribute("paginationUrl", "/review/mypage/list");
-        } catch (ReviewNotFoundException e) {
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-        }
-
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/review/mypage/list");
 
         return "mypage/review/review-mypage-list";
     }
@@ -105,6 +100,7 @@ public class ReviewController {
 
         try {
             reviewResponseDto = reviewService.findReview(orderProductNo);
+            log.info("reviewResponseDto = {}", reviewResponseDto);
         } catch (ReviewNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }

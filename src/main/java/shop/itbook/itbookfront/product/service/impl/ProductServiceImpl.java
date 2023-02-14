@@ -1,12 +1,15 @@
 package shop.itbook.itbookfront.product.service.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
@@ -29,7 +32,6 @@ import shop.itbook.itbookfront.product.service.ProductService;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductAdaptor productAdaptor;
@@ -76,9 +78,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList(
-        String sortingCriteria) {
-        return productAdaptor.findSalesRankProductList(sortingCriteria);
+    public PageResponse<ProductSalesRankResponseDto> findSalesRankProductList
+        (@PageableDefault Pageable pageable, String sortingCriteria) {
+        return productAdaptor.findSalesRankProductList(pageable, sortingCriteria);
     }
 
     @Override
@@ -110,7 +112,6 @@ public class ProductServiceImpl implements ProductService {
             newCookie.setMaxAge(ONEHOUR);
             newCookie.setPath("/");
             this.updateDailyHits(productNo);
-            log.info("newCookie: " + newCookie.getValue());
             response.addCookie(newCookie);
             return newCookie;
         }
@@ -121,11 +122,9 @@ public class ProductServiceImpl implements ProductService {
             cookie.setMaxAge(ONEHOUR);
             cookie.setPath("/");
             cookie.setValue(cookie.getValue() + "/" + productNo);
-            log.info("cookie: " + cookie.getValue());
             response.addCookie(cookie);
             return cookie;
         }
-        log.info("통과: " + cookie.getValue());
         return cookie;
     }
 

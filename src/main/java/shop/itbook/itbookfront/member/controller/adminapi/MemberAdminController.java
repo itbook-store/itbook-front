@@ -157,6 +157,12 @@ public class MemberAdminController {
                 memberAdminService.findMemberByDateOfJoining(memberSearchRequestDto, "정상회원",
                     String.format("?page=%d&size=%d", pageable.getPageNumber(),
                         pageable.getPageSize()));
+
+            model.addAttribute("paginationUrl",
+                "/admin/members/search?start=" +
+                    memberSearchRequestDto.getStart() + "&end=" +
+                    memberSearchRequestDto.getEnd() + "&searchRequirement=" +
+                    memberSearchRequestDto.getSearchRequirement() + "&searchWord=");
         } else {
             pageResponse =
                 memberAdminService.findMembersBySearch(
@@ -164,13 +170,14 @@ public class MemberAdminController {
                     memberSearchRequestDto.getSearchWord(), "정상회원",
                     String.format("?page=%d&size=%d", pageable.getPageNumber(),
                         pageable.getPageSize()));
+
+            model.addAttribute("paginationUrl",
+                "/admin/members/search?searchRequirement=" +
+                    memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
+                    memberSearchRequestDto.getSearchWord());
         }
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl",
-            "/admin/members/search?searchRequirement=" +
-                memberSearchRequestDto.getSearchRequirement() + "&searchWord=" +
-                memberSearchRequestDto.getSearchWord());
 
         return "adminpage/member/admin-member-list";
     }
@@ -257,9 +264,11 @@ public class MemberAdminController {
     }
 
     @GetMapping("/register/writer")
-    public String memberRegisterWriterForm(Model model, @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
+    public String memberRegisterWriterForm(Model model,
+                                           @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
 
-        MemberRegisterWriterRequestDto memberRegisterWriterRequestDto = new MemberRegisterWriterRequestDto();
+        MemberRegisterWriterRequestDto memberRegisterWriterRequestDto =
+            new MemberRegisterWriterRequestDto();
 
         model.addAttribute("memberId", userDetailsDto.getMemberId());
         model.addAttribute("memberRegisterWriterRequestDto", memberRegisterWriterRequestDto);
@@ -271,7 +280,8 @@ public class MemberAdminController {
     public String memberRegisterWriter(
         @Valid @ModelAttribute MemberRegisterWriterRequestDto memberRegisterWriterRequestDto) {
 
-        MemberInfoResponseDto member = memberService.findMemberByMemberId(memberRegisterWriterRequestDto.getMemberId());
+        MemberInfoResponseDto member =
+            memberService.findMemberByMemberId(memberRegisterWriterRequestDto.getMemberId());
         memberRegisterWriterRequestDto.setMemberNo(member.getMemberNo());
 
         memberAdminService.modifyMemberWriter(memberRegisterWriterRequestDto);
