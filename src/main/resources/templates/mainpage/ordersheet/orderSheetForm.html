@@ -195,9 +195,11 @@
                 <div class="point_container">
                     <div class="box-title">잇북 포인트</div>
                     <div class="box-content">
+
+                        <th:block sec:authorize="isAuthenticated()">
                         <div class="point_myPointBox">
                             <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                            <p id="myPoint">7000</p>
+                            <p id="myPoint" th:text="${myPoint}">7000</p>
                             <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                         </div>
                         <div class="point_apply_box">
@@ -210,6 +212,11 @@
                             <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                             <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
                         </div>
+                        </th:block>
+
+                        <th:block sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-dark" disabled>비회원은 포인트 사용이 불가합니다.</button>
+                        </th:block>
                     </div>
                 </div>
 

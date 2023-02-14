@@ -20,6 +20,7 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
@@ -41,6 +42,8 @@ public class OrderSheetController {
 
     private final OrderSheetService orderSheetService;
     private final CategoryService categoryService;
+
+    private final MemberService memberService;
 
     /**
      * 회원의 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
@@ -68,8 +71,12 @@ public class OrderSheetController {
 
         Optional<Long> memberNo = Optional.empty();
 
+        Long myPoint = 0L;
+
         if (Objects.nonNull(userDetailsDto)) {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
+
+            myPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
         }
 
         OrderSheetResponseDto orderSheet =
@@ -83,6 +90,7 @@ public class OrderSheetController {
         model.addAttribute("productCntQueue", productCntQueue);
         model.addAttribute("memberDestinationList",
             orderSheet.getMemberDestinationResponseDtoList());
+        model.addAttribute("myPoint", myPoint);
 
         return "mainpage/ordersheet/orderSheetForm";
     }
