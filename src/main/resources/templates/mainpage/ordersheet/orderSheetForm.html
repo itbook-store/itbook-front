@@ -192,7 +192,7 @@
                     <div class="box-content">
                         <div class="point_myPointBox">
                             <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                            <p id="myPoint">7,000</p>
+                            <p id="myPoint">7000</p>
                             <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                         </div>
                         <div class="point_apply_box">
@@ -448,19 +448,6 @@
         let productCntList = temp.productCntList;
 
 
-
-
-        // document.getElementsByName("couponIssueNo")
-        console.log("이슈넘버 -->")
-        console.log(couponIssueNoList[0].value);
-        console.log(couponIssueNoList);
-
-
-        // productDetailList.push(new ProductDetailsDto(productNoList[0], productCntList[0]));
-        // productDetailList.push(new ProductDetailsDto(productNoList[1], productCntList[1]));
-
-        // console.log(productDetailList);
-
         function processPayment() {
 
             function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
@@ -478,8 +465,6 @@
                 productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
             }
 
-
-
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
                 "postcode": parseInt(document.getElementsByName("postcode")[0].value),
@@ -491,7 +476,8 @@
                 "deliveryFee": 0,
                 "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
-                "decreasePoint" : document.getElementById("point_apply_input").value
+                "decreasePoint" :  document.getElementById("point_apply_input").value,
+                "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
