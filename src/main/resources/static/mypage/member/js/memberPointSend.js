@@ -66,6 +66,7 @@ function sendPoint() {
         return false;
     }
 
+    alert("해당 회원에게 성공적으로 포인트를 선물하였습니다")
     document.getElementById('giftPointForm').submit();
 }
 

@@ -12,6 +12,7 @@ function registerWriter() {
                 alert("입력하신 이름과 해당 계정의 이름과 맞지 않습니다.")
                 return false;
             } else {
+                alert("성공적으로 작가 등록을 마쳤습니다.");
                 document.getElementById('registerWriterForm').submit();
             }
         });

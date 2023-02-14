@@ -16,24 +16,25 @@
         <hr>
         <table class="table">
             <thead>
-                <tr>
-                    <th></th>
-                    <th>상품명</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>상품명</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="text-center"><img width="100px;" th:src="${reviewResponseDto.thumbnailUrl}"></td>
-                    <td th:text="${reviewResponseDto.productName}"></td>
-                </tr>
+            <tr>
+                <td class="text-center"><img width="100px;" th:src="${reviewResponseDto.thumbnailUrl}"></td>
+                <td th:text="${reviewResponseDto.productName}"></td>
+            </tr>
             </tbody>
         </table>
         <hr>
         별점 : <span th:text="${reviewResponseDto.starPoint}"></span> / 5<br><br>
         <img style="width: 400px;" th:src="${reviewResponseDto.image}"><br>
-        <p></p>
+        <br>
         <h5>내용</h5>
         <p th:text="${reviewResponseDto.content}"></p>
+        <br><br><br>
         <button class="btn btn-dark" onclick="history.back()">뒤로가기</button>
     </div>
 </div>
