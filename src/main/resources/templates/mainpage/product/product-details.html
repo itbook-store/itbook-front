@@ -72,6 +72,9 @@
                         <!--                            <i class="fas fa-star"></i>-->
                         <!--                            <i class="fas fa-star mr-0"></i>-->
                         <!--                        </div>-->
+<!--                        <div>-->
+<!--                            <input type="number" name="productCnt" value="1" min="1">-->
+<!--                        </div>-->
                         <div style="text-align: center">
                             <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
                                     data-original-title="Add to cart" style="display :inline-block;"
@@ -82,6 +85,10 @@
                             <button class="btn btn-danger" style="display :inline-block;"
                                     th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                 품절
+                            </button>
+                            <button th:if="${product.isSubscription}"
+                                    class="btn btn-primary btn-rounded" style="display :inline-block;"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}" th:onclick="|location.href= '@{/order-sheet/subscription/select-period(productNo = ${product.productNo}, productCnt = ${1})}'|">구독하기
                             </button>
                             <button form="productPaymentRequestForm" sec:authorize="isAuthenticated()"
                                     class="btn btn-primary btn-rounded" style="display :inline-block;"
