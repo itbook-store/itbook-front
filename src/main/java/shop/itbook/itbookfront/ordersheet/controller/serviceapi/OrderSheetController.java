@@ -25,11 +25,10 @@ import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.request.OrderFormDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
-import shop.itbook.itbookfront.order.dto.request.OrderSubscriptionRequestDto;
-import shop.itbook.itbookfront.order.dto.request.ProductDetailsDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.exception.InvalidOrderException;
 import shop.itbook.itbookfront.ordersheet.service.OrderSheetService;
+import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
 /**
  * 주문서 작성 요청을 처리하는 컨트롤러
@@ -74,7 +73,8 @@ public class OrderSheetController {
         if (Objects.nonNull(userDetailsDto)) {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
 
-            myPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
+            myPoint = memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo())
+                .getRemainedPoint();
         }
 
         OrderSheetResponseDto orderSheet =
@@ -133,6 +133,17 @@ public class OrderSheetController {
 
         Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
 
+        List<ProductDetailsResponseDto> productDetailsResponseDtoList =
+            orderSheet.getProductDetailsResponseDtoList();
+
+        productDetailsResponseDtoList.get(0)
+            .setSelledPrice(
+                productDetailsResponseDtoList.get(0).getFixedPrice() * subscriptionPeriod);
+
+        productDetailsResponseDtoList.get(0)
+            .setSelledPrice(
+                productDetailsResponseDtoList.get(0).getSelledPrice() * subscriptionPeriod);
+
         model.addAttribute("productDetailsList",
             orderSheet.getProductDetailsResponseDtoList());
         model.addAttribute("productCntQueue", productCntQueue);
@@ -144,6 +155,7 @@ public class OrderSheetController {
 //            new ProductDetailsDto(productNoList.get(0), productCntList.get(0), null));
 
 //        orderAddRequestDto.setProductDetailsDtoList(productDetailsDtoList);
+
         orderAddRequestDto.setIsSubscription(Boolean.TRUE);
         orderAddRequestDto.setSubscriptionPeriod(subscriptionPeriod);
 
