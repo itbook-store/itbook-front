@@ -43,13 +43,10 @@ public class MemberAdaptor {
         HttpEntity<MemberUpdateRequestDto> httpEntity =
             new HttpEntity<>(memberUpdateRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/info",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
     }
 
@@ -60,9 +57,6 @@ public class MemberAdaptor {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -75,9 +69,6 @@ public class MemberAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -89,13 +80,11 @@ public class MemberAdaptor {
         HttpEntity<MemberStatusChangeRequestDto> httpEntity =
             new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/members/" + memberNo + "/withdraw",
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
     public List<MemberDestinationResponseDto> getMemberDestinationList(Long memberNo) {
@@ -107,9 +96,6 @@ public class MemberAdaptor {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -146,9 +132,6 @@ public class MemberAdaptor {
                 HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -162,22 +145,20 @@ public class MemberAdaptor {
         HttpEntity<MemberDestinationRequestDto> httpEntity =
             new HttpEntity<>(memberDestinationRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/" +
-                    recipientDestinationNo + "/modify", HttpMethod.PUT, httpEntity,
-                new ParameterizedTypeReference<>() {
-                });
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/" +
+                recipientDestinationNo + "/modify", HttpMethod.PUT, httpEntity,
+            new ParameterizedTypeReference<>() {
+            });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
+
     }
 
-    public MemberDestinationResponseDto findMemberDestination(Long recipientDestinationNo) {
+    public MemberDestinationResponseDto findMemberDestination(Long memberNo, Long recipientDestinationNo) {
 
         ResponseEntity<CommonResponseBody<MemberDestinationResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/" +
+                gatewayConfig.getGatewayServer() + "/api/members/"+ memberNo +"/memberDestinations/" +
                     recipientDestinationNo + "/info", HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
@@ -193,9 +174,6 @@ public class MemberAdaptor {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -215,9 +193,6 @@ public class MemberAdaptor {
                 HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }

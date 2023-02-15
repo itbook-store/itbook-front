@@ -31,11 +31,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="showName" class="form-label">이름</label>
-                    <input type="text" name="name" class="form-control" th:field="${memberInfoResponseDto.name}" id="showName">
+                    <input type="text" name="name" class="form-control" th:field="${memberInfoResponseDto.name}" id="showName"
+                    maxlength="20">
                 </div>
                 <div class="mb-3">
                     <label for="nickname" class="form-label">닉네임</label>
-                    <input type="text" name="nickname" class="form-control" th:field="${memberInfoResponseDto.nickname}" id="nickname" oninput="inputDetection('nicknameCheckBtn')">
+                    <input type="text" name="nickname" class="form-control" th:field="${memberInfoResponseDto.nickname}" id="nickname" oninput="inputDetection('nicknameCheckBtn')" maxlength="20">
                     <button type="button" class="btn btn-light" style="margin-top: 10px; visibility: hidden;" onclick="checkNicknameDuplicate()" id = "nicknameCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('nickname', 'nicknameExists', 'nicknameNotExists', 'nicknameCheckBtn', 'nicknameRetypeBtn')" id = "nicknameRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                     <div id = "nicknameNotExists" style = "display:none;">등록 가능한 닉네임입니다.</div>
@@ -53,7 +54,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="showBirth" class="form-label">생일</label>
-                    <span class="form-control" th:text="${#temporals.format(memberInfoResponseDto.birth, 'yyyy년 MM월 dd일')}" id="showBirth">
+                    <input type="text" class="form-control" th:value="${#temporals.format(memberInfoResponseDto.birth, 'yyyy년 MM월 dd일')}" id="showBirth" disabled="">
                 </div>
                 <div class="mb-3">
                     <div th:if="!${memberInfoResponseDto.isSocial}">
@@ -64,7 +65,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="phoneNumber" class="form-label">핸드폰번호</label>
-                    <input type="text" name="phoneNumber" class="form-control" th:field="${memberInfoResponseDto.phoneNumber}" id="phoneNumber" oninput="inputDetection('phoneNumberCheckBtn')">
+                    <input type="text" name="phoneNumber" class="form-control" th:field="${memberInfoResponseDto.phoneNumber}" id="phoneNumber" oninput="inputDetection('phoneNumberCheckBtn'); this.value = this.value.replace(/[^0-9.]/g, '');" maxlength="11">
                     <button type="button" class="btn btn-light" style="margin-top: 10px; visibility: hidden;" onclick="checkPhoneNumberDuplicate()" id = "phoneNumberCheckBtn">중복 확인</button>
                     <button type="button" class="btn btn-secondary" onclick="retypeFn('phoneNumber', 'phoneNumberExists', 'phoneNumberNotExists', 'phoneNumberCheckBtn', 'phoneNumberRetypeBtn')" id = "phoneNumberRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                     <div id = "phoneNumberNotExists" style = "display:none;">등록 가능한 핸드폰 번호입니다.</div>
@@ -78,14 +79,14 @@
                     </div>
                     <div th:if="!${memberInfoResponseDto.isSocial}">
                         <label for="email" class="form-label">이메일</label>
-                        <input type="email" name="email" class="form-control" id="email" th:field="${memberInfoResponseDto.email}" oninput="inputDetection('emailCheckBtn')">
+                        <input type="email" name="email" class="form-control" id="email" th:field="${memberInfoResponseDto.email}" oninput="inputDetection('emailCheckBtn')" required>
                         <button type="button" class="btn btn-light" style="margin-top: 10px; visibility: hidden;" onclick="checkEmailDuplicate()" id = "emailCheckBtn">중복 확인</button>
                         <button type="button" class="btn btn-secondary" onclick="retypeFn('email', 'emailExists', 'emailNotExists', 'emailCheckBtn', 'emailRetypeBtn')" id = "emailRetypeBtn" style="visibility:hidden; margin-top: 10px;">다시 입력</button>
                         <div id = "emailNotExists" style = "display:none;">등록 가능한 이메일입니다.</div>
                         <div id = "emailExists" style = "display:none;">이미 존재하는 이메일입니다.</div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="alert('회원님의 정보가 수정되었습니다.')">수정하기</button>
+                <button type="submit" class="btn btn-primary">수정하기</button>
             </form>
         </div>
     </div>

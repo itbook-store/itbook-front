@@ -73,20 +73,12 @@ public class ReviewAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ReviewNoResponseDto>> responseEntity = null;
-
-        try {
-            responseEntity =
-                restTemplate.exchange(
-                    gatewayConfig.getGatewayServer() + "/api/reviews/add", HttpMethod.POST,
-                    uploadEntity,
-                    new ParameterizedTypeReference<>() {
-                    });
-        } catch (BadRequestException e) {
-            if(Objects.equals(e.getMessage(), ReviewAlreadyRegisteredException.MESSAGE)) {
-                throw new ReviewAlreadyRegisteredException();
-            }
-        }
+        ResponseEntity<CommonResponseBody<ReviewNoResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/add", HttpMethod.POST,
+                uploadEntity,
+                new ParameterizedTypeReference<>() {
+                });
 
         CommonResponseBody<ReviewNoResponseDto> body = responseEntity.getBody();
 
@@ -95,22 +87,22 @@ public class ReviewAdaptor {
 
     public ReviewResponseDto getReview(Long orderProductNo) {
 
-        ResponseEntity<CommonResponseBody<ReviewResponseDto>> responseEntity = null;
+        ResponseEntity<CommonResponseBody<ReviewResponseDto>> responseEntity = restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo,
+            HttpMethod.GET, null,
+            new ParameterizedTypeReference<>() {
+            });
 
-        try {
-            responseEntity = restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo,
+        return Objects.requireNonNull(responseEntity.getBody()).getResult();
+    }
+
+    public ReviewResponseDto getReviewForModify(Long memberNo, Long orderProductNo) {
+        ResponseEntity<CommonResponseBody<ReviewResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/modify-form/" + memberNo + "/" + orderProductNo,
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-        } catch (BadRequestException e) {
-            if(Objects.equals(e.getMessage(), ReviewNotFoundException.MESSAGE)) {
-                throw new ReviewNotFoundException();
-            }
-        }
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            Objects.requireNonNull(responseEntity.getBody()).getHeader().getResultMessage());
 
         return Objects.requireNonNull(responseEntity.getBody()).getResult();
     }
@@ -136,22 +128,17 @@ public class ReviewAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        try {
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/modify", HttpMethod.PUT,
-                uploadEntity,
-                new ParameterizedTypeReference<>() {
-                });
-        } catch (BadRequestException e) {
-            if(Objects.equals(e.getMessage(), ReviewNotFoundException.MESSAGE)) {
-                throw new ReviewNotFoundException();
-            }
-        }
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/modify",
+            HttpMethod.PUT,
+            uploadEntity,
+            new ParameterizedTypeReference<>() {
+            });
 
     }
 
     public PageResponse<ReviewResponseDto> getReviewListByProductNo(String url,
-                                                                   Long productNo) {
+                                                                    Long productNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -169,7 +156,8 @@ public class ReviewAdaptor {
         return Objects.requireNonNull(responseEntity.getBody()).getResult();
     }
 
-    public PageResponse<UnwrittenReviewOrderProductResponseDto> getUnwrittenReviewOrderProductList(String url, Long memberNo) {
+    public PageResponse<UnwrittenReviewOrderProductResponseDto> getUnwrittenReviewOrderProductList(
+        String url, Long memberNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -177,7 +165,8 @@ public class ReviewAdaptor {
 
         HttpEntity entity = new HttpEntity(headers);
 
-        ResponseEntity<CommonResponseBody<PageResponse<UnwrittenReviewOrderProductResponseDto>>> responseEntity =
+        ResponseEntity<CommonResponseBody<PageResponse<UnwrittenReviewOrderProductResponseDto>>>
+            responseEntity =
             restTemplate.exchange(
                 gatewayConfig.getGatewayServer() + "/api/reviews/unwritten-list/member/" +
                     memberNo + url,

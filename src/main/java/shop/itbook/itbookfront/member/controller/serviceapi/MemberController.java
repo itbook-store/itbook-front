@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.member.dto.request.MemberDestinationRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberPointSendRequestDto;
 import shop.itbook.itbookfront.member.dto.request.MemberStatusChangeRequestDto;
@@ -124,16 +127,26 @@ public class MemberController {
         return "redirect:/mypage/members/me/destinations";
     }
 
-    @GetMapping("/me/memberDestination/{memberNo}/{recipientDestinationNo}/modify")
+    @GetMapping("/me/memberDestination/{recipientDestinationNo}/modify")
     public String memberDestinationModifyPageOpen(
-        @PathVariable("memberNo") Long memberNo,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
         @PathVariable("recipientDestinationNo") Long recipientDestinationNo,
+        RedirectAttributes redirectAttributes,
         Model model) {
 
-        MemberDestinationResponseDto memberDestinationResponseDto = memberService.findMemberDestinationDetails(recipientDestinationNo);
-        memberDestinationResponseDto.setRecipientPhoneNumber(memberDestinationResponseDto.getRecipientPhoneNumber().replace("-", ""));
+        MemberDestinationResponseDto memberDestinationResponseDto;
 
-        model.addAttribute("memberNo", memberNo);
+        try {
+            memberDestinationResponseDto = memberService.findMemberDestinationDetails(
+                userDetailsDto.getMemberNo(), recipientDestinationNo);
+            memberDestinationResponseDto.setRecipientPhoneNumber(memberDestinationResponseDto.getRecipientPhoneNumber().replace("-", ""));
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/mypage/members/me/destinations";
+        }
+
+        model.addAttribute("memberNo", userDetailsDto.getMemberNo());
         model.addAttribute("memberDestinationResponseDto", memberDestinationResponseDto);
 
         return "mypage/member/member-destination-modify";
