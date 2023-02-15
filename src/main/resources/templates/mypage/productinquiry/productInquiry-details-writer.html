@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/mypage/productinquiry/js/productInquiryReply.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -42,12 +43,12 @@
                 <input type="hidden" name="memberNo" value="-1">
 
                 <label for="title" class="form-label">답변제목</label>
-                <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}"><br/>
+                <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}" maxlength="20"><br/>
 
                 <label for="content" class="form-label">답변내용</label>
                 <textarea class="col-auto form-control" type="text" id="content"
                           th:field="*{productInquiryReplyContent}"></textarea>
-                <button class="btn btn-primary" type="submit" onclick="alert('성공적으로 답변을 작성하였습니다.')">등록하기</button>
+                <button class="btn btn-primary" type="button" onclick="submitProductInquiryReply();">등록하기</button>
             </form>
 
         </div>

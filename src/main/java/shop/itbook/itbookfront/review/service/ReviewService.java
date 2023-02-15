@@ -20,6 +20,8 @@ public interface ReviewService {
 
     ReviewResponseDto findReview(Long orderProductNo);
 
+    ReviewResponseDto findReviewForModify(Long memberNo, Long orderProductNo);
+
     void deleteReview(Long orderProductNo);
 
     void modifyReview(Long orderProductNo,

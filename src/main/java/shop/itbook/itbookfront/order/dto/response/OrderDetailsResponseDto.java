@@ -12,10 +12,12 @@ import shop.itbook.itbookfront.payment.dto.response.PaymentCardResponseDto;
  */
 @Getter
 public class OrderDetailsResponseDto {
+
     private List<OrderProductDetailResponseDto> orderProductDetailResponseDtoList;
     private List<OrderDestinationDto> orderDestinationDtoList;
     private PaymentCardResponseDto paymentCardResponseDto;
     private String orderStatus;
+
 
     // TODO: 2023/02/10 포인트, 쿠폰 관련 정보
 }

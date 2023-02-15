@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.cart.service;
 
 import java.util.List;
+import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 
 /**
  * 장바구니 비지니스로직의 서비스 인터페이스 입니다.
@@ -28,7 +29,7 @@ public interface CartService {
      * @return 성공 true, 실패 false
      * @author 강명관
      */
-    boolean addCartProduct(String cookieValue, Integer productNo);
+    CartAddResponseDto addCartProduct(String cookieValue, Integer productNo);
 
     /**
      * redis에 상품을 삭제하는 메서드 입니다.

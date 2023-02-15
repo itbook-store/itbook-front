@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.adapter.PointHistoryDetailsGetAdaptor;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryCouponDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
@@ -49,20 +50,20 @@ public class PointHistoryAdminDetailsGetController {
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
 
-
         return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/adminGiftDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/order-details")
-    public String orderDetails(@PathVariable Long pointHistoryNo, RedirectAttributes redirectAttributes) {
+    public String orderDetails(@PathVariable Long pointHistoryNo, RedirectAttributes redirectAttributes, Model model) {
         try {
+            OrderDetailsResponseDto orderDetails = pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder("/api/admin/point-histories/" + pointHistoryNo + "/order-details");
+            model.addAttribute("orderDetails", orderDetails);
+            return "adminpage/order/orderDetailsForm";
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
-
-        return "ing";
     }
 
     @GetMapping("/{pointHistoryNo}/grade-details")
@@ -75,13 +76,13 @@ public class PointHistoryAdminDetailsGetController {
 
             model.addAttribute("details", pointHistoryGradeDetailsResponseDto);
             model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
+            return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
+
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
-
-        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/coupon-details")

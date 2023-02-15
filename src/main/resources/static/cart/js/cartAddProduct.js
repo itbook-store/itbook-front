@@ -1,5 +1,4 @@
 let addCartBtn = document.querySelectorAll(".cart_add_btn");
-
 addCartBtn.forEach(btn => function () {
     btn.addEventListener("click", function () {
         console.log(btn.dataset.productNo);
@@ -9,15 +8,22 @@ addCartBtn.forEach(btn => function () {
 async function addProduct(productNo) {
 
     await fetch(`/async/cart/add-product?productNo=${productNo}`, {
-        method: "GET"
+        method: "POST"
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
 
-            if (data === true) {
-                alert("상품을 장바구니에 담았습니다.");
+            if (data.result === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: data.resultMessage,
+                });
             } else {
-                alert("이미 장바구니에 담았습니다.")
+                Swal.fire({
+                    icon: 'warning',
+                    title: data.resultMessage,
+                })
             }
         });
 }

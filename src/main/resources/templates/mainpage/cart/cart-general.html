@@ -51,6 +51,7 @@
                     </td>
                     <td>
                         <div class="product_titleBox">
+                            <input type="hidden" name="productNo" th:value="${dto.productDetailsResponseDto.productNo}">
                             <input type="hidden" name="productNoList" th:value="${dto.productDetailsResponseDto.productNo}">
                             <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
                                 <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >

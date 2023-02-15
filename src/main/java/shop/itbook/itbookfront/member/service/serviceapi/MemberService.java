@@ -32,7 +32,7 @@ public interface MemberService {
 
     void modifyMemberDestination(Long recipientDestinationNo, MemberDestinationRequestDto memberDestinationRequestDto);
 
-    MemberDestinationResponseDto findMemberDestinationDetails(Long recipientDestinationNo);
+    MemberDestinationResponseDto findMemberDestinationDetails(Long memberNo, Long recipientDestinationNo);
 
     MemberRecentlyPointResponseDto findMemberRecentlyPoint(Long memberNo);
 

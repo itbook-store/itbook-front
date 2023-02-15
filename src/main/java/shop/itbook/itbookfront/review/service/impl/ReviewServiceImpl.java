@@ -43,6 +43,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public ReviewResponseDto findReviewForModify(Long memberNo, Long orderProductNo) {
+
+        return reviewAdaptor.getReviewForModify(memberNo, orderProductNo);
+    }
+
+    @Override
     public void deleteReview(Long orderProductNo) {
 
         reviewAdaptor.deleteReview(orderProductNo);
