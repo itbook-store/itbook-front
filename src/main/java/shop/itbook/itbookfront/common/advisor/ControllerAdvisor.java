@@ -24,12 +24,10 @@ import shop.itbook.itbookfront.common.exception.RestApiServerException;
 public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
-
     private static final String BAD_REQUEST = "badRequestMessage";
-
     private static final String BAD_REQUEST_MESSAGE = "잘못된 요청입니다.";
-
-
+    private static final String INTERNAL_ERROR_MESSAGE =
+        "ㅠㅠ 서버 오류입니다.\n010-3338-1718, 010-5651-3199, 010-8601-9261, 010-5737-2315, 010-8519-6955\n개발자에게 직접 문의주세요 ^___^";
 
     @ExceptionHandler(value = {
         BadRequestException.class,
@@ -62,8 +60,8 @@ public class ControllerAdvisor {
     })
     public String internalErrorException500(Exception e, Model model) {
         log.error("internalErrorException500 {}", e.getMessage());
-        model.addAttribute(MESSAGE, "ㅠㅠ 서버 오류입니다. 010-3338-1718, 010-5651-3199, 010-8601-9261, 010-5737-2315 개발자에게 직접 문의주세요 ^^");
 
+        model.addAttribute(MESSAGE, INTERNAL_ERROR_MESSAGE);
         return "/error/500error";
     }
 
