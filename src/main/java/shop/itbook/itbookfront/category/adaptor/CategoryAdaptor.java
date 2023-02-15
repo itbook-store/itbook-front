@@ -16,6 +16,7 @@ import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
 import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
+import shop.itbook.itbookfront.category.exception.ParentCategoryNotFoundException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
@@ -49,6 +50,10 @@ public class CategoryAdaptor {
         } catch (BadRequestException e) {
             if (Objects.equals(e.getMessage(), AlreadyAddedCategoryNameException.MESSAGE)) {
                 throw new AlreadyAddedCategoryNameException();
+            }
+
+            if (Objects.equals(e.getMessage(), ParentCategoryNotFoundException.MESSAGE)) {
+                throw new ParentCategoryNotFoundException();
             }
         }
 

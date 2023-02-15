@@ -18,6 +18,7 @@ import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.exception.AlreadyAddedCategoryNameException;
 import shop.itbook.itbookfront.category.exception.CategoryContainsProductsException;
+import shop.itbook.itbookfront.category.exception.ParentCategoryNotFoundException;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
@@ -40,7 +41,7 @@ public class CategoryAdminController {
 
         try {
             categoryService.addCategory(categoryRequestDto);
-        } catch (AlreadyAddedCategoryNameException e) {
+        } catch (AlreadyAddedCategoryNameException | ParentCategoryNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
 
