@@ -15,7 +15,9 @@
           integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
 
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -95,51 +97,54 @@
                         <!--                        </div>-->
                         <div style="text-align: center">
                             <th:block th:if="${product.isForceSoldOut == false or product.stock != 0}">
-                            <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
-                                    data-original-title="Add to cart" style="display :inline-block;"
-                                    th:attr="productNo=${product.productNo}"
-                                    th:onclick="addProduct(this.getAttribute('productNo'))">
-                                <i class="fa fa-shopping-cart"></i> <span style="margin-left: 10px">장바구니 담기</span>
-                            </button>
+                                <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
+                                        data-original-title="Add to cart" style="display :inline-block;"
+                                        th:attr="productNo=${product.productNo}"
+                                        th:onclick="addProduct(this.getAttribute('productNo'))">
+                                    <i class="fa fa-shopping-cart"></i> <span style="margin-left: 10px">장바구니 담기</span>
+                                </button>
                             </th:block>
                             <button class="btn btn-danger" style="display :inline-block;"
                                     th:if="${product.isForceSoldOut == true or product.stock == 0}">
                                 품절
                             </button>
-                            <button th:if="${product.isSubscription}"
-                                    class="btn btn-rounded text-white"
-                                    style="display :inline-block; background-color: #E62E23"
-                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                                    onclick="checkPurchase('subs')">
+                            <button th:if="${product.isSubscription}" sec:authorize="isAuthenticated()"
+                                    class="btn btn-rounded text-white" onclick="goOrderSheet('subs')"
+                                    style="display :inline-block; background-color: #16a085"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}">구독하기
+                            </button>
+                            <button th:if="${product.isSubscription}" sec:authorize="isAnonymous()"
+                                    class="btn btn-rounded text-white non-member-btn"
+                                    style="display :inline-block; background-color: #16a085"
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}">
                                 구독하기
                             </button>
                             <button type="button" th:if="!${product.isSubscription}"
-                                    sec:authorize="isAuthenticated()"
+                                    sec:authorize="isAuthenticated()" onclick="goOrderSheet()"
                                     class="btn btn-primary btn-rounded" style="display :inline-block;"
-                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                                    onclick="checkPurchase('purchase')">구매하기
+                                    th:unless="${product.isForceSoldOut == true or product.stock == 0}">구매하기
                             </button>
-                            <button type="button" th:if="!${product.isSubscription}" sec:authorize="isAnonymous()" id="purchase"
-                                    class="btn btn-primary btn-rounded"
+                            <button type="button" th:if="!${product.isSubscription}" sec:authorize="isAnonymous()"
+                                    class="btn btn-primary btn-rounded non-member-btn"
                                     th:unless="${product.isForceSoldOut == true or product.stock == 0}"
-                                    style="display :inline-block;"
-                                    th:onclick="checkPurchase('purchase')">구매하기
-                                <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header"></div>
-                                            <div class="modal-body">비회원으로 주문하시겠습니까?</div>
-                                            <div class="modal-footer">
-                                                <a class="btn btn-info" id="modalY">예</a>
-                                                <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
-                                                <a class="btn btn-dark block" id="modalN" type="button"
-                                                   data-dismiss="modal">취소</a>
-                                            </div>
+                                    style="display :inline-block;">구매하기
+                            </button>
+
+                            <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"></div>
+                                        <div class="modal-body">비회원으로 주문하시겠습니까?</div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-info" id="modalY">예</a>
+                                            <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
+                                            <a class="btn btn-dark block" id="modalN" type="button"
+                                               data-dismiss="modal">취소</a>
                                         </div>
                                     </div>
                                 </div>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,14 +162,14 @@
                     id="childCategoryName"></span>
                 <i class="fa-sharp fa-solid fa-eye" style="margin-left: 20px"> &nbsp; [[${product.dailyHits}]]</i>
             </div>
-<!--            <div class="col-sm-12 col-md-6 col-lg-6">-->
-<!--                <div class="btn-group pull-right">-->
-<!--                    <button class="btn btn-white btn-default"-->
-<!--                            th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">-->
-<!--                        <i class="fa fa-star"></i>위시 리스트에 추가-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="col-sm-12 col-md-6 col-lg-6">-->
+            <!--                <div class="btn-group pull-right">-->
+            <!--                    <button class="btn btn-white btn-default"-->
+            <!--                            th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">-->
+            <!--                        <i class="fa fa-star"></i>위시 리스트에 추가-->
+            <!--                    </button>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div>
             <span></span>
@@ -363,7 +368,7 @@
             event.preventDefault();
             let currentValue = Number(inputField.value) || 0;
             if (currentValue <= 1) {
-               currentValue = 2;
+                currentValue = 2;
             }
             inputField.value = currentValue - 1;
         });
@@ -371,7 +376,7 @@
         plusButton.addEventListener('click', event => {
             event.preventDefault();
             let currentValue = Number(inputField.value) || 0;
-            if(currentValue < 1) {
+            if (currentValue < 1) {
                 currentValue = 0;
             }
             inputField.value = currentValue + 1;
@@ -380,50 +385,44 @@
     <script src="/cart/js/cartAddProduct.js"></script>
     <script th:inline="javascript">
         let productNo = [[${product.productNo}]];
-        let productNoList = [];
-        let productCntList = [];
-
-        productNoList.push(productNo);
-
         let productCnt = 1;
 
-        function checkPurchase(type) {
-            productCnt = document.getElementById('quantity').value;
-            productCntList.push(productCnt);
-
-              if(type === "subs") {
-                  let url = "/order-sheet/subscription/select-period?productNo=" + productNoList +"&productCnt="+ productCnt;
-                  location.href = url;
-
-              } else if(type === "purchase") {
-                  // event.preventDefault();
-                  $('#nonMemberModal').modal("show");
-              }
-          }
-
-        setCategory(productNo);
-
-        console.log(productNo);
-
-        $('#modalY').click(function () {
+        function goOrderSheet(type) {
+            if(type === 'subs') {
+                let url = "/order-sheet/subscription/select-period?productNo=" + productNo + "&productCnt=" + productCnt;
+                location.href = url;
+            }
             let url = "/order-sheet";
             let form = document.createElement('form');
             form.setAttribute('method', 'post');
             form.setAttribute('action', url);
 
             let field_productNoList = document.createElement('input');
-            field_productNoList.setAttribute('name','productNoList');
-            field_productNoList.setAttribute('value',productNo);
+            field_productNoList.setAttribute('name', 'productNoList');
+            field_productNoList.setAttribute('value', productNo);
             form.appendChild(field_productNoList);
 
             let field_productCntList = document.createElement('input');
-            field_productCntList.setAttribute('name','productCntList');
-            field_productCntList.setAttribute('value',productCnt);
+            field_productCntList.setAttribute('name', 'productCntList');
+            field_productCntList.setAttribute('value', productCnt);
             form.appendChild(field_productCntList);
 
             document.body.appendChild(form);
             form.submit();
+        }
 
+        setCategory(productNo);
+
+        console.log(productNo);
+
+        // 비회원 확인 모달창
+        $('.non-member-btn').click(function (e) {
+            e.preventDefault();
+            productCnt = document.getElementById('quantity').value;
+            $('#nonMemberModal').modal("show");
+        });
+        $('#modalY').click(function (type) {
+            goOrderSheet(type)
             $('#nonMemberModal').modal("hide");
         })
         $('#modalN').click(function () {
