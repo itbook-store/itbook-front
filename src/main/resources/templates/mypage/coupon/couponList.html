@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link href="/adminpage/css/button.css" rel="stylesheet">
 
 </head>
 <body>
@@ -47,7 +48,7 @@
                                                 <span th:text="${couponIssue.name}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${couponIssue.couponTypeName}"></span>
+                                                <span th:text="${couponIssue.couponType}"></span>
                                             </td>
                                             <td th:if="${couponIssue.amount!=0}">
                                                 <span th:text="${couponIssue.amount} + '원 할인'"></span>
@@ -58,13 +59,20 @@
                                             <td th:if="${couponIssue.point!=0}">
                                                 <span th:text="${couponIssue.point} + ' 포인트 적립'"></span>
                                             </td>
+                                            <td th:if="${couponIssue.point!=0}">
+                                                포인트 쿠폰
+                                            </td>
                                             <td th:if="${not #strings.isEmpty(couponIssue.categoryName)}">
-                                                <span th:text="${couponIssue.categoryName}"></span>
+                                                <span th:text="${couponIssue.parentCategoryName}"></span><br>
+                                                - <span th:text="${couponIssue.categoryName}"></span>
                                             </td>
                                             <td th:if="${not #strings.isEmpty(couponIssue.productName)}">
-                                                <span th:text="${couponIssue.productName}"></span>
+                                                <a th:href="@{|/products/${couponIssue.productNo}|}"
+                                                    class="btn btn-coupon-register btn-sm btn-light align-middle"
+                                                ><span th:text="${couponIssue.productName}"></span></a>
+
                                             </td>
-                                            <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName)}">
+                                            <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName) and couponIssue.point==0}">
                                                 전체 상품
                                             </td>
                                             <td>

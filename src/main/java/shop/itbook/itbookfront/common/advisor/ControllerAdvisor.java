@@ -1,6 +1,5 @@
 package shop.itbook.itbookfront.common.advisor;
 
-import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -8,11 +7,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.itbook.itbookfront.auth.exception.JwtExpirationException;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.MemberForbiddenException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
-import shop.itbook.itbookfront.payment.exception.InvalidPaymentException;
-import shop.itbook.itbookfront.product.exception.InvalidInputException;
 
 /**
  * 프론트 서버에서 에러를 처리하기 위한 클래스 입니다.
@@ -26,20 +25,32 @@ public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private static final String BAD_REQUEST = "badRequestMessage";
+
+    private static final String BAD_REQUEST_MESSAGE = "잘못된 요청입니다.";
+
+
+
     @ExceptionHandler(value = {
         BadRequestException.class,
         MethodArgumentNotValidException.class})
-    public String badRequestException400(Exception e) {
-        log.error("badRequestException400 {}", e);
-        return "/error/400error";
+    public String badRequestException400(Exception e, RedirectAttributes redirectAttributes) {
+        log.error("badRequestException400 {}", e.getMessage());
+        redirectAttributes.addFlashAttribute(BAD_REQUEST, BAD_REQUEST_MESSAGE);
+        return "redirect:/";
+    }
+
+    @ExceptionHandler(value = {JwtExpirationException.class})
+    public String jwtException(Exception e) {
+        log.error("jwtExpirationException {}", e.getMessage());
+        return "redirect:/logout";
     }
 
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = {MemberForbiddenException.class})
     public String forbiddenException403(Exception e) {
-        log.error("forbiddenException403 {}", e);
+        log.error("forbiddenException403 {}", e.getMessage());
         return "/error/403error";
     }
 
@@ -50,7 +61,7 @@ public class ControllerAdvisor {
         Exception.class
     })
     public String internalErrorException500(Exception e, Model model) {
-        log.error("internalErrorException500 {}", e);
+        log.error("internalErrorException500 {}", e.getMessage());
         model.addAttribute(MESSAGE, e.getMessage());
 
         return "/error/500error";

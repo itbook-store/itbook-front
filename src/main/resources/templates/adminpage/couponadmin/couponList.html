@@ -5,6 +5,7 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
+    <link href="/adminpage/css/button.css" rel="stylesheet">
     <title>categoryList</title>
 </head>
 
@@ -70,7 +71,12 @@
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.productName)}">
                     <span th:text="${coupon.productNo}"></span>.
-                    <span th:text="${coupon.productName}"></span>
+                    <a th:href="@{|/products/${coupon.productNo}|}"
+                       class="btn btn-coupon-register btn-sm btn-light align-middle">
+                        <span th:text="${coupon.productNo}"></span>.
+                        <span th:text="${coupon.productName}"></span>
+                    </a>
+
                 </td>
                 <td th:if="${#strings.isEmpty(coupon.productName) and #strings.isEmpty(coupon.categoryName) and coupon.point==0}">
                     전체 상품
