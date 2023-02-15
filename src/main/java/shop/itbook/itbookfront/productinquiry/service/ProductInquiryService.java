@@ -23,6 +23,8 @@ public interface ProductInquiryService {
 
     ProductInquiryResponseDto findProductInquiry(Long productInquiryNo);
 
+    ProductInquiryResponseDto findProductInquiryInProductDetails(Long memberNo, Long productInquiryNo);
+
     PageResponse<ProductInquiryResponseDto> findProductInquiryListByMemberNo(String url, Long memberNo);
 
     PageResponse<ProductInquiryResponseDto> findProductInquiryListByProductNo(String url, Long productNo);

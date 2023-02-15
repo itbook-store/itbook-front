@@ -73,20 +73,12 @@ public class ReviewAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ReviewNoResponseDto>> responseEntity = null;
-
-        try {
-            responseEntity =
-                restTemplate.exchange(
-                    gatewayConfig.getGatewayServer() + "/api/reviews/add", HttpMethod.POST,
-                    uploadEntity,
-                    new ParameterizedTypeReference<>() {
-                    });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), ReviewAlreadyRegisteredException.MESSAGE)) {
-                throw new ReviewAlreadyRegisteredException();
-            }
-        }
+        ResponseEntity<CommonResponseBody<ReviewNoResponseDto>> responseEntity =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/reviews/add", HttpMethod.POST,
+                uploadEntity,
+                new ParameterizedTypeReference<>() {
+                });
 
         CommonResponseBody<ReviewNoResponseDto> body = responseEntity.getBody();
 
