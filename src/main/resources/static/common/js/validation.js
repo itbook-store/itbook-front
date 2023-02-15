@@ -1,5 +1,5 @@
-function checkStringLengthDownTo255(obj) {
-    if (obj.length > 255) {
+function checkStringLengthDown(obj, size) {
+    if (obj.length > size) {
         return false;
     } else {
         return true;
