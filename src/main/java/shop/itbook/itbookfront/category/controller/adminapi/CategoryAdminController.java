@@ -227,7 +227,7 @@ public class CategoryAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return "redirect:/admin/categories";
+            return "redirect:/";
         }
 
         model.addAttribute("pageResponse", pageResponse);
