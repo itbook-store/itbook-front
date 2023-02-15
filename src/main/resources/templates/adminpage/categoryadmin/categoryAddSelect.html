@@ -14,6 +14,16 @@
       <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/main-category'">대분류 추가하기</button>
       <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/sub-category/select-form'">소분류 추가하기</button>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: failMessage,
+                text: '다시 시도해 주세요!',
+            })
+        }
+    </script>
 </div>
 
 </html>

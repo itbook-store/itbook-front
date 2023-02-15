@@ -58,7 +58,11 @@
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
         if (failMessage) {
-            alert(failMessage);
+            Swal.fire({
+                icon: 'error',
+                title: failMessage,
+                text: '다시 시도해 주세요!',
+            })
         }
     </script>
 </div>

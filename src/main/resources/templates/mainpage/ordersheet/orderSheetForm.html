@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="/order/css/orderSheet.css">
 
     <!-- bootstrap js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
 
-<!--    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">-->
+    <!--    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">-->
 
 </head>
 <body>
@@ -68,39 +70,47 @@
                                 </td>
 
                                 <th:block th:with="productCount=${productCntQueue.peek()}">
-                                <!-- 상품 수량-->
-                                <td>
-                                    <p class="product_count" th:text="${productCount}"></p>
-                                    <!--                                <input class="product_count" type="number" readonly th:value="${productCntQueue.peek()}">-->
-                                </td>
+                                    <!-- 상품 수량-->
+                                    <td>
+                                        <p class="product_count" th:text="${productCount}"></p>
+                                        <!--                                <input class="product_count" type="number" readonly th:value="${productCntQueue.peek()}">-->
+                                    </td>
 
-                                <!-- 쿠폰 적용 버튼-->
-                                <td style="text-align: center">
-                                    <th:block sec:authorize="isAuthenticated()">
-                                    <div class="coupon_box" style="display: flex; flex-direction: column; align-items: center" th:attr="data-valid=${product.productNo}">
-                                    <input type="hidden" class="couponIssueNo" name="couponIssueNo" th:attr="data-valid=${product.productNo}">
-                                    <input type="hidden" class="couponApplyPrice" value="0" th:attr="data-valid=${product.productNo}">
-                                    <input class="coupon_apply_name_input" readonly th:attr="data-valid=${product.productNo}">
-                                    <button class="btn coupon_btn" type="button" onclick="couponModalFunc(this)"
-                                            th:attr="data-url=|/async/coupon-issues/${product.productNo}|,
+                                    <!-- 쿠폰 적용 버튼-->
+                                    <td style="text-align: center">
+                                        <th:block sec:authorize="isAuthenticated()">
+                                            <div class="coupon_box"
+                                                 style="display: flex; flex-direction: column; align-items: center"
+                                                 th:attr="data-valid=${product.productNo}">
+                                                <input type="hidden" class="couponIssueNo" name="couponIssueNo"
+                                                       th:attr="data-valid=${product.productNo}">
+                                                <input type="hidden" class="couponApplyPrice" value="0"
+                                                       th:attr="data-valid=${product.productNo}">
+                                                <input class="coupon_apply_name_input" readonly
+                                                       th:attr="data-valid=${product.productNo}">
+                                                <button class="btn coupon_btn" type="button"
+                                                        onclick="couponModalFunc(this)"
+                                                        th:attr="data-url=|/async/coupon-issues/${product.productNo}|,
                                              data-no=${product.productNo},
                                              data-price=${product.selledPrice},
                                              data-count=${productCount}">
-                                        쿠폰 적용하기
-                                    </button>
-                                    </div>
-                                    </th:block>
-                                    <th:block sec:authorize="isAnonymous()">
-                                    <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
-                                    </th:block>
+                                                    쿠폰 적용하기
+                                                </button>
+                                            </div>
+                                        </th:block>
+                                        <th:block sec:authorize="isAnonymous()">
+                                            <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.
+                                            </button>
+                                        </th:block>
 
-                                </td>
+                                    </td>
                                 </th:block>
 
                                 <!-- 상품 총 가격-->
                                 <td style="text-align: center">
-                                    <th:block th:with="selledPrice=${product.selledPrice}, productCount = ${productCntQueue.poll()}">
-                                    <p class="product_total_price" th:text="${selledPrice} * ${productCount}"></p>
+                                    <th:block
+                                            th:with="selledPrice=${product.selledPrice}, productCount = ${productCntQueue.poll()}">
+                                        <p class="product_total_price" th:text="${selledPrice} * ${productCount}"></p>
                                     </th:block>
                                 </td>
 
@@ -110,35 +120,35 @@
                     </table>
 
                     <!-- 쿠폰 모달 -->
-<!--                    <div class="modal fade" id="product_coupon_modal" tabindex="-1" role="dialog">-->
-<!--                        <div class="modal-dialog modal-dialog-scrollable modal-lg">-->
-<!--                            <div class="modal-content">-->
-<!--                                <div class="modal-header">-->
-<!--                                    <h5 class="modal-title" id="product_coupon_modalLabel">잇북 쿠폰 목록</h5>-->
-<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                                </div>-->
-<!--                                <div class="modal-body">-->
+                    <!--                    <div class="modal fade" id="product_coupon_modal" tabindex="-1" role="dialog">-->
+                    <!--                        <div class="modal-dialog modal-dialog-scrollable modal-lg">-->
+                    <!--                            <div class="modal-content">-->
+                    <!--                                <div class="modal-header">-->
+                    <!--                                    <h5 class="modal-title" id="product_coupon_modalLabel">잇북 쿠폰 목록</h5>-->
+                    <!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="modal-body">-->
 
-<!--                                    <table class="table table-hover table-md align-middle">-->
-<!--                                        <thead>-->
-<!--                                        <tr>-->
-<!--                                            <th style="width: 80px"></th>-->
-<!--                                            <th style="width: 470px">쿠폰 이름</th>-->
-<!--                                            <th>할인 금액</th>-->
-<!--                                        </tr>-->
-<!--                                        </thead>-->
+                    <!--                                    <table class="table table-hover table-md align-middle">-->
+                    <!--                                        <thead>-->
+                    <!--                                        <tr>-->
+                    <!--                                            <th style="width: 80px"></th>-->
+                    <!--                                            <th style="width: 470px">쿠폰 이름</th>-->
+                    <!--                                            <th>할인 금액</th>-->
+                    <!--                                        </tr>-->
+                    <!--                                        </thead>-->
 
-<!--                                        <tbody class="coupon_list_table_body">-->
-<!--                                        </tbody>-->
-<!--                                    </table>-->
-<!--                                </div>-->
-<!--                                <div class="modal-footer">-->
-<!--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
-<!--                                    <button type="button" id="coupon_select_btn" class="btn btn-primary">선택하기</button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                                        <tbody class="coupon_list_table_body">-->
+                    <!--                                        </tbody>-->
+                    <!--                                    </table>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="modal-footer">-->
+                    <!--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
+                    <!--                                    <button type="button" id="coupon_select_btn" class="btn btn-primary">선택하기</button>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div id="modalBox"></div>
 
                 </div>
@@ -152,10 +162,12 @@
                         <input readonly id="order_total_coupon_name">
 
                         <th:block sec:authorize="isAuthenticated()">
-                        <button id="order_amount_coupon_btn" type="button" th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기</button>
+                            <button id="order_amount_coupon_btn" type="button"
+                                    th:attr="data-url=|/async/coupon-issues/total|">주문 쿠폰 적용하기
+                            </button>
                         </th:block>
                         <th:block sec:authorize="isAnonymous()">
-                        <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
+                            <button type="button" class="btn btn-dark" disabled>비회원은 쿠폰 사용이 불가합니다.</button>
                         </th:block>
 
                         <div class="modal fade" id="order_total_coupon_modal" tabindex="-1" role="dialog">
@@ -163,7 +175,8 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="order_total_coupon_modal_title">잇북 주문 총액 쿠폰 목록</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
 
@@ -181,8 +194,11 @@
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button type="button" id="order_total_coupon_select_btn" class="btn btn-primary">선택하기</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기
+                                        </button>
+                                        <button type="button" id="order_total_coupon_select_btn"
+                                                class="btn btn-primary">선택하기
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -197,25 +213,25 @@
                     <div class="box-content">
 
                         <th:block sec:authorize="isAuthenticated()">
-                        <div class="point_myPointBox">
-                            <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                            <p id="myPoint" th:text="${myPoint}">7000</p>
-                            <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
-                        </div>
-                        <div class="point_apply_box">
-                            <input type="text"
-                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
-                                   value="0" readonly
-                                   name="decreasePoint"
-                                   id="point_apply_input"
-                            >
-                            <button type="button" id="point_apply_btn" class="btn">적용하기</button>
-                            <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
-                        </div>
+                            <div class="point_myPointBox">
+                                <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
+                                <p id="myPoint" th:text="${myPoint}">7000</p>
+                                <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
+                            </div>
+                            <div class="point_apply_box">
+                                <input type="text"
+                                       onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                       value="0" readonly
+                                       name="decreasePoint"
+                                       id="point_apply_input"
+                                >
+                                <button type="button" id="point_apply_btn" class="btn">적용하기</button>
+                                <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
+                            </div>
                         </th:block>
 
                         <th:block sec:authorize="isAnonymous()">
-                        <button type="button" class="btn btn-dark" disabled>비회원은 포인트 사용이 불가합니다.</button>
+                            <button type="button" class="btn btn-dark" disabled>비회원은 포인트 사용이 불가합니다.</button>
                         </th:block>
                     </div>
                 </div>
@@ -261,53 +277,55 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">나의 배송지 목록</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <th:block sec:authorize="isAuthenticated()">
-                                    <div th:each="dst : ${memberDestinationList}">
+                                        <div th:each="dst : ${memberDestinationList}">
 
-                                        <div class="destination_container">
-                                            <input type="radio" name="destination_info" id="destination_info">
-                                            <div>
-                                                <div class="destination_box">
-                                                    <p class="destination_text">수령인 이름</p>
-                                                    <input type="text" placeholder="수령인 이름"
-                                                           th:value="${dst.recipientName}">
-                                                </div>
+                                            <div class="destination_container">
+                                                <input type="radio" name="destination_info" id="destination_info">
+                                                <div>
+                                                    <div class="destination_box">
+                                                        <p class="destination_text">수령인 이름</p>
+                                                        <input type="text" placeholder="수령인 이름"
+                                                               th:value="${dst.recipientName}">
+                                                    </div>
 
-                                                <div class="destination_box">
-                                                    <p class="destination_text">수령인 핸드폰번호</p>
-                                                    <input type="text" placeholder="수령인 이름"
-                                                           th:value="${dst.recipientPhoneNumber}">
-                                                </div>
+                                                    <div class="destination_box">
+                                                        <p class="destination_text">수령인 핸드폰번호</p>
+                                                        <input type="text" placeholder="수령인 이름"
+                                                               th:value="${dst.recipientPhoneNumber}">
+                                                    </div>
 
-                                                <div class="destination_box">
-                                                    <p class="destination_text">우편번호</p>
-                                                    <input type="text" placeholder="수령인 이름"
-                                                           th:value="${dst.postcode}">
-                                                </div>
+                                                    <div class="destination_box">
+                                                        <p class="destination_text">우편번호</p>
+                                                        <input type="text" placeholder="수령인 이름"
+                                                               th:value="${dst.postcode}">
+                                                    </div>
 
-                                                <div class="destination_box">
-                                                    <p class="destination_text">도로명 주소</p>
-                                                    <input type="text" placeholder="수령인 이름"
-                                                           th:value="${dst.roadNameAddress}">
-                                                </div>
+                                                    <div class="destination_box">
+                                                        <p class="destination_text">도로명 주소</p>
+                                                        <input type="text" placeholder="수령인 이름"
+                                                               th:value="${dst.roadNameAddress}">
+                                                    </div>
 
-                                                <div class="destination_box">
-                                                    <p class="destination_text">상세 주소</p>
-                                                    <input type="text" placeholder="수령인 이름"
-                                                           th:value="${dst.recipientAddressDetails}">
+                                                    <div class="destination_box">
+                                                        <p class="destination_text">상세 주소</p>
+                                                        <input type="text" placeholder="수령인 이름"
+                                                               th:value="${dst.recipientAddressDetails}">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
                                     </th:block>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                    <button type="button" id="destination_select_btn" class="btn btn-primary">선택하기</button>
+                                    <button type="button" id="destination_select_btn" class="btn btn-primary">선택하기
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -334,7 +352,9 @@
                                     <input type="text" placeholder="우편번호"
                                            id="sample4_postcode"
                                            name="postcode" readonly>
-                                    <input id="postcodeSearchBtn" class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="width: 100px; margin-left: 10px">
+                                    <input id="postcodeSearchBtn" class="btn-dark" type="button"
+                                           onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                                           style="width: 100px; margin-left: 10px">
                                 </div>
 
                                 <div class="destination_box">
@@ -352,19 +372,19 @@
                             </div>
                         </div>
 
-<!--                        <div class="address-tab">-->
-<!--                            <input type="number" id="sample4_postcode" readonly placeholder="우편번호"-->
-<!--                                   name="postcode">-->
-<!--                            <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">-->
-<!--                            <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"-->
-<!--                                   name="roadNameAddress">-->
-<!--                            <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"-->
-<!--                                   name="recipientAddressDetails">-->
-<!--                            <input type="text" placeholder="수령인 이름"-->
-<!--                                   name="recipientName">-->
-<!--                            <input type="text" placeholder="수령인 연락처"-->
-<!--                                   name="recipientPhoneNumber">-->
-<!--                        </div>-->
+                        <!--                        <div class="address-tab">-->
+                        <!--                            <input type="number" id="sample4_postcode" readonly placeholder="우편번호"-->
+                        <!--                                   name="postcode">-->
+                        <!--                            <input class="btn-dark" type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">-->
+                        <!--                            <input type="text" size="50" id="sample4_roadAddress" readonly placeholder="도로명주소"-->
+                        <!--                                   name="roadNameAddress">-->
+                        <!--                            <input type="text" id="sample4_detailAddress" size="30" placeholder="상세주소"-->
+                        <!--                                   name="recipientAddressDetails">-->
+                        <!--                            <input type="text" placeholder="수령인 이름"-->
+                        <!--                                   name="recipientName">-->
+                        <!--                            <input type="text" placeholder="수령인 연락처"-->
+                        <!--                                   name="recipientPhoneNumber">-->
+                        <!--                        </div>-->
 
                     </div>
                 </div>
@@ -455,12 +475,16 @@
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
+        let couponTagList = document.querySelectorAll(".couponIssueNo");
+        let couponValue = null;
+
+        let decreasePoint = 0;
 
         function processPayment() {
 
             if (!checkValidAddress()) {
                 return;
-            };
+            }
 
             function ProductDetailsDto(productNo, productCnt, couponIssueNo) {
                 this.productNo = productNo;
@@ -470,25 +494,30 @@
 
             let productDetailList = [];
 
-            let couponTagList = document.querySelectorAll(".couponIssueNo");
+            for (let i = 0; i < productNoList.length;) {
+                if (document.querySelectorAll(".couponIssueNo").length > 0) {
+                    couponValue = couponTagList[i].value;
+                }
 
-
-            for (let i = 0; i < productNoList.length; i++) {
-                productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponTagList[i].value));
+                productDetailList.push(new ProductDetailsDto(productNoList[i], productCntList[i], couponValue));
+                i++;
             }
 
             let isSub = false;
             let period = 0;
 
-            if(subsTemp != null) {
-                if(subsTemp.isSubscription) {
+            if (subsTemp != null) {
+                if (subsTemp.isSubscription) {
                     isSub = subsTemp.isSubscription;
                 }
-                if(subsTemp.subscriptionPeriod) {
+                if (subsTemp.subscriptionPeriod) {
                     period = subsTemp.subscriptionPeriod;
                 }
             }
 
+            if(document.getElementById("point_apply_input") != null) {
+                decreasePoint = document.getElementById("point_apply_input").value;
+            }
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
@@ -501,18 +530,18 @@
                 "deliveryFee": 0,
                 "isSubscription": isSub,
                 "subscriptionPeriod": period,
-                "decreasePoint" :  document.getElementById("point_apply_input").value,
-                "orderTotalCouponNo" : document.getElementById("orderTotalCouponNo").value
+                "decreasePoint": decreasePoint,
+                "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
 
-            if(subsTemp != null && subsTemp.isSubscription) {
+            if (subsTemp != null && subsTemp.isSubscription) {
                 orderSubscription(orderAddRequestDto);
                 return;
             }
 
-            if(canceledOrderNo) {
+            if (canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
                 return
             }
@@ -632,7 +661,7 @@
             })
                 // 성공적으로 취소 되었다면 204(void 반환값이 204). ok 범위는 200~299
                 .then(response => {
-                    if(response.ok) {
+                    if (response.ok) {
                         canceledOrderNo = orderNo;
                     }
                 });
