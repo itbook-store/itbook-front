@@ -25,33 +25,10 @@
 
             <div>
                 <label for="title" class="form-label">제목</label>
-                <input type="text" class="form-control" id="title" th:field="*{title}"><br/>
+                <input type="text" class="form-control" id="title" th:field="*{title}" maxlength="20"><br/>
 
-<!--                <label for="content" class="form-label">내용</label>-->
-<!--                <textarea class="col-auto form-control" type="text" id="content"-->
-<!--                          placeholder="문의하실 내용을 입력하세요" th:field="*{content}"></textarea>-->
                 <div id="editor"></div>
                 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-                <script>
-                    const Editor = toastui.Editor;
-
-                    const editor = new Editor({
-                        el: document.querySelector('#editor'),
-                        height: '500px',
-                        initialEditType: 'markdown',
-                        previewStyle: 'vertical'
-                    });
-
-                    function productInquiryFormSubmit() {
-
-                        const editorBody = editor.getMarkdown();
-
-                        $('#content').attr('value',editorBody);
-
-                        alert("상품문의를 성공적으로 등록하였습니다.")
-                        document.getElementById("productInquiryForm").submit();
-                    }
-                </script>
 
             </div>
             <div>
@@ -72,6 +49,38 @@
 
             <button class="btn btn-primary" type="button" onclick="productInquiryFormSubmit()">작성 완료</button>
         </form>
+        <script>
+            const Editor = toastui.Editor;
+
+            const editor = new Editor({
+                el: document.querySelector('#editor'),
+                height: '500px',
+                initialEditType: 'markdown',
+                previewStyle: 'vertical'
+            });
+
+            function productInquiryFormSubmit() {
+
+                const editorBody = editor.getMarkdown();
+                $('#content').attr('value',editorBody);
+
+                let title = document.getElementById("title").value;
+
+                let blank_pattern1 = /^\s+|\s+$/g;
+                if(editorBody.replace(blank_pattern1, '' ) == "" || title.replace(blank_pattern1, '' ) == "" ){
+                    alert('공백만 입력되었습니다.');
+                    return false;
+                }
+
+                if(document.getElementById("private").checked == false && document.getElementById("open").checked == false) {
+                    alert('공개 여부를 선택해주세요.');
+                    return false;
+                }
+
+                alert("상품문의를 성공적으로 등록하였습니다.")
+                document.getElementById("productInquiryForm").submit();
+            }
+        </script>
     </div>
 </div>
 </body>

@@ -55,6 +55,16 @@
             </div>
             <th:block th:include="component/pageFooter"></th:block>
         </div>
+        <script th:inline="javascript">
+            let failMessage = [[${failMessage}]];
+            if (failMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: failMessage,
+                    text: '다시 시도해 주세요!',
+                })
+            }
+        </script>
     </div>
 </div>
 </body>
