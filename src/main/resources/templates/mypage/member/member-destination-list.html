@@ -101,6 +101,16 @@
                 <button type="submit" class="btn btn-danger" onclick="alert('배송지가 삭제되었습니다.')">삭제하기</button>
             </form>
         </div>
+        <script th:inline="javascript">
+            let failMessage = [[${failMessage}]];
+            if (failMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: failMessage,
+                    text: '다시 시도해 주세요!',
+                })
+            }
+        </script>
     </div>
 </div>
 </body>

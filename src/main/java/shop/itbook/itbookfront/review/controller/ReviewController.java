@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
@@ -66,10 +69,13 @@ public class ReviewController {
                                 @PathVariable("orderProductNo") Long orderProductNo,
                                 @PathVariable("productNo") Long productNo,
                                 @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                RedirectAttributes redirectAttributes,
                                 Model model) {
 
         if(!memberNo.equals(userDetailsDto.getMemberNo())) {
-            log.error("잘못된 접근");
+            log.error("잘못된 접근입니다.");
+            redirectAttributes.addFlashAttribute("failMessage", "잘못된 접근입니다.");
+            return "redirect:/review/mypage/unwritten-list";
         }
 
         ReviewRequestDto reviewRequestDto = new ReviewRequestDto();
@@ -83,13 +89,15 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public String reviewAdd(@Valid ReviewRequestDto reviewRequestDto,
+    public String reviewAdd(@ModelAttribute ReviewRequestDto reviewRequestDto,
                             @RequestPart(value = "images") MultipartFile images,
                             RedirectAttributes redirectAttributes) {
 
         try {
+            log.info("reviewRequest = {}", reviewRequestDto);
             reviewService.addReview(reviewRequestDto, images);
         } catch (ReviewAlreadyRegisteredException e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
 
@@ -124,9 +132,20 @@ public class ReviewController {
 
     @GetMapping("/mypage/{orderProductNo}/modify")
     public String reviewModifyForm(@PathVariable("orderProductNo") Long orderProductNo,
+                                   @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                   RedirectAttributes redirectAttributes,
                                    Model model) {
 
-        ReviewResponseDto reviewResponseDto = reviewService.findReview(orderProductNo);
+        ReviewResponseDto reviewResponseDto;
+
+        try {
+            reviewResponseDto = reviewService.findReviewForModify(
+                userDetailsDto.getMemberNo(), orderProductNo);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/review/mypage/unwritten-list";
+        }
 
         model.addAttribute("reviewResponseDto", reviewResponseDto);
 
