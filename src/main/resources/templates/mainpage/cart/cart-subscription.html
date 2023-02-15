@@ -35,78 +35,78 @@
                 </thead>
                 <tbody class="table_body" id="general_product">
                 <!-- 회원 장바구니 테이블 -->
-                <th:block sec:authorize="isAuthenticated()">
-                    <th:block th:if="${not #lists.isEmpty(cartList)}">
-                        <tr class="table_line" th:each="dto : ${cartList}">
-                            <td>
-                                <div style="display: flex; align-items: center; justify-content: center">
-                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                                            title="Remove item" th:attr="productNo=${dto.productDetailsResponseDto.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
-                                            title="Move to the wish list">
-                                        <i class="fas fa-heart"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="product_titleBox">
-                                    <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
-                                        <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
-                                        <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
-                                    </a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="product_priceBox">
-                                    <p class="fixed_price" th:text="${dto.productDetailsResponseDto.fixedPrice}"></p>
-                                    <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
-                                </div>
-                            </td>
-                            <td>
+                <th:block th:if="${not #lists.isEmpty(cartList)}">
+                    <tr class="table_line" th:each="dto : ${cartList}">
+                        <td>
+                            <div style="display: flex; align-items: center; justify-content: center">
+                                <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                        title="Remove item" th:attr="productNo=${dto.productDetailsResponseDto.productNo}" th:onclick="deleteProduct(this.getAttribute('productNo'))">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                        title="Move to the wish list">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product_titleBox">
+                                <input type="hidden" name="productNo" th:value="${dto.productDetailsResponseDto.productNo}">
+                                <input type="hidden" name="productNoList" th:value="${dto.productDetailsResponseDto.productNo}">
+                                <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
+                                    <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
+                                    <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product_priceBox">
+                                <p class="fixed_price" th:text="${dto.productDetailsResponseDto.fixedPrice}"></p>
+                                <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
+                            </div>
+                        </td>
+                        <td>
+
+                            <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <p class="product_isSelled badge bg-danger">품절</p>
+                            </th:block>
+
+                            <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>
+                            </th:block>
+
+                        </td>
+                        <td>
+                            <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
 
                                 <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
                                     <p class="product_isSelled badge bg-danger">품절</p>
                                 </th:block>
 
                                 <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                    <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>
+                                    <div class="form-outline">
+                                        <input min="1" max="100" name="productCount" th:value="${dto.productCount}"  class="quantity" type="number"
+                                               onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                               th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
+                                    </div>
                                 </th:block>
+                            </div>
+                        </td>
+                        <td>
+                            <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <p class="product_isSelled badge bg-danger">품절</p>
+                            </th:block>
 
-                            </td>
-                            <td>
-                                <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
+                            <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <input class="total_price" type="number" readonly style="width: 130px"
+                                       th:value="${dto.productDetailsResponseDto.selledPrice * dto.productCount}" />
+                            </th:block>
 
-                                    <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                        <p class="product_isSelled badge bg-danger">품절</p>
-                                    </th:block>
-
-                                    <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                        <div class="form-outline">
-                                            <input min="1" max="100" name="productCount" th:value="${dto.productCount}"  class="quantity" type="number"
-                                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
-                                                   th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </td>
-                            <td>
-                                <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                    <p class="product_isSelled badge bg-danger">품절</p>
-                                </th:block>
-
-                                <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                                    <input class="total_price" type="number" readonly style="width: 130px"
-                                           th:value="${dto.productDetailsResponseDto.selledPrice * dto.productCount}" />
-                                </th:block>
-
-                            </td>
-                            <td>
-                                <button class="go_payment btn btn-success">주문하기</button>
-                            </td>
-                        </tr>
-                    </th:block>
+                        </td>
+                        <td>
+                            <button class="go_payment btn btn-success">주문하기</button>
+                        </td>
+                    </tr>
                 </th:block>
 
                 </tbody>

@@ -47,6 +47,7 @@ public class BookmarkAsyncController {
         try {
             result = bookmarkService.addBookmark(bookmarkRequestDto);
         } catch (Exception e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute(FAIL_MESSAGE, "즐겨찾기 등록에 실패하였습니다.");
         }
 
@@ -69,6 +70,7 @@ public class BookmarkAsyncController {
         try {
             bookmarkService.deleteBookmark(bookmarkRequestDto);
         } catch (Exception e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute(FAIL_MESSAGE, "상품 삭제에 실패 하였습니다.");
         }
 
@@ -88,6 +90,7 @@ public class BookmarkAsyncController {
         try {
             bookmarkService.deleteAllBookmark(memberNo);
         } catch (Exception e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute(FAIL_MESSAGE, "상품 삭제에 실패 하였습니다.");
         }
 
