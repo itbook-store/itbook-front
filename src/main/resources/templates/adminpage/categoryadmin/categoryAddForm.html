@@ -12,6 +12,8 @@
 <div layout:fragment="content">
     <div id="form-main">
         <div id="form-div">
+            <h1 th:if="${mainCategoryNo == 0}">대분류 카테고리 등록</h1>
+            <h1 th:unless="${mainCategoryNo == 0}">소분류 카테고리 등록</h1>
             <form class="form" method="post" action="/admin/categories/category-addition">
                 <p class="name">
                     <input name="categoryName" type="text"
@@ -24,7 +26,6 @@
                 <input type="hidden" name="parentCategoryNo" th:value="${mainCategoryNo}">
                 <input type="submit" value="등록"/>
             </form>
-
         </div>
     </div>
 </div>
