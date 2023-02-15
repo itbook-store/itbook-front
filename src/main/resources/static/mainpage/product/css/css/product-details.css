@@ -491,7 +491,7 @@ body{
 
 .count #plus,
 .count #minus {
-    width: 30%;
+    width: 40%;
     height: 100%;
     border: none;
     background-color: transparent;
@@ -499,8 +499,6 @@ body{
     font-size: 22px;
 }
 
-.count #plus {
-}
 
 
 /* input number 화살표 지우기 */

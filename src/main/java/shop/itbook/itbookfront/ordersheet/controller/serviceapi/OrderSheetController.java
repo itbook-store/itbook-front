@@ -57,9 +57,6 @@ public class OrderSheetController {
         @AuthenticationPrincipal UserDetailsDto userDetailsDto,
         Model model) {
 
-        log.info("제발: {}", orderSheetFormDto.getProductNoList().get(0));
-        log.info("제발: {}", orderSheetFormDto.getProductCntList().get(0));
-
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories").getContent();
 
