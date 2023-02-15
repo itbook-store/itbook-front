@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 import shop.itbook.itbookfront.cart.service.CartService;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 
 /**
  * 장바구니에 대한 비동기 통신을 하는 컨트롤러입니다.
@@ -28,11 +31,18 @@ public class CartAsyncController {
 
     private final CartService cartService;
 
-    @GetMapping("/add-product")
-    public boolean productAddToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
-                                    @RequestParam(value = "productNo") Integer productNo) {
+    @PostMapping("/add-product")
+    public CartAddResponseDto productAddToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
+                                               @RequestParam(value = "productNo") Integer productNo) {
 
-        return cartService.addCartProduct(cookie.getValue(), productNo);
+        CartAddResponseDto cartAddResponseDto;
+        try {
+            cartAddResponseDto = cartService.addCartProduct(cookie.getValue(), productNo);
+        } catch (BadRequestException e) {
+            cartAddResponseDto = new CartAddResponseDto(false, "장바구니 담는데 실패하였습니다.");
+        }
+
+        return cartAddResponseDto;
     }
 
     @GetMapping("/delete-product")
