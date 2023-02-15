@@ -196,3 +196,108 @@ async function showSearchProductList(event) {
         });
 
 }
+
+function addCouponSubmit() {
+
+    let categoryRadioBox = document.getElementsByName("categoryNo");
+    let productRadioBox = document.getElementsByName("productNo");
+    let selectCoupon = document.getElementById("selectCoupon").value;
+    let userId = document.getElementById("userId").value;
+    let selectMembership = document.getElementById("selectMembership").textContent;
+    let name = document.getElementById("name").value;
+    let point = document.getElementById("point").value;
+    let percent = document.getElementById("percent").value;
+    let amount = document.getElementById("amount").value;
+    let couponCreatedAt = document.getElementById("couponCreatedAt").value;
+    let couponExpiredAt = document.getElementById("couponExpiredAt").value;
+    let allProductRadio = $('input[name="allProductRadio"]:checked').val();
+    let categoryRadio = $('input[name="categoryRadio"]:checked').val();
+    let oneProductRadio = $('input[name="oneProductRadio"]:checked').val();
+    let pointCoverageRadio = $('input[name="pointCoverageRadio"]:checked').val();
+    let pointRadio = $('input[name="pointRadio"]:checked').val();
+    let percentRadio = $('input[name="percentRadio"]:checked').val();
+    let amountRadio = $('input[name="amountRadio"]:checked').val();
+
+    console.log(name);
+
+    if (selectCoupon == null) {
+        Swal.fire('쿠폰 이름 길이는 20자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkStringLengthDownToNum(20, name)) {
+        Swal.fire('쿠폰 이름 길이는 20자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (pointRadio === "true") {
+
+        if (!checkNumberUpToNum(1,point)) {
+            Swal.fire('포인트 적립액은 1원 이상 이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    if (amountRadio === "true") {
+
+        if (!checkNumberUpToNum(1,amount)) {
+            Swal.fire('쿠폰의 할인 금액은 1원 이상 이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    if (percentRadio === "true") {
+
+        if (!checkNumberOfPercentBetween(1, 101, percent)) {
+            Swal.fire('퍼센트 할인액은 1% 이상 이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    if (pointCoverageRadio === "true") {
+
+        if (allProductRadio === "true") {
+
+            return true;
+        }
+        if (categoryRadio === "true") {
+
+            if (!checkCheckBoxCountUpTo0(categoryRadioBox)) {
+                Swal.fire('카테고리는 최소 1개를 지정해야만 합니다!', '', 'error');
+                return false;
+            }
+
+            return true;
+        }
+        if (oneProductRadio === "true") {
+
+            if (!checkCheckBoxCountUpTo0(productRadioBox)) {
+                Swal.fire('상품은 최소 1개를 지정해야만 합니다!', '', 'error');
+                return false;
+            }
+
+            return true;
+        }
+        return true;
+    }
+
+    if (couponCreatedAt == null) {
+        Swal.fire('쿠폰 생성날짜는 설정되어야합니다!', '', 'error');
+        return false;
+    }
+
+    if (couponExpiredAt == null) {
+        Swal.fire('쿠폰 만료 날짜는 설정되어야합니다!', '', 'error');
+        return false;
+    }
+
+    Swal.fire('쿠폰 등록 성공!', '', 'success');
+    return true;
+
+}
