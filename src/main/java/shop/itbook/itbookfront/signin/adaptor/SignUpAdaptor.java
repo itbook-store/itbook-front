@@ -84,9 +84,6 @@ public class SignUpAdaptor {
     public MemberBooleanResponseDto getMemberBooleanResponseDto(
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity) {
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -104,9 +101,6 @@ public class SignUpAdaptor {
             httpEntity, new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -122,9 +116,6 @@ public class SignUpAdaptor {
             httpEntity,
             new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }

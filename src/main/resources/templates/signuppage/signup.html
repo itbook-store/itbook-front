@@ -136,8 +136,15 @@
                                         <label class="form-label">생년월일</label>
                                         <span th:text="${valid_birth}" style="color: red"></span>
                                         <input type="date" class="form-control form-control-lg" id="birth"
-                                               name="birth"/>
+                                               min="1900-01-01" name="birth"/>
                                     </div>
+
+                                    <script>
+                                        let now_utc = Date.now()
+                                        let timeOff = new Date().getTimezoneOffset()*60000;
+                                        let today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+                                        document.getElementById("birth").setAttribute("max", today);
+                                    </script>
 
                                     <div class="form-outline mb-4">
                                         <label class="form-label">이메일</label>

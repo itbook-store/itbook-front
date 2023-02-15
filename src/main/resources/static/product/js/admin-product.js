@@ -44,7 +44,7 @@ function spinnerStart() {
     // [스피너 매핑 및 실행 시작]
     var target = document.getElementById("spinnerContainer1000");
     var spinner = new Spinner(opts).spin(target);
-};
+}
 
 
 /* [spinnerStop 중지 이벤트 호출] */
@@ -57,7 +57,7 @@ function spinnerStop() {
         // console.error("catch : " + "not find spinnerLay1000");
     }
 
-};
+}
 
 function selectEbook() {
     let ebookDiv = document.getElementById("selectEbook");
@@ -127,40 +127,32 @@ async function showSubCategory(event, categoryNoList) {
         });
 }
 
-function checkLimitCategory(obj) {
+function checkLimitCategory(element) {
     let checkBox = document.getElementsByName("categoryNoList");
     let cnt = 0;
-    for (let i = 0; i < checkBox.length; i++) {
-        if (checkBox[i].checked) {
+    let check = false;
+
+    checkBox.forEach((cb) => {
+        if (cb.checked) {
+            check = true;
             cnt++;
         }
-    }
-    console.log("cnt: " + cnt);
+    })
 
-    if (cnt > 3) {
-        alert("카테고리는 최대 3개까지 지정 가능합니다.");
+    if (!check) {
         return false;
-    } else
-        return true;
-}
-
-function checkCategoryCount() {
-    let checkBox = document.getElementsByName("categoryNoList");
-    let cnt = 0;
-    for (let i = 0; i < checkBox.length; i++) {
-        if (checkBox[i].checked) {
-            cnt++;
-        }
+    } else {
+        if (cnt > 3) {
+            Swal.fire("카테고리는 최대 3개까지 지정 가능합니다.", '', 'error');
+            checkBox.forEach((cb) => {
+                cb.checked = true;
+            })
+            element.checked = false;
+            return false;
+        } else
+            return true;
     }
-    console.log("cnt: " + cnt);
-
-    if (cnt < 1) {
-        alert("카테고리는 최소 1개를 지정해야만 합니다.");
-        return false;
-    } else
-        return true;
 }
-
 
 async function showSearchResults(event) {
 
@@ -261,6 +253,119 @@ function addBookSubmit() {
         alert("카테고리는 최소 1개를 지정해야만 합니다.");
         return false;
     } else {
+        Swal.fire('도서 등록 성공!', '', 'success');
+        return true;
+    }
+}
+
+function modifyBookSubmit() {
+    if (document.getElementById("confirmBook").disabled == false) {
+        alert("등록 가능한 isbn인지 확인이 필요합니다.");
+        return false;
+    } else if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        Swal.fire('도서 수정 성공!', '', 'success');
+        return true;
+    }
+}
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        document.getElementById('imagePreview').style.display = "block";
+
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('imagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('imagePreview').src = "";
+    }
+}
+
+
+function addProductSubmit() {
+
+    let checkBox = document.getElementsByName("categoryNoList");
+    let name = document.getElementById("productName").value;
+    let simpleDescription = document.getElementById("simpleDescription").textContent;
+    let detailsDescription = document.getElementById("detailsDescription").textContent;
+    let increasePointPercent = document.getElementById("increasePointPercent").value;
+    let rawPrice = document.getElementById("rawPrice").value;
+    let fixedPrice = document.getElementById("fixedPrice").value;
+    let discountPercent = document.getElementById("discountPercent").value;
+    let stock = document.getElementById("stock").value;
+    let isPointApplyingValue = $('input[name="isPointApplying"]:checked').val();
+    let isPointApplyingBasedSellingPriceValue = $('input[name="isPointApplyingBasedSellingPrice"]:checked').val();
+
+    console.log(discountPercent);
+    console.log(discountPercent.length);
+
+    if (!checkCheckBoxCountUpTo0(checkBox)) {
+        Swal.fire('카테고리는 최소 1개를 지정해야만 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkStringLengthDown(name, 255)) {
+        Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkStringLengthDown(simpleDescription, 255)) {
+        Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (isPointApplyingValue == "true") {
+
+        if (!checkNumberOfPercent(increasePointPercent)) {
+            Swal.fire('포인트 적립율은 0 ~ 100%이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        if (isPointApplyingBasedSellingPriceValue == null) {
+            Swal.fire('포인트 적립 시 포인트 적립 기준 체크는 필수 항목입니다!', '', 'error');
+            return false;
+        }
+
+        return true;
+
+    }
+
+    if (!checkNumberUpTo0(rawPrice)) {
+        Swal.fire('원가는 0원 이상이어야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkNumberUpTo0(fixedPrice)) {
+        Swal.fire('정가는 0원 이상이어야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkNumberOfPercent(discountPercent)) {
+        console.log("할인율")
+        Swal.fire('할인율은 0 ~ 100%이어야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!checkNumberUpTo0(stock)) {
+        Swal.fire('재고는 0개 이상이어야 합니다!', '', 'error');
+        return false;
+    }
+
+    Swal.fire('상품 등록 성공!', '', 'success');
+    return true;
+
+}
+
+function modifyProductSubmit() {
+    if (!checkCategoryCount()) {
+        alert("카테고리는 최소 1개를 지정해야만 합니다.");
+        return false;
+    } else {
+        Swal.fire('상품 수정 성공!', '', 'success');
         return true;
     }
 }

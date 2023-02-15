@@ -138,9 +138,6 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -153,14 +150,11 @@ public class MemberAdminAdaptor {
         HttpEntity<MemberStatusChangeRequestDto>
             httpEntity = new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberNo, HttpMethod.PUT,
             httpEntity, new ParameterizedTypeReference<>() {
             }
         );
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
     }
 
@@ -216,9 +210,6 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -232,36 +223,26 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
     public void addMemberRole(Long memberNo, String roleName) {
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" +
-                    roleName + "/add",
-                HttpMethod.POST, null, new ParameterizedTypeReference<>() {
-                });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" +
+                roleName + "/add",
+            HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+            });
 
     }
 
     public void deleteMemberRole(Long memberNo, Integer roleNo) {
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" + roleNo +
                 "/delete", HttpMethod.DELETE, null,
             new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
     public MemberCountResponseDto countMember() {
@@ -272,8 +253,6 @@ public class MemberAdminAdaptor {
             new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -285,9 +264,6 @@ public class MemberAdminAdaptor {
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -306,20 +282,15 @@ public class MemberAdminAdaptor {
     public MemberBooleanResponseDto getMemberBooleanResponseDto(
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity) {
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
     public void modifyMemberWriter(Long memberNo) {
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/admin/members/modify/writer/" + memberNo, HttpMethod.PUT,
             null, new ParameterizedTypeReference<>() {
-            }
-        );
+            });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 }

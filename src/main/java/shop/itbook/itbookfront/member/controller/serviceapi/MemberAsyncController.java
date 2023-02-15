@@ -20,7 +20,7 @@ public class MemberAsyncController {
     private final MemberAdminService memberAdminService;
 
     @GetMapping("/name/{memberId}/{name}")
-    public MemberBooleanResponseDto emailExists(@PathVariable("memberId") String memberId,
+    public MemberBooleanResponseDto nameExists(@PathVariable("memberId") String memberId,
                                                 @PathVariable("name") String name) {
 
         return memberAdminService.checkNameExists(memberId, name);

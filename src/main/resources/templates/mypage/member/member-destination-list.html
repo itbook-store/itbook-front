@@ -25,16 +25,16 @@
                 <form id="memberDestinationForm" method="post" th:action="@{/mypage/members/me/destinations/add}">
                     <input type="hidden" name="memberNo" th:value="${memberNo}">
                     <label class="form-label">수령인 이름</label>
-                    <input type="text" id="recipientName" class="form-control form-control-lg" name="recipientName">
+                    <input type="text" id="recipientName" class="form-control form-control-lg" name="recipientName" maxlength="20">
                     <label class="form-label">수령인 전화번호</label>
-                    <input type="text" id="recipientPhoneNumber" class="form-control form-control-lg" placeholder="01000000000" name="recipientPhoneNumber">
+                    <input type="text" id="recipientPhoneNumber" class="form-control form-control-lg" placeholder="01000000000" name="recipientPhoneNumber" maxlength="11">
                     <label class="form-label">수령인 우편번호</label>
                     <input type="text" id="postcode" readonly class="form-control form-control-lg" name="postcode">
                     <input class="btn-info" type="button" onclick="execDaumPostcode()" value="우편번호 찾기">
                     <label class="form-label">도로명 주소</label>
                     <input type="text" id="roadAddress" readonly class="form-control form-control-lg" name="roadNameAddress">
                     <label class="form-label">상세 주소</label>
-                    <input type="text" id="detailAddress" class="form-control form-control-lg" name="recipientAddressDetails"><br/>
+                    <input type="text" id="detailAddress" class="form-control form-control-lg" name="recipientAddressDetails" maxlength="255"><br/>
                     <button class="btn btn-primary" type="button" onclick="validationCheck()">등록하기</button><br>
                 </form>
                 <hr>
@@ -84,7 +84,7 @@
                                                         <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|location.href= '@{/mypage/members/me/memberDestination/{memberNo}/{destinationNo}/modify(memberNo = ${memberNo}, destinationNo =${memberDestination.getRecipientDestinationNo()})}'|">
+                                                        <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|location.href= '@{/mypage/members/me/memberDestination/{destinationNo}/modify(destinationNo =${memberDestination.getRecipientDestinationNo()})}'|">
                                                             배송지 수정하기
                                                         </button>
                                                     </td>
@@ -101,6 +101,16 @@
                 <button type="submit" class="btn btn-danger" onclick="alert('배송지가 삭제되었습니다.')">삭제하기</button>
             </form>
         </div>
+        <script th:inline="javascript">
+            let failMessage = [[${failMessage}]];
+            if (failMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: failMessage,
+                    text: '다시 시도해 주세요!',
+                })
+            }
+        </script>
     </div>
 </div>
 </body>
