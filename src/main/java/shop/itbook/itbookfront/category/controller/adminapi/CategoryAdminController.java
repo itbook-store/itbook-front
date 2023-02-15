@@ -77,11 +77,18 @@ public class CategoryAdminController {
         return Strings.concat(DIRECTORY_NAME, "/mainCategorySelectForm");
     }
 
+    @GetMapping("/category-addition/main-category")
+    public String categoryAddMainCategoryForm(Model model) {
+
+        model.addAttribute("mainCategoryNo", 0);
+        return Strings.concat(DIRECTORY_NAME, "/categoryAddForm");
+    }
+
     @GetMapping("/category-addition/sub-category/{mainCategoryNo}")
     public String categoryAddSubCategoryForm(@PathVariable Integer mainCategoryNo, Model model) {
 
         model.addAttribute("mainCategoryNo", mainCategoryNo);
-        return Strings.concat(DIRECTORY_NAME, "/subCategoryAddForm");
+        return Strings.concat(DIRECTORY_NAME, "/categoryAddForm");
     }
 
 
@@ -227,7 +234,7 @@ public class CategoryAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return "redirect:/admin/categories";
+            return "redirect:/";
         }
 
         model.addAttribute("pageResponse", pageResponse);

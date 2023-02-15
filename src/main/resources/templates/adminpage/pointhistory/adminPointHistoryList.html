@@ -22,7 +22,7 @@
         <input type="hidden" name="content" th:value="${content}">
         <button class="btn btn-secondary" type="submit">검색</button>
       </form>
-      <select name="searchRequirement" onchange="window.open(this.value)">
+      <select name="searchRequirement" onchange="window.location.replace(this.value)">
         <option value="/admin/point-histories/show-content/admin-point-list">전체</option>
         <option value="/admin/point-histories/show-content/admin-point-list?content=쿠폰" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '쿠폰')}">쿠폰</option>
         <option value="/admin/point-histories/show-content/admin-point-list?content=주문" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '주문')}">주문</option>
