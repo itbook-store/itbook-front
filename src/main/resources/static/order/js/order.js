@@ -191,7 +191,7 @@ function couponModalFunc(trigger) {
 
             document.querySelector("#modalBox").innerHTML = "";
 
-            let temp;
+            let temp = '';
 
             for (let i = 0; i < res.length; i++) {
 
@@ -244,7 +244,6 @@ function couponModalFunc(trigger) {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <i class="fa-solid fa-ticket"></i>
                                     <table class="table table-hover table-md align-middle">
                                         <thead>
                                         <tr>
@@ -255,7 +254,7 @@ function couponModalFunc(trigger) {
                                         </thead>
 
                                         <tbody class="coupon_list_table_body">
-                ` + temp + `
+                                        ${temp}
                 
                                         </tbody>
                                     </table>
@@ -276,6 +275,7 @@ function couponModalFunc(trigger) {
             setTimeout(1000);
 
             $('#product_coupon_modal').modal('show');
+
 
             let couponSelectBtn = document.querySelector("#coupon_select_btn");
 
@@ -479,7 +479,7 @@ function getOrderProductTotalPriceBeforeDiscount() {
     let productCountList = document.querySelectorAll(".product_count");
     let orderOriginPrice = document.querySelector("#product_origin_price");
 
-    if (discountPriceList.length != productCountList.length) {
+    if (discountPriceList.length !== productCountList.length) {
         invalidOrderRedirectFunc();
         return;
     }
@@ -595,6 +595,17 @@ pointCancelBtn.addEventListener("click", function () {
 function setOrderRealAmountTag() {
 
     let orderRealAmountTag = document.querySelector("#order_real_amount");
+
+    // let productTotalPriceList = document.querySelectorAll(".product_total_price");
+    //
+    // console.log(productTotalPriceList);
+    // let temp = 0;
+    // for (let i = 0; i < productTotalPriceList.length; i++) {
+    //     temp += Number(productTotalPriceList[i].innerText);
+    // }
+
+    // finalTotalPrice = temp;
+
     let paymentBtnAmountPriceTag = document.querySelector("#payment_btn_amount_price");
 
     if (orderRealAmountPrice < 0) {
@@ -620,7 +631,6 @@ function setTotalDiscountPriceTag() {
     }
 
     totalDiscountPriceTag.innerHTML = totalDiscountPrice;
-
 }
 
 function invalidOrderRedirectFunc() {
