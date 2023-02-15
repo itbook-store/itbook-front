@@ -618,6 +618,12 @@
                             '',
                             'error',
                         );
+                    } else if (error.code === 'BELOW_ZERO_AMOUNT') {
+                        Swal.fire(
+                            '금액은 0보다 커야 합니다.',
+                            '',
+                            'error',
+                        );
                     } else if (error.code === 'PAY_PROCESS_CANCELED') {
                         Swal.fire(
                             '결제가 취소되었습니다.',

@@ -308,11 +308,18 @@
                                                     <span th:text="${productInquiry.memberId}"></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <button th:if="${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
+                                                    <button th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
                                                             class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                         상세보기
                                                     </button>
+                                                    <div sec:authorize="hasAuthority('ADMIN')">
+                                                        <button th:if="${productInquiry.isPublic} == false"
+                                                                class="btn btn-primary"
+                                                                th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
+                                                            상세보기
+                                                        </button>
+                                                    </div>
                                                     <br>
                                                 </td>
                                                 <td class="text-left">

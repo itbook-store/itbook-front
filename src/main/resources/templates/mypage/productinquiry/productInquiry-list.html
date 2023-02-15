@@ -38,17 +38,12 @@
                                         </strong>
                                         </td>
                                         <td><span th:text="${productInquiry.memberId}"></span></td>
-                                        <!--                                        <td>-->
-                                        <!--                                            <span th:text="${productInquiry.name}"-->
-                                        <!--                                                  th:onclick="|location.href='@{/products/{productNo}(productNo=${productInquiry.productNo})}'|"></span>-->
-                                        <!--                                        </td>-->
                                         <td>
                                             <span th:text="${productInquiry.isPublic} ? '공개' : '비공개'"></span>
                                         </td>
                                         <td>
                                             <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
                                         </td>
-                                        <!-- TODO 상품문의 상세 페이지 만들어지면 연결하기 -->
                                         <td>
                                             <button class="btn btn-primary"
                                                     th:onclick="|location.href='@{/product-inquiries/view/{productInquiryNo}(productInquiryNo=${productInquiry.productInquiryNo})}'|">상세보기</button>

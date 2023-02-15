@@ -44,9 +44,6 @@ public class ProductRelationController {
         model.addAttribute("pageResponse", relationProductList);
         model.addAttribute("paginationUrl", "/admin/products/relation");
 
-        model.addAttribute("paginationUrl",
-            String.format("/admin/products/relation"));
-
         return "adminpage/product/product-relation-management";
     }
 

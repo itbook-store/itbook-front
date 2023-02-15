@@ -25,7 +25,7 @@
         });
     </script>
     <meta charset="UTF-8">
-    <title>연관상품 수정</title>
+    <title>연관상품 관리</title>
 </head>
 <body>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
@@ -53,7 +53,7 @@
                     </div>
                 </div>
 <!--                <th:block th:include="component/pageFooter"></th:block>-->
-                <input style="margin-left: 20px" class="btn btn-secondary" type="submit" id="submit" value="수정"/>
+                <input style="margin-left: 20px" class="btn btn-secondary" type="submit" id="submit" value="확인"/>
                 <a th:href="@{|/admin/products/relation/${basedProductNo}|}">
                     <input style="margin-left: 20px" class="btn btn-secondary"
                            type="button" id="editButton" value="취소"/></a>
@@ -61,7 +61,7 @@
         </div>
     </section>
     <section th:if="${#lists.isEmpty(pageResponse.content)}">
-        <p>수정할 수 없습니다.</p>
+        <p>처리할 수 없습니다.</p>
     </section>
 </div>
 </body>
