@@ -15,7 +15,7 @@ public class ProductSampleResponseDto {
     private String thumbnailUrl;
     private Long fixedPrice;
     private Integer increasePointPercent;
-    private Double discountPercent;
+    private Integer discountPercent;
     private Long rawPrice;
     private Boolean isForceSoldOut;
     private Integer stock;

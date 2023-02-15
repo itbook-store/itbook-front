@@ -34,7 +34,7 @@ public class BookDetailsResponseDto {
 
     private Long fixedPrice;
 
-    private Double discountPercent;
+    private Integer discountPercent;
 
     private String fileThumbnailsUrl;
 

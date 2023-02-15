@@ -41,7 +41,7 @@ public class ProductDetailsResponseDto {
 
     private Long fixedPrice;
 
-    private Double discountPercent;
+    private Integer discountPercent;
 
     private String fileThumbnailsUrl;
 
