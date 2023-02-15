@@ -138,9 +138,6 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -158,9 +155,6 @@ public class MemberAdminAdaptor {
             httpEntity, new ParameterizedTypeReference<>() {
             }
         );
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
     }
 
@@ -216,9 +210,6 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -232,9 +223,6 @@ public class MemberAdminAdaptor {
                 }
             );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -247,9 +235,6 @@ public class MemberAdminAdaptor {
                 HttpMethod.POST, null, new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
     }
 
     public void deleteMemberRole(Long memberNo, Integer roleNo) {
@@ -260,8 +245,6 @@ public class MemberAdminAdaptor {
             new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
     public MemberCountResponseDto countMember() {
@@ -272,8 +255,6 @@ public class MemberAdminAdaptor {
             new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -285,9 +266,6 @@ public class MemberAdminAdaptor {
             HttpMethod.GET, null,
             new ParameterizedTypeReference<>() {
             });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -306,9 +284,6 @@ public class MemberAdminAdaptor {
     public MemberBooleanResponseDto getMemberBooleanResponseDto(
         ResponseEntity<CommonResponseBody<MemberBooleanResponseDto>> responseEntity) {
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -319,7 +294,5 @@ public class MemberAdminAdaptor {
             }
         );
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 }

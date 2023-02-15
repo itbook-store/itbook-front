@@ -48,9 +48,6 @@ public class MemberAdaptor {
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
     }
 
     public MemberInfoResponseDto getMemberInfo(Long memberNo) {
@@ -60,9 +57,6 @@ public class MemberAdaptor {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -74,9 +68,6 @@ public class MemberAdaptor {
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
@@ -94,8 +85,6 @@ public class MemberAdaptor {
             HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
             });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
     public List<MemberDestinationResponseDto> getMemberDestinationList(Long memberNo) {
@@ -143,9 +132,6 @@ public class MemberAdaptor {
                 HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -189,9 +175,6 @@ public class MemberAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -210,9 +193,6 @@ public class MemberAdaptor {
                 HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 });
-
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
 
         return responseEntity.getBody().getResult();
     }
