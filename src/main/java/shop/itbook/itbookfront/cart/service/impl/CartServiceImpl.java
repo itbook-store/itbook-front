@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.cart.adaptor.CartAdaptor;
+import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 
@@ -38,12 +39,25 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public boolean addCartProduct(String cookieValue, Integer productNo) {
+    public CartAddResponseDto addCartProduct(String cookieValue, Integer productNo) {
         CartProductDetailsResponseDto cartProductDetailsResponseDto =
             cartAdaptor.addCartProduct(productNo);
 
-        return redisTemplate.opsForHash()
-            .putIfAbsent(cookieValue, String.valueOf(productNo), cartProductDetailsResponseDto);
+        if (cartProductDetailsResponseDto.getProductDetailsResponseDto().getIsDeleted()) {
+            return new CartAddResponseDto(false, "삭제된 상품은 장바구니에 담을 수 없습니다.");
+        }
+
+        if (cartProductDetailsResponseDto.getProductDetailsResponseDto().getIsForceSoldOut()
+            || cartProductDetailsResponseDto.getProductDetailsResponseDto().getStock() == 0) {
+            return new CartAddResponseDto(false, "품절된 상품은 장바구니에 담을 수 없습니다.");
+        }
+
+        if (!redisTemplate.opsForHash()
+            .putIfAbsent(cookieValue, String.valueOf(productNo), cartProductDetailsResponseDto)) {
+            return new CartAddResponseDto(false, "이미 장바구니에 담았습니다.");
+        }
+
+        return new CartAddResponseDto(true, "상품을 장바구니에 담았습니다.");
     }
 
     @Override
