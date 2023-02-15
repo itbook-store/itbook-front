@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.adapter.PointHistoryDetailsGetAdaptor;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryCouponDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
@@ -58,16 +59,18 @@ public class PointHistoryMyDetailsGetController {
     }
 
     @GetMapping("/{pointHistoryNo}/order-details")
-    public String orderDetails(@PathVariable Long pointHistoryNo, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes) {
+    public String orderDetails(@PathVariable Long pointHistoryNo, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes, Model model) {
 
         try {
+            OrderDetailsResponseDto orderDetails = pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder("/api/point-histories/" + pointHistoryNo + "/my-order-details/member-no/" + userDetailsDto.getMemberNo());
+            model.addAttribute("orderDetails", orderDetails);
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return "ing";
+        return "mypage/order/orderDetailsForm";
     }
 
     @GetMapping("/{pointHistoryNo}/grade-details")
