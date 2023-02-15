@@ -51,7 +51,7 @@ public class ControllerAdvisor {
     })
     public String internalErrorException500(Exception e, Model model) {
         log.error("internalErrorException500 {}", e);
-        model.addAttribute(MESSAGE, e.getMessage());
+        model.addAttribute(MESSAGE, "ㅠㅠ 서버 오류입니다. 010-3338-1718, 010-5651-3199, 010-8601-9261, 010-5737-2315 개발자에게 직접 문의주세요 ^^");
 
         return "/error/500error";
     }
