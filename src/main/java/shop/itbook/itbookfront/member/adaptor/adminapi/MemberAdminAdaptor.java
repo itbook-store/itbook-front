@@ -150,7 +150,7 @@ public class MemberAdminAdaptor {
         HttpEntity<MemberStatusChangeRequestDto>
             httpEntity = new HttpEntity<>(memberStatusChangeRequestDto, headers);
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/admin/members/" + memberNo, HttpMethod.PUT,
             httpEntity, new ParameterizedTypeReference<>() {
             }
@@ -228,23 +228,21 @@ public class MemberAdminAdaptor {
 
     public void addMemberRole(Long memberNo, String roleName) {
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" +
-                    roleName + "/add",
-                HttpMethod.POST, null, new ParameterizedTypeReference<>() {
-                });
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" +
+                roleName + "/add",
+            HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+            });
 
     }
 
     public void deleteMemberRole(Long memberNo, Integer roleNo) {
 
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/member-roles/" + memberNo + "/" + roleNo +
                 "/delete", HttpMethod.DELETE, null,
             new ParameterizedTypeReference<>() {
             });
-
     }
 
     public MemberCountResponseDto countMember() {
@@ -288,11 +286,11 @@ public class MemberAdminAdaptor {
     }
 
     public void modifyMemberWriter(Long memberNo) {
-        ResponseEntity<CommonResponseBody<Void>> responseEntity = restTemplate.exchange(
+
+        restTemplate.exchange(
             gatewayConfig.getGatewayServer() + "/api/admin/members/modify/writer/" + memberNo, HttpMethod.PUT,
             null, new ParameterizedTypeReference<>() {
-            }
-        );
+            });
 
     }
 }

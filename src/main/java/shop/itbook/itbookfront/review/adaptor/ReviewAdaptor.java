@@ -128,18 +128,12 @@ public class ReviewAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        try {
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/modify",
-                HttpMethod.PUT,
-                uploadEntity,
-                new ParameterizedTypeReference<>() {
-                });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), ReviewNotFoundException.MESSAGE)) {
-                throw new ReviewNotFoundException();
-            }
-        }
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/reviews/" + orderProductNo + "/modify",
+            HttpMethod.PUT,
+            uploadEntity,
+            new ParameterizedTypeReference<>() {
+            });
 
     }
 
