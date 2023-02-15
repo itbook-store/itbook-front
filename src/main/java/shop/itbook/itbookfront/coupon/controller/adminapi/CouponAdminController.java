@@ -92,10 +92,7 @@ public class CouponAdminController {
                  CategoryNumberNotFoundException | ProductCouponNumberNotFoundException
                  | MembershipGradeNotFoundException e){
 
-            model.addAttribute("mainCategoryList",
-                categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
-            model.addAttribute("membershipList", membershipService.getMemberships());
-            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
+            redirectAttributes.addFlashAttribute("couponInputRequestDto", couponInputRequestDto);
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/admin/coupons/coupon-addition";
         }

@@ -43,6 +43,11 @@ public class ProductSearchServiceController {
     @GetMapping
     public String searchProductByName(@RequestParam String name, Model model,
                                       @PageableDefault Pageable pageable) {
+        if(name.length()>50){
+            name = name.substring(0, 50);
+            String searchTermsIgnored = name.substring(45);
+            model.addAttribute("searchTermsIgnored", searchTermsIgnored);
+        }
 
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
@@ -54,8 +59,8 @@ public class ProductSearchServiceController {
 
         PageResponse<ProductSampleResponseDto> productList =
             productSearchService.findProductPageList(
-                String.format("/api/products/search?page=%d&size=%d&name=%s",
-                    pageable.getPageNumber(), pageable.getPageSize(), name));
+                String.format("/api/products/search?name=%s&page=%d&size=%d",
+                    name, pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("pageResponse", productList);
         model.addAttribute("keyword", name);
