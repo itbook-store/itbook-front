@@ -12,15 +12,7 @@ function deleteProduct(productNo) {
                     location.reload();
                 });
         },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                icon: 'success',
-                title: `해당 상품을 삭제하였습니다.`
-            })
-        }
     })
-
 }
 
 function deleteAllProduct() {
@@ -45,14 +37,8 @@ function deleteAllProduct() {
                     location.reload();
                 });
         },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                icon: 'success',
-                title: `장바구니 모든 상품이 삭제되었습니다.`
-            })
-        }
     })
+
 }
 
 async function changeProductCount(productNo, input) {

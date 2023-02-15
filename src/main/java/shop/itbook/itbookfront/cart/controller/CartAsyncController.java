@@ -42,8 +42,6 @@ public class CartAsyncController {
             cartAddResponseDto = new CartAddResponseDto(false, "장바구니 담는데 실패하였습니다.");
         }
 
-        log.info("cartAddResponseDto {}", cartAddResponseDto);
-
         return cartAddResponseDto;
     }
 
