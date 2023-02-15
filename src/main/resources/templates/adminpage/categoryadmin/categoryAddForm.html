@@ -4,10 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
+    <script src="/category/js/category.js"></script>
     <meta charset="UTF-8">
     <title>categoryAddForm</title>
-
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <div layout:fragment="content">
@@ -15,17 +14,14 @@
         <div id="form-div">
             <h1 th:if="${mainCategoryNo == 0}">대분류 카테고리 등록</h1>
             <h1 th:unless="${mainCategoryNo == 0}">소분류 카테고리 등록</h1>
-            <form class="form" method="post" action="/admin/categories/category-addition">
-                <p class="name">
-                    <input name="categoryName" type="text"
-                           class="validate[required,custom[onlyLetter],length[0,20]] feedback-input" placeholder="Name"/>
-                </p>
+            <form class="form" method="post" action="/admin/categories/category-addition" onsubmit="return addCategorySubmit()" >
+                <input name="categoryName" type="text" id="categoryName1" placeholder="Name"/>
                 <p>숨기기 여부 :
                     <label><input type="radio" name="isHidden" value="true">Yes</label>
                     <label><input type="radio" name="isHidden" value="false" checked>No</label>
                 </p>
                 <input type="hidden" name="parentCategoryNo" th:value="${mainCategoryNo}">
-                <input type="submit" value="등록"/>
+                <input type="submit" id="submit" value="등록" />
             </form>
         </div>
     </div>
