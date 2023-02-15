@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
 import shop.itbook.itbookfront.product.exception.InvalidInputException;
@@ -53,24 +54,32 @@ public class BookAdminController {
 
         try {
             bookService.addBook(thumbnails, ebook, requestDto);
-        } catch (InvalidInputException e) {
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
         }
         return PRODUCT_REDIRECT_URL;
     }
 
 
     @GetMapping("/add")
-    public String getAddBookForm(Model model) {
-        List<CategoryListResponseDto> allCategoryList = categoryService.findCategoryList(
-            String.format("/api/admin/categories/main-categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+    public String getAddBookForm(Model model, RedirectAttributes redirectAttributes) {
+        try {
+            List<CategoryListResponseDto> allCategoryList = categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
 
-        List<CategoryListResponseDto> categoryList = allCategoryList.stream()
-            .filter(c -> c.getCategoryName().contains("도서"))
-            .collect(Collectors.toList());
+            List<CategoryListResponseDto> categoryList = allCategoryList.stream()
+                .filter(c -> c.getCategoryName().contains("도서"))
+                .collect(Collectors.toList());
 
-        model.addAttribute("mainCategoryList", categoryList);
+            model.addAttribute("mainCategoryList", categoryList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
         return "adminpage/product/book-add";
     }
 
@@ -81,16 +90,27 @@ public class BookAdminController {
                              MultipartFile thumbnails,
                              @RequestPart(value = "fileEbook", required = false)
                              MultipartFile ebook, RedirectAttributes redirectAttributes) {
-
-        bookService.modifyBook(productNo, thumbnails, ebook, requestDto);
-
+        try {
+            bookService.modifyBook(productNo, thumbnails, ebook, requestDto);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
         return PRODUCT_REDIRECT_URL;
     }
 
 
     @GetMapping("/{productNo}/modify")
-    public String getModifyBookForm(Model model, @PathVariable Long productNo) {
-        setUpToModify(model, productNo, productService, categoryService);
+    public String getModifyBookForm(Model model, @PathVariable Long productNo,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            setUpToModify(model, productNo, productService, categoryService);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
         return "adminpage/product/book-modify";
     }
 

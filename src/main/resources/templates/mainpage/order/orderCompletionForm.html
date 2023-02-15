@@ -32,6 +32,16 @@
     <div class="card-body border-dark border-1">
         <h1>주문이 완료되었습니다.</h1>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage != null) {
+            swal(
+                '쿠폰을 받을 수 없습니다!',
+                `${failMessage}`,
+                'warning'
+            );
+        }
+    </script>
 </div>
 </body>
 </html>

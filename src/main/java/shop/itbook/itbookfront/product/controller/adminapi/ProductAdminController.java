@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
@@ -48,11 +49,20 @@ public class ProductAdminController {
 
 
     @GetMapping
-    public String getAdminProductPage(Model model, @PageableDefault Pageable pageable) {
-        PageResponse<ProductDetailsResponseDto> pageResponse
-            = productService.getProductList(String.format("/api/admin/products?page=%d&size=%d",
-            pageable.getPageNumber(), pageable.getPageSize()));
-        model.addAttribute("pageResponse", pageResponse);
+    public String getAdminProductPage(Model model, @PageableDefault Pageable pageable
+        , RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<ProductDetailsResponseDto> pageResponse
+                = productService.getProductList(String.format("/api/admin/products?page=%d&size=%d",
+                pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", pageResponse);
+
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
+
         model.addAttribute("paginationUrl", "/admin/products");
         return "adminpage/product/product-management";
     }
@@ -76,17 +86,23 @@ public class ProductAdminController {
     }
 
     @GetMapping("/add")
-    public String getAddProductForm(Model model) {
-        List<CategoryListResponseDto> allCategoryList = categoryService.findCategoryList(
-            String.format("/api/admin/categories/main-categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+    public String getAddProductForm(Model model, RedirectAttributes redirectAttributes) {
 
-        List<CategoryListResponseDto> categoryList = allCategoryList.stream()
-            .filter(c -> !c.getCategoryName().contains("도서"))
-            .collect(Collectors.toList());
+        try {
+            List<CategoryListResponseDto> allCategoryList = categoryService.findCategoryList(
+                String.format("/api/admin/categories/main-categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
 
-        model.addAttribute("mainCategoryList", categoryList);
+            List<CategoryListResponseDto> categoryList = allCategoryList.stream()
+                .filter(c -> !c.getCategoryName().contains("도서"))
+                .collect(Collectors.toList());
 
+            model.addAttribute("mainCategoryList", categoryList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
         return "adminpage/product/product-add";
     }
 
@@ -102,8 +118,14 @@ public class ProductAdminController {
     public String modifyProduct(@PathVariable Long productNo,
                                 @ModelAttribute ProductModifyRequestDto requestDto,
                                 @RequestPart(value = "fileThumbnails", required = false)
-                                MultipartFile thumbnails) {
-        productService.modifyProduct(productNo, thumbnails, requestDto);
+                                MultipartFile thumbnails, RedirectAttributes redirectAttributes) {
+        try {
+            productService.modifyProduct(productNo, thumbnails, requestDto);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
+        }
         return PRODUCT_REDIRECT_URL;
     }
 
@@ -114,11 +136,11 @@ public class ProductAdminController {
 
         try {
             productService.addProduct(thumbnails, requestDto);
-        } catch (InvalidInputException e) {
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_REDIRECT_URL;
         }
-
-
         return PRODUCT_REDIRECT_URL;
     }
 

@@ -30,7 +30,7 @@
 
         }
     </style>
-<!--    <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--    <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Custom styles for this template -->
     <link href="/product/css/product.css" rel="stylesheet">
     <!--    <link href="/mainpage/css/floating-button.css" rel="stylesheet">-->
@@ -270,6 +270,16 @@
 
 
     <script th:inline="javascript">
+
+        let failMessage = [[${failMessage}]];
+        if (failMessage != null) {
+            swal(
+                '쿠폰을 받을 수 없습니다!',
+                `${failMessage}`,
+                'warning'
+            );
+        }
+
         let bookmarkFailMessage = [[${bookmarkFailMessage}]];
         if (bookmarkFailMessage) {
             Swal.fire({
