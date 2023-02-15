@@ -145,9 +145,9 @@ function checkLimitCategory(element) {
         if (cnt > 3) {
             Swal.fire("카테고리는 최대 3개까지 지정 가능합니다.", '', 'error');
             checkBox.forEach((cb) => {
-                cb.checked = false;
+                cb.checked = true;
             })
-            element.checked = true;
+            element.checked = false;
             return false;
         } else
             return true;
@@ -300,16 +300,25 @@ function addProductSubmit() {
     let isPointApplyingValue = $('input[name="isPointApplying"]:checked').val();
     let isPointApplyingBasedSellingPriceValue = $('input[name="isPointApplyingBasedSellingPrice"]:checked').val();
 
+    console.log(discountPercent);
+    console.log(discountPercent.length);
+
     if (!checkCheckBoxCountUpTo0(checkBox)) {
         Swal.fire('카테고리는 최소 1개를 지정해야만 합니다!', '', 'error');
         return false;
-    } else if (!checkStringLengthDownTo255(name)) {
+    }
+
+    if (!checkStringLengthDownTo255(name)) {
         Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
-    } else if (!checkStringLengthDownTo255(simpleDescription)) {
+    }
+
+    if (!checkStringLengthDownTo255(simpleDescription)) {
         Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
-    } else if (isPointApplyingValue == "true") {
+    }
+
+    if (isPointApplyingValue == "true") {
 
         if (!checkNumberOfPercent(increasePointPercent)) {
             Swal.fire('포인트 적립율은 0 ~ 100%이어야 합니다!', '', 'error');
@@ -323,64 +332,32 @@ function addProductSubmit() {
 
         return true;
 
-    } else if (!checkNumberUpTo0(rawPrice)) {
+    }
+
+    if (!checkNumberUpTo0(rawPrice)) {
         Swal.fire('원가는 0원 이상이어야 합니다!', '', 'error');
         return false;
-    } else if (!checkNumberUpTo0(fixedPrice)) {
+    }
+
+    if (!checkNumberUpTo0(fixedPrice)) {
         Swal.fire('정가는 0원 이상이어야 합니다!', '', 'error');
         return false;
-    } else if (!checkNumberOfPercent(discountPercent)) {
+    }
+
+    if (!checkNumberOfPercent(discountPercent)) {
         console.log("할인율")
         Swal.fire('할인율은 0 ~ 100%이어야 합니다!', '', 'error');
         return false;
-    } else if (!checkNumberUpTo0(stock)) {
+    }
+
+    if (!checkNumberUpTo0(stock)) {
         Swal.fire('재고는 0개 이상이어야 합니다!', '', 'error');
         return false;
-    } else {
-        Swal.fire('상품 등록 성공!', '', 'success');
-        return true;
     }
-}
 
-function checkStringLengthDownTo255(obj) {
-    if (obj.length > 255) {
-        return false;
-    } else {
-        return true;
-    }
-}
+    Swal.fire('상품 등록 성공!', '', 'success');
+    return true;
 
-function checkNumberUpTo0(obj) {
-    if (obj < 0 || isNaN(obj)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function checkNumberOfPercent(obj) {
-    if (obj < 0 || obj > 100 || isNaN(obj)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function checkCheckBoxCountUpTo0(obj) {
-
-    let check = false;
-
-    obj.forEach((cb) => {
-        if (cb.checked) {
-            check = true;
-        }
-    })
-
-    if (!check) {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 function modifyProductSubmit() {
