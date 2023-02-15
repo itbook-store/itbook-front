@@ -84,7 +84,7 @@
                                                         <span th:text="${memberDestination.getRecipientAddressDetails()}"></span>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|location.href= '@{/mypage/members/me/memberDestination/{memberNo}/{destinationNo}/modify(memberNo = ${memberNo}, destinationNo =${memberDestination.getRecipientDestinationNo()})}'|">
+                                                        <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|location.href= '@{/mypage/members/me/memberDestination/{destinationNo}/modify(destinationNo =${memberDestination.getRecipientDestinationNo()})}'|">
                                                             배송지 수정하기
                                                         </button>
                                                     </td>

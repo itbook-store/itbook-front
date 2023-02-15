@@ -108,9 +108,6 @@ public class MemberAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
-
         return responseEntity.getBody().getResult();
     }
 
@@ -169,15 +166,13 @@ public class MemberAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        ResponseChecker.checkFail(responseEntity.getStatusCode(),
-            responseEntity.getBody().getHeader().getResultMessage());
     }
 
-    public MemberDestinationResponseDto findMemberDestination(Long recipientDestinationNo) {
+    public MemberDestinationResponseDto findMemberDestination(Long memberNo, Long recipientDestinationNo) {
 
         ResponseEntity<CommonResponseBody<MemberDestinationResponseDto>> responseEntity =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/members/memberDestinations/" +
+                gatewayConfig.getGatewayServer() + "/api/members/"+ memberNo +"/memberDestinations/" +
                     recipientDestinationNo + "/info", HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });

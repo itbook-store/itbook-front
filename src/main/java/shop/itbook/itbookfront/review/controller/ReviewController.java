@@ -61,11 +61,16 @@ public class ReviewController {
         return "mypage/review/review-mypage-list";
     }
 
-    @GetMapping("/mypage/{orderProductNo}/{productNo}/write")
-    public String reviewAddForm(@PathVariable("orderProductNo") Long orderProductNo,
+    @GetMapping("/{memberNo}/{orderProductNo}/{productNo}/write")
+    public String reviewAddForm(@PathVariable("memberNo") Long memberNo,
+                                @PathVariable("orderProductNo") Long orderProductNo,
                                 @PathVariable("productNo") Long productNo,
                                 @AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                 Model model) {
+
+        if(!memberNo.equals(userDetailsDto.getMemberNo())) {
+            log.error("잘못된 접근");
+        }
 
         ReviewRequestDto reviewRequestDto = new ReviewRequestDto();
         reviewRequestDto.setOrderProductNo(orderProductNo);
@@ -157,6 +162,7 @@ public class ReviewController {
 
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/review/mypage/list");
+        model.addAttribute("memberNo", userDetailsDto.getMemberNo());
 
         return "mypage/review/review-writeable-list";
     }

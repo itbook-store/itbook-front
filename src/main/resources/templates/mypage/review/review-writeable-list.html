@@ -36,7 +36,7 @@
                                         <td><span th:text="${#temporals.format(unwrittenReviewOrderProduct.orderCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></span></td>
                                         <td>
                                             <button class="btn btn-light"
-                                                    th:onclick="|location.href= '@{/review/mypage/{orderProductNo}/{productNo}/write(orderProductNo = ${unwrittenReviewOrderProduct.orderProductNo}, productNo=${unwrittenReviewOrderProduct.productNo})}'|">리뷰작성</button>
+                                                    th:onclick="|location.href= '@{/review/{memberNo}/{orderProductNo}/{productNo}/write(memberNo = ${memberNo}, orderProductNo = ${unwrittenReviewOrderProduct.orderProductNo}, productNo=${unwrittenReviewOrderProduct.productNo})}'|">리뷰작성</button>
                                         </td>
                                     </tr>
                                     </tbody>
