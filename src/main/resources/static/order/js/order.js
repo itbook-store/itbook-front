@@ -1,173 +1,17 @@
 let orderRealAmountPrice = 0;
 let totalDiscountPrice = 0;
-const deliveryFee = 3000;
+let orderProductTotalPriceBeforeDiscount = 0;
+const deliveryFeePolicy = 20000;
+let deliveryFee = Number(document.querySelector("#deliveryFee").innerHTML.replaceAll(',', ''));
 
 document.addEventListener("DOMContentLoaded", function () {
-    orderRealAmountPrice = getOrderProductTotalPriceBeforeDiscount();
-    orderRealAmountPrice += deliveryFee;
+    orderProductTotalPriceBeforeDiscount = getOrderProductTotalPriceBeforeDiscount();
+    setDeliveryPrice();
+    orderRealAmountPrice = orderProductTotalPriceBeforeDiscount;
+    // orderRealAmountPrice += deliveryFee;
     setOrderRealAmountTag();
     setTotalDiscountPriceTag();
 });
-
-// $('#product_coupon_modal').on('hidden.bs.modal', function (e) {
-//     $('#product_coupon_modal').off();
-//     removeEventListener("click", this, false);
-//     removeEventListener("hide.bs.modal", this, false);
-// })
-
-/* 쿠폰 함수 */
-// $('.coupon_btn').click(function(){
-//     let url = $(this).data("url");
-//     let productNo = Number($(this).data("no"));
-//     let productSelledPrice = Number($(this).data("price"));
-//     let productCount = Number($(this).data("count"));
-//
-//     let couponInfoTagList = this.parentNode.children;
-//     let couponNoInput = couponInfoTagList[0];
-//     let couponApplyPriceInput = couponInfoTagList[1];
-//     let couponApplyNameInput = couponInfoTagList[2];
-//
-//     let totalPriceTag = this.parentNode.parentNode.parentNode.children[4].children[0];
-//
-//     $('#product_coupon_modal').off();
-//
-//     $.ajax({
-//         type: "GET",
-//         url: url,
-//         dataType: 'json',
-//         success: function(res) {
-//
-//
-//             let couponTableBody = document.querySelector(".coupon_list_table_body");
-//
-//             couponTableBody.innerHTML = '';
-//
-//             for (let i = 0; i < res.length; i++) {
-//
-//                 let html;
-//
-//                 if (res[i].amount === 0) {
-//                     html =
-//                     `
-//                         <tr>
-//                             <td>
-//                                 <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
-//                             </td>
-//                             <td class="coupon_name">${res[i].name}</td>
-//                             <td class="coupon_discount coupon_percent">
-//                                 <div class="coupon_discount_price_box">
-//                                     <p class="percent">${res[i].percent}</p>
-//                                     <p style="margin-left: 10px !important;">%</p>
-//                                 </div>
-//                             </td>
-//                         </tr>
-//                     `;
-//                 } else {
-//                     html =
-//                     `
-//                         <tr>
-//                             <td>
-//                                 <input type="radio" name="selected_coupon" value="${res[i].couponIssueNo}">
-//                             </td>
-//                             <td class="coupon_name">${res[i].name}</td>
-//                             <td class="coupon_discount coupon_percent">
-//                                 <div class="coupon_discount_price_box">
-//                                     <p class="won">${res[i].amount}</p>
-//                                     <p style="margin-left: 10px !important;">원</p>
-//                                 </div>
-//                             </td>
-//                         </tr>
-//                     `;
-//                 }
-//
-//                 let tr = document.createElement("tr");
-//                 tr.innerHTML = html;
-//
-//                 couponTableBody.appendChild(tr);
-//             }
-//
-//             $('#product_coupon_modal').modal('show');
-//
-//             let couponSelectBtn = document.querySelector("#coupon_select_btn");
-//
-//             couponSelectBtn.addEventListener("click", function () {
-//
-//                 let selectedRadioInput = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked");
-//
-//                 if (selectedRadioInput === null || selectedRadioInput === undefined) {
-//                     Swal.fire({
-//                         icon: 'error',
-//                         title: '쿠폰이 선택되지 않았습니다.',
-//                         text: '다시 선택해 주세요.',
-//                     })
-//                     return;
-//                 }
-//
-//                 let selectedCouponInfoTagList = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").parentNode.parentNode.children;
-//
-//                 let couponName = selectedCouponInfoTagList[1].innerText;
-//                 let couponDiscountPolicyTag = selectedCouponInfoTagList[2].children[0].children[0];
-//
-//                 let discountPolicy;
-//                 if (couponDiscountPolicyTag.classList.contains("won")) {
-//                     discountPolicy = "won";
-//                 } else {
-//                     discountPolicy = "percent";
-//                 }
-//
-//                 let couponDiscountAmount = Number(couponDiscountPolicyTag.innerText.replace(',', ''));
-//
-//                 let originTotalPrice = productSelledPrice * productCount;
-//
-//                 let discountApplyPrice;
-//                 if (discountPolicy === "won") {
-//                     discountApplyPrice = couponDiscountAmount;
-//                     totalPriceTag.innerHTML = Number(originTotalPrice - couponDiscountAmount).toLocaleString();
-//                 } else {
-//                     if (productCount === 1) {
-//                         discountApplyPrice = Number(originTotalPrice * (couponDiscountAmount / 100));
-//                         totalPriceTag.innerHTML = Number(originTotalPrice - discountApplyPrice).toLocaleString();
-//                     } else {
-//                         discountApplyPrice = Number(productSelledPrice * (couponDiscountAmount / 100));
-//                         totalPriceTag.innerHTML = Number(productSelledPrice * (1 - couponDiscountAmount / 100) + (productSelledPrice * (productCount - 1))).toLocaleString();
-//                     }
-//                 }
-//
-//                 let couponBoxList = document.querySelectorAll(".coupon_box");
-//
-//                 let realCouponBox;
-//
-//                 for (let i = 0; i < couponBoxList.length; i++) {
-//                     if (Number(couponBoxList[i].dataset.valid) === productNo) {
-//                         realCouponBox = couponBoxList[i];
-//                     }
-//                 }
-//
-//                 console.log(realCouponBox);
-//
-//
-//
-//                 totalDiscountPrice -= couponApplyPriceInput.value;
-//                 totalDiscountPrice += discountApplyPrice;
-//
-//                 couponNoInput.value = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").value;
-//                 couponApplyNameInput.value = couponName;
-//                 couponApplyPriceInput.value = discountApplyPrice;
-//
-//                 setOrderRealAmountTag();
-//                 setTotalDiscountPriceTag();
-//
-//                 $('#product_coupon_modal').modal('hide');
-//
-//             });
-//
-//         },
-//         error:function(request, status, error) {
-//             console.log("ajax call went wrong:" + request.responseText);
-//         }
-//     });
-//
-// });
 
 /* 새로운 쿠폰 로직 모달 새롭게 생성해서 사용 */
 function couponModalFunc(trigger) {
@@ -325,12 +169,14 @@ function couponModalFunc(trigger) {
                 totalDiscountPrice -= couponApplyPriceInput.value;
                 totalDiscountPrice += discountApplyPrice;
 
+                setPointApplyTag();
+
                 couponNoInput.value = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").value;
                 couponApplyNameInput.value = couponName;
                 couponApplyPriceInput.value = discountApplyPrice;
 
-                setOrderRealAmountTag();
                 setTotalDiscountPriceTag();
+                setOrderRealAmountTag();
 
                 $('#product_coupon_modal').modal('hide');
 
@@ -453,12 +299,14 @@ $('#order_amount_coupon_btn').click(function () {
                 totalDiscountPrice -= Number(orderTotalCouponAmountInput.value);
                 totalDiscountPrice += Number(discountApplyPrice);
 
+                setPointApplyTag();
+
                 orderTotalCouponNoInput.value = document.querySelector("#order_total_coupon_modal input[name='selected_coupon']:checked").value;
                 orderTotalCouponNameInput.value = couponName;
                 orderTotalCouponAmountInput.value = Number(discountApplyPrice);
 
-                setOrderRealAmountTag();
                 setTotalDiscountPriceTag();
+                setOrderRealAmountTag();
 
                 $('#order_total_coupon_modal').modal('hide');
 
@@ -514,41 +362,76 @@ let pointApplyBtn = document.querySelector("#point_apply_btn");
 
 pointApplyBtn.addEventListener("click", function () {
     Swal.fire({
-        title: '모든 포인트를 사용하시겠습니까?',
-        text: '포인트는 사용가능한 최대 금액이 적용됩니다.',
+        title: '포인트를 사용하시겠습니까?',
         confirmButtonText: 'Save',
         showCancelButton: true,
     }).then((result) => {
         if (result.isConfirmed) {
 
             let myPointTag = document.querySelector("#myPoint");
-            let myPoint = Number(myPointTag.innerHTML.replace(',', ''));
+            let myPoint = Number(myPointTag.innerHTML.replaceAll(',', ''));
 
             let pointApplyInput = document.querySelector("#point_apply_input");
+            let pointApply = Number(pointApplyInput.value);
 
-            if (myPoint >= orderRealAmountPrice) {
-                myPoint = myPoint - orderRealAmountPrice;
-                pointApplyInput.value = Number(orderRealAmountPrice);
-
-                /* 총 할인 금액 계산 */
-                totalDiscountPrice = orderRealAmountPrice;
-
-                myPointTag.innerText = myPoint;
-                // orderRealAmountPrice = 0;
-
-            } else {
-                // orderRealAmountPrice = orderRealAmountPrice - myPoint;
-                pointApplyInput.value = myPoint;
-
-                /* 총 할인 금액 계산 */
-                totalDiscountPrice += myPoint;
-
-                myPoint = 0;
-                myPointTag.innerText = myPoint;
+            if (pointApplyInput.value === '') {
+                Swal.fire({
+                    'icon': 'warning',
+                    'title': '포인트를 입력해 주세요.'
+                });
+                return;
             }
+
+            if (pointApply > myPoint) {
+                Swal.fire({
+                    'icon': 'warning',
+                    'title': '보유 포인트를 초과하는 금액은 입력할 수 없습니다.'
+                });
+                pointApplyInput.value = '';
+                return;
+            }
+
+            if (pointApply >= (orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice)) {
+
+                // pointApply = orderRealAmountPrice;
+                pointApply = orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice;
+                pointApplyInput.value = Number(pointApply);
+                myPointTag.innerHTML = Number(myPoint - pointApply).toLocaleString();
+            } else {
+                myPointTag.innerHTML = Number(myPoint - pointApply).toLocaleString();
+            }
+
+            totalDiscountPrice += Number(pointApplyInput.value);
+
+            this.disabled = true;
+            document.querySelector("#point_cancel_btn").disabled = false;
+
+
+
+            // if (myPoint >= orderRealAmountPrice) {
+            //     myPoint = myPoint - orderRealAmountPrice;
+            //     pointApplyInput.value = Number(orderRealAmountPrice);
+            //
+            //     /* 총 할인 금액 계산 */
+            //     totalDiscountPrice = orderRealAmountPrice;
+            //
+            //     myPointTag.innerText = myPoint;
+            //     // orderRealAmountPrice = 0;
+            //
+            // } else {
+            //     // orderRealAmountPrice = orderRealAmountPrice - myPoint;
+            //     pointApplyInput.value = myPoint;
+            //
+            //     /* 총 할인 금액 계산 */
+            //     totalDiscountPrice += myPoint;
+            //
+            //     myPoint = 0;
+            //     myPointTag.innerText = myPoint;
+            // }
 
             setTotalDiscountPriceTag();
             setOrderRealAmountTag();
+            // setPointApplyTag();
 
             Swal.fire('포인트 적용 성공!', '', 'success');
 
@@ -577,10 +460,13 @@ pointCancelBtn.addEventListener("click", function () {
             totalDiscountPrice -= applyPoint;
 
             // orderRealAmountPrice += applyPoint;
-            pointApplyInput.value = 0;
 
-            let existingMyPoint = Number(myPointTag.innerText.replace(',', ''));
-            myPointTag.innerText = Number(existingMyPoint + applyPoint);
+            let myPoint = Number(myPointTag.innerText.replaceAll(',', ''));
+
+            myPointTag.innerText = (myPoint + applyPoint).toLocaleString();
+
+            pointApplyInput.value = '';
+            document.querySelector("#point_apply_btn").disabled = false;
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
@@ -594,7 +480,11 @@ pointCancelBtn.addEventListener("click", function () {
 
 function setOrderRealAmountTag() {
 
+
     let orderRealAmountTag = document.querySelector("#order_real_amount");
+
+    orderRealAmountTag.innerHTML =
+        Number(orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice).toLocaleString();
 
     // let productTotalPriceList = document.querySelectorAll(".product_total_price");
     //
@@ -606,19 +496,38 @@ function setOrderRealAmountTag() {
 
     // finalTotalPrice = temp;
 
-    let paymentBtnAmountPriceTag = document.querySelector("#payment_btn_amount_price");
+    // let paymentBtnAmountPriceTag = document.querySelector("#payment_btn_amount_price");
+    //
+    // if (orderRealAmountPrice < 0) {
+    //     orderRealAmountPrice = 0;
+    // }
+    //
+    // if ((orderRealAmountPrice - totalDiscountPrice) < 0) {
+    //     orderRealAmountPrice = 0;
+    // }
+    //
+    // let paymentPrice = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
+    // orderRealAmountTag.innerHTML = paymentPrice;
+    // paymentBtnAmountPriceTag.innerHTML = paymentPrice;
+}
 
-    if (orderRealAmountPrice < 0) {
-        orderRealAmountPrice = 0;
+function setPointApplyTag() {
+    let pointApplyInput = document.querySelector("#point_apply_input");
+    let pointApply = Number(pointApplyInput.value);
+    let myPointTag = document.querySelector("#myPoint");
+    let myPoint = Number(myPointTag.innerHTML.replaceAll(',', ''));
+
+    let currentPrice = Number(orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice);
+    console.log(currentPrice);
+
+    if (currentPrice < 0) {
+
+        pointApplyInput.value = pointApply + currentPrice;
+
+        myPointTag.innerHTML = Number(myPoint - currentPrice).toLocaleString();
+
     }
 
-    if ((orderRealAmountPrice - totalDiscountPrice) < 0) {
-        orderRealAmountPrice = 0;
-    }
-
-    let paymentPrice = (orderRealAmountPrice - totalDiscountPrice).toLocaleString();
-    orderRealAmountTag.innerHTML = paymentPrice;
-    paymentBtnAmountPriceTag.innerHTML = paymentPrice;
 }
 
 
@@ -630,7 +539,21 @@ function setTotalDiscountPriceTag() {
         totalDiscountPriceTag.innerText = 0;
     }
 
+    if (totalDiscountPrice > (orderProductTotalPriceBeforeDiscount + deliveryFee)) {
+        totalDiscountPrice = (orderProductTotalPriceBeforeDiscount + deliveryFee);
+    }
+
     totalDiscountPriceTag.innerHTML = totalDiscountPrice;
+}
+
+/* 배송지 정책 구매 상품의 가격 2만원 이상일 경우 0원 */
+function setDeliveryPrice() {
+
+    if (orderProductTotalPriceBeforeDiscount >= deliveryFeePolicy) {
+        deliveryFee = 0;
+    }
+
+    document.querySelector("#deliveryFee").innerHTML = Number(deliveryFee).toLocaleString();
 }
 
 function invalidOrderRedirectFunc() {
@@ -644,12 +567,6 @@ function invalidOrderRedirectFunc() {
         location.href = "/";
     })
 }
-
-
-
-
-
-
 
 
 /* 배송지 선택 */
