@@ -42,12 +42,11 @@ public class OrderSheetController {
     private final OrderSheetService orderSheetService;
     private final CategoryService categoryService;
 
-    private final MemberService memberService;
 
     /**
      * 상품 주문시 해당 상품의 정보와 회원일 경우 배송지 정보를 불러옵니다.
      *
-     * @param orderSheetFormDto 주문 요청할 상품의 정보
+     * @param orderSheetFormDto 주문 요청할 상품들의 정보
      * @return 주문 작성 페이지
      * @author 정재원 *
      */
@@ -57,6 +56,9 @@ public class OrderSheetController {
         OrderSheetFormDto orderSheetFormDto,
         @AuthenticationPrincipal UserDetailsDto userDetailsDto,
         Model model) {
+
+        log.info("제발: {}", orderSheetFormDto.getProductNoList().get(0));
+        log.info("제발: {}", orderSheetFormDto.getProductCntList().get(0));
 
         List<CategoryListResponseDto> categoryList =
             categoryService.findCategoryList("/api/categories").getContent();
@@ -71,7 +73,6 @@ public class OrderSheetController {
             orderSheetService.findOrderSheetCartProducts(orderSheetFormDto.getProductNoList(),
                 orderSheetFormDto.getProductCntList(),
                 memberNo);
-
         Queue<Integer> productCntQueue = new LinkedList<>(orderSheetFormDto.getProductCntList());
 
         model.addAttribute("productDetailsList",
@@ -88,13 +89,13 @@ public class OrderSheetController {
      * 회원의 상품 주문시 해당 상품의 정보와 배송지 정보를 불러옵니다.
      *
      * @param subscriptionPeriod 구독기간
-     * @param orderSheetFormDto  주문 ㅇ
+     * @param orderSheetFormDto  주문 요청할 상품들의 정보
      * @return 주문 작성 페이지
      * @author 정재원 *
      */
     @PostMapping("/subscription")
     @SuppressWarnings("java:S5411")
-    public String orderSubscription(
+    public String orderSheetSubscription(
         @RequestParam(value = "subscriptionPeriod")
         Integer subscriptionPeriod,
         @ModelAttribute("orderSheetFormDto")
@@ -124,7 +125,12 @@ public class OrderSheetController {
             orderSheetDto.getProductDetailsResponseDtoList();
 
         productDetailsResponseDtoList.get(0)
-            .setSelledPrice(
+            .setProductName(
+                productDetailsResponseDtoList.get(0).getProductName() + " " + subscriptionPeriod +
+                    " 개월");
+
+        productDetailsResponseDtoList.get(0)
+            .setFixedPrice(
                 productDetailsResponseDtoList.get(0).getFixedPrice() * subscriptionPeriod);
 
         productDetailsResponseDtoList.get(0)

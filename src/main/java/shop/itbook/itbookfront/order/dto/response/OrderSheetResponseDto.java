@@ -17,4 +17,5 @@ public class OrderSheetResponseDto {
     private List<MemberDestinationResponseDto> memberDestinationResponseDtoList;
 
     private Long memberPoint;
+    private Long deliveryFee;
 }

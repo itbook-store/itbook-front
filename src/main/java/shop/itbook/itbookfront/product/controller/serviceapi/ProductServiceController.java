@@ -178,20 +178,25 @@ public class ProductServiceController {
 
             model.addAttribute("avgStarPoint", avgStarPoint);
 
-            if(userDetailsDto != null) {
+            if (Objects.nonNull(userDetailsDto)) {
                 model.addAttribute("memberIdLoggedIn", userDetailsDto.getMemberId());
-                model.addAttribute("memberName", memberService.findMember(userDetailsDto.getMemberNo()).getName());
-                model.addAttribute("memberIsWriter", memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter());
+                model.addAttribute("memberName",
+                    memberService.findMember(userDetailsDto.getMemberNo()).getName());
+                model.addAttribute("memberIsWriter",
+                    memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter());
+                model.addAttribute("memberNo", userDetailsDto.getMemberNo());
+                model.addAttribute("productNo", productNo);
             }
             PageResponse<ProductInquiryResponseDto> productInquiryResponse =
-                productInquiryService.findProductInquiryListByProductNo(String.format("?page=%d&size=%d", pageable.getPageNumber(),
+                productInquiryService.findProductInquiryListByProductNo(
+                    String.format("?page=%d&size=%d", pageable.getPageNumber(),
                         pageable.getPageSize()),
                     productNo);
 
             model.addAttribute("productInquiryPageResponse", productInquiryResponse);
             model.addAttribute("productPaginationUrl", "/products/" + productNo);
 
-
+            
         } catch (ProductNotFoundException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         } catch (ReviewNotFoundException e) {

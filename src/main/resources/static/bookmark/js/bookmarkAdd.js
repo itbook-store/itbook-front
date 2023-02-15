@@ -1,5 +1,8 @@
 async function bookmarkAdd(memberNo, productNo) {
 
+    console.log(memberNo);
+    console.log(productNo);
+
     if (!checkMemberNoAndProductNo(memberNo, productNo)) {
         alert("잘못된 요청입니다.")
         return;
