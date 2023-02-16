@@ -30,4 +30,6 @@ public class OrderAddRequestDto {
     private Long deliveryFee;
     private Long orderTotalCouponNo;
     private Long decreasePoint;
+    private Boolean isSubscription;
+    private Integer subscriptionPeriod;
 }

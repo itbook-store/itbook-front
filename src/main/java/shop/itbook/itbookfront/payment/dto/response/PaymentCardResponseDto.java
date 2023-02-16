@@ -16,4 +16,5 @@ public class PaymentCardResponseDto {
 
     private String cardSerialNo;
     private Long totalAmount;
+    private String paymentStatus;
 }

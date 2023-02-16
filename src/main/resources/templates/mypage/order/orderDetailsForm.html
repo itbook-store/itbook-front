@@ -12,47 +12,254 @@
 <body>
 <div layout:fragment="content">
     <!-- 여기는 비회원도 볼 수 있고 관리자도 볼 수 있는 페이지이므로 mypage 말고 따로 꾸미면 좋을듯 -->
-    <div class="container ml-1 mt-5">
-        <div class="card" style="width: 30rem;">
-            <div class="card-body">
-                <h5 class="card-title">제품 정보</h5>
-                <div th:if="${orderDetails.orderProductDetailResponseDtoList != null}">
-                    <th:block th:each="product : ${orderDetails.orderProductDetailResponseDtoList}">
-                        <div class="card-subtitle mb-2 text-muted">제발</div>
-                        <div class="card-columns">
-                            <span>이름: </span>
-                            <span th:text="${product.productName}"></span>
-                        </div>
-                        <div class="card-columns">
-                            <span>수량: </span>
-                            <span th:text="${product.count}"></span>
-                        </div>
-                        <div class="card-columns">
-                            <span>상품 금액: </span>
-                            <span th:text="${product.productPrice}"></span>
-                        </div>
-                    </th:block>
-                </div>
-            </div>
-        </div>
+    <!--    <div class="container ml-1 mt-5">-->
+    <!--        <div class="card" style="width: 30rem;">-->
+    <!--            <div class="card-body">-->
+    <!--                <h5 class="card-title">제품 정보</h5>-->
+    <!--                <div th:if="${orderDetails.orderProductDetailResponseDtoList != null}">-->
+    <!--                    <th:block th:each="product : ${orderDetails.orderProductDetailResponseDtoList}">-->
+    <!--                        <div class="card-subtitle mb-2 text-muted">제발</div>-->
+    <!--                        <div class="card-columns">-->
+    <!--                            <span>이름: </span>-->
+    <!--                            <span th:text="${product.productName}"></span>-->
+    <!--                        </div>-->
+    <!--                        <div class="card-columns">-->
+    <!--                            <span>수량: </span>-->
+    <!--                            <span th:text="${product.count}"></span>-->
+    <!--                        </div>-->
+    <!--                        <div class="card-columns">-->
+    <!--                            <span>상품 금액: </span>-->
+    <!--                            <span th:text="${product.productPrice}"></span>-->
+    <!--                        </div>-->
+    <!--                    </th:block>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
 
-        <div class="card mt-3" style="width: 30rem;">
-            <div class="card-body">
-                <h5 class="card-title">결제 정보</h5>
-                <div th:if="${orderDetails.paymentCardResponseDto != null}">
-                    <div class="card-columns">
-                        <span>카드번호: </span>
-                        <span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"></span>
+    <!--        <div class="card mt-3" style="width: 30rem;">-->
+    <!--            <div class="card-body">-->
+    <!--                <h5 class="card-title">결제 정보</h5>-->
+    <!--                <div th:if="${orderDetails.paymentCardResponseDto != null}">-->
+    <!--                    <div class="card-columns">-->
+    <!--                        <span>카드번호: </span>-->
+    <!--                        <span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"></span>-->
+    <!--                    </div>-->
+    <!--                    <div class="card-columns">-->
+    <!--                        <span>결제 금액: </span>-->
+    <!--                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+
+    <!--&lt;!&ndash;        <button th:orderNo="${ord.orderNo}"&ndash;&gt;-->
+    <!--&lt;!&ndash;                class="btn btn-danger"&ndash;&gt;-->
+    <!--&lt;!&ndash;                onclick="getInputCancelReason(this.getAttribute('orderNo'))">결제 취소&ndash;&gt;-->
+    <!--&lt;!&ndash;        </button>&ndash;&gt;-->
+    <!--    </div>-->
+
+
+    <div class="container-fluid">
+        <div class="container">
+            <!-- Title -->
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <h2 class="h5 mb-0"><a href="#" class="text-muted">
+                </a> 주문
+                    <!--                    #<span th:text="${orderDetails.orderNo}"}></span>-->
+                </h2>
+            </div>
+
+            <!-- Main content -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Details -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-3 d-flex justify-content-between">
+                                <div>
+                                    <span class="me-3" th:text="${orderDetails.orderCreatedAt}"></span>
+                                    <span class="badge rounded-pill bg-info"
+                                          th:text="${orderDetails.orderStatus}"></span>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i
+                                            class="bi bi-download"></i> <span class="text">영수증 보기</span></button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link p-0 text-muted" type="button"
+                                                data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil"></i> Edit</a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-printer"></i>
+                                                Print</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr th:each="product : ${orderDetails.orderProductDetailResponseDtoList}">
+                                    <td>
+                                        <div class="d-flex mb-2">
+                                            <div class="flex-shrink-0">
+                                                <img th:src="${product.fileThumbnailsUrl}" alt="" width="35"
+                                                     class="img-fluid">
+                                            </div>
+                                            <div class="flex-lg-grow-1 ms-3">
+                                                <h6 class="small mb-0"><a href="#" class="text-reset"
+                                                                          th:text="${product.productName}"></a></h6>
+                                                <!--                                                <span class="small">Color: Black</span>-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td th:text="${product.count}"></td>
+                                    <td class="text-end" th:text="${product.productPrice}"></td>
+                                </tr>
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2">상품 금액</td>
+                                    <td class="text-end">
+                                        원
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">배송비</td>
+                                    <td class="text-end">
+                                        <!--                                        <span th:text="${orderDetails.deliveryFee}"></span>-->
+                                        원
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">할인 (Code: NEWYEAR)</td>
+                                    <td class="text-danger text-end">
+                                        -$10.00
+                                    </td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td colspan="2">주문 금액</td>
+                                    <td class="text-end">
+<!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        원
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
-                    <div class="card-columns">
-                        <span>결제 금액: </span>
-                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>
+                    <!-- Payment -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3 class="h6">결제 정보</h3>
+                                    <p><!-- <span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"> --></span><br>
+                                        결제 가격:
+<!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        원
+<!--                                        <span class="badge bg-success rounded-pill" th:text="${orderDetails.paymentCardResponseDto.paymentStatus}"></span>-->
+                                    </p>
+                                </div>
+<!--                                <div class="col-lg-6">-->
+<!--                                    <h3 class="h6">Billing address</h3>-->
+<!--                                    <address>-->
+<!--                                        <strong>John Doe</strong><br>-->
+<!--                                        1355 Market St, Suite 900<br>-->
+<!--                                        San Francisco, CA 94103<br>-->
+<!--                                        <abbr title="Phone">P:</abbr> (123) 456-7890-->
+<!--                                    </address>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- Customer Notes -->
+<!--                    <div class="card mb-4">-->
+<!--                        <div class="card-body">-->
+<!--                            <h3 class="h6">Customer Notes</h3>-->
+<!--                            <p>Sed enim, faucibus litora velit vestibulum habitasse. Cras lobortis cum sem aliquet-->
+<!--                                mauris rutrum. Sollicitudin. Morbi, sem tellus vestibulum porttitor.</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="card mb-4">
+                        <!-- Shipping information -->
+                        <div class="card-body">
+                            <h3 class="h6">운송장 번호</h3>
+<!--                            <strong>FedEx</strong>-->
+                            <span><a href="#" class="text-decoration-underline" target="_blank">
+<!--                                <span th:text="${orderDetails.trackingNo}"></span>-->
+                            </a> <i class="bi bi-box-arrow-up-right"></i> </span>
+                            <hr>
+                            <h3 class="h6">주소</h3>
+                            <address>
+<!--                                <strong th:text="${orderDetails.orderDestinationDto.recipientName}"></strong><br>-->
+<!--                                <span th:text="${orderDetails.orderDestinationDto.roadNameAddress}"></span><br>-->
+<!--                                <span th:text="${orderDetails.orderDestinationDto.recipientAddressDetails}"></span><br>-->
+<!--                                <abbr title="Phone" th:text="${orderDetails.orderDestinationDto.recipientPhoneNumber}"></abbr>-->
+                            </address>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--        <button>주문 취소</button>-->
     </div>
+    <script type="text/javascript">
+
+        function getInputCancelReason(orderNo) {
+
+            Swal.fire({
+                title: '취소 사유를 입력해주세요.',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                showLoaderOnConfirm: true,
+                preConfirm: async (cancelReason) => {
+
+                    let paymentCanceledRequestDto = {
+                        "orderNo": orderNo,
+                        "cancelReason": cancelReason
+                    }
+
+                    await fetch(`/async/payment/cancel`, {
+
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(paymentCanceledRequestDto)
+                    })
+                        .then(response => {
+                            if (response == null) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `결제 취소에 실패하였습니다.`
+                            )
+                        })
+
+                    // return fetch(requestUrl)
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: `결제 취소가 성공적으로 완료되었습니다.`,
+                    })
+                }
+            })
+
+        }
+    </script>
 </div>
 </body>
 </html>
