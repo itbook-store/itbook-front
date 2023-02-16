@@ -139,6 +139,16 @@
             <th:block th:include="component/pageFooter"></th:block>
         </div>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage != null) {
+            swal(
+                '쿠폰을 받을 수 없습니다!',
+                `${failMessage}`,
+                'warning'
+            );
+        }
+    </script>
 </div>
 </body>
 </html>
