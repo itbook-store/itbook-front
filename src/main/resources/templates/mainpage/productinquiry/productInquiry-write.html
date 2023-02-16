@@ -72,6 +72,11 @@
                     return false;
                 }
 
+                if(editorBody.length > 1000) {
+                    alert("1000자 이상 입력할 수 없습니다.")
+                    return false;
+                }
+
                 if(document.getElementById("private").checked == false && document.getElementById("open").checked == false) {
                     alert('공개 여부를 선택해주세요.');
                     return false;
