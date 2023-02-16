@@ -12,27 +12,19 @@ function memberDestinationRegister() {
 
 function memberDestinationModify() {
 
-
-    /*document.getElementById("registerMemberDestination").style.display='none';
-    document.getElementById("registerBtn").value = '주소 등록하기';
-    document.getElementById("registerBtn").className = 'btn btn-primary';*/
-
     if(document.getElementById("modifyMemberDestination").style.display =='none') {
-        /*document.getElementById("registerBtn").style.display = 'none';*/
         document.getElementById("modifyBtn").value = '취소하기';
         document.getElementById("modifyBtn").className = 'btn btn-dark';
-        /*document.getElementById("modifyMemberDestination").style.display = 'block';*/
     } else {
-        /*document.getElementById("registerBtn").style.display = 'block';*/
         document.getElementById("modifyBtn").value = '배송지 수정하기';
         document.getElementById("modifyBtn").className = 'btn btn-primary';
-        /*document.getElementById("modifyMemberDestination").style.display = 'none';*/
     }
 }
 
 function validationCheck() {
 
     let recipientName = document.getElementById("recipientName").value;
+    document.getElementById("recipientPhoneNumber").value = "010" + document.getElementById("phoneNumber").value;
     let recipientPhoneNumber = document.getElementById("recipientPhoneNumber").value;
     let postcode = document.getElementById("postcode").value;
     let roadAddress = document.getElementById("roadAddress").value;
@@ -45,7 +37,7 @@ function validationCheck() {
         || !checkRecipientAddressDetails(detailAddress)) {
         return false;
     } else {
-        alert("배송지를 등록하였습니다.");
+        Swal.fire("배송지를 등록하였습니다.", '', 'success');
         document.getElementById("memberDestinationForm").submit();
     }
 }
@@ -53,7 +45,8 @@ function validationCheck() {
 function modifyValidationCheck() {
 
     let recipientName = document.getElementById("recipientNameModify").value;
-    let recipientPhoneNumber = document.getElementById("recipientPhoneNumberModify").value;
+    document.getElementById("recipientPhoneNumber").value = "010" + document.getElementById("phoneNumber").value;
+    let recipientPhoneNumber = document.getElementById("recipientPhoneNumber").value;
     let postcode = document.getElementById("postcodeModify").value;
     let roadAddress = document.getElementById("roadAddressModify").value;
     let detailAddress = document.getElementById("detailAddressModify").value;
@@ -65,14 +58,15 @@ function modifyValidationCheck() {
         || !checkRecipientAddressDetails(detailAddress)) {
         return false;
     } else {
-        alert("배송지가 수정되었습니다.");
+        Swal.fire("배송지가 수정되었습니다.", '', 'success');
         document.getElementById("modifyMemberDestinationForm").submit();
     }
 }
 
 function checkRecipientName(str) {
     if (str.length < 1 || str.length > 20) {
-        alert("수령인 이름은 1자부터 20자 사이로 입력해야 합니다.");
+        Swal.fire("수령인 이름은 1자부터 20자 사이로 입력해야 합니다.", '', 'error');
+
         return false;
     }
 
@@ -82,7 +76,7 @@ function checkRecipientName(str) {
 function checkRecipientPhoneNumber(str) {
     const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/g;
     if (regExp.test(str) || str.length < 1) {
-        alert("전화번호 형식으로 입력해야 합니다.");
+        Swal.fire("전화번호 형식으로 입력해야 합니다.", '', 'error');
         return false;
     }
 
@@ -91,7 +85,8 @@ function checkRecipientPhoneNumber(str) {
 
 function checkPostCode(str) {
     if (str == null) {
-        alert("우편번호를 입력해야 합니다.");
+        Swal.fire("우편번호를 입력해야 합니다.", '', 'error');
+
         return false;
     }
 
@@ -100,7 +95,8 @@ function checkPostCode(str) {
 
 function checkRoadNameAddress(str) {
     if (str.length < 1 || str.length > 255) {
-        alert("도로명 주소는 1자부터 255자 사이로 입력해야 합니다.");
+        Swal.fire("도로명 주소는 1자부터 255자 사이로 입력해야 합니다.", '', 'error');
+
         return false;
     }
 
@@ -109,7 +105,7 @@ function checkRoadNameAddress(str) {
 
 function checkRecipientAddressDetails(str) {
     if (str.length < 1 || str.length > 255) {
-        alert("상세 주소는 1자부터 255자 사이로 입력해야 합니다.");
+        Swal.fire("상세 주소는 1자부터 255자 사이로 입력해야 합니다.", '', 'error');
         return false;
     }
 
@@ -153,4 +149,19 @@ let openWin;
 function openDestinationModifyWindow() {
     window.name = "memberDestinationModify";
     openWin = window.open("modify/memberDestination", "passwordModify", "width=600, height=400, resizable = no, scrollbars = no");
+}
+
+function destinationDeleteBtn() {
+
+    const query = 'input[name="checkedDestinationList"]:checked';
+    const selectedEls =
+        document.querySelectorAll(query);
+
+    if(selectedEls.length < 1) {
+        Swal.fire("삭제할 배송지를 선택해주세요.", '', 'error');
+        return false;
+    }
+
+    Swal.fire('해당 배송지를 삭제하였습니다.', '', 'success');
+    document.getElementById("memberDestinationDeleteFrom").submit();
 }
