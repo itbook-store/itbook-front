@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
+import shop.itbook.itbookfront.order.dto.response.OrderBeforePaymentResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -39,9 +43,10 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderPaymentDto orderPaymentStart(
+    public OrderBeforePaymentResponseDto orderPaymentStart(
         @RequestBody
         OrderAddRequestDto orderAddRequestDto,
+        RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal
         UserDetailsDto userDetailsDto) {
 
@@ -51,7 +56,12 @@ public class OrderAsyncController {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
 
-        return orderService.addOrder(orderAddRequestDto, memberNo);
+        try {
+            OrderPaymentDto orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
+            return new OrderBeforePaymentResponseDto<>(true, orderPaymentDto);
+        } catch (BadRequestException e) {
+            return new OrderBeforePaymentResponseDto<>(false, e.getMessage());
+        }
     }
 
     /**
@@ -75,10 +85,10 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/subscription/payment-start")
-    public OrderPaymentDto orderSubscriptionPaymentStart(@RequestBody
-                                                         OrderAddRequestDto orderAddRequestDto,
-                                                         @AuthenticationPrincipal
-                                                         UserDetailsDto userDetailsDto) {
+    public OrderBeforePaymentResponseDto orderSubscriptionPaymentStart(@RequestBody
+                                                                       OrderAddRequestDto orderAddRequestDto,
+                                                                       @AuthenticationPrincipal
+                                                                       UserDetailsDto userDetailsDto) {
 
         Optional<Long> memberNo = Optional.empty();
 
@@ -86,7 +96,13 @@ public class OrderAsyncController {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
 
-        return orderService.addOrderSubscription(orderAddRequestDto, memberNo);
+        try {
+            OrderPaymentDto orderPaymentDto =
+                orderService.addOrderSubscription(orderAddRequestDto, memberNo);
+            return new OrderBeforePaymentResponseDto<>(true, orderPaymentDto);
+        } catch (BadRequestException e) {
+            return new OrderBeforePaymentResponseDto<>(false, e.getMessage());
+        }
     }
 
     @PostMapping("/payment-cancel/{orderNo}")
