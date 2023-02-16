@@ -135,4 +135,12 @@ public class OrderServiceImpl implements OrderService {
     public PageResponse<OrderListMemberViewResponseDto> findOrderListAll(Pageable pageable) {
         return null;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void orderPurchaseComplete(Long orderNo) {
+        orderAdaptor.orderPurchaseComplete(orderNo);
+    }
 }
