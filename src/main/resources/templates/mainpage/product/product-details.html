@@ -137,8 +137,8 @@
                                         <div class="modal-header"></div>
                                         <div class="modal-body">비회원으로 주문하시겠습니까?</div>
                                         <div class="modal-footer">
-                                            <a class="btn btn-info" id="modalY">예</a>
-                                            <!--                                            <a class="btn block" id="modalLogin" href="/login">로그인</a>-->
+                                            <a th:if="!${product.isSubscription}" class="btn btn-info" id="modalY">예</a>
+                                            <a th:if="${product.isSubscription}" class="btn btn-info" id="modalSubsY">예</a>
                                             <a class="btn btn-dark block" id="modalN" type="button"
                                                data-dismiss="modal">취소</a>
                                         </div>
@@ -387,10 +387,21 @@
         let productNo = [[${product.productNo}]];
         let productCnt = 1;
 
-        function goOrderSheet(type) {
-            if(type === 'subs') {
+        function goOrderSheet(typeText) {
+            productCnt = document.getElementById('quantity').value;
+            if (productCnt < 1 || productCnt > 9999) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '구매 수량이 잘못 되었습니다.',
+                    text: '구매가능: 1 ~ 9,999'
+                })
+                return
+            }
+
+            if (typeText === 'subs') {
                 let url = "/order-sheet/subscription/select-period?productNo=" + productNo + "&productCnt=" + productCnt;
                 location.href = url;
+                return;
             }
             let url = "/order-sheet";
             let form = document.createElement('form');
@@ -418,13 +429,18 @@
         // 비회원 확인 모달창
         $('.non-member-btn').click(function (e) {
             e.preventDefault();
-            productCnt = document.getElementById('quantity').value;
             $('#nonMemberModal').modal("show");
         });
-        $('#modalY').click(function (type) {
-            goOrderSheet(type)
+
+        $('#modalY').click(function () {
+            goOrderSheet()
             $('#nonMemberModal').modal("hide");
         })
+        $('#modalSubsY').click(function () {
+            goOrderSheet('subs')
+            $('#nonMemberModal').modal("hide");
+        })
+
         $('#modalN').click(function () {
             $('#nonMemberModal').modal("hide");
         })
