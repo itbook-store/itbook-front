@@ -23,9 +23,9 @@ public class OrderDetailsResponseDto {
     private Long deliveryFee;
     private String trackingNo;
 
-    private String couponType;
-    private String couponName;
-    private LocalDateTime couponUsageCreatedAt;
-    private LocalDateTime couponIssueCreatedAt;
+//    private String couponType;
+//    private String couponName;
+//    private LocalDateTime couponUsageCreatedAt;
+//    private LocalDateTime couponIssueCreatedAt;
     // TODO: 2023/02/10 포인트, 쿠폰 관련 정보
 }
