@@ -514,7 +514,7 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": temp.subscriptionPeriod,
+                "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
                 "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
@@ -535,8 +535,6 @@
         }
 
         async function orderSubscription(orderAddRequestDto) {
-
-            console.log("제발제발제발요");
 
             await fetch(`/async/orders/subscription/payment-start`, {
 

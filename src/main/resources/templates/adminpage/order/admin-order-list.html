@@ -4,12 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+
     <meta charset="UTF-8">
     <title>관리자 페이지 - 주문 목록</title>
 </head>
 <body>
 <div layout:fragment="content">
-        <button class="btn btn-primary" th:onclick="|location.href='@{/admin/deliveries}'|">배송 관리</button>
     <div class="container bootstrap snippets bootdey">
         <div class="row">
             <div class="col-lg-12">
@@ -23,10 +24,10 @@
                                     <th><span>제품명</span></th>
                                     <th><span>주문일자</span></th>
                                     <th><span>수령인</span></th>
-                                    <th><span>주문상태</span></th>
+                                    <th><span>상태</span></th>
                                     <th><span>송장번호</span></th>
                                     <th><span>회원 ID</span></th>
-                                    <th>상세보기</th>
+                                    <th>상세</th>
                                     <th>주문취소</th>
                                 </tr>
                                 </thead>
@@ -37,7 +38,7 @@
                                         <span th:text="${ord.productName}"></span>
                                     </td>
                                     <td>
-                                        <span th:text="${ord.orderCreatedAt}"></span>
+                                        <span th:text="${#temporals.format(ord.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     </td>
                                     <td>
                                         <span th:text="${ord.recipientName}"></span>
@@ -54,11 +55,11 @@
                                     </td>
                                     <td>
                                             <span th:if="${ord.memberId == null}">
-                                                미발급
+                                                비회원
                                             </span>
                                         <span th:text="${ord.memberId}"></span>
                                     </td>
-                                    <td style="width: 20%;">
+                                    <td style="width: 5%;">
                                             <span class="fa-stack">
                                         <a th:href="@{/orders/details/{orderNo}(orderNo=${ord.orderNo})}">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -155,7 +156,6 @@
         }
     </script>
     <th:block th:include="component/pageFooter"></th:block>
-
 </div>
 </body>
 </html>
