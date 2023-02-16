@@ -301,6 +301,18 @@ table thead tr th {
     height: 38px;
 }
 
+/* input number 화살표 지우기 */
+.point_apply_box input::-webkit-outer-spin-button
+.point_apply_box input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.point_apply_box input[type=number] {
+    -moz-appearance: textfield;
+}
+/* input number 화살표 지우기 */
 
 #order_amount_coupon_btn {
     background-color: #6868ab !important;
