@@ -12,27 +12,28 @@
     <div class="content">
         <h2>쿠폰 목록</h2>
         <hr>
-        <div>
-            <form method="get" th:action="@{/mypage/coupon/usage_status}">
-                <select name="searchRequirement">
-                    <option value="everything">전체</option>
-                    <option value="notuse">사용전</option>
-                    <option value="alreadyuse">사용완료</option>
-                </select>
-            </form>
-        </div>
+
         <div class="container">
+            <div>
+                <form method="get" th:action="@{/mypage/coupon/usage_status}">
+                    <select name="searchRequirement">
+                        <option value="everything">전체</option>
+                        <option value="notuse">사용전</option>
+                        <option value="alreadyuse">사용완료</option>
+                    </select>
+                </form>
+            </div>
             <table class="table table-striped" style="text-align: center">
-                <thead>
+                <thead class="text-nowrap">
                 <tr>
                     <th><span>번호</span></th>
                     <th><span>유저아이디</span></th>
-                    <th><span>쿠폰타입</span></th>
-                    <th><span>쿠폰이름</span></th>
-                    <th><span>쿠폰코드</span></th>
+                    <th style="width: 10%"><span>쿠폰타입</span></th>
+                    <th style="width: 10%"><span>쿠폰이름</span></th>
+                    <th style="width: 19%"><span>쿠폰코드</span></th>
                     <th><span>적용범위</span></th>
-                    <th><span>사용일</span></th>
-                    <th><span>사용기간</span></th>
+                    <th style="width: 10%"><span>사용일</span></th>
+                    <th style="width: 19%"><span>사용기간</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,8 +88,8 @@
                         -
                     </td>
                     <td>
-                    <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
-                    <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
+                    <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일')}"></span><br>
+                    <span th:text="${#temporals.format(couponIssue.couponExpiredAt, '~ yyyy년 MM월 dd일')}"></span>
                     </td>
                 </tr>
                 </tbody>

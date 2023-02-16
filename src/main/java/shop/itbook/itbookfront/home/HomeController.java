@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
@@ -106,7 +107,12 @@ public class HomeController {
 
     @GetMapping("/mypage")
     public String mypage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                         Model model) {
+                         Model model, RedirectAttributes redirectAttributes) {
+
+        if (Objects.isNull(userDetailsDto)) {
+            redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
 
         Long recentlyPoint =
             memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
