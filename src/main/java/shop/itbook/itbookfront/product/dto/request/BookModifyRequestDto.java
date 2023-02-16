@@ -61,9 +61,6 @@ public class BookModifyRequestDto {
     @NotNull(message = "null을 허용하지 않습니다.")
     private Boolean isSubscription;
 
-    @Setter
-    private String fileThumbnailsUrl;
-
 //    book
 
     @NotBlank(message = "공백이 아닌 문자를 하나 이상 포함해야 됩니다.")
@@ -88,7 +85,4 @@ public class BookModifyRequestDto {
     @Length(max = 255, message = "작가 이름은 1자-255자가 되어야 합니다.")
     private String authorName;
 
-    @Setter
-    private String fileEbookUrl;
 }
-

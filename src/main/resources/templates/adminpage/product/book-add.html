@@ -6,6 +6,7 @@
 
 <head>
     <script src="/product/js/admin-product.js"></script>
+    <script src="/product/js/admin-book.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -34,189 +35,201 @@
 
     <div class="form">
         <form class="form-horizontal" id="addBookForm" name="form" method="post" action="/admin/products/books/add"
-              enctype="multipart/form-data" modelattribute="requestDto" onSubmit="return addBookSubmit()">
-            <div>
-                <div id="form-product" style="width: 50%">
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-9">
-                            <label for="isbn">isbn</label>
-                            <input id="isbn" name="isbn" class="form-control input-md" required="" type="text">
-                        </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-secondary" id="confirmBook"
-                                    onclick="showSearchResults(event)">
-                                검색
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row gx-3 mb-3" style="display: none" id="search-results">
-                        <div class="col-md-12" id="bookList">
-                            <span class="col-md-8" id="isbnSuccessful" style="display:none;">등록 가능한 도서입니다.</span>
-                            <span class="col-md-8" id="isbnFailed" style="display:none;">이미 등록 되어 있거나 없는 도서입니다.</span>
-                            <button type="button" class="btn btn-warning btn-sm"
-                                    onclick="retypeFn('isbn', 'isbnSuccessful', 'isbnFailed', 'confirmBook', 'isbnRetypeBtn')"
-                                    id="isbnRetypeBtn" style="visibility:hidden; margin-top: 10px">다시 입력
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productName">상품명</label>
-                        <input id="productName" name="productName" class="form-control input-md" required=""
-                               type="text" placeholder="등록할 상품명을 입력하세요">
-                    </div>
+              enctype="multipart/form-data" modelattribute="requestDto" onsubmit="return addBookSubmit()">
+            <div id="form-product" style="width: 50%">
 
-                    <div class="mb-3">
-                        <label for="simpleDescription">간단 설명</label>
-                        <textarea id="simpleDescription" name="simpleDescription"
-                                  class="form-control input-md" required="" type="text"
-                                  placeholder="상품에 대한 간단한 설명을 입력하세요"
-                                  rows="4" cols="50"></textarea>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" for="isbn">ISBN</span>
                     </div>
-
-
-                    <div class="mb-3">
-                        <label for="detailsDescription">상세 설명</label>
-                        <textarea class="form-control" id="detailsDescription" name="detailsDescription"
-                                  placeholder="상품에 대한 상세한 설명을 입력하세요" rows="5" cols="50"></textarea>
+                    <input type="text" class="form-control" placeholder="등록할 상품명을 입력하세요" id="isbn"
+                           name="isbn" aria-label="isbn" aria-describedby="basic-addon1" required="">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="confirmBook"
+                                onclick="showSearchResults(event)">검색
+                        </button>
                     </div>
+                </div>
 
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label>상품 노출 여부 (판매 여부)</label>
-                            <fieldset>
-                                YES <input type="radio" name="isSelled" required="" value="true" checked/>
-                                NO <input type="radio" name="isSelled" required="" value="false"/>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-6">
-                            <label>강제 품절 설정 여부</label>
-                            <fieldset>
-                                YES <input type="radio" name="isForceSoldOut" required="" value="true"/>
-                                NO <input type="radio" name="isForceSoldOut" required="" value="false" checked/>
-                            </fieldset>
-                        </div>
+                <div class="row gx-3 mb-3" style="display: none" id="search-results">
+                    <div class="col-md-12" id="bookList">
+                        <span class="col-md-8" id="isbnSuccessful" style="display:none;">등록 가능한 도서입니다.</span>
+                        <span class="col-md-8" id="isbnFailed" style="display:none;">이미 등록 되어 있는 도서입니다.</span>
+                        <button type="button" class="btn btn-warning btn-sm"
+                                onclick="retypeFn('isbn', 'isbnSuccessful', 'isbnFailed', 'confirmBook', 'isbnRetypeBtn')"
+                                id="isbnRetypeBtn" style="visibility:hidden; margin-top: 10px">다시 입력
+                        </button>
                     </div>
+                </div>
 
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-8">
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-7">
-                                    <label style="margin-right: 5px">카테고리</label>
-                                    <select id="mainCategory" name="mainCategory">
-                                        <!--                        <option th:value="select" th:text="선택"></option>-->
-                                        <option th:each="mainCategory: ${mainCategoryList}"
-                                                th:value="${mainCategory.categoryNo}"
-                                                th:text="${mainCategory.categoryName}">
-                                        </option>
-                                    </select>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" for="productName">도서명</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="등록할 도서명을 입력하세요" id="productName"
+                           name="productName"
+                           aria-label="도서명" aria-describedby="basic-addon1" required="">
+                </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="mainCategory">대분류</label>
                                 </div>
-                                <div class="col-md-5">
-                                    <button style="margin-left: 5px" class="btn btn-light btn-sm"
+                                <select class="custom-select" id="mainCategory" name="mainCategory">
+                                    <option th:each="mainCategory: ${mainCategoryList}"
+                                            th:value="${mainCategory.categoryNo}"
+                                            th:text="${mainCategory.categoryName}">
+                                    </option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
                                             onclick="showSubCategory(event)">하위 카테고리 펼치기
                                     </button>
-                                </div>
-                                <div class="row gx-3 mb-3">
-                                    <div id="categoryCheckBox" style="display:none">
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-3">
-                            <label>포인트 적립 여부</label>
-                            <fieldset>
-                                YES <input type="radio" name="isPointApplying" value="true"
-                                           onclick="selectPointApplying()" required="" checked/>
-                                NO <input type="radio" name="isPointApplying" value="false" required=""
-                                          onclick="notSelectPointApplying()"/>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-3" id="increasingPoint-div">
-                            <label for="increasePointPercent">포인트 적립율(%)</label>
-                            <input id="increasePointPercent" name="increasePointPercent"
-                                   class="form-control input-md" type="text">
-                        </div>
-                        <div class="col-md-6" id="increasingPointBase-div">
-                            <label>포인트 적립 기준</label>
-                            <fieldset>
-                                <fieldset>
-                                    판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
-                                                  value="true"/>
-                                    실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
-                                                   value="false"/>
-                                </fieldset>
-                            </fieldset>
-                        </div>
-                    </div>
-                </div>
-                <div id="form-book" style="width: 40%">
-
-                    <div class="row gx-3 mb-3">
-
-                        <div class="col-md-4">
-                            <label for="rawPrice">매입 원가(원)</label>
-                            <input id="rawPrice" name="rawPrice"
-                                   class="form-control input-md" required="" type="text">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="fixedPrice">정가(원)</label>
-                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                                   type="text">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="discountPercent">할인율(%)</label>
-                            <input id="discountPercent" name="discountPercent" class="form-control input-md"
-                                   required=""
-                                   type="text">
-                        </div>
-                    </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>구독 상품 여부</label>
+                        <div id="categoryCheckBox" style="display:none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="simpleDescription">간단 설명</label>
+                    <textarea id="simpleDescription" name="simpleDescription"
+                              class="form-control input-md" required="" type="text"
+                              placeholder="상품에 대한 간단한 설명을 입력하세요"
+                              rows="4" cols="50"></textarea>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="detailsDescription">상세 설명</label>
+                    <textarea class="form-control" id="detailsDescription" name="detailsDescription"
+                              placeholder="상품에 대한 상세한 설명을 입력하세요" rows="5" cols="50"></textarea>
+                </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-4">
+                        <label>상품 노출 여부 (판매 여부)</label>
+                        <fieldset>
+                            YES <input type="radio" name="isSelled" required="" value="true" checked/>
+                            NO <input type="radio" name="isSelled" required="" value="false"/>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <label>강제 품절 설정 여부</label>
+                        <fieldset>
+                            YES <input type="radio" name="isForceSoldOut" required="" value="true"/>
+                            NO <input type="radio" name="isForceSoldOut" required="" value="false" checked/>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <label>구독 상품 여부</label>
+                        <fieldset>
+                            YES <input type="radio" name="isSubscription" required=""
+                                       value="true"/>
+                            NO <input type="radio" name="isSubscription" required=""
+                                      value="false" checked/>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-4">
+                        <label>포인트 적립 여부</label>
+                        <fieldset>
+                            YES <input type="radio" name="isPointApplying" value="true"
+                                       onclick="selectPointApplying()" required="" checked/>
+                            NO <input type="radio" name="isPointApplying" value="false" required=""
+                                      onclick="notSelectPointApplying()"/>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-5" id="increasingPointBase-div">
+                        <label>포인트 적립 기준</label>
+                        <fieldset>
                             <fieldset>
-                                YES <input type="radio" name="isSubscription" required=""
-                                           value="true"/>
-                                NO <input type="radio" name="isSubscription" required=""
-                                          value="false" checked/>
+                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                              value="true"/>
+                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                               value="false"/>
                             </fieldset>
-                        </div>
-                        <div class="col-md-5">
-                            <label for="stock">재고(개)</label>
-                            <input id="stock" name="stock" class="form-control input-md" required="" type="text"
-                            >
-                        </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-3" id="increasingPoint-div">
+                        <label for="increasePointPercent">포인트 적립율(%)</label>
+                        <input id="increasePointPercent" name="increasePointPercent"
+                               class="form-control input-md" input type="number" max="100" min="0"  step="0.1">
                     </div>
 
+                </div>
+            </div>
+            <div id="form-book" style="width: 40%">
 
-                    <div class="row gx-3 mb-3">
-                        <label>썸네일 사진 선택</label>
-                        <input type="file" value="파일 선택" required="" name="fileThumbnails" accept="image/*"/>
+                <div class="row gx-3 mb-3">
+
+                    <div class="col-md-4">
+                        <label for="rawPrice">매입 원가(원)</label>
+                        <input id="rawPrice" name="rawPrice"
+                               class="form-control input-md" required="" input type="number" min="0">
                     </div>
+                    <div class="col-md-4">
+                        <label for="fixedPrice">정가(원)</label>
+                        <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
+                               input type="number" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="discountPercent">할인율(%)</label>
+                        <input id="discountPercent" name="discountPercent" class="form-control input-md"
+                               required="" input type="number" min="0" max="100" step="0.1">
+                    </div>
+                </div>
 
-                <div class="row gx-3 mb-3">
-                    <label for="pageCount">page 수</label>
-                    <input id="pageCount" name="pageCount" required="" class="form-control input-md"
-                           type="text">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="stock">재고(개)</label>
+                        <input id="stock" name="stock" class="form-control input-md" required="" input type="number" min="0"
+                        >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="pageCount">page 수</label>
+                        <input id="pageCount" name="pageCount" required="" class="form-control input-md"
+                               input type="number" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="bookCreatedAt">발간일</label>
+                        <input type="date" id="bookCreatedAt" required="" name="bookCreatedAt"
+                               class="form-control input-md">
+                    </div>
                 </div>
-                <div class="row gx-3 mb-3">
-                    <label for="bookCreatedAt">발간일</label>
-                    <input type="date" id="bookCreatedAt" required="" name="bookCreatedAt"
-                           class="form-control input-md">
-                </div>
+
                 <div class="row gx-3 mb-3">
                     <label>상품 분류</label>
-                    <fieldset>
+                    <div class="col-md-5">
                         전자책(e-book) <input type="radio" name="isEbook" value="true" required=""
                                            onclick="selectEbook()"/>
                         종이책 <input type="radio" name="isEbook" value="false" required=""
                                    onclick="notSelectEbook()" checked/>
-                    </fieldset>
-                    <div class="form-group" id="selectEbook" style="display: none">
-                        <p class="col-md-3 control-label">ebook 등록</p>
-                        <input type="file" value="파일 선택" name="fileEbook" accept=".pdf"/>
+                    </div>
+                    <div class="col-md-7" style="display: none" id="selectEbook">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">파일</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="fileEbook"
+                                       id="fileEbook" accept=".pdf"/>
+                                <label class="custom-file-label" for="fileEbook">ebook 등록</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
                 <div class="row gx-3 mb-3">
                     <label for="publisherName">출판사</label>
                     <input id="publisherName" name="publisherName" required="" class="form-control input-md"
@@ -227,14 +240,44 @@
                     <input id="authorName" name="authorName" required="" class="form-control input-md"
                            type="text">
                 </div>
+
+                <div class="row gx-3 mb-3">
+                    <div class="input-group" style="width: 60%">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">사진</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="fileThumbnails" required=""
+                                   id="fileThumbnails" accept="image/*" onchange="previewImage(this);"/>
+                            <label class="custom-file-label" for="fileThumbnails">썸네일 선택</label>
+                        </div>
+                    </div>
+                </div>
+
+                <img class="img-thumbnail-sm" style="display: none; width: 20%" id="imagePreview">
             </div>
 
-            <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit" value="등록하기"
-                   onclick="addBookSubmit()"/>
-            </div>
+            <input class="btn btn-primary" style="margin-top: 20px; margin-left: 20px" type="submit"
+                   id="submit" value="등록하기" onclick="addBookSubmit()"/>
 
         </form>
+
+        <script th:inline="javascript">
+            let bookCreatedAt = document.getElementById("bookCreatedAt").value;
+
+            let currentDate = new Date;
+            let maxDate = new Date;
+            let minDate = new Date;
+            maxDate.setDate(currentDate.getDate() + 18250);
+            minDate.setDate(currentDate.getDate() - 36500);
+            bookCreatedAt.value = currentDate.toISOString().slice(0, 10);
+            bookCreatedAt.min = minDate.toISOString().slice(0, 10);
+            bookCreatedAt.max = maxDate.toISOString().slice(0, 10);
+
+        </script>
+
     </div>
+
 </div>
 </body>
 </html>

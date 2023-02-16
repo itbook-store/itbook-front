@@ -34,7 +34,8 @@
 
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
-            <h2>연관 상품 수정</h2>
+            <h2 th:if="${not #lists.isEmpty(existingList)}">연관 상품 수정</h2>
+            <h2 th:unless="${not #lists.isEmpty(existingList)}">연관 상품 등록</h2>
             <form class="form-horizontal" name="form" method="post"
                   th:action="@{|/admin/products/relation/${basedProductNo}/edit|}">
                 <div class="row">

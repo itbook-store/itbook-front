@@ -28,6 +28,7 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
@@ -63,25 +64,30 @@ public class ProductServiceController {
     @GetMapping(params = {"categoryNo", "categoryName"})
     public String productListByCategory(@RequestParam Integer categoryNo,
                                         @RequestParam String categoryName,
-                                        Model model, @PageableDefault Pageable pageable) {
+                                        Model model, @PageableDefault Pageable pageable,
+                                        RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<CategoryListResponseDto> pageResponse =
+                categoryService.findCategoryList(
+                    String.format("/api/admin/categories?page=%d&size=%d",
+                        PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+            List<MainCategory> mainCategoryList =
+                CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            model.addAttribute("mainCategoryList", mainCategoryList);
 
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-        List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
-        model.addAttribute("mainCategoryList", mainCategoryList);
+            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+                "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+            model.addAttribute("productTypeList", productTypeList);
 
-        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
-        model.addAttribute("productTypeList", productTypeList);
-
-        PageResponse<ProductDetailsResponseDto> productList =
-            productService.getProductList(
-                String.format("/api/admin/products?page=%d&size=%d&categoryNo=%d",
-                    pageable.getPageNumber(), pageable.getPageSize(), categoryNo));
-        model.addAttribute("pageResponse", productList);
-
+            PageResponse<ProductDetailsResponseDto> productList =
+                productService.getProductList(
+                    String.format("/api/admin/products?page=%d&size=%d&categoryNo=%d",
+                        pageable.getPageNumber(), pageable.getPageSize(), categoryNo));
+            model.addAttribute("pageResponse", productList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
         model.addAttribute("categoryName", categoryName);
 
         model.addAttribute("paginationUrl",
@@ -96,34 +102,40 @@ public class ProductServiceController {
     public String productListByProductType(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                            @RequestParam Integer productTypeNo,
                                            @RequestParam String productTypeName,
-                                           Model model, @PageableDefault Pageable pageable) {
+                                           Model model, @PageableDefault Pageable pageable,
+                                           RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<CategoryListResponseDto> pageResponse =
+                categoryService.findCategoryList(
+                    String.format("/api/admin/categories?page=%d&size=%d",
+                        PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+            List<MainCategory> mainCategoryList =
+                CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            model.addAttribute("mainCategoryList", mainCategoryList);
 
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-        List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
-        model.addAttribute("mainCategoryList", mainCategoryList);
+            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
+                "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+            model.addAttribute("productTypeList", productTypeList);
 
-        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
-        model.addAttribute("productTypeList", productTypeList);
-
-        if (Optional.ofNullable(userDetailsDto).isPresent()) {
-            Long memberNo = userDetailsDto.getMemberNo();
-            PageResponse<ProductDetailsResponseDto> productList =
-                productService.getProductList(
-                    String.format("/api/products?productTypeNo=%d&memberNo=%d&page=%d&size=%d",
-                        productTypeNo, memberNo, pageable.getPageNumber(), pageable.getPageSize()));
-            model.addAttribute("pageResponse", productList);
-        } else {
-            PageResponse<ProductDetailsResponseDto> productList =
-                productService.getProductList(
-                    String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
-            model.addAttribute("pageResponse", productList);
+            if (Optional.ofNullable(userDetailsDto).isPresent()) {
+                Long memberNo = userDetailsDto.getMemberNo();
+                PageResponse<ProductDetailsResponseDto> productList =
+                    productService.getProductList(
+                        String.format("/api/products?productTypeNo=%d&memberNo=%d&page=%d&size=%d",
+                            productTypeNo, memberNo, pageable.getPageNumber(),
+                            pageable.getPageSize()));
+                model.addAttribute("pageResponse", productList);
+            } else {
+                PageResponse<ProductDetailsResponseDto> productList =
+                    productService.getProductList(
+                        String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
+                            pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
+                model.addAttribute("pageResponse", productList);
+            }
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
-
 
         model.addAttribute("productTypeName", productTypeName);
 
@@ -178,14 +190,13 @@ public class ProductServiceController {
 
             model.addAttribute("avgStarPoint", avgStarPoint);
 
-            if (Objects.nonNull(userDetailsDto)) {
+            if (userDetailsDto != null) {
                 model.addAttribute("memberIdLoggedIn", userDetailsDto.getMemberId());
                 model.addAttribute("memberName",
                     memberService.findMember(userDetailsDto.getMemberNo()).getName());
                 model.addAttribute("memberIsWriter",
                     memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter());
                 model.addAttribute("memberNo", userDetailsDto.getMemberNo());
-                model.addAttribute("productNo", productNo);
             }
             PageResponse<ProductInquiryResponseDto> productInquiryResponse =
                 productInquiryService.findProductInquiryListByProductNo(
@@ -196,10 +207,8 @@ public class ProductServiceController {
             model.addAttribute("productInquiryPageResponse", productInquiryResponse);
             model.addAttribute("productPaginationUrl", "/products/" + productNo);
 
-            
-        } catch (ProductNotFoundException e) {
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-        } catch (ReviewNotFoundException e) {
+        } catch (BadRequestException e) {
+
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
         }
 

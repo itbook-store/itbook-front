@@ -71,7 +71,7 @@ public class CouponMainController {
             couponIssueService.addCouponIssueByCouponType(
                 String.format("/api/coupon-issues/%d/%d/add", couponNo,
                     userDetailsDto.getMemberNo()));
-        } catch (AlreadyAddedCouponIssueMemberCouponException | UnableToCreateCouponException e) {
+        } catch (BadRequestException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:"+request.getHeader("Referer");
         }

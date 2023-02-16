@@ -5,7 +5,8 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원 등급별 통계</title>
+    <link rel="stylesheet" type="text/css" href="/adminpage/member/css/adminMemberDetail.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -21,19 +22,62 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <h2>회원 등급별 회원 통계</h2>
-        <hr>
-        일반 : <span th:text="${count.getCommonCnt()}"></span>명<br>
+        <h2>회원 등급별 통계</h2>
+        <!--일반 : <span th:text="${count.getCommonCnt()}"></span>명<br>
         화이트 : <span th:text="${count.getWhiteCnt()}"></span>명<br>
         실버 : <span th:text="${count.getSilverCnt()}"></span>명<br>
         골드 : <span th:text="${count.getGoldCnt()}"></span>명<br>
-        플래티넘 : <span th:text="${count.getPlatinumCnt()}"></span>명<br><br>
+        플래티넘 : <span th:text="${count.getPlatinumCnt()}"></span>명<br><br>-->
 
         <input type="hidden" id="commonCnt" th:value="${count.getCommonCnt()}">
         <input type="hidden" id="whiteCnt" th:value="${count.getWhiteCnt()}">
         <input type="hidden" id="silverCnt" th:value="${count.getSilverCnt()}">
         <input type="hidden" id="goldCnt" th:value="${count.getGoldCnt()}">
         <input type="hidden" id="platinumCnt" th:value="${count.getPlatinumCnt()}">
+
+        <div class="tab-pane fade in active show" id="profile-about">
+            <!-- begin table -->
+            <div class="table-responsive">
+                <table class="table table-profile">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="highlight">
+                        <td class="field">일반</td>
+                        <td><span th:text="${count.getCommonCnt()}"></span>명</td>
+                    </tr>
+                    <tr class="divider">
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="field">화이트</td>
+                        <td><span th:text="${count.getWhiteCnt()}"></span>명</td>
+                    </tr>
+                    <tr>
+                        <td class="field">실버</td>
+                        <td><span th:text="${count.getSilverCnt()}"></span>명</td>
+                    </tr>
+                    <tr>
+                        <td class="field">골드</td>
+                        <td><span th:text="${count.getGoldCnt()}"></span>명</td>
+                    </tr>
+                    <tr>
+                        <td class="field">플래티넘</td>
+                        <td><span th:text="${count.getPlatinumCnt()}"></span>명</td>
+                    </tr>
+                    <tr class="divider">
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- end table -->
+            <hr>
+        </div>
 
         <div class="container">
             <div class="row my-3">

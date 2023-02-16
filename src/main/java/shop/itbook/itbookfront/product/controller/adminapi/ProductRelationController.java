@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
@@ -30,32 +32,45 @@ import shop.itbook.itbookfront.product.service.ProductService;
 @Slf4j
 @RequestMapping("/admin/products/relation")
 public class ProductRelationController {
-
+    private final String PRODUCT_RELATION_REDIRECT_URL = "/admin/products/relation";
     private final ProductService productService;
 
     // 모든 연관상품을 조회하는 화면을 불러옵니다.
     @GetMapping
-    public String getAllProductRelationList(Model model, @PageableDefault Pageable pageable) {
-
-        PageResponse<ProductRelationResponseDto> relationProductList =
-            productService.findRelationProductList(
-                String.format("/api/admin/products/relation?page=%d&size=%d",
-                    pageable.getPageNumber(), pageable.getPageSize()));
-        model.addAttribute("pageResponse", relationProductList);
-        model.addAttribute("paginationUrl", "/admin/products/relation");
-
+    public String getAllProductRelationList(Model model, @PageableDefault Pageable pageable,
+                                            RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<ProductRelationResponseDto> relationProductList =
+                productService.findRelationProductList(
+                    String.format("/api/admin/products/relation?page=%d&size=%d",
+                        pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", relationProductList);
+            model.addAttribute("paginationUrl", "/admin/products/relation");
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_RELATION_REDIRECT_URL;
+        }
         return "adminpage/product/product-relation-management";
     }
 
     // 해당번호의 연관상품을 조회하는 화면을 불러옵니다.
     @GetMapping("/{productNo}")
     public String getProductRelationListFilteredProductNo(Model model, @PathVariable Long productNo,
-                                                          @PageableDefault Pageable pageable) {
-        PageResponse<ProductDetailsResponseDto> relationProductList =
-            productService.getProductList(
-                String.format("/api/admin/products/relation/%d?page=%d&size=%d",
-                    productNo, pageable.getPageNumber(), pageable.getPageSize()));
-        model.addAttribute("pageResponse", relationProductList);
+                                                          @PageableDefault Pageable pageable,
+                                                          RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<ProductDetailsResponseDto> relationProductList =
+                productService.getProductList(
+                    String.format("/api/admin/products/relation/%d?page=%d&size=%d",
+                        productNo, pageable.getPageNumber(), pageable.getPageSize()));
+            model.addAttribute("pageResponse", relationProductList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_RELATION_REDIRECT_URL;
+        }
+
         model.addAttribute("basedProductNo", productNo);
 
         model.addAttribute("paginationUrl",
@@ -68,21 +83,29 @@ public class ProductRelationController {
     // 해당번호에 연관상품 수정하는 화면을 불러옵니다.
     @GetMapping("/{basedProductNo}/edit")
     public String getAddProductRelationForm(Model model, @PathVariable Long basedProductNo,
-                                            @PageableDefault Pageable pageable) {
+                                            @PageableDefault Pageable pageable,
+                                            RedirectAttributes redirectAttributes) {
+        try {
+            //추가할 후보들
+            PageResponse<ProductDetailsResponseDto> candidateProductList =
+                productService.getProductList(
+                    String.format("/api/products/relation/add-candidates/%d?page=%d&size=%d",
+                        basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
 
-        //추가할 후보들
-        PageResponse<ProductDetailsResponseDto> candidateProductList =
-            productService.getProductList(
-                String.format("/api/products/relation/add-candidates/%d?page=%d&size=%d",
-                    basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-        model.addAttribute("pageResponse", candidateProductList);
+            //기존의 리스트
+            List<ProductDetailsResponseDto> existingProductList =
+                productService.getProductList(
+                    String.format("/api/products/relation/%d?page=%d&size=%d",
+                        basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
 
-        //기존의 리스트
-        List<ProductDetailsResponseDto> existingProductList =
-            productService.getProductList(
-                String.format("/api/products/relation/%d?page=%d&size=%d",
-                    basedProductNo, PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
-        model.addAttribute("existingList", existingProductList);
+            model.addAttribute("pageResponse", candidateProductList);
+            model.addAttribute("existingList", existingProductList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_RELATION_REDIRECT_URL;
+        }
+
         model.addAttribute("basedProductNo", basedProductNo);
 
         model.addAttribute("paginationUrl",
@@ -93,8 +116,15 @@ public class ProductRelationController {
 
     @PostMapping("/{basedProductNo}/edit")
     public String modifyProduct(@PathVariable Long basedProductNo,
-                                @ModelAttribute ProductRelationRequestDto relationList) {
-        productService.modifyRelationProduct(basedProductNo, relationList);
+                                @ModelAttribute ProductRelationRequestDto relationList,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            productService.modifyRelationProduct(basedProductNo, relationList);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_RELATION_REDIRECT_URL;
+        }
         return "redirect:/admin/products/relation/" + basedProductNo;
     }
 }

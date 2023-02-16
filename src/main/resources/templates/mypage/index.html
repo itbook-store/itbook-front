@@ -4,39 +4,20 @@
       layout:decorate="~{layout/mypage/default-layout}">
 <head>
     <title>마이페이지</title>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 </head>
 <body>
 <div layout:fragment="content">
     <div class="content">
         <h2>마이페이지</h2>
+        <div th:if="${isWriter} == true">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span th:text="${name} + ' 작가님'"></span><br>
+        </div>
         <hr>
         <h4>나의 포인트</h4><br>
         <span th:text="${memberId}"></span> 님의 현재 포인트는 <span th:text="${recentlyPoint}"></span>p 입니다.
         <hr>
-        <h4>최근 주문내역</h4>
-        <table class="order_table table">
-            <tr>
-                <th>주문일자</th>
-                <th>주문내역</th>
-                <th>주문상태</th>
-                <th>배송</th>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-            </tr>
-        </table>
-        <br>
-        <br>
-        <h4>나의 고객문의</h4>
-        <table class="table">
-            <tr>
-                <td>(고객문의 제목)</td>
-                <td>(고객문의 날짜)</td>
-            </tr>
-        </table>
     </div>
 </div>
 </body>
