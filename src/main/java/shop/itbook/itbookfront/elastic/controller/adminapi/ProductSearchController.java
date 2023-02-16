@@ -33,6 +33,10 @@ public class ProductSearchController {
     @GetMapping
     public List<ProductSampleResponseDto> searchProductByName(@RequestParam String name) {
 
+        if(name.length()>100){
+            name = name.substring(0, 100);
+        }
+
         List<ProductSampleResponseDto> productList =
             productSearchService.findProductList(
                 String.format("/api/products/search/list?name=%s", name));

@@ -5,8 +5,13 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <script th:src="@{/coupon/couponResident.js}"></script>
-
+    <script src="/coupon/couponResident.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/mypage/member/js/signup.js"></script>
     <title>쿠폰 등록</title>
 </head>
 
@@ -14,7 +19,8 @@
     <div class="flex-shrink-0 p-3 bg-white">
 
         <div id="form-main">
-            <form id="couponAddForm" method="post">
+            <form id="couponAddForm" name="productAddForm" method="post" action="/admin/coupons/coupon-addition"
+                  onsubmit="return addCouponSubmit()">
 
                 <div id="form-div">
 
@@ -37,21 +43,18 @@
                         </div>
                         <div class="alert alert-light">
                             <div id="normalCouponDiv" style="display:none;">
-                                일반쿠폰
+                                <label for="memberId">일반쿠폰</label>
                                 <input type="text" class="form-control form-control-lg" name="memberId"
-                                       th:field="${couponInputRequestDto.userId}"/>
-                                <button type="button" onclick="checkMemberId()" id="memberIdCheckBtn">아이디 확인</button>
-                                <button type="button"
-                                        onclick="retypeFn('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')"
+                                                                         id="memberId"/>
+                                <button class="btn btn-light" type="button" onclick="checkMemberIdDuplicateInCoupon()" id="memberIdCheckBtn">아이디 확인</button>
+                                <button class="btn btn-light" type="button"
+                                        onclick="retypeFnCheck('memberId', 'memberIdExists', 'memberIdNotExists', 'memberIdCheckBtn', 'memberIdRetypeBtn')"
                                         id="memberIdRetypeBtn" style="visibility:hidden;">다시 입력
                                 </button>
-                                <div id="memberIdNotExists" style="display:none;">존재하지 않는 아이디입니다.</div>
-                                <div id="memberIdExists" style="display:none;">존재하는 아이디입니다.</div>
+                                <div id="memberIdNotExists" style="display:none;"><b>존재하지 않는 아이디입니다.</b></div>
+                                <div id="memberIdExists" style="display:none;"><b>존재하는 아이디입니다.</b></div>
                             </div>
-                        </div>
-                        <div class="alert alert-light">
                             <div id="membershipMonthlyCouponDiv" style="display:none;">
-
                                 <label for='selectMembership'>등급 선택</label>
                                 <select id='selectMembership' name="membership">
                                     <option value="">회원 등급을 선택해주세요.</option>
@@ -74,7 +77,7 @@
                         </div>
                         <div class="alert alert-light">
                             <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponAmountGroup"
+                                <input type="radio" name="couponAmountGroup"
                                        id="pointRadio"
                                        onclick="selectCouponOption()">
                                 <label class="form-check-label" for="pointRadio">
@@ -82,7 +85,7 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponAmountGroup"
+                                <input type="radio" name="couponAmountGroup"
                                        id="percentRadio"
                                        onclick="selectCouponOption()">
                                 <label class="form-check-label" for="percentRadio">
@@ -90,7 +93,7 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="custom-control-input" type="radio" name="couponAmountGroup"
+                                <input type="radio" name="couponAmountGroup"
                                        id="amountRadio"
                                        onclick="selectCouponOption()">
                                 <label class="form-check-label" for="amountRadio">
@@ -99,29 +102,32 @@
                             </div>
                             <div id="pointDiv" style="display:none;">
                                 <label for="point">포인트</label>
-                                <input class="form-control" type="text" id="point"
+                                <input class="form-control" type="number" min="0" id="point"
                                        placeholder="사용시 지급 할 포인트 금액을 입력해주세요."
                                        th:field="${couponInputRequestDto.point}">
                             </div>
                             <div id="percentDiv" style="display:none;">
                                 <label for="percent">정률</label>
-                                <input class="form-control" type="text" id="percent"
+                                <input class="form-control" type="number" min="0" max="100" id="percent"
                                        placeholder="1부터 100사이의 숫자를 입력해주세요."
                                        th:field="${couponInputRequestDto.percent}">
                             </div>
                             <div id="amountDiv" style="display:none;">
                                 <label for="amount">정액</label>
-                                <input class="form-control" type="text" id="amount" placeholder="할인 금액을 입력해주세요."
+                                <input class="form-control" type="number" min="0" id="amount"
+                                       placeholder="할인 금액을 입력해주세요."
                                        th:field="${couponInputRequestDto.amount}">
                             </div>
                             <div id="minDiv" style="display:none;">
                                 <label for="min">최소 이용 가능 금액</label>
-                                <input class="form-control" type="text" id="min" placeholder="쿠폰 적용 기준금액을 입력해주세요."
+                                <input class="form-control" type="number" min="0" id="min"
+                                       placeholder="쿠폰 적용 기준금액을 입력해주세요."
                                        th:field="${couponInputRequestDto.standardAmount}">
                             </div>
                             <div id="maxDiv" style="display:none;">
                                 <label for="max">최대 할인 금액</label>
-                                <input class="form-control" type="text" id="max" placeholder="쿠폰이 할인 가능한 최대금액을 입력해주세요."
+                                <input class="form-control" type="number" min="0" id="max"
+                                       placeholder="쿠폰이 할인 가능한 최대금액을 입력해주세요."
                                        th:field="${couponInputRequestDto.maxDiscountAmount}">
                             </div>
                         </div>
@@ -130,7 +136,7 @@
                             <div class="alert alert-light">
                                 쿠폰 적용범위
                                 <div class="form-check">
-                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                    <input type="radio" name="couponCoverageGroup"
                                            id="allProductRadio" value="total"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="allProductRadio">
@@ -138,7 +144,7 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                    <input type="radio" name="couponCoverageGroup"
                                            id="categoryRadio" value="category"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="categoryRadio">
@@ -146,7 +152,7 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="custom-control-input" type="radio" name="couponCoverageGroup"
+                                    <input type="radio" name="couponCoverageGroup"
                                            id="oneProductRadio" value="product"
                                            onclick="selectCouponCoverage()">
                                     <label class="form-check-label" for="oneProductRadio">
@@ -191,40 +197,61 @@
 
                         <div class="alert alert-light">
                             <label for="totalQuantity">수량</label>
-                            <input class="form-control" type="text" id="totalQuantity"
+                            <input class="form-control" type="number" id="totalQuantity"
                                    placeholder="입력하지 않으면 무제한으로 발급됩니다."
                                    th:field="${couponInputRequestDto.totalQuantity}">
                         </div>
                         <div class="alert alert-light">
-                            발행 가능일
-                            <input type="datetime-local" class="form-control form-control-lg"
-                                   th:field="${couponInputRequestDto.couponCreatedAt}"/>
-                            만료일
-                            <input type="datetime-local" class="form-control form-control-lg"
-                                   th:field="${couponInputRequestDto.couponExpiredAt}"/>
+                            <div class="col-md-6">
+                                발행 가능일
+                                <input type="datetime-local" class="form-control form-control-lg "
+                                       id='couponCreatedAt'
+                                       th:field="${couponInputRequestDto.couponCreatedAt}"/>
+                            </div>
+                            <div class="col-md-6">
+                                만료일
+                                <input type="datetime-local" class="form-control form-control-lg"
+                                       id="couponExpiredAt"
+                                       th:field="${couponInputRequestDto.couponExpiredAt}"/>
+                            </div>
+                            <label for="usagePeriod">쿠폰 사용 기간(최대 365일)</label>
+                            <input class="form-control" type="number" id="usagePeriod" max="365"
+                                   placeholder="입력하지 않으면 쿠폰 사용기간은 쿠폰 만료일까지로 발급됩니다."
+                                   th:field="${couponInputRequestDto.usagePeriod}">
                         </div>
                         <div class="form-group">
                             <label for="image">쿠폰 사진넣기</label>
                             <input type="file" class="form-control-file" id="image" accept="image/*"
                                    th:field="${couponInputRequestDto.image}"/>
-
                         </div>
 
+                    </div>
 
-                    </div>
-                    <div id="defaultButtonDiv">
-                        <input class="btn btn-primary" style="margin-left: 20px" type="submit"
-                               th:formaction="@{/admin/coupons/coupon-addition}" value="등록하기"/>
-                    </div>
                 </div>
+                <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit"
+                       value="등록하기"/>
+
             </form>
         </div>
     </div>
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
         if (failMessage) {
-            alert(failMessage);
+            Swal.fire('failMessage', '', 'error');
         }
+        let now_utc = Date.now()
+        let timeOff = new Date().getTimezoneOffset() * 60000;
+        let today_date = new Date(now_utc - timeOff).toISOString().substring(0, 11)+"00:00";
+        let today = new Date(now_utc - timeOff).toISOString().substring(0, 16);
+        let max_year = new Date(2099, 11, 32, 8, 59, 59).toISOString().substring(0, 16);
+
+        document.getElementById("couponCreatedAt").setAttribute("min", today_date);
+        document.getElementById("couponCreatedAt").setAttribute("max", max_year);
+        document.getElementById('couponCreatedAt').value = today;
+
+        document.getElementById("couponExpiredAt").setAttribute("min", today);
+        document.getElementById("couponExpiredAt").setAttribute("max", max_year);
+
     </script>
 </div>
 </html>
