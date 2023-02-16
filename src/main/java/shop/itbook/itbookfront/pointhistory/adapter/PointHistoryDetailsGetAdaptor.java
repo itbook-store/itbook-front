@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryCouponDetailsResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryDetailsGiftResponseDto;
 import shop.itbook.itbookfront.pointhistory.dto.response.details.PointHistoryGradeDetailsResponseDto;
@@ -57,6 +58,16 @@ public class PointHistoryDetailsGetAdaptor {
     public PointHistoryCouponDetailsResponseDto findPointHistoryDetailsCoupon(String apiUrl) {
 
         ResponseEntity<CommonResponseBody<PointHistoryCouponDetailsResponseDto>> exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return exchange.getBody().getResult();
+    }
+
+    public OrderDetailsResponseDto findPointHistoryDetailsOrder(String apiUrl) {
+
+        ResponseEntity<CommonResponseBody<OrderDetailsResponseDto>> exchange =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });

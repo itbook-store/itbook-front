@@ -14,10 +14,10 @@ import shop.itbook.itbookfront.category.dto.response.CategoryNoResponseDto;
  * @since 1.0
  */
 @ToString
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class ProductDetailsResponseDto {
     private Long productNo;
 

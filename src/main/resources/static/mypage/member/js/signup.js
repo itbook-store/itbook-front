@@ -150,7 +150,6 @@ function retypeFn(text, existMsg, notExistMsg, checkBtn, retypeBtn) {
 function signUpSubmit() {
 
     if(!checkName()) {
-        alert("이름 형식에 맞지 않습니다.")
         return false;
     }
 
@@ -185,6 +184,17 @@ function signUpSubmit() {
 }
 
 function socialLoginSubmit() {
+
+    if(!checkGender()) {
+        alert("성별을 체크해야 합니다.");
+        return false;
+    }
+
+    if(!checkBirth()) {
+        alert("생일 입력 형식에 맞지 않습니다.");
+        return false;
+    }
+
     if (document.getElementById("nicknameCheckBtn").disabled == false
         || document.getElementById("phoneNumberCheckBtn").disabled == false) {
         alert("중복체크가 되지 않은 곳이 있습니다.");
@@ -310,7 +320,7 @@ function checkEmail(str) {
 }
 
 function checkPassword(str) {
-    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,255}$/i;
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*_+=-]).{8,255}$/i;
     if(!regExp.test(str)) {
         return false;
     }

@@ -13,7 +13,7 @@
         <h2>포인트 내역 조회</h2>
         <hr>
         <div>
-            <select name="searchRequirement" onchange="window.open(this.value)">
+            <select name="searchRequirement" onchange="window.location.replace(this.value)">
                 <option value="/point-histories/show-content/my-point-list">전체</option>
                 <option value="/point-histories/show-content/my-point-list?content=쿠폰" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '쿠폰')}">쿠폰</option>
                 <option value="/point-histories/show-content/my-point-list?content=주문" th:selected="${not #strings.isEmpty(content) and #strings.equals(content, '주문')}">주문</option>

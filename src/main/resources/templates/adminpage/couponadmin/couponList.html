@@ -70,7 +70,6 @@
                     - <span th:text="${coupon.categoryName}"></span>
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.productName)}">
-                    <span th:text="${coupon.productNo}"></span>.
                     <a th:href="@{|/products/${coupon.productNo}|}"
                        class="btn btn-coupon-register btn-sm btn-light align-middle">
                         <span th:text="${coupon.productNo}"></span>.

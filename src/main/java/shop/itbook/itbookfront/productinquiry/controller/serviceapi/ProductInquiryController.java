@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
@@ -37,11 +39,19 @@ public class ProductInquiryController {
     private final ProductInquiryService productInquiryService;
     private final ProductInquiryReplyService productInquiryReplyService;
 
-    @GetMapping("/{productNo}/add")
+    @GetMapping("/{memberNo}/{productNo}/add")
     public String productInquiryAddForm(
+        @PathVariable("memberNo") Long memberNo,
         @PathVariable("productNo") Long productNo,
         @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        RedirectAttributes redirectAttributes,
         Model model) {
+
+        if(!memberNo.equals(userDetailsDto.getMemberNo())) {
+            log.error("잘못된 접근입니다.");
+            redirectAttributes.addFlashAttribute("failMessage", "잘못된 접근입니다.");
+            return "redirect:/product-inquiries/writable/list";
+        }
 
         ProductInquiryRequestDto productInquiryRequestDto = new ProductInquiryRequestDto();
         productInquiryRequestDto.setMemberNo(userDetailsDto.getMemberNo());
@@ -72,6 +82,7 @@ public class ProductInquiryController {
                 String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
                 userDetailsDto.getMemberNo());
 
+        model.addAttribute("memberNo", userDetailsDto.getMemberNo());
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("paginationUrl", "/admin/product-inquiries/list");
 
@@ -95,13 +106,23 @@ public class ProductInquiryController {
     @GetMapping("/view/{productInquiryNo}")
     public String productInquiryDetails(
         @PathVariable("productInquiryNo") Long productInquiryNo,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        RedirectAttributes redirectAttributes,
         Model model) {
 
-        ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiry(productInquiryNo);
-        model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
+        try {
+            ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiryInProductDetails(
+                userDetailsDto.getMemberNo(), productInquiryNo);
+            model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
 
-        List<ProductInquiryReplyResponseDto> productInquiryReplyResponseDtoList = productInquiryReplyService.findProductInquiryReplyList(productInquiryNo);
-        model.addAttribute("productInquiryReplyResponseDtoList", productInquiryReplyResponseDtoList);
+            List<ProductInquiryReplyResponseDto> productInquiryReplyResponseDtoList = productInquiryReplyService.findProductInquiryReplyList(productInquiryNo);
+            model.addAttribute("productInquiryReplyResponseDtoList", productInquiryReplyResponseDtoList);
+
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("badRequestMessage", e.getMessage());
+            return "redirect:/";
+        }
 
         return "mypage/productinquiry/productInquiry-details";
     }

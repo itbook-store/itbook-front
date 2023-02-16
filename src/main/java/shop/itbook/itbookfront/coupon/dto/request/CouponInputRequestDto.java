@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.coupon.dto.request;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 @ToString
-public class CouponInputRequestDto {
+public class CouponInputRequestDto implements Serializable {
     @NotNull
     private String couponType;
 
@@ -55,6 +56,9 @@ public class CouponInputRequestDto {
 
     @NotNull(message = "쿠폰 정책의 만료일을 입력해주세요.")
     private String couponExpiredAt;
+
+    @Positive(message = "쿠폰 사용기간이 0일 또는 음수 일 수는 없습니다.")
+    private Integer usagePeriod;
 
     private String image;
 

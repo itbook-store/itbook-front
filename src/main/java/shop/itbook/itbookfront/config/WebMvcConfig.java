@@ -31,8 +31,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/admin/category-addition")
             .setViewName("adminpage/categoryadmin/categoryAddSelect");
-        registry.addViewController("/admin/categories/category-addition/main-category")
-            .setViewName("adminpage/categoryadmin/mainCategoryAddForm");
         registry.addViewController("/admin/products/select-add-product-type")
             .setViewName("adminpage/product/select-add-form");
         registry.addViewController("/error/403error").setViewName("/error/403error");

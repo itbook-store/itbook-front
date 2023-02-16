@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.coupon.dto.response.AdminCouponListResponseDto;
@@ -66,18 +67,6 @@ public class CouponAdminController {
                             @RequestParam(required = false) String membership,
                             RedirectAttributes redirectAttributes) {
 
-//        if(errors.hasErrors()) {
-//            for(FieldError error : errors.getFieldErrors())
-//            {
-//                String fieldName = String.format("valid_%s",error.getField());
-//                redirectAttributes.addFlashAttribute("failMessage",error.getDefaultMessage());
-//            }
-//            model.addAttribute("mainCategoryList",
-//                categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
-//            model.addAttribute("membershipList", membershipService.getMemberships());
-//            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
-//            return "redirect:/admin/coupons/coupon-addition";
-//        }
         if(Objects.isNull(couponInputRequestDto.getTotalQuantity())){
             couponInputRequestDto.setTotalQuantity(0L);
         }
@@ -88,14 +77,9 @@ public class CouponAdminController {
             if (couponInputRequestDto.getCouponType().equals("이달의쿠폰등급형")) {
                 couponService.addMembershipCoupon(couponNo, membership);
             }
-        } catch (CouponCoverageNotSelectException | RestApiServerException |
-                 CategoryNumberNotFoundException | ProductCouponNumberNotFoundException
-                 | MembershipGradeNotFoundException e){
+        } catch (BadRequestException e) {
 
-            model.addAttribute("mainCategoryList",
-                categoryService.findCategoryList("/api/admin/categories/main-categories").getContent());
-            model.addAttribute("membershipList", membershipService.getMemberships());
-            model.addAttribute("couponInputRequestDto", couponInputRequestDto);
+            redirectAttributes.addFlashAttribute("couponInputRequestDto", couponInputRequestDto);
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/admin/coupons/coupon-addition";
         }
@@ -113,7 +97,7 @@ public class CouponAdminController {
         } else if (coverage.equals("total")){
             return couponService.addOrderTotalCoupon(couponInputRequestDto);
         } else {
-            throw new CouponCoverageNotSelectException();
+            throw new BadRequestException("잘못된 요청입니다.");
         }
     }
 
@@ -148,7 +132,7 @@ public class CouponAdminController {
                     pageable.getPageNumber(), pageable.getPageSize()));
         }
         else{
-            throw new InvalidPathRequestCouponList();
+            throw new BadRequestException("잘못된 요청입니다.");
         }
         model.addAttribute("pageResponse", couponList);
         model.addAttribute("paginationUrl",

@@ -96,9 +96,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDestinationResponseDto findMemberDestinationDetails(Long recipientDestinationNo) {
+    public MemberDestinationResponseDto findMemberDestinationDetails(Long memberNo, Long recipientDestinationNo) {
 
-        return memberAdaptor.findMemberDestination(recipientDestinationNo);
+        return memberAdaptor.findMemberDestination(memberNo, recipientDestinationNo);
     }
 
     @Override

@@ -207,7 +207,6 @@
                     </div>
                 </div>
 
-
                 <div class="point_container">
                     <div class="box-title">잇북 포인트</div>
                     <div class="box-content">
@@ -215,18 +214,17 @@
                         <th:block sec:authorize="isAuthenticated()">
                             <div class="point_myPointBox">
                                 <p style="margin-right: 10px !important; color: #51585e;">나의 보유 포인트</p>
-                                <p id="myPoint" th:text="${myPoint}">7000</p>
+                                <p id="myPoint" th:text="${myPoint}"></p>
                                 <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                             </div>
                             <div class="point_apply_box">
                                 <input type="text"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
-                                       value="0" readonly
                                        name="decreasePoint"
                                        id="point_apply_input"
                                 >
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
-                                <button type="button" id="point_cancel_btn" class="btn">적용해제</button>
+                                <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>
                         </th:block>
 
@@ -246,7 +244,8 @@
                     <i class="fa-solid fa-plus"></i>
 
                     <p class="product_amount_plainText">총 배송비</p>
-                    <p class="product_delivery_price">3,000</p>
+                    <p id="deliveryFee" class="product_delivery_price">3,000</p>
+<!--                    <p id="delveryFee" class="product_delivery_price" th:text="${deliveryFee}">3,000</p>-->
                     <p class="product_amount_plainText">원</p>
 
                     <i class="fa-solid fa-minus"></i>
@@ -469,7 +468,6 @@
         let canceledOrderNo = null;
 
         let temp = [[${orderSheetFormDto}]];
-        let subsTemp = [[${orderAddRequestDto}]];
 
         // for문
         let productNoList = temp.productNoList;
@@ -503,18 +501,6 @@
                 i++;
             }
 
-            let isSub = false;
-            let period = 0;
-
-            if (subsTemp != null) {
-                if (subsTemp.isSubscription) {
-                    isSub = subsTemp.isSubscription;
-                }
-                if (subsTemp.subscriptionPeriod) {
-                    period = subsTemp.subscriptionPeriod;
-                }
-            }
-
             if(document.getElementById("point_apply_input") != null) {
                 decreasePoint = document.getElementById("point_apply_input").value;
             }
@@ -528,15 +514,15 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": isSub,
-                "subscriptionPeriod": period,
+                "isSubscription": temp.subscriptionPeriod,
+                "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
                 "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
 
-            if (subsTemp != null && subsTemp.isSubscription) {
+            if (temp.isSubscription) {
                 orderSubscription(orderAddRequestDto);
                 return;
             }

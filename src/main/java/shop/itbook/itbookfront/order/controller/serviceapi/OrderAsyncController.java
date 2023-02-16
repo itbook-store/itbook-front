@@ -57,7 +57,7 @@ public class OrderAsyncController {
     /**
      * 결제 대기 상태의 주문의 결제를 재진행합니다.
      *
-     * @param orderNo            the order no
+     * @param orderNo            주문 번호
      * @param orderAddRequestDto 주문 테이블에 저장할 정보
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
@@ -72,7 +72,6 @@ public class OrderAsyncController {
      * 구독 주문을 처리합니다.
      *
      * @param orderAddRequestDto 주문 테이블에 저장할 정보
-     * @param userDetailsDto     the user details dto
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/subscription/payment-start")
@@ -88,20 +87,6 @@ public class OrderAsyncController {
         }
 
         return orderService.addOrderSubscription(orderAddRequestDto, memberNo);
-    }
-
-    /**
-     * 구독 주문 결제 완료 후 비동기 요청을 처리합니다.
-     *
-     * @param orderNo 구독 주문 첫 번째 시퀀스의 주문 번호
-     */
-    @PostMapping("/subscription/payment-completion/{orderNo}")
-    public void completeSubscriptionPayment(
-        @PathVariable("orderNo") Long orderNo) {
-
-        log.info("제발유");
-
-        orderService.completeOrderSubscription(orderNo);
     }
 
     @PostMapping("/payment-cancel/{orderNo}")

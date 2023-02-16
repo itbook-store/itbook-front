@@ -16,7 +16,7 @@ function sendPassword() {
 }
 
 function checkPassword(str) {
-    const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,255}$/i;
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*_+=-]).{8,255}$/i;
 
     if(!regExp.test(str)) {
         alert("비밀번호 형식이 아닙니다.");

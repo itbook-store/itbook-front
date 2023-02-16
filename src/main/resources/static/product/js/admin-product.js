@@ -122,12 +122,12 @@ function addProductSubmit() {
         return false;
     }
 
-    if (!checkStringLengthDownTo255(name)) {
+    if (!checkStringLengthDown(name, 255)) {
         Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
 
-    if (!checkStringLengthDownTo255(simpleDescription)) {
+    if (!checkStringLengthDown(simpleDescription, 255)) {
         Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }

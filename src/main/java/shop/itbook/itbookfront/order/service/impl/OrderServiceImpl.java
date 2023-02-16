@@ -14,6 +14,7 @@ import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
@@ -132,7 +133,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderListMemberViewResponseDto> findOrderListAll(Pageable pageable) {
-        return null;
+    public PageResponse<OrderListAdminViewResponseDto> findOrderListAll(Pageable pageable) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/admin/orders/list"))
+            .queryParam(String.format("page=%d&size=%d", pageable.getPageNumber(),
+                pageable.getPageSize()))
+            .build();
+
+        return orderAdaptor.findOrderAdminListView(uriComponents.toUri());
     }
 }
