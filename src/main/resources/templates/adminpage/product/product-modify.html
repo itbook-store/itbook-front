@@ -6,6 +6,7 @@
 
 <head>
     <script src="/product/js/admin-product.js"></script>
+    <script src="/common/js/validation.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -14,8 +15,7 @@
         $(document).ready(function () {
             let productCategoryList = [[${productCategoryList}]];
             let categoryNoList = [];
-            productCategoryList.forEach(category =>
-            {
+            productCategoryList.forEach(category => {
                 categoryNoList.push(category.categoryNo);
             });
             showSubCategory(event, categoryNoList);
@@ -40,142 +40,158 @@
     <div class="form">
         <form class="form-horizontal" name="form" method="post"
               th:action="@{|/admin/products/${product.productNo}/modify|}"
-              enctype="multipart/form-data" th:object="${product}">
-            <div>
-                <div id="form-product">
-                    <div class="mb-3">
-                        <label for="productName">상품명</label>
-                        <input id="productName" name="productName" class="form-control input-md" required=""
-                               type="text" th:value="${product.productName}">
+              enctype="multipart/form-data" th:object="${product}" onsubmit="return modifyProductSubmit()">
+            <div id="form-product" style="width: 50%">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" for="productName">상품명</span>
                     </div>
+                    <input type="text" class="form-control" placeholder="등록할 상품명을 입력하세요" id="productName"
+                           name="productName" th:value="${product.productName}"
+                           aria-label="상품명" aria-describedby="basic-addon1" required="">
+                </div>
 
-                    <div class="mb-3">
-                        <label for="simpleDescription">간단 설명</label>
-                        <textarea id="simpleDescription" name="simpleDescription"
-                               class="form-control input-md" required="" type="text"
-                               th:text="${product.simpleDescription}" rows="4" cols="50">
-                        </textarea>
-                    </div>
-
-
-                    <div class="mb-3">
-                        <label for="detailsDescription">상세 설명</label>
-                        <textarea class="form-control" id="detailsDescription" name="detailsDescription"
-                                  th:text="${product.detailsDescription}" rows="5" cols="50"></textarea>
-                    </div>
-
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-8">
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-7">
-                                    <label style="margin-right: 5px">카테고리</label>
-                                    <select id="mainCategory" name="mainCategory">
-                                        <!--                        <option th:value="select" th:text="선택"></option>-->
-                                        <option th:each="mainCategory: ${mainCategoryList}"
-                                                th:selected="${productCategoryList.get(0).parentCategoryNo eq mainCategory.categoryNo}"
-                                                th:value="${mainCategory.categoryNo}"
-                                                th:text="${mainCategory.categoryName}">
-                                        </option>
-                                    </select>
+                <div class="row gx-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="mainCategory">대분류</label>
                                 </div>
-                                <div class="col-md-5">
-                                    <button style="margin-left: 5px" class="btn btn-light btn-sm"
+                                <select class="custom-select" id="mainCategory" name="mainCategory">
+                                    <option th:each="mainCategory: ${mainCategoryList}"
+                                            th:selected="${productCategoryList.get(0).parentCategoryNo eq mainCategory.categoryNo}"
+                                            th:value="${mainCategory.categoryNo}"
+                                            th:text="${mainCategory.categoryName}">
+                                    </option>
+                                </select>
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
                                             onclick="showSubCategory(event)">하위 카테고리 펼치기
                                     </button>
                                 </div>
                             </div>
-                            <div class="row gx-3 mb-3">
-                                <div id="categoryCheckBox" style="display:none">
-                                </div>
-                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="categoryCheckBox" style="display:none">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="simpleDescription">간단 설명</label>
+                    <textarea id="simpleDescription" name="simpleDescription"
+                              class="form-control input-md" required="" type="text"
+                              th:text="${product.simpleDescription}" rows="4" cols="50">
+                        </textarea>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="detailsDescription">상세 설명</label>
+                    <textarea class="form-control" id="detailsDescription" name="detailsDescription"
+                              th:text="${product.detailsDescription}" rows="5" cols="50"></textarea>
+                </div>
+
+
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-4">
+                        <label>포인트 적립 여부</label>
+                        <fieldset>
+                            YES <input type="radio" name="isPointApplying" value="true"
+                                       onclick="selectPointApplying()" required=""
+                                       th:checked="${product.isPointApplying eq true}"/>
+                            NO <input type="radio" name="isPointApplying" required="" value="false"
+                                      th:checked="${product.isPointApplying eq false}"
+                                      onclick="notSelectPointApplying()"/>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-5" id="increasingPointBase-div">
+                        <label>포인트 적립 기준</label>
+                        <fieldset>
+                            판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                          value="true"
+                                          th:checked="${product.isPointApplyingBasedSellingPrice eq true}"/>
+                            실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
+                                           value="false"
+                                           th:checked="${product.isPointApplyingBasedSellingPrice eq false}"/>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-3" id="increasingPoint-div">
+                        <label for="increasePointPercent">포인트 적립율(%)</label>
+                        <input id="increasePointPercent" name="increasePointPercent"
+                               class="form-control input-md"
+                               th:value="${product.increasePointPercent}" input type="number" max="100"
+                               min="0" step="0.1">
                     </div>
 
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-3">
-                            <label>포인트 적립 여부</label>
-                            <fieldset>
-                                YES <input type="radio" name="isPointApplying" value="true"
-                                           onclick="selectPointApplying()" required=""
-                                           th:checked="${product.isPointApplying eq true}"/>
-                                NO <input type="radio" name="isPointApplying" required="" value="false"
-                                          th:checked="${product.isPointApplying eq false}"
-                                          onclick="notSelectPointApplying()"/>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-3" id="increasingPoint-div">
-                            <label for="increasePointPercent">포인트 적립율(%)</label>
-                            <input id="increasePointPercent" name="increasePointPercent"
-                                   class="form-control input-md"
-                                   th:value="${product.increasePointPercent}" required="" type="text">
-                        </div>
-                        <div class="col-md-6" id="increasingPointBase-div">
-                            <label>포인트 적립 기준</label>
-                            <fieldset>
-                                판매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
-                                              value="true"
-                                              th:checked="${product.isPointApplyingBasedSellingPrice eq true}"/>
-                                실구매가 기준 <input type="radio" name="isPointApplyingBasedSellingPrice"
-                                               value="false"
-                                               th:checked="${product.isPointApplyingBasedSellingPrice eq false}"/>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="row gx-3 mb-3">
+                </div>
+                <div class="row gx-3 mb-3">
 
-                        <div class="col-md-4">
-                            <label for="rawPrice">매입 원가(원)</label>
-                            <input id="rawPrice" name="rawPrice"
-                                   th:value="${product.rawPrice}"
-                                   class="form-control input-md" required="" type="text">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="fixedPrice">정가(원)</label>
-                            <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                                   th:value="${product.fixedPrice}" type="text">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="discountPercent">할인율(%)</label>
-                            <input id="discountPercent" name="discountPercent" class="form-control input-md" required=""
-                                   th:value="${product.discountPercent}" type="text">
-                        </div>
+                    <div class="col-md-4">
+                        <label for="rawPrice">매입 원가(원)</label>
+                        <input id="rawPrice" name="rawPrice"
+                               th:value="${product.rawPrice}"
+                               class="form-control input-md" required="" input type="number" min="0">
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>구독 상품 여부</label>
-                            <fieldset>
-                                YES <input type="radio" name="isSubscription" required=""
-                                           th:checked="${product.isSubscription eq true}" value="true"/>
-                                NO <input type="radio" name="isSubscription" required=""
-                                          th:checked="${product.isSubscription eq false}" value="false"/>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-5">
-                            <label for="stock">재고(개)</label>
-                            <input id="stock" name="stock" class="form-control input-md" required="" type="text"
-                                   th:value="${product.stock}">
-                        </div>
+                    <div class="col-md-4">
+                        <label for="fixedPrice">정가(원)</label>
+                        <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
+                               th:value="${product.fixedPrice}" input type="number" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="discountPercent">할인율(%)</label>
+                        <input id="discountPercent" name="discountPercent" class="form-control input-md" required=""
+                               th:value="${product.discountPercent}" input type="number" min="0" max="100" step="0.1">
                     </div>
                 </div>
             </div>
-            <div class="row gx-3 mb-3" style="width: 40%">
-                <div class="col-md-5">
-                    <img th:src="${product.fileThumbnailsUrl}" class="img-thumbnail">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label>구독 상품 여부</label>
+                    <fieldset>
+                        YES <input type="radio" name="isSubscription" required=""
+                                   th:checked="${product.isSubscription eq true}" value="true"/>
+                        NO <input type="radio" name="isSubscription" required=""
+                                  th:checked="${product.isSubscription eq false}" value="false"/>
+                    </fieldset>
                 </div>
-                <div class="col-md-7">
-                    <label>썸네일 사진 변경</label>
-                    <label>(새로 등록하지 않으면 기존 사진이 유지됩니다.) </label>
-                    <input style="margin-top: 10px"
-                           type="file" value="파일 선택"
-                           name="fileThumbnails"
-                           accept="image/*"/>
+                <div class="col-md-4">
+                    <label for="stock">재고(개)</label>
+                    <input id="stock" name="stock" class="form-control input-md" required="" input type="number"
+                           min="0" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                           th:value="${product.stock}">
                 </div>
             </div>
+
+            <div class="row gx-3 mb-3">
+                <div class="input-group" style="width: 60%">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">사진</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="fileThumbnails"
+                               id="fileThumbnails" accept="image/*" onchange="previewImage(this);"/>
+                        <label class="custom-file-label" for="fileThumbnails">
+                            썸네일 선택 </label>
+                    </div>
+                </div>
+            </div>
+            <p>(새로 등록하지 않으면 기존 사진이 유지됩니다.) </p>
+
+            <img class="img-thumbnail-sm" style="width: 20%"
+                 th:src="${product.fileThumbnailsUrl}"
+                 id="imagePreview">
+
+
             <input class="btn btn-primary" style="margin-left: 20px" type="submit" id="submit"
                    value="수정하기" onclick="modifyProductSubmit()"/>
+
         </form>
     </div>
 </div>
 </body>
 </html>
-No newline at end of file

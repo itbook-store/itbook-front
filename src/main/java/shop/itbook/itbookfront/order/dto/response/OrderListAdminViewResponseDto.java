@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.dto.response;
 
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +15,10 @@ import lombok.NoArgsConstructor;
 public class OrderListAdminViewResponseDto {
 
     private Long orderNo;
-    private Long memberNo;
-    private String orderStatus;
+    private String productName;
+    private LocalDateTime orderCreatedAt;
     private String recipientName;
+    private String orderStatus;
+    private String memberId;
     private String trackingNo;
 }

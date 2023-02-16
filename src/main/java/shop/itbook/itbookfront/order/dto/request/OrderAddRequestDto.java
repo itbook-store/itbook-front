@@ -8,6 +8,9 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
+ * 주문 등록을 위한 Dto 입니다.
+ * 주문 서 작성 완료한 정보를 가지고 있습니다.
+ *
  * @author 정재원
  * @since 1.0
  */

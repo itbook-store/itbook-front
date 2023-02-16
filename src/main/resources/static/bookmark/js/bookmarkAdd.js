@@ -1,5 +1,8 @@
 async function bookmarkAdd(memberNo, productNo) {
 
+    console.log(memberNo);
+    console.log(productNo);
+
     if (!checkMemberNoAndProductNo(memberNo, productNo)) {
         Swal.fire({
             icon: 'warning',

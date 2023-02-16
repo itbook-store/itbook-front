@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 
@@ -18,7 +19,7 @@ public interface OrderService {
     PageResponse<OrderListMemberViewResponseDto> findOrderListOfMemberPageResponse(
         Pageable pageable, Long memberNo);
 
-    PageResponse<OrderListMemberViewResponseDto> findOrderListAll(Pageable pageable);
+    PageResponse<OrderListAdminViewResponseDto> findOrderListAll(Pageable pageable);
 
     OrderPaymentDto addOrder(OrderAddRequestDto orderAddRequestDto,
                              Optional<Long> memberNo);
@@ -34,4 +35,12 @@ public interface OrderService {
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
 
     void cancelOrder(Long orderNo);
+
+    /**
+     * 주문 구매 확정 메서드입니다다.
+     *
+     * @param orderNo 주문 번호
+     * @author 강명관
+     */
+    void orderPurchaseComplete(Long orderNo);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
@@ -28,6 +29,8 @@ import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 @Component
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
+
+    private static final String PURCHASE_COMPLETE_API = "/api/orders/purchase-complete/";
 
     public <T> OrderSheetResponseDto findOrderSheet(URI uri,
                                                     HttpEntity<T> http) {
@@ -88,5 +91,29 @@ public class OrderAdaptor {
                 });
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public PageResponse<OrderListAdminViewResponseDto> findOrderAdminListView(URI uri) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<OrderListAdminViewResponseDto>>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public void orderPurchaseComplete(Long orderNo) {
+
+        restTemplate.exchange(
+            PURCHASE_COMPLETE_API + orderNo,
+            HttpMethod.POST,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
     }
 }
