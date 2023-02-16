@@ -52,17 +52,11 @@ public class CouponIssueAdaptor {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        try {
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + usePointCouponIssueUrl,
-                HttpMethod.PUT, null, new ParameterizedTypeReference<>() {
-                });
-        } catch (
-            BadRequestException e) {
-            if (Objects.equals(e.getMessage(), NotPointCouponException.MESSAGE)) {
-                throw new NotPointCouponException();
-            }
-        }
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + usePointCouponIssueUrl,
+            HttpMethod.PUT, null, new ParameterizedTypeReference<>() {
+            });
+
     }
 
     public Long addCouponByCouponType(String couponIssueByCouponTypeUrl) {
@@ -70,21 +64,12 @@ public class CouponIssueAdaptor {
         headers.setContentType(MediaType.APPLICATION_JSON);
         ResponseEntity<CommonResponseBody<CouponNoResponseDto>> exchange = null;
 
-        try {
-            exchange =
-                restTemplate.exchange(gatewayConfig.getGatewayServer() + couponIssueByCouponTypeUrl,
-                    HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+        exchange =
+            restTemplate.exchange(gatewayConfig.getGatewayServer() + couponIssueByCouponTypeUrl,
+                HttpMethod.POST, null, new ParameterizedTypeReference<>() {
 
-                    });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(),
-                AlreadyAddedCouponIssueMemberCouponException.MESSAGE)) {
-                throw new AlreadyAddedCouponIssueMemberCouponException();
-            }
-            if (Objects.equals(e.getMessage(), UnableToCreateCouponException.MESSAGE)) {
-                throw new UnableToCreateCouponException();
-            }
-        }
+                });
+
         return Objects.requireNonNull(exchange.getBody()).getResult().getCouponNo();
     }
 
@@ -115,6 +100,5 @@ public class CouponIssueAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
-
 
 }

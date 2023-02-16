@@ -82,7 +82,10 @@
                                             <td th:if="${couponIssue.point!=0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
                                                 <span class="badge text-bg-primary" th:text="사용하기" th:onclick="|location.href='@{/mypage/coupons/coupon-issues/{couponIssueNo}/point-coupon-use(couponIssueNo=${couponIssue.couponIssueNo})}'|" style="cursor:pointer"></span>
                                             </td>
-                                            <td th:unless="${couponIssue.point!=0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
+                                            <td th:if="${couponIssue.point==0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
+                                                <span class="badge text-bg-success" th:text="${couponIssue.usageStatusName}"></span>
+                                            </td>
+                                            <td th:if="${#strings.equals(couponIssue.usageStatusName, '사용완료')}" class="text-center">
                                                 <span class="badge text-bg-danger" th:text="${couponIssue.usageStatusName}"></span>
                                             </td>
                                             <td style="width: 20%;" th:if="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
@@ -103,5 +106,11 @@
             <th:block th:include="component/pageFooter"></th:block>
         </div>
     </div>
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            Swal.fire('failMessage', '', 'error');
+        }
+    </script>
 </body>
 </html>
