@@ -35,7 +35,6 @@ import shop.itbook.itbookfront.product.service.ProductService;
 @Slf4j
 public class ProductAsyncController {
     private final ProductService productService;
-    private final KeyValueRepository keyValueRepository;
 
     @GetMapping(value = "/sales-rank", params = "sortingCriteria")
     public List<ProductSalesRankResponseDto> getProductListBySortingCriteria(

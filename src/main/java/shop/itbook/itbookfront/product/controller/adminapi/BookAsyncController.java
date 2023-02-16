@@ -30,49 +30,24 @@ public class BookAsyncController {
     private final BookService bookService;
 
     @GetMapping
-    public SearchBookDetailsDto searchBookDetailsInAladin(@RequestParam String isbn,
-                                                          RedirectAttributes redirectAttributes) {
-
-        SearchBookDetailsDto searchBookDetailsDto = null;
-        try {
+    public SearchBookDetailsDto searchBookDetailsInAladin(@RequestParam String isbn) {
+        SearchBookDetailsDto searchBookDetailsDto =
             bookService.searchBook("/api/admin/products/books?isbn=" + isbn);
-        } catch (BadRequestException e) {
-            log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-        }
         return searchBookDetailsDto;
     }
 
-    @GetMapping("exist-db")
-    public ProductBooleanResponseDto checkIsbnExistsInDb(@RequestParam String isbn,
-                                                         RedirectAttributes redirectAttributes) {
+    @GetMapping("/exist-db")
+    public ProductBooleanResponseDto checkIsbnExistsInDb(@RequestParam String isbn) {
 
-        ProductBooleanResponseDto productBooleanResponseDto = null;
-
-        try {
-            productBooleanResponseDto = bookService.checkIsbnExists(
-                "/api/admin/products/books/check-exist-db?isbn=" + isbn);
-        } catch (BadRequestException e) {
-            log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-        }
-        return productBooleanResponseDto;
+        return bookService.checkIsbnExists(
+            "/api/admin/products/books/check-exist-db?isbn=" + isbn);
     }
 
-    @GetMapping("exist-aladin")
-    public ProductBooleanResponseDto checkIsbnExistsInAladin(@RequestParam String isbn,
-                                                             RedirectAttributes redirectAttributes) {
+    @GetMapping("/exist-aladin")
+    public ProductBooleanResponseDto checkIsbnExistsInAladin(@RequestParam String isbn) {
 
-        ProductBooleanResponseDto productBooleanResponseDto = null;
-
-        try {
-            productBooleanResponseDto = bookService.checkIsbnExists(
-                "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
-        } catch (BadRequestException e) {
-            log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-        }
-        return productBooleanResponseDto;
+        return bookService.checkIsbnExists(
+            "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
     }
 
 }

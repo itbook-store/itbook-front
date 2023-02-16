@@ -116,7 +116,7 @@ public class ProductAdminController {
 
     @PostMapping("/{productNo}/modify")
     public String modifyProduct(@PathVariable Long productNo,
-                                @ModelAttribute ProductModifyRequestDto requestDto,
+                                @ModelAttribute @Valid ProductModifyRequestDto requestDto,
                                 @RequestPart(value = "fileThumbnails", required = false)
                                 MultipartFile thumbnails, RedirectAttributes redirectAttributes) {
         try {
