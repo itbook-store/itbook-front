@@ -155,22 +155,22 @@ function signUpSubmit() {
     }
 
     if(!checkPassword(document.getElementById("password").value)) {
-        alert("비밀번호 형식에 맞지 않습니다.");
+        Swal.fire('비밀번호 형식에 맞지 않습니다.', '', 'error');
         return false;
     }
 
     if(document.getElementById("password").value != document.getElementById("passwordCheck").value) {
-        alert("비밀번호가 맞지 않습니다. 다시 한번 입력해주세요");
+        Swal.fire('비밀번호가 맞지 않습니다. 다시 한번 입력해주세요.', '', 'error');
         return false;
     }
 
     if(!checkGender()) {
-        alert("성별을 체크해야 합니다.");
+        Swal.fire('성별을 체크해야 합니다.', '', 'error');
         return false;
     }
 
     if(!checkBirth()) {
-        alert("생일 입력 형식에 맞지 않습니다.");
+        Swal.fire('생일 입력 형식에 맞지 않습니다.', '', 'error');
         return false;
     }
 
@@ -178,8 +178,10 @@ function signUpSubmit() {
         || document.getElementById("nicknameCheckBtn").disabled == false
         || document.getElementById("phoneNumberCheckBtn").disabled == false
         || document.getElementById("emailCheckBtn").disabled == false) {
-        alert("중복체크가 되지 않은 곳이 있습니다.");
+        Swal.fire('중복체크가 되지 않은 곳이 있습니다.', '', 'error');
+
     } else {
+        Swal.fire('회원가입을 축하합니다!', '', 'success');
         document.getElementById("signupForm").submit();
     }
 }
@@ -187,19 +189,20 @@ function signUpSubmit() {
 function socialLoginSubmit() {
 
     if(!checkGender()) {
-        alert("성별을 체크해야 합니다.");
+        Swal.fire('성별을 체크해야 합니다.', '', 'error');
         return false;
     }
 
     if(!checkBirth()) {
-        alert("생일 입력 형식에 맞지 않습니다.");
+        Swal.fire('생일 입력 형식에 맞지 않습니다.', '', 'error');
         return false;
     }
 
     if (document.getElementById("nicknameCheckBtn").disabled == false
         || document.getElementById("phoneNumberCheckBtn").disabled == false) {
-        alert("중복체크가 되지 않은 곳이 있습니다.");
+        Swal.fire('중복체크가 되지 않은 곳이 있습니다.', '', 'error');
     } else {
+        Swal.fire('회원가입을 축하합니다!', '', 'success');
         document.getElementById("socialLoginForm").submit();
     }
 }
@@ -208,14 +211,14 @@ function blankCheck(str) {
     //공백만 입력된 경우
     let blank_pattern1 = /^\s+|\s+$/g;
     if(str.replace(blank_pattern1, '' ) === "" ){
-        alert('공백만 입력되었습니다.');
+        Swal.fire('공백만 입력되었습니다.', '', 'error');
         return false;
     }
 
     //문자열에 공백이 있는 경우
     let blank_pattern2 = /[\s]/g;
     if( blank_pattern2.test(str) == true){
-        alert('공백이 입력되었습니다.');
+        Swal.fire('공백이 입력되었습니다.', '', 'error');
         return false;
     }
 
@@ -225,7 +228,7 @@ function blankCheck(str) {
 function checkKor(str) {
     const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
     if(regExp.test(str)){
-        alert("한글이 입력되었습니다.");
+        Swal.fire('한글이 입력되었습니다.', '', 'error');
         return false;
     }
     return true;
@@ -234,7 +237,7 @@ function checkKor(str) {
 function checkSpecial(str) {
     const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
     if(regExp.test(str)) {
-        alert("특수문자가 입력되었습니다.");
+        Swal.fire('특수문자가 입력되었습니다.', '', 'error');
         return false;
     }
 
@@ -245,7 +248,7 @@ function checkNumber(str) {
     const regExp = /^[^0-9]+$/;
 
     if(!regExp.test(str)) {
-        alert("숫자가 입력되었습니다.");
+        Swal.fire('숫자가 입력되었습니다.', '', 'error');
         return false;
     }
 
@@ -256,7 +259,7 @@ function checkNumber(str) {
 function checkMemberId(str) {
     const regExp = /^[a-z0-9-_]{2,15}$/;
     if(!regExp.test(str)) {
-        alert("아이디 형식에 맞지 않습니다.");
+        Swal.fire('아이디 형식에 맞지 않습니다.', '', 'error');
         return false;
     }
 
@@ -265,7 +268,7 @@ function checkMemberId(str) {
 
 function checkNickname(str) {
     if(str.length < 2 || str.length > 20) {
-        alert("닉네임 형식에 맞지 않습니다.");
+        Swal.fire('닉네임 형식에 맞지 않습니다.', '', 'error');
         return false;
     }
 
@@ -285,12 +288,12 @@ function checkName() {
     }
 
     if(!checkSpecial(name)) {
-        alert("이름에 특수문자가 입력되었습니다.");
+        Swal.fire('이름에 특수문자가 입력되었습니다.', '', 'error');
         return false;
     }
 
     if(name.length > 20) {
-        alert("이름은 최대 20자까지 허용합니다.")
+        Swal.fire('이름은 최대 20자까지 허용합니다.', '', 'error');
         return false;
     }
 
@@ -301,7 +304,7 @@ function checkPhoneNumber(str) {
     const regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]/g;
 
     if(regExp.test(str) || document.getElementById("phoneNumber").value.length != 11){
-        alert("전화번호 형식으로 입력해야 합니다.");
+        Swal.fire('전화번호 형식으로 입력해야 합니다.', '', 'error');
         return false;
     }
     return true;
@@ -331,7 +334,7 @@ function checkBirth() {
 function checkEmail(str) {
     const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     if(!regExp.test(str)) {
-        alert("이메일 형식이 아닙니다.");
+        Swal.fire('이메일 형식이 아닙니다.', '', 'error');
         return false;
     }
 
@@ -349,4 +352,31 @@ function checkPassword(str) {
 
 function inputDetection(id) {
     document.getElementById(id).style.visibility ='visible';
+}
+
+function checkMemberModifyForm() {
+
+    let nickname = document.getElementById("nickname").value;
+    let phoneNumber = document.getElementById("phoneNumber").value;
+    let email = document.getElementById("email").value;
+
+    if(!checkName()) {
+        return false;
+    }
+
+    if(!checkNickname(nickname)) {
+        return false;
+    }
+
+    if(!checkPhoneNumber(phoneNumber)) {
+        return false;
+    }
+
+    if(!checkEmail(email)) {
+        return false;
+    }
+
+    Swal.fire('성공적으로 수정되었습니다!', '', 'success');
+    document.getElementById("modifyForm").submit();
+
 }

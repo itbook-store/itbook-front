@@ -23,7 +23,7 @@
         <h2>나의 정보 수정</h2>
         <hr>
         <div style="width: 60%;">
-            <form method="post" th:action="@{/mypage/members/modify}">
+            <form method="post" id="modifyForm" th:action="@{/mypage/members/modify}">
                 <input type="hidden" name="memberNo" th:value="${memberInfoResponseDto.memberNo}">
                 <div class="mb-3">
                     <label for="showWriter" class="form-label">작가여부</label>
@@ -34,8 +34,8 @@
                     <input type="text" class="form-control" th:field="${memberInfoResponseDto.memberId}" id="showMemberId" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="showName" class="form-label">이름</label>
-                    <input type="text" name="name" class="form-control" th:field="${memberInfoResponseDto.name}" id="showName"
+                    <label for="name" class="form-label">이름</label>
+                    <input type="text" name="name" class="form-control" th:field="${memberInfoResponseDto.name}" id="name"
                     maxlength="20">
                 </div>
                 <div class="mb-3">
@@ -90,7 +90,7 @@
                         <div id = "emailExists" style = "display:none;">이미 존재하는 이메일입니다.</div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">수정하기</button>
+                <button type="button" class="btn btn-primary" onclick="checkMemberModifyForm()">수정하기</button>
             </form>
         </div>
     </div>
