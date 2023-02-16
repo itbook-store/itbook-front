@@ -26,8 +26,9 @@
                     <input type="hidden" name="memberNo" th:value="${memberNo}">
                     <label class="form-label">수령인 이름</label>
                     <input type="text" id="recipientName" class="form-control form-control-lg" name="recipientName" maxlength="20">
-                    <label class="form-label">수령인 전화번호</label>
-                    <input type="text" id="recipientPhoneNumber" class="form-control form-control-lg" placeholder="01000000000" name="recipientPhoneNumber" maxlength="11">
+                    <label class="form-label">수령인 전화번호 (뒤 8자리만 입력해주세요)</label>
+                    <input type="text" id="phoneNumber" class="form-control form-control-lg" placeholder="00000000" name="phoneNumber" maxlength="8">
+                    <input type="hidden" id="recipientPhoneNumber" name="recipientPhoneNumber">
                     <label class="form-label">수령인 우편번호</label>
                     <input type="text" id="postcode" readonly class="form-control form-control-lg" name="postcode">
                     <input class="btn-info" type="button" onclick="execDaumPostcode()" value="우편번호 찾기">
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div>
-            <form method="post" th:action="@{/mypage/members/me/destinations/delete}">
+            <form method="post" id="memberDestinationDeleteFrom" th:action="@{/mypage/members/me/destinations/delete}">
                 <div class="container bootstrap snippets bootdey">
                     <div class="row">
                         <div class="col-lg-12">
@@ -98,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-danger" onclick="alert('배송지가 삭제되었습니다.')">삭제하기</button>
+                <button type="button" class="btn btn-danger" onclick="destinationDeleteBtn();">삭제하기</button>
             </form>
         </div>
         <script th:inline="javascript">

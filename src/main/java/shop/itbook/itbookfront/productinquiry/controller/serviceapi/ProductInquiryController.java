@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.productinquiry.controller.serviceapi;
 
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ public class ProductInquiryController {
         @PathVariable("memberNo") Long memberNo,
         @PathVariable("productNo") Long productNo,
         @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        @PageableDefault Pageable pageable,
         RedirectAttributes redirectAttributes,
         Model model) {
 
@@ -51,6 +53,26 @@ public class ProductInquiryController {
             log.error("잘못된 접근입니다.");
             redirectAttributes.addFlashAttribute("failMessage", "잘못된 접근입니다.");
             return "redirect:/product-inquiries/writable/list";
+        }
+
+        PageResponse<ProductInquiryOrderProductResponseDto> orderProductList =
+            productInquiryService.findProductInquiryOrderProductList(
+                String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()),
+                userDetailsDto.getMemberNo());
+
+        boolean isPurchased = false;
+        for(ProductInquiryOrderProductResponseDto orderProduct : orderProductList.getContent()) {
+
+            if(Objects.equals(orderProduct.getProductNo(), productNo)) {
+                isPurchased = true;
+                break;
+            }
+        }
+
+        if(orderProductList.getContent().isEmpty() || !isPurchased) {
+            log.error("책을 구매한 회원만 문의를 작성할 수 있습니다.");
+            redirectAttributes.addFlashAttribute("failMessage", "책을 구매한 회원만 문의를 작성할 수 있습니다.");
+            return "redirect:/products/" + productNo;
         }
 
         ProductInquiryRequestDto productInquiryRequestDto = new ProductInquiryRequestDto();
@@ -111,14 +133,23 @@ public class ProductInquiryController {
         Model model) {
 
         try {
-            ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiryInProductDetails(
-                userDetailsDto.getMemberNo(), productInquiryNo);
+            ProductInquiryResponseDto productInquiryResponseDto;
+
+            if (Objects.nonNull(userDetailsDto)) {
+                productInquiryResponseDto = productInquiryService.findProductInquiryInProductDetails(
+                    userDetailsDto.getMemberNo(), productInquiryNo);
+            } else {
+                productInquiryResponseDto = productInquiryService.findProductInquiryInProductDetails(
+                    -1L, productInquiryNo);
+            }
+
             model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
 
             List<ProductInquiryReplyResponseDto> productInquiryReplyResponseDtoList = productInquiryReplyService.findProductInquiryReplyList(productInquiryNo);
             model.addAttribute("productInquiryReplyResponseDtoList", productInquiryReplyResponseDtoList);
 
         } catch (BadRequestException e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("badRequestMessage", e.getMessage());
             return "redirect:/";
