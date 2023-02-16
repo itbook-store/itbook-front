@@ -30,6 +30,8 @@ import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
 
+    private static final String PURCHASE_COMPLETE_API = "/api/orders/purchase-complete/";
+
     public <T> OrderSheetResponseDto findOrderSheet(URI uri,
                                                     HttpEntity<T> http) {
         ResponseEntity<CommonResponseBody<OrderSheetResponseDto>> exchange =
@@ -101,5 +103,17 @@ public class OrderAdaptor {
                 });
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public void orderPurchaseComplete(Long orderNo) {
+
+        restTemplate.exchange(
+            PURCHASE_COMPLETE_API + orderNo,
+            HttpMethod.POST,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
     }
 }
