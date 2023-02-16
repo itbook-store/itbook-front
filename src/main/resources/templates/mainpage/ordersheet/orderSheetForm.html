@@ -218,11 +218,10 @@
                                 <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                             </div>
                             <div class="point_apply_box">
-                                <input type="text"
+                                <input type="number"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                        name="decreasePoint"
-                                       id="point_apply_input"
-                                >
+                                       id="point_apply_input">
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>

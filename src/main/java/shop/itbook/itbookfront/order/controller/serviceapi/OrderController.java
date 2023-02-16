@@ -13,6 +13,7 @@ import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderProductDetailResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
 /**
@@ -64,7 +65,11 @@ public class OrderController {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
+        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
+            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
+
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mypage/order/orderDetailsForm";
     }

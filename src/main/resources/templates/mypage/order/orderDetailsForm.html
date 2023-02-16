@@ -65,7 +65,7 @@
             <div class="d-flex justify-content-between align-items-center py-3">
                 <h2 class="h5 mb-0"><a href="#" class="text-muted">
                 </a> 주문
-                    <!--                    #<span th:text="${orderDetails.orderNo}"}></span>-->
+                    #<span th:text="${orderDetails.orderNo}" }></span>
                 </h2>
             </div>
 
@@ -77,13 +77,14 @@
                         <div class="card-body">
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
-                                    <span class="me-3" th:text="${orderDetails.orderCreatedAt}"></span>
+                                    <span class="me-3"
+                                          th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
                                 </div>
                                 <div class="d-flex">
-                                    <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i
-                                            class="bi bi-download"></i> <span class="text">영수증 보기</span></button>
+                                    <!--                                    <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i-->
+                                    <!--                                            class="bi bi-download"></i> <span class="text">영수증 보기</span></button>-->
                                     <div class="dropdown">
                                         <button class="btn btn-link p-0 text-muted" type="button"
                                                 data-bs-toggle="dropdown">
@@ -115,7 +116,10 @@
                                         </div>
                                     </td>
                                     <td th:text="${product.count}"></td>
-                                    <td class="text-end" th:text="${product.productPrice}"></td>
+                                    <td class="text-end">
+                                        <span th:text="${product.productPrice}"></span>
+                                        원
+                                    </td>
                                 </tr>
 
                                 </tbody>
@@ -123,26 +127,30 @@
                                 <tr>
                                     <td colspan="2">상품 금액</td>
                                     <td class="text-end">
+                                        <span th:text="${totalProductPrice}"></span>
                                         원
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">배송비</td>
                                     <td class="text-end">
-                                        <!--                                        <span th:text="${orderDetails.deliveryFee}"></span>-->
+                                        <span th:text="${orderDetails.deliveryFee}"></span>
                                         원
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인 (Code: NEWYEAR)</td>
+                                    <td colspan="2">할인</td>
                                     <td class="text-danger text-end">
-                                        -$10.00
+                                        - 0
+                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        원
                                     </td>
                                 </tr>
                                 <tr class="fw-bold">
                                     <td colspan="2">주문 금액</td>
                                     <td class="text-end">
-<!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        <span th:text="${totalProductPrice}"></span>
                                         원
                                     </td>
                                 </tr>
@@ -151,55 +159,59 @@
                         </div>
                     </div>
                     <!-- Payment -->
-                    <div class="card mb-4">
+                    <div class="card mb-4" th:if="${orderDetails.paymentCardResponseDto != null}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <h3 class="h6">결제 정보</h3>
-                                    <p><!-- <span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"> --></span><br>
+                                    <p><span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"></span><br>
                                         결제 가격:
-<!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
+                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>
                                         원
-<!--                                        <span class="badge bg-success rounded-pill" th:text="${orderDetails.paymentCardResponseDto.paymentStatus}"></span>-->
+                                        <span class="badge bg-success rounded-pill"
+                                              th:text="${orderDetails.paymentCardResponseDto.paymentStatus}"></span>
                                     </p>
                                 </div>
-<!--                                <div class="col-lg-6">-->
-<!--                                    <h3 class="h6">Billing address</h3>-->
-<!--                                    <address>-->
-<!--                                        <strong>John Doe</strong><br>-->
-<!--                                        1355 Market St, Suite 900<br>-->
-<!--                                        San Francisco, CA 94103<br>-->
-<!--                                        <abbr title="Phone">P:</abbr> (123) 456-7890-->
-<!--                                    </address>-->
-<!--                                </div>-->
+                                <!--                                <div class="col-lg-6">-->
+                                <!--                                    <h3 class="h6">Billing address</h3>-->
+                                <!--                                    <address>-->
+                                <!--                                        <strong>John Doe</strong><br>-->
+                                <!--                                        1355 Market St, Suite 900<br>-->
+                                <!--                                        San Francisco, CA 94103<br>-->
+                                <!--                                        <abbr title="Phone">P:</abbr> (123) 456-7890-->
+                                <!--                                    </address>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <!-- Customer Notes -->
-<!--                    <div class="card mb-4">-->
-<!--                        <div class="card-body">-->
-<!--                            <h3 class="h6">Customer Notes</h3>-->
-<!--                            <p>Sed enim, faucibus litora velit vestibulum habitasse. Cras lobortis cum sem aliquet-->
-<!--                                mauris rutrum. Sollicitudin. Morbi, sem tellus vestibulum porttitor.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                    <div class="card mb-4">-->
+                    <!--                        <div class="card-body">-->
+                    <!--                            <h3 class="h6">Customer Notes</h3>-->
+                    <!--                            <p>Sed enim, faucibus litora velit vestibulum habitasse. Cras lobortis cum sem aliquet-->
+                    <!--                                mauris rutrum. Sollicitudin. Morbi, sem tellus vestibulum porttitor.</p>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div class="card mb-4">
                         <!-- Shipping information -->
                         <div class="card-body">
                             <h3 class="h6">운송장 번호</h3>
-<!--                            <strong>FedEx</strong>-->
+                            <!--                            <strong>FedEx</strong>-->
                             <span><a href="#" class="text-decoration-underline" target="_blank">
-<!--                                <span th:text="${orderDetails.trackingNo}"></span>-->
-                            </a> <i class="bi bi-box-arrow-up-right"></i> </span>
+                                <span th:text="${orderDetails.trackingNo}"></span>
+                            </a>
+                                <span th:if="${orderDetails.trackingNo == null}">미발송</span>
+                                <i class="bi bi-box-arrow-up-right"></i> </span>
                             <hr>
                             <h3 class="h6">주소</h3>
                             <address>
-<!--                                <strong th:text="${orderDetails.orderDestinationDto.recipientName}"></strong><br>-->
-<!--                                <span th:text="${orderDetails.orderDestinationDto.roadNameAddress}"></span><br>-->
-<!--                                <span th:text="${orderDetails.orderDestinationDto.recipientAddressDetails}"></span><br>-->
-<!--                                <abbr title="Phone" th:text="${orderDetails.orderDestinationDto.recipientPhoneNumber}"></abbr>-->
+                                <strong th:text="${orderDetails.orderDestinationDto.recipientName}"></strong><br>
+                                <span th:text="${orderDetails.orderDestinationDto.roadNameAddress}"></span><br>
+                                <span th:text="${orderDetails.orderDestinationDto.recipientAddressDetails}"></span><br>
+                                <abbr title="Phone"
+                                      th:text="${orderDetails.orderDestinationDto.recipientPhoneNumber}"></abbr>
                             </address>
                         </div>
                     </div>
