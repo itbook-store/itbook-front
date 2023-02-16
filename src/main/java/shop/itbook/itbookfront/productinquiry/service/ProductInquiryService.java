@@ -17,6 +17,10 @@ public interface ProductInquiryService {
 
     Long addProductInquiry(ProductInquiryRequestDto productInquiryRequestDto);
 
+    void deleteProductInquiry(Long productInquiryNo);
+
+    void modifyProductInquiry(Long productInquiryNo, ProductInquiryRequestDto productInquiryRequestDto);
+
     ProductInquiryCountResponseDto countProductInquiry();
 
     PageResponse<ProductInquiryOrderProductResponseDto> findProductInquiryOrderProductList(String url, Long memberNo);

@@ -93,6 +93,67 @@ public class ProductInquiryController {
         return "redirect:/products/" + productInquiryRequestDto.getProductNo();
     }
 
+    @GetMapping("/{productInquiryNo}/delete")
+    public String productInquiryDelete(@PathVariable("productInquiryNo") Long productInquiryNo,
+                                       RedirectAttributes redirectAttributes) {
+        /*try {
+            productInquiryService.deleteProductInquiry(productInquiryNo);
+        } catch (BadRequestException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }*/
+
+        productInquiryService.deleteProductInquiry(productInquiryNo);
+
+        return "redirect:/product-inquiries/mypage/list";
+    }
+
+    @GetMapping("/{memberNo}/{productNo}/{productInquiryNo}/modify")
+    public String productInquiryModifyForm(
+        @PathVariable("memberNo") Long memberNo,
+        @PathVariable("productNo") Long productNo,
+        @PathVariable("productInquiryNo") Long productInquiryNo,
+        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+        @PageableDefault Pageable pageable,
+        RedirectAttributes redirectAttributes,
+        Model model) {
+
+        if(!memberNo.equals(userDetailsDto.getMemberNo())) {
+            log.error("잘못된 접근입니다.");
+            redirectAttributes.addFlashAttribute("failMessage", "잘못된 접근입니다.");
+            return "redirect:/product-inquiries/mypage/list";
+        }
+
+        ProductInquiryResponseDto productInquiryResponseDto;
+
+        try {
+            productInquiryResponseDto = productInquiryService.findProductInquiryInProductDetails(memberNo, productInquiryNo);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/product-inquiries/mypage/list";
+        }
+
+        model.addAttribute("productInquiryResponseDto", productInquiryResponseDto);
+
+        return "mypage/productinquiry/productInquiry-modify";
+    }
+
+    @PostMapping("{productInquiryNo}/modify")
+    public String productInquiryModify(@Valid @ModelAttribute ProductInquiryRequestDto productInquiryRequestDto,
+                                       @PathVariable("productInquiryNo") Long productInquiryNo,
+                                       RedirectAttributes redirectAttributes) {
+
+        try {
+            productInquiryService.modifyProductInquiry(productInquiryNo, productInquiryRequestDto);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+        }
+
+        return "redirect:/product-inquiries/mypage/list";
+    }
+
+
     @GetMapping("/writable/list")
     public String productInquiryOrderProductList(
         @PageableDefault Pageable pageable,

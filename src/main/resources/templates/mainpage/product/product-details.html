@@ -247,6 +247,7 @@
                                                 <th><span>사진</span></th>
                                                 <th><span>내용</span></th>
                                                 <th><span>별점</span></th>
+                                                <th><span>작성자</span></th>
                                                 <th><span></span></th>
                                             </tr>
                                             </thead>
@@ -256,6 +257,7 @@
                                                 </td>
                                                 <td><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
+                                                <!-- TODO 리뷰 작성자 필드 넣기 -->
                                                 <td>
                                                     <button class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
