@@ -26,6 +26,10 @@
             <form method="post" th:action="@{/mypage/members/modify}">
                 <input type="hidden" name="memberNo" th:value="${memberInfoResponseDto.memberNo}">
                 <div class="mb-3">
+                    <label for="showWriter" class="form-label">작가여부</label>
+                    <input type="text" class="form-control" th:field="${memberInfoResponseDto.isWriter}" id="showWriter" disabled>
+                </div><br>
+                <div class="mb-3">
                     <label for="showMemberId" class="form-label">아이디</label>
                     <input type="text" class="form-control" th:field="${memberInfoResponseDto.memberId}" id="showMemberId" disabled>
                 </div>
