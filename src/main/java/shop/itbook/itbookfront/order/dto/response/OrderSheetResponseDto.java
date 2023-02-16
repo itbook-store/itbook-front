@@ -15,4 +15,7 @@ import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 public class OrderSheetResponseDto {
     private List<ProductDetailsResponseDto> productDetailsResponseDtoList;
     private List<MemberDestinationResponseDto> memberDestinationResponseDtoList;
+
+    private Long memberPoint;
+    private Long deliveryFee;
 }

@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
@@ -84,6 +85,18 @@ public class OrderAdaptor {
             restTemplate.exchange(
                 uri,
                 HttpMethod.GET, http,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public PageResponse<OrderListAdminViewResponseDto> findOrderAdminListView(URI uri) {
+
+        ResponseEntity<CommonResponseBody<PageResponse<OrderListAdminViewResponseDto>>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 });
 

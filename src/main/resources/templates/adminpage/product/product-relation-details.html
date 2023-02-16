@@ -51,6 +51,19 @@
                    type="button" value="뒤로가기"/></a>
         <p>연관상품이 없습니다.</p>
     </section>
+
+    <script th:inline="javascript">
+
+        let failMessage = [[${failMessage}]];
+        if (failMessage != null) {
+            swal(
+                '쿠폰을 받을 수 없습니다!',
+                `${failMessage}`,
+                'warning'
+            );
+        }
+
+    </script>
 </div>
 </body>
 </html>

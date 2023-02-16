@@ -46,6 +46,33 @@
                            aria-label="상품명" aria-describedby="basic-addon1" required="">
                 </div>
 
+                <div class="row gx-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="mainCategory">대분류</label>
+                                </div>
+                                <select class="custom-select" id="mainCategory" name="mainCategory">
+                                    <option th:each="mainCategory: ${mainCategoryList}"
+                                            th:value="${mainCategory.categoryNo}"
+                                            th:text="${mainCategory.categoryName}">
+                                    </option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                            onclick="showSubCategory(event)">하위 카테고리 펼치기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="categoryCheckBox" style="display:none">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label for="simpleDescription">간단 설명</label>
                     <textarea id="simpleDescription" name="simpleDescription"
@@ -63,33 +90,7 @@
 
 
                 <div class="row gx-3 mb-3">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="mainCategory">대분류</label>
-                                </div>
-                                <select class="custom-select" id="mainCategory" name="mainCategory">
-                                    <option th:each="mainCategory: ${mainCategoryList}"
-                                            th:value="${mainCategory.categoryNo}"
-                                            th:text="${mainCategory.categoryName}">
-                                    </option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-dark" type="button"
-                                            onclick="showSubCategory(event)">하위 카테고리 펼치기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div id="categoryCheckBox" style="display:none">
-                        </div>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
+                    <div class="4">
                         <label>포인트 적립 여부</label>
                         <fieldset>
                             YES <input type="radio" name="isPointApplying" value="true"
@@ -98,12 +99,7 @@
                                       onclick="notSelectPointApplying()"/>
                         </fieldset>
                     </div>
-                    <div class="col-md-3" id="increasingPoint-div">
-                        <label for="increasePointPercent">포인트 적립율(%)</label>
-                        <input id="increasePointPercent" name="increasePointPercent"
-                               class="form-control input-md" input type="number" max="100" min="0"  step="0.1" >
-                    </div>
-                    <div class="col-md-6" id="increasingPointBase-div">
+                    <div class="col-md-5" id="increasingPointBase-div">
                         <label>포인트 적립 기준</label>
                         <fieldset>
                             <fieldset>
@@ -114,18 +110,23 @@
                             </fieldset>
                         </fieldset>
                     </div>
+                    <div class="col-md-3" id="increasingPoint-div">
+                        <label for="increasePointPercent">포인트 적립율(%)</label>
+                        <input id="increasePointPercent" name="increasePointPercent"
+                               class="form-control input-md" input type="number" max="100" min="0" step="0.1">
+                    </div>
                 </div>
                 <div class="row gx-3 mb-3">
 
                     <div class="col-md-4">
                         <label for="rawPrice">매입 원가(원)</label>
                         <input id="rawPrice" name="rawPrice"
-                               class="form-control input-md" required="" input type="number" min="0" >
+                               class="form-control input-md" required="" input type="number" min="0">
                     </div>
                     <div class="col-md-4">
                         <label for="fixedPrice">정가(원)</label>
                         <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                               input type="number" min="0" >
+                               input type="number" min="0">
                     </div>
                     <div class="col-md-4">
                         <label for="discountPercent">할인율(%)</label>
@@ -147,7 +148,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="stock">재고(개)</label>
-                    <input id="stock" name="stock" class="form-control input-md" required="" input type="number" min="0" >
+                    <input id="stock" name="stock" class="form-control input-md" required="" input type="number"
+                           min="0">
                 </div>
             </div>
 
@@ -187,7 +189,6 @@
                    value="등록하기" onclick="addProductSubmit()"/>
         </form>
     </div>
-    </form>
 </div>
 </body>
 </html>

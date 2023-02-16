@@ -6,6 +6,14 @@ function checkStringLengthDown(obj, size) {
     }
 }
 
+function checkStringLengthDownTo20(obj) {
+    if (obj.length > 20) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 function checkNumberUpTo0(obj) {
     if (obj < 0 || isNaN(obj)) {
         return false;
