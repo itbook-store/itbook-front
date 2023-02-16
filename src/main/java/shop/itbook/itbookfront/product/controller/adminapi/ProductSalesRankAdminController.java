@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
@@ -44,12 +46,18 @@ public class ProductSalesRankAdminController {
 
     @GetMapping(params = "sortingCriteria")
     public String getProductListBySortingCriteria(Model model, @RequestParam String sortingCriteria,
-                                                  @PageableDefault Pageable pageable) {
+                                                  @PageableDefault Pageable pageable,
+                                                  RedirectAttributes redirectAttributes) {
+        try {
+            PageResponse<ProductSalesRankResponseDto> pageResponse =
+                productService.findSalesRankProductList(pageable, sortingCriteria);
 
-        PageResponse<ProductSalesRankResponseDto> pageResponse =
-            productService.findSalesRankProductList(pageable, sortingCriteria);
-
-        model.addAttribute("pageResponse", pageResponse);
+            model.addAttribute("pageResponse", pageResponse);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/admin/products/sales-rank";
+        }
         model.addAttribute("sortingCriteria", sortingCriteria);
 
         model.addAttribute("paginationUrl",
