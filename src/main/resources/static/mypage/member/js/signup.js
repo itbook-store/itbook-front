@@ -6,7 +6,9 @@ async function checkMemberIdDuplicate() {
         return false;
     }
 
-    blankCheck(memberId);
+    if(!blankCheck(memberId)) {
+        return false;
+    }
 
     if(!checkMemberId(memberId)) {
         return false;
@@ -38,8 +40,9 @@ async function checkNicknameDuplicate() {
     let nickname = document.getElementById('nickname').value;
     let isExists = false;
 
-    blankCheck(nickname);
-
+    if(!blankCheck(nickname)) {
+        return false;
+    }
     if(!checkNickname(nickname)) {
         return false;
     }
@@ -73,8 +76,6 @@ async function checkPhoneNumberDuplicate() {
     if(!checkSpecial(phoneNumber)) {
         return false;
     }
-
-    phoneNumber = phoneNumber.slice(0, 3) + "-" + phoneNumber.slice(3, 7) + "-" + phoneNumber.slice(7, 11);
 
     if(!checkPhoneNumber(phoneNumber)) {
         return false;
@@ -206,19 +207,19 @@ function socialLoginSubmit() {
 function blankCheck(str) {
     //공백만 입력된 경우
     let blank_pattern1 = /^\s+|\s+$/g;
-    if(str.replace(blank_pattern1, '' ) == "" ){
+    if(str.replace(blank_pattern1, '' ) === "" ){
         alert('공백만 입력되었습니다.');
-        //document.getElementById(str).value = '';
-        //return false;
+        return false;
     }
 
     //문자열에 공백이 있는 경우
     let blank_pattern2 = /[\s]/g;
     if( blank_pattern2.test(str) == true){
         alert('공백이 입력되었습니다.');
-        //document.getElementById(str).value = '';
-        //return false;
+        return false;
     }
+
+    return true;
 }
 
 function checkKor(str) {
@@ -238,6 +239,18 @@ function checkSpecial(str) {
     }
 
     return true;
+}
+
+function checkNumber(str) {
+    const regExp = /^[^0-9]+$/;
+
+    if(!regExp.test(str)) {
+        alert("숫자가 입력되었습니다.");
+        return false;
+    }
+
+    return true;
+
 }
 
 function checkMemberId(str) {
@@ -263,7 +276,13 @@ function checkName() {
 
     let name = document.getElementById("name").value;
 
-    blankCheck(name);
+    if(!blankCheck(name)) {
+        return false;
+    }
+
+    if(!checkNumber(name)) {
+        return false;
+    }
 
     if(!checkSpecial(name)) {
         alert("이름에 특수문자가 입력되었습니다.");
@@ -320,7 +339,7 @@ function checkEmail(str) {
 }
 
 function checkPassword(str) {
-    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*_+=-]).{8,255}$/i;
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*_+=-]).{9,255}$/i;
     if(!regExp.test(str)) {
         return false;
     }

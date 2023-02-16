@@ -34,7 +34,7 @@
                                         <label class="form-label">아이디</label>
                                         <input type="text" class="form-control form-control-lg" id="memberId"
                                                name="memberId" aria-describedby="memberIdHelp"/>
-                                        <div id="memberIdHelp" class="form-text">아이디는 특수문자를 제외한 2 ~ 15자리여야 합니다</div>
+                                        <div id="memberIdHelp" class="form-text">아이디는 특수문자를 제외한 2 ~ 15자리여야 합니다. 공백을 입력할 수 없습니다.</div>
                                         <br/>
                                         <button type="button" class="btn btn-light" onclick="checkMemberIdDuplicate()"
                                                 id="memberIdCheckBtn">중복 확인
@@ -52,7 +52,7 @@
                                         <label class="form-label">닉네임</label>
                                         <input type="text" class="form-control form-control-lg" id="nickname"
                                                name="nickname" aria-describedby="nicknameHelp"/>
-                                        <div id="nicknameHelp" class="form-text">닉네임은 최소 2자, 최대 20자까지 허용합니다</div>
+                                        <div id="nicknameHelp" class="form-text">닉네임은 최소 2자, 최대 20자까지 허용합니다. 공백을 입력할 수 없습니다.</div>
                                         <br/>
                                         <button type="button" class="btn btn-light" onclick="checkNicknameDuplicate()"
                                                 id="nicknameCheckBtn">중복 확인
