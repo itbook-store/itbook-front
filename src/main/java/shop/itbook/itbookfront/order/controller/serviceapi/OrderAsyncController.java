@@ -95,4 +95,15 @@ public class OrderAsyncController {
         // TODO: 2023/02/11 주문 삭제 처리.
         orderService.cancelOrder(orderNo);
     }
+
+    /**
+     * 주문 상태 구매 확정 메서드 입니다.
+     *
+     * @param orderNo 주문번호
+     * @author 강명관
+     */
+    @PostMapping("/purchase-complete/{orderNo}")
+    public void orderPurchaseComplete(@PathVariable("orderNo") Long orderNo) {
+        orderService.orderPurchaseComplete(orderNo);
+    }
 }

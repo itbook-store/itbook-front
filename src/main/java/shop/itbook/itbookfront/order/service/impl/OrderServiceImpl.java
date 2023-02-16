@@ -144,4 +144,12 @@ public class OrderServiceImpl implements OrderService {
 
         return orderAdaptor.findOrderAdminListView(uriComponents.toUri());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void orderPurchaseComplete(Long orderNo) {
+        orderAdaptor.orderPurchaseComplete(orderNo);
+    }
 }

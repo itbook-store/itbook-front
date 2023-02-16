@@ -35,4 +35,12 @@ public interface OrderService {
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
 
     void cancelOrder(Long orderNo);
+
+    /**
+     * 주문 구매 확정 메서드입니다다.
+     *
+     * @param orderNo 주문 번호
+     * @author 강명관
+     */
+    void orderPurchaseComplete(Long orderNo);
 }
