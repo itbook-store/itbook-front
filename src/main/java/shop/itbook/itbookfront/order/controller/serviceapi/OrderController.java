@@ -66,19 +66,19 @@ public class OrderController {
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("totalProductPrice", totalProductPrice);
 
-        return "mainpage/order/orderCompletionForm";
+        return "mainpage/order/orderDetailsForm";
     }
 
     @GetMapping("/details/{orderNo}")
-    public String orderDetailsView(@PathVariable("orderNo") String orderNo, Model model) {
+    public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
 
-//        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
-//
-//        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
-//            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
-//
-//        model.addAttribute("orderDetails", orderDetails);
-//        model.addAttribute("totalProductPrice", totalProductPrice);
+        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+
+        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
+            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
+
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mypage/order/orderDetailsForm";
     }
