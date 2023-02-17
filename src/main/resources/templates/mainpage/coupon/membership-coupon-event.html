@@ -24,12 +24,15 @@
     <div class="container">
         <div class="row">
             <th:block th:each="couponList : ${membershipCouponList}">
-                <th:block th:each="membershipCoupon : ${couponList}">
-                    <h4 th:text="${membershipCoupon.membershipGrade}"></h4>
 
-                    <div th:if="${membershipCouponStat.index%3==0}" class="panel widget">
-                    <div class="row row-table row-flush">
-                        <div class="col-md-4 ">
+                <th:block th:if="${not #strings.isEmpty(couponList.value)}">
+                    <h4 th:text="${couponList.key}"></h4>
+                    <div class="row">
+
+                    <th:block th:each="membershipCoupon : ${couponList.value}">
+
+<!--                    <div th:if="${membershipCouponStat.index%3==0}" class="panel widget">-->
+                        <div class="col-4 ">
                             <div class="panel widget rounded-lg" style="border:solid lavender; margin-right: 10px">
                                 <div class="row row-table row-flush">
 
@@ -68,94 +71,95 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 ">
-                            <th:block th:if="${membershipCouponStat.index +1 < membershipCouponStat.size}">
+<!--                        <div class="col-md-4 ">-->
+<!--                            <th:block th:if="${membershipCouponStat.index +1 < membershipCouponStat.size}">-->
 
-                                <div class="panel widget rounded-lg"
-                                     style="border:solid lavenderblush; margin-left: 10px">
-                                    <div class="row row-table row-flush">
+<!--                                <div class="panel widget rounded-lg"-->
+<!--                                     style="border:solid lavenderblush; margin-left: 10px">-->
+<!--                                    <div class="row row-table row-flush">-->
 
-                                        <div class="col-xs-5">
-                                            <picture class="lateral-picture-sm">
-                                                <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
-                                            </picture>
-                                        </div>
-                                        <div class="col-xs-7 align-middle p-lg">
-                                            <div class="pull-right pull-top">
-                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+1].coupon.couponNo})}"
-                                                   class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
-                                            </div>
-                                            <br>
-                                            <p>
-                                            <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
-                                                th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.name}"></h1>
-                                            </p>
-                                            <p>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.amount!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.amount} + '원 할인'"></span>
-                                                </th:block>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.percent!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.percent} +'% 할인'"></span>
-                                                </th:block>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.point!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.point} + ' 포인트 적립'"></span>
-                                                </th:block>
-                                            </p>
-                                            <p>
-                                                <span th:text="${#temporals.format(membershipCouponList[membershipCouponStat.index+1].coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
-                                                다운 가능
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th:block>
-                        </div>
-                        <div class="col-md-4 ">
-                            <th:block th:if="${membershipCouponStat.index +2 < membershipCouponStat.size}">
+<!--                                        <div class="col-xs-5">-->
+<!--                                            <picture class="lateral-picture-sm">-->
+<!--                                                <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">-->
+<!--                                            </picture>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-xs-7 align-middle p-lg">-->
+<!--                                            <div class="pull-right pull-top">-->
+<!--                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+1].coupon.couponNo})}"-->
+<!--                                                   class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>-->
+<!--                                            </div>-->
+<!--                                            <br>-->
+<!--                                            <p>-->
+<!--                                            <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"-->
+<!--                                                th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.name}"></h1>-->
+<!--                                            </p>-->
+<!--                                            <p>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.amount!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.amount} + '원 할인'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.percent!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.percent} +'% 할인'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+1].coupon.point!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+1].coupon.point} + ' 포인트 적립'"></span>-->
+<!--                                                </th:block>-->
+<!--                                            </p>-->
+<!--                                            <p>-->
+<!--                                                <span th:text="${#temporals.format(membershipCouponList[membershipCouponStat.index+1].coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>-->
+<!--                                                다운 가능-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </th:block>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <th:block th:if="${membershipCouponStat.index +2 < membershipCouponStat.size}">-->
 
-                                <div class="panel widget rounded-lg"
-                                     style="border:solid lavenderblush; margin-left: 10px">
-                                    <div class="row row-table row-flush">
+<!--                                <div class="panel widget rounded-lg"-->
+<!--                                     style="border:solid lavenderblush; margin-left: 10px">-->
+<!--                                    <div class="row row-table row-flush">-->
 
-                                        <div class="col-xs-5">
-                                            <picture class="lateral-picture-sm">
-                                                <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
-                                            </picture>
-                                        </div>
-                                        <div class="col-xs-7 align-middle p-lg">
-                                            <div class="pull-right pull-top">
-                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+2].coupon.couponNo})}"
-                                                   class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
-                                            </div>
-                                            <br>
-                                            <p>
-                                            <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
-                                                th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.name}"></h1>
-                                            </p>
-                                            <p>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.amount!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.amount} + '원 할인'"></span>
-                                                </th:block>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.percent!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.percent} +'% 할인'"></span>
-                                                </th:block>
-                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.point!=0}">
-                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.point} + ' 포인트 적립'"></span>
-                                                </th:block>
-                                            </p>
-                                            <p>
-                                                <span th:text="${#temporals.format(membershipCouponList[membershipCouponStat.index+2].coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
-                                                다운 가능
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th:block>
-                        </div>
-                    </div>
-                </div>
+<!--                                        <div class="col-xs-5">-->
+<!--                                            <picture class="lateral-picture-sm">-->
+<!--                                                <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">-->
+<!--                                            </picture>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-xs-7 align-middle p-lg">-->
+<!--                                            <div class="pull-right pull-top">-->
+<!--                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+2].coupon.couponNo})}"-->
+<!--                                                   class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>-->
+<!--                                            </div>-->
+<!--                                            <br>-->
+<!--                                            <p>-->
+<!--                                            <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"-->
+<!--                                                th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.name}"></h1>-->
+<!--                                            </p>-->
+<!--                                            <p>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.amount!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.amount} + '원 할인'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.percent!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.percent} +'% 할인'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:if="${membershipCouponList[membershipCouponStat.index+2].coupon.point!=0}">-->
+<!--                                                    <span th:text="${membershipCouponList[membershipCouponStat.index+2].coupon.point} + ' 포인트 적립'"></span>-->
+<!--                                                </th:block>-->
+<!--                                            </p>-->
+<!--                                            <p>-->
+<!--                                                <span th:text="${#temporals.format(membershipCouponList[membershipCouponStat.index+2].coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>-->
+<!--                                                다운 가능-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </th:block>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 <!-- END widget-->
             </th:block>
+                    </div>
+                </th:block>
             </th:block>
         </div>
 

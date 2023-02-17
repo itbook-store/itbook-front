@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.coupon.service.serviceapi;
 
 import java.util.List;
+import java.util.Map;
 import shop.itbook.itbookfront.coupon.dto.response.MembershipCouponResponseDto;
 
 /**
@@ -8,5 +9,5 @@ import shop.itbook.itbookfront.coupon.dto.response.MembershipCouponResponseDto;
  * @since 1.0
  */
 public interface MembershipCouponService {
-    List<List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl);
+    Map<String, List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl);
 }
