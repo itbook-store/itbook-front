@@ -572,7 +572,8 @@
                     if (response==null) {
                         throw new Error(response.statusText)
                     }
-                    response.json()})
+                    return response.json();
+                })
                 .then(data => {
                     doPaymentProcessByCard(data);
                 })
