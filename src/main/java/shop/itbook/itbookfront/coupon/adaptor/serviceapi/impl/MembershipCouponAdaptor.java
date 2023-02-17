@@ -27,13 +27,13 @@ public class MembershipCouponAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public List<MembershipCouponResponseDto> getUserAllCouponIssueList(
+    public List<List<MembershipCouponResponseDto>> getUserAllCouponIssueList(
         String membershipCouponListUrl) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<CommonResponseBody<List<MembershipCouponResponseDto>>> exchange =
+        ResponseEntity<CommonResponseBody<List<List<MembershipCouponResponseDto>>>> exchange =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + membershipCouponListUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });

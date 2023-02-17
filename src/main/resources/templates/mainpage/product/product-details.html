@@ -229,7 +229,8 @@
     </section>
 
     <section>
-        <div class="container">
+        <div>
+            <p></p>
             <h4>도서 리뷰</h4>
             별점 : <span th:if="${reviewPageResponse.getContent().size() != 0}" th:text="${avgStarPoint}"></span>
             <span th:if="${reviewPageResponse.getContent().size() == 0}">0</span> / 5
@@ -247,16 +248,18 @@
                                                 <th><span>사진</span></th>
                                                 <th><span>내용</span></th>
                                                 <th><span>별점</span></th>
-                                                <th><span></span></th>
+                                                <th class="text-right"><span>작성자</span></th>
+                                                <th class="text-center"><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
                                                 <td class="text-center"><img width="100px;" th:src="${review.image}">
                                                 </td>
-                                                <td><span th:text="${review.content}"></span></td>
+                                                <td style="width: 20%;"><span th:text="${review.content}"></span></td>
                                                 <td><span th:text="${review.starPoint}"></span> / 5</td>
-                                                <td>
+                                                <td class="text-right"><span th:text="${review.memberId}"></span></td>
+                                                <td class="text-center">
                                                     <button class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
                                                         상세보기

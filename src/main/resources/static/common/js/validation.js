@@ -55,6 +55,13 @@ function checkNumberUpToNum(num, obj) {
     }
 }
 
+function checkNumberDownToNum(num, obj) {
+    if (obj > num || isNaN(obj)) {
+        return false;
+    } else {
+        return true;
+    }
+}
 function checkNumberOfPercentBetween(min, max, obj) {
     if (obj < min || obj > max || isNaN(obj)) {
         return false;

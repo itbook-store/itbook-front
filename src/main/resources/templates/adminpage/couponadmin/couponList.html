@@ -12,28 +12,29 @@
 <div layout:fragment="content">
 
     <h1 style="text-align: center">쿠폰 목록</h1>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list'|">
-        전체 쿠폰
-    </button>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=total'|">
-        전체 쿠폰
-    </button>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=product'|">
-        상품 쿠폰
-    </button>
-    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=category'|">
-        카테고리 쿠폰
-    </button>
+
     <div class="container">
+        <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list'|">
+            전체 쿠폰
+        </button>
+        <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=total'|">
+            주문 총액 쿠폰
+        </button>
+        <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=product'|">
+            상품 쿠폰
+        </button>
+        <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='/admin/coupons/list?coverage=category'|">
+            카테고리 쿠폰
+        </button>
         <table class="table table-striped" style="text-align: center">
-            <thead>
+            <thead class="text-nowrap">
             <tr>
                 <th><span>번호</span></th>
                 <th style="width: 10%"><span>타입</span></th>
                 <th style="width: 15%"><span>이름</span></th>
                 <th style="width: 19%"><span>코드</span></th>
                 <th style="width: 9%"><span>쿠폰혜택</span></th>
-                <th><span>적용범위</span></th>
+                <th style="max-width: 15%"><span>적용범위</span></th>
                 <th style="width: 9%"><span>발급수량</span></th>
                 <th style="width: 17%"><span>발급기간</span></th>
             </tr>
@@ -63,13 +64,13 @@
                     <span th:text="${coupon.point} + ' 포인트 적립'"></span>
                 </td>
                 <td th:if="${coupon.point!=0}">
-                    포인트 쿠폰
+                    포인트
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.categoryName)}">
                     <span th:text="${coupon.parentCategoryName}"></span><br>
                     - <span th:text="${coupon.categoryName}"></span>
                 </td>
-                <td th:if="${not #strings.isEmpty(coupon.productName)}">
+                <td style="max-width: 15%" th:if="${not #strings.isEmpty(coupon.productName)}">
                     <a th:href="@{|/products/${coupon.productNo}|}"
                        class="btn btn-coupon-register btn-sm btn-light align-middle">
                         <span th:text="${coupon.productNo}"></span>.
@@ -78,7 +79,7 @@
 
                 </td>
                 <td th:if="${#strings.isEmpty(coupon.productName) and #strings.isEmpty(coupon.categoryName) and coupon.point==0}">
-                    전체 상품
+                    총액
                 </td>
                 <td th:if="${coupon.totalQuantity==0}">
                     <span th:text="${coupon.issuedQuantity}"></span>
