@@ -210,7 +210,7 @@ function addCouponSubmit() {
     let categoryRadioBox = document.getElementsByName("categoryNo");
     let productRadioBox = document.getElementsByName("productNo");
     let selectCoupon = document.getElementById("selectCoupon").value;
-    let userId = document.getElementById("userId").value;
+    let memberId = document.getElementById("memberId").value;
     let selectMembership = document.getElementById("selectMembership").textContent;
     let name = document.getElementById("name").value;
     let point = document.getElementById("point").value;
@@ -218,6 +218,7 @@ function addCouponSubmit() {
     let amount = document.getElementById("amount").value;
     let couponCreatedAt = document.getElementById("couponCreatedAt").value;
     let couponExpiredAt = document.getElementById("couponExpiredAt").value;
+    let usagePeriod = document.getElementById("usagePeriod").value;
     let pointRadio = document.getElementById("pointRadio").checked;
     let percentRadio = document.getElementById("percentRadio").checked;
     let amountRadio = document.getElementById("amountRadio").checked;
@@ -226,18 +227,29 @@ function addCouponSubmit() {
     let oneProductRadio = document.getElementById("oneProductRadio").checked;
     let pointCoverageRadio = document.getElementById("pointCoverageRadio").checked;
 
+
     if (selectCoupon === "") {
         Swal.fire('쿠폰 종류를 선택해 주세요!', '', 'error');
         return false;
     }
-
+    if (selectCoupon === "일반쿠폰") {
+        if (memberId === "") {
+            Swal.fire('유저 아이디를 입력해주세요!', '', 'error');
+            return false;
+        }
+    }
+    if (selectCoupon === "이달의쿠폰등급형") {
+        if (selectMembership === "") {
+            Swal.fire('등급을 선택해주세요!', '', 'error');
+            return false;
+        }
+    }
     if(name === ""){
         Swal.fire('쿠폰 이름을 입력해 주세요.', '', 'error');
         return false;
 
     }
     if (!checkStringLengthDown(name, 20)) {
-        console.log("fargwbgerbeasrgea");
 
         Swal.fire('쿠폰 이름 길이는 20자 이하여야 합니다!', '', 'error');
         return false;
@@ -246,7 +258,13 @@ function addCouponSubmit() {
     if (pointRadio === true) {
 
         if (!checkNumberUpToNum(1,point)) {
-            Swal.fire('포인트 적립액은 1원 이상 이어야 합니다!', '', 'error');
+
+            Swal.fire('포인트 쿠폰 적립액은 1원 이상 이어야 합니다!', '', 'error');
+            return false;
+        }
+        if (!checkNumberDownToNum(10000000,point)) {
+
+            Swal.fire('포인트 쿠폰 적립액은 최대 천만원까지 입니다.', '', 'error');
             return false;
         }
     }
@@ -254,6 +272,11 @@ function addCouponSubmit() {
 
         if (!checkNumberUpToNum(1,amount)) {
             Swal.fire('쿠폰의 할인 금액은 1원 이상 이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        if (!checkNumberDownToNum(10000000,amount)) {
+            Swal.fire('쿠폰의 할인 금액은 최대 천만원까지입니다!', '', 'error');
             return false;
         }
 
@@ -307,7 +330,12 @@ function addCouponSubmit() {
         return false;
     }
 
-    Swal.fire('쿠폰 ㅇㄹㅈㅎㄷㅎㄴㅎㅈㄷㅈㄹㅍ을 성공!', '', 'success');
+    if(new Date(couponCreatedAt)>new Date(couponExpiredAt)){
+        Swal.fire('쿠폰 생성일은 만료일보다 늦을수 없습니다', '', 'error');
+        return false;
+    }
+
+    Swal.fire('쿠폰 발급 성공!', '', 'success');
     return true;
 
 }

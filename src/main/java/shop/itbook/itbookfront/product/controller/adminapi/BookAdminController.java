@@ -22,12 +22,11 @@ import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
+import shop.itbook.itbookfront.product.ProductSuccessMessage;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
-import shop.itbook.itbookfront.product.exception.InvalidInputException;
 import shop.itbook.itbookfront.product.service.BookService;
 import shop.itbook.itbookfront.product.service.ProductService;
-import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
 /**
  * The type Book admin controller.
@@ -43,7 +42,7 @@ public class BookAdminController {
     private final BookService bookService;
     private final ProductService productService;
     private final CategoryService categoryService;
-    private static final String PRODUCT_REDIRECT_URL = "redirect:/admin/products";
+    private static final String PRODUCT_ADMIN_PAGE_REDIRECT_URL = "redirect:/admin/products";
 
 
     @PostMapping("/add")
@@ -54,12 +53,15 @@ public class BookAdminController {
 
         try {
             bookService.addBook(thumbnails, ebook, requestDto);
-        } catch (BadRequestException e) {
+        } catch (BadRequestException | NumberFormatException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
-        return PRODUCT_REDIRECT_URL;
+        redirectAttributes.addFlashAttribute("successMessage",
+            ProductSuccessMessage.ADD_BOOK_MESSAGE);
+
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
 
@@ -78,7 +80,7 @@ public class BookAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
         return "adminpage/product/book-add";
     }
@@ -95,9 +97,12 @@ public class BookAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
-        return PRODUCT_REDIRECT_URL;
+        redirectAttributes.addFlashAttribute("successMessage",
+            ProductSuccessMessage.MODIFY_BOOK_MESSAGE);
+
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
 
@@ -109,7 +114,7 @@ public class BookAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
         return "adminpage/product/book-modify";
     }

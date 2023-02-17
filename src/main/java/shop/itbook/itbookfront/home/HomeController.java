@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
@@ -19,6 +20,9 @@ import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.dto.request.MemberSocialRequestDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountByMembershipResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberCountResponseDto;
+import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
@@ -37,8 +41,10 @@ public class HomeController {
     private final BookService bookService;
 
     private final CategoryService categoryService;
+    private final MemberAdminService memberAdminService;
 
     private final MemberService memberService;
+
 
     public static final Integer SIZE_OF_ALL_CONTENT = Integer.MAX_VALUE;
     public static final Integer PAGE_OF_ALL_CONTENT = 0;
@@ -106,7 +112,12 @@ public class HomeController {
 
     @GetMapping("/mypage")
     public String mypage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                         Model model) {
+                         Model model, RedirectAttributes redirectAttributes) {
+
+        if (Objects.isNull(userDetailsDto)) {
+            redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
 
         Long recentlyPoint =
             memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
@@ -123,7 +134,15 @@ public class HomeController {
     }
 
     @GetMapping("/adminpage")
-    public String adminpage() {
+    public String adminpage(Model model) {
+        MemberCountResponseDto count1 = memberAdminService.countMemberByMemberStatus();
+
+        model.addAttribute("count1", count1);
+        model.addAttribute("normalCount", count1.getMemberCount() -
+            (count1.getBlockMemberCount() + count1.getWithdrawMemberCount()));
+
+        MemberCountByMembershipResponseDto count2 = memberAdminService.countMemberByMembership();
+        model.addAttribute("count2", count2);
         return "adminpage/index";
     }
 

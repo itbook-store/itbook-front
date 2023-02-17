@@ -76,7 +76,7 @@
                 <i class="fa-solid fa-circle-plus"></i>
             </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product : ${newBooks}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product : ${newBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
@@ -99,9 +99,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
-                                    품절</span>
+                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
@@ -124,7 +122,7 @@
                     <i class="fa-solid fa-circle-plus"></i>
                 </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product : ${discountBooks}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product : ${discountBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
@@ -147,9 +145,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
-                                    품절</span>
+                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
@@ -171,7 +167,7 @@
                 <i class="fa-solid fa-circle-plus"></i>
             </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product : ${bestSeller}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product : ${bestSeller}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
@@ -194,9 +190,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
-                                    품절</span>
+                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>
@@ -218,7 +212,7 @@
                 <i class="fa-solid fa-circle-plus"></i>
             </a></h2>
             <hr>
-            <div class="col-md-2" th:each="product, count : ${popularBooks}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product, count : ${popularBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
@@ -241,9 +235,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-                    <span class="product-discount-label"
-                          th:if="${product.isForceSoldOut == true} or ${product.stock}==0">
-                                    품절</span>
+                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>
                     <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                 </div>
                 </a>

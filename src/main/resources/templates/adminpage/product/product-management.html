@@ -52,14 +52,43 @@
 <div layout:fragment="content">
     <div class="content">
 
-        <h2> 상품 관리
-            <button style="width: auto; margin-left: 90%" class="btn btn-secondary mt-3"
-                    onclick="location.href='/admin/products/select-add-product-type'">상품 등록
-            </button>
-        </h2>
-        <hr>
-
         <div class="container bootstrap snippets bootdey">
+            <h2> 상품 관리</h2>
+            <hr>
+            <div class="row">
+                <div class="col-10">
+                    <select class="form-select" style="width: 20%" name="searchRequirement"
+                            onchange="window.location.replace(this.value)">
+                        <option value="/admin/products">전체</option>
+                        <option value="/admin/products?productTypeNo=1&productTypeName=신간"
+                                th:selected="${not #strings.isEmpty(productTypeName) and #strings.equals(productTypeName, '신간')}">
+                            신간
+                        </option>
+                        <option value="/admin/products?productTypeNo=5&productTypeName=인기"
+                                th:selected="${not #strings.isEmpty(productTypeName) and #strings.equals(productTypeName, '인기')}">
+                            인기
+                        </option>
+                        <option value="/admin/products?productTypeNo=3&productTypeName=베스트셀러"
+                                th:selected="${not #strings.isEmpty(productTypeName) and #strings.equals(productTypeName, '베스트셀러')}">
+                            베스트셀러
+                        </option>
+                        <option value="/admin/products?productTypeNo=4&productTypeName=추천"
+                                th:selected="${not #strings.isEmpty(productTypeName) and #strings.equals(productTypeName, '추천')}">
+                            추천
+                        </option>
+                        <option value="/admin/products?productTypeNo=2&productTypeName=할인"
+                                th:selected="${not #strings.isEmpty(productTypeName) and #strings.equals(productTypeName, '할인')}">
+                            할인
+                        </option>
+                    </select>
+
+                </div>
+                <div class="col-2" >
+                    <button  class="btn btn-secondary ml-5"
+                            onclick="location.href='/admin/products/select-add-product-type'">상품 등록
+                    </button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-box no-header clearfix">
@@ -68,10 +97,10 @@
                                 <table class="table user-list table-hover">
                                     <thead style="text-align: center">
                                     <tr style="text-align: center!important;">
-                                        <th>상품코드</th>
+                                        <th style="width: 10%">상품코드</th>
                                         <th>상품명</th>
-                                        <th>정가</th>
-                                        <th>판매가</th>
+                                        <th style="width: 8%">정가</th>
+                                        <th style="width: 8%">판매가</th>
                                         <th>판매</span></th>
                                         <th>강제품절</span></th>
                                         <th>삭제</span></th>
@@ -84,7 +113,7 @@
                                         <td style="text-align: center" th:text="${product.productNo}"></td>
                                         <td style="text-align: left">
                                             <a th:href="|@{/products/{productNo}(productNo=${product.productNo})}|"
-                                            style="text-decoration: none; color: #000000">
+                                               style="text-decoration: none; color: #000000">
                                                 <span th:text="${product.productName}"></span>
                                             </a>
                                         </td>
@@ -141,11 +170,21 @@
     </div>
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
+        let successMessage = [[${successMessage}]];
+
         if (failMessage != null) {
             swal(
-                '쿠폰을 받을 수 없습니다!',
+                '요청을 처리할 수 없습니다!',
                 `${failMessage}`,
-                'warning'
+                'error'
+            );
+        }
+
+        if (successMessage != null) {
+            swal(
+                `${successMessage}`,
+                '',
+                'success'
             );
         }
     </script>

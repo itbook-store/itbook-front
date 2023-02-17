@@ -483,9 +483,13 @@ function setOrderRealAmountTag() {
 
     let orderRealAmountTag = document.querySelector("#order_real_amount");
 
+    let paymentBtnAmountPrice = document.querySelector("#payment_btn_amount_price");
+
     orderRealAmountTag.innerHTML =
         Number(orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice).toLocaleString();
 
+    paymentBtnAmountPrice.innerHTML =
+        Number(orderProductTotalPriceBeforeDiscount + deliveryFee - totalDiscountPrice).toLocaleString()
     // let productTotalPriceList = document.querySelectorAll(".product_total_price");
     //
     // console.log(productTotalPriceList);

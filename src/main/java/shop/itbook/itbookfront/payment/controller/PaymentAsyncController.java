@@ -23,15 +23,14 @@ public class PaymentAsyncController {
 
     @PostMapping("async/payment/cancel")
     public OrderResponseDto requestCancelPayment(
-        @RequestBody PaymentCanceledRequestDto paymentCanceledRequestDto,
-        RedirectAttributes redirectAttributes) {
+        @RequestBody PaymentCanceledRequestDto paymentCanceledRequestDto) {
         OrderResponseDto orderResponseDto = null;
         try {
             orderResponseDto =
                 paymentService.requestCanceledPayment(paymentCanceledRequestDto);
         } catch (BadRequestException e) {
             log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            throw e;
         }
         return orderResponseDto;
     }

@@ -61,18 +61,11 @@ public class ProductAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response = null;
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
+            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
+                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                });
 
-        try {
-            response =
-                restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products",
-                    HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
-                    });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
-                throw new InvalidInputException();
-            }
-        }
 
         return Objects.requireNonNull(response.getBody()).getResult().getProductNo();
 
@@ -113,18 +106,12 @@ public class ProductAdaptor {
 
 
     public ProductDetailsResponseDto findProduct(Long productNo) {
-        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> response = null;
-        try {
-            response = restTemplate.exchange(
+        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> response =
+            restTemplate.exchange(
                 gateway.getGatewayServer() + "/api/admin/products/" + productNo,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });
-        } catch (
-            BadRequestException e) {
-            if (Objects.equals(e.getMessage(), ProductNotFoundException.MESSAGE)) {
-                throw new ProductNotFoundException();
-            }
-        }
+
 
         return Objects.requireNonNull(response.getBody()).getResult();
 
