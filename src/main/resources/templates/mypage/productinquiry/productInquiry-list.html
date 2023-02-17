@@ -27,6 +27,8 @@
                                         <th >공개여부</th>
                                         <th >답변여부</th>
                                         <th></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -45,8 +47,15 @@
                                             <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
                                         </td>
                                         <td>
-                                            <button class="btn btn-primary"
+                                            <button class="btn btn-light"
                                                     th:onclick="|location.href='@{/product-inquiries/view/{productInquiryNo}(productInquiryNo=${productInquiry.productInquiryNo})}'|">상세보기</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary"
+                                                    th:onclick="|location.href='@{/product-inquiries/{memberNo}/{productNo}/{productInquiryNo}/modify(memberNo=${productInquiry.memberNo}, productNo=${productInquiry.productNo}, productInquiryNo=${productInquiry.productInquiryNo})}'|">수정하기</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger" th:onclick="|location.href='@{/product-inquiries/{productInquiryNo}/delete(productInquiryNo=${productInquiry.productInquiryNo})}'|">삭제하기</button>
                                         </td>
                                     </tr>
                                     </tbody>

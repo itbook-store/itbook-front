@@ -55,6 +55,29 @@ public class ProductInquiryAdaptor {
         return responseEntity.getBody().getResult().getProductInquiryNo();
     }
 
+    public void deleteProductInquiry(Long productInquiryNo) {
+
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/product-inquiries/" + productInquiryNo +
+                "/delete",
+            HttpMethod.PUT, null, new ParameterizedTypeReference<>() {
+            });
+    }
+
+    public void modifyProductInquiry(Long productInquiryNo,
+                                     ProductInquiryRequestDto productInquiryRequestDto) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> uploadEntity = new HttpEntity<>(productInquiryRequestDto, headers);
+
+        restTemplate.exchange(
+            gatewayConfig.getGatewayServer() + "/api/product-inquiries/" + productInquiryNo +
+                "/modify",
+            HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {});
+    }
+
     public ProductInquiryCountResponseDto countProductInquiry() {
         ResponseEntity<CommonResponseBody<ProductInquiryCountResponseDto>> responseEntity =
             restTemplate.exchange(
