@@ -11,84 +11,83 @@
 
 </head>
 <body>
-    <div layout:fragment="content">
-        <div class="content">
-            <h2>차단회원 목록</h2>
-            <hr>
-            <div>
-                <form method="get" th:action="@{/admin/members/block/search}">
-                    <div id="date" style="display: none;">
-                        <input type="date" id="start" name="start">
-                        ~
-                        <input type="date" id="end" name="end">
-                    </div>
-                    <select id="searchRequirement" name="searchRequirement" onchange="selectDateOfRegistration()">
-                        <option value="everything">전체</option>
-                        <option value="memberId">아이디</option>
-                        <option value="nickname">닉네임</option>
-                        <option value="name">이름</option>
-                        <option value="phoneNumber">전화번호</option>
-                        <option value="dateOfJoining">가입일</option>
-                    </select>
-                    <input style="width: 190px;" type="text" id="searchWord" name="searchWord">
-                    <button class="btn btn-secondary" type="submit">검색</button>
-                </form>
-            </div>
-            <div class="container bootstrap snippets bootdey">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="main-box no-header clearfix">
-                            <div class="main-box-body clearfix">
-                                <div class="table-responsive">
-                                    <table class="table user-list">
-                                        <thead>
-                                        <tr>
-                                            <th><span>회원번호</span></th>
-                                            <th><span>회원이름</span></th>
-                                            <th><span>가입날짜</span></th>
-                                            <th class="text-center"><span>회원상태</span></th>
-                                            <th><span>이메일</span></th>
-                                            <th>&nbsp;</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="member : ${pageResponse.getContent()}">
-                                            <td th:text="${member.memberNo}"></td>
-                                            <td>
-                                                <span th:text="${member.name}"></span>
-                                            </td>
-                                            <td><span th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일')}"></span></td>
-                                            <td class="text-center">
-                                                <span class="badge text-bg-danger" th:text="${member.memberStatusName}"></span>
-                                            </td>
-                                            <td>
-                                                <span th:text="${member.email}"></span>
-                                            </td>
-                                            <td style="width: 20%;">
-                                                <a th:href="@{|/admin/members/block/${member.memberNo}/info|}" style="text-decoration-line: none; color: black;" class="table-link text-warning">
+<div layout:fragment="content">
+    <div class="content">
+        <h2>차단회원 목록</h2>
+        <hr>
+        <div>
+            <form method="get" th:action="@{/admin/members/block/search}">
+                <div id="date" style="display: none;">
+                    <input type="date" id="start" name="start">
+                    ~
+                    <input type="date" id="end" name="end">
+                </div>
+                <select id="searchRequirement" name="searchRequirement" onchange="selectDateOfRegistration()">
+                    <option value="everything">전체</option>
+                    <option value="memberId">아이디</option>
+                    <option value="nickname">닉네임</option>
+                    <option value="name">이름</option>
+                    <option value="phoneNumber">전화번호</option>
+                    <option value="dateOfJoining">가입일</option>
+                </select>
+                <input style="width: 190px;" type="text" id="searchWord" name="searchWord">
+                <button class="btn btn-secondary" type="submit">검색</button>
+            </form>
+        </div>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                    <tr>
+                                        <th><span>회원번호</span></th>
+                                        <th><span>회원이름</span></th>
+                                        <th><span>가입날짜</span></th>
+                                        <th class="text-center"><span>회원상태</span></th>
+                                        <th><span>이메일</span></th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="member : ${pageResponse.getContent()}">
+                                        <td th:text="${member.memberNo}"></td>
+                                        <td>
+                                            <span th:text="${member.name}"></span>
+                                        </td>
+                                        <td><span
+                                                th:text="${#temporals.format(member.memberCreatedAt, 'yyyy년 MM월 dd일')}"></span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge text-bg-danger"
+                                                  th:text="${member.memberStatusName}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${member.email}"></span>
+                                        </td>
+                                        <td style="width: 20%;">
+                                            <a th:href="@{|/admin/members/block/${member.memberNo}/info|}"
+                                               style="text-decoration-line: none; color: black;"
+                                               class="table-link text-warning">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                             </span>
-                                                </a>
-                                                <a href="#" class="table-link text-info">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-unlock fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <th:block th:include="component/pageFooter"></th:block>
         </div>
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
+</div>
 </body>
 </html>

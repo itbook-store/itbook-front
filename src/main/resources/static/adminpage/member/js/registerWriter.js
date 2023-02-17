@@ -6,6 +6,9 @@ function registerWriter() {
     }
 
     const name = findName();
+
+    console.log(name);
+
     const getData = () => {
         name.then((isExists) => {
             if(isExists === false) {
@@ -13,7 +16,7 @@ function registerWriter() {
                 return false;
             } else {
                 alert("성공적으로 작가 등록을 마쳤습니다.");
-                document.getElementById('registerWriterForm').submit();
+                //document.getElementById('registerWriterForm').submit();
             }
         });
     };
@@ -37,6 +40,8 @@ async function findName() {
         .then(data => {
             isExists = data.isExists;
         });
+
+    console.log(isExists);
 
     return isExists;
 }

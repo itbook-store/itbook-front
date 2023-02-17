@@ -5,7 +5,8 @@
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원 통계</title>
+    <link rel="stylesheet" type="text/css" href="/adminpage/member/css/adminMemberDetail.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -21,14 +22,46 @@
 <div layout:fragment="content">
     <div class="content">
         <h2>회원 통계</h2>
-        <hr>
-        정상회원 : <span th:text="${normalCount}"></span>명<br>
-        차단회원 : <span th:text="${count.getBlockMemberCount()}"></span>명<br>
-        탈퇴회원 : <span th:text="${count.getWithdrawMemberCount()}"></span>명<br><br>
 
         <input type="hidden" id="normalCount" th:value="${normalCount}">
         <input type="hidden" id="blockCount" th:value="${count.getBlockMemberCount()}">
         <input type="hidden" id="withdrawCount" th:value="${count.getWithdrawMemberCount()}">
+
+        <div class="tab-pane fade in active show" id="profile-about">
+            <!-- begin table -->
+            <div class="table-responsive">
+                <table class="table table-profile">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="highlight">
+                        <td class="field">정상회원</td>
+                        <td><span th:text="${normalCount}"></span>명</td>
+                    </tr>
+                    <tr class="divider">
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="field">차단회원</td>
+                        <td><span th:text="${count.getBlockMemberCount()}"></span>명</td>
+                    </tr>
+                    <tr>
+                        <td class="field">탈퇴회원</td>
+                        <td><span th:text="${count.getWithdrawMemberCount()}"></span>명</td>
+                    </tr>
+                    <tr class="divider">
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- end table -->
+            <hr>
+        </div>
 
         <div class="container">
             <div class="row my-3">

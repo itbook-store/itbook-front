@@ -44,7 +44,6 @@ function showProductSubMenu(eventTarget) {
                 </a>
             </button>
         `;
-
 }
 
 function selectHowToShowCoupon(eventTarget) {

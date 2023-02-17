@@ -280,6 +280,7 @@
         <div>
             <p></p>
             <h4>상품 문의</h4>
+            <button sec:authorize="isAuthenticated()" class="btn btn-primary" th:onclick="|location.href= '@{/product-inquiries/{memberNo}/{productNo}/add(memberNo=${memberNo}, productNo = ${product.productNo})}'|">문의하기</button>
             <hr>
             <div>
                 <div class="container bootstrap snippets bootdey">
@@ -316,13 +317,13 @@
                                                     <span th:text="${productInquiry.memberId}"></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <button th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
+                                                    <button sec:authorize="!hasAuthority('ADMIN')" th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
                                                             class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                         상세보기
                                                     </button>
                                                     <div sec:authorize="hasAuthority('ADMIN')">
-                                                        <button th:if="${productInquiry.isPublic} == false"
+                                                        <button
                                                                 class="btn btn-primary"
                                                                 th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                             상세보기
@@ -470,7 +471,16 @@
 
         }
     </script>
-
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: failMessage,
+                text: '다시 시도해 주세요!',
+            })
+        }
+    </script>
 </div>
 </body>
 </html>

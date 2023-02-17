@@ -116,8 +116,14 @@ public class HomeController {
 
         Long recentlyPoint =
             memberService.findMemberRecentlyPoint(userDetailsDto.getMemberNo()).getRemainedPoint();
+
+        Boolean isWriter = memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter();
+        String name = memberService.findMember(userDetailsDto.getMemberNo()).getName();
+
         model.addAttribute("memberId", userDetailsDto.getMemberId());
         model.addAttribute("recentlyPoint", recentlyPoint);
+        model.addAttribute("isWriter", isWriter);
+        model.addAttribute("name", name);
 
         return "mypage/index";
     }
