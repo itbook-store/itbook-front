@@ -4,12 +4,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
+    <meta charset="UTF-8">
+    <title>관리자페이지 - 구독 주문 목록</title>
+
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
 
-    <meta charset="UTF-8">
-    <title>관리자 페이지 - 주문 목록</title>
+    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+
 </head>
 <body>
+
 <div layout:fragment="content">
     <div class="container bootstrap snippets bootdey">
         <div class="row" style="margin-top: 45.5px">
@@ -24,9 +28,10 @@
                                     <th><span>제품명</span></th>
                                     <th><span>주문일자</span></th>
                                     <th><span>수령인</span></th>
-                                    <th><span>상태</span></th>
-                                    <th><span>송장번호</span></th>
+                                    <th style="text-align: center"><span>상태</span></th>
+                                    <th style="text-align: center"><span>송장번호</span></th>
                                     <th><span>회원 ID</span></th>
+                                    <th style="text-align: center">구독기간</th>
                                     <th>상세</th>
                                     <th>주문취소</th>
                                 </tr>
@@ -43,11 +48,11 @@
                                     <td>
                                         <span th:text="${ord.recipientName}"></span>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center">
                                             <span class="badge text-bg-primary"
                                                   th:text="${ord.orderStatus}"></span>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center">
                                             <span th:if="${ord.trackingNo == null}">
                                                 미발급
                                             </span>
@@ -58,6 +63,9 @@
                                                 비회원
                                             </span>
                                         <span th:text="${ord.memberId}"></span>
+                                    </td>
+                                    <td style="text-align: center; font-weight: bold">
+                                        <p style="margin: 0 !important;" th:text="${ord.subscriptionPeriod}"></p>
                                     </td>
                                     <td style="width: 5%;">
                                             <span class="fa-stack">
@@ -157,5 +165,6 @@
     </script>
     <th:block th:include="component/pageFooter"></th:block>
 </div>
+
 </body>
 </html>

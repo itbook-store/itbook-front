@@ -29,4 +29,12 @@ public class OrderAdminController {
 
         return "adminpage/order/admin-order-list";
     }
+
+    @GetMapping("/list/subscription")
+    public String adminSubscriptionOrderListPage(@PageableDefault Pageable pageable, Model model) {
+
+        model.addAttribute("pageResponse", orderService.orderSubscriptionListByAdmin(pageable));
+
+        return "adminpage/order/order-subscription-list";
+    }
 }

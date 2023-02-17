@@ -14,6 +14,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderProductDetailResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
 /**
@@ -72,5 +73,19 @@ public class OrderController {
         model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mypage/order/orderDetailsForm";
+    }
+
+    @GetMapping("/mypage/list/subscription")
+    public String subscriptionOrderListByMember(@PageableDefault Pageable pageable,
+                                                @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                                Model model) {
+
+        PageResponse<OrderSubscriptionListDto> pageResponse =
+            orderService.orderSubscriptionListByMember(pageable, userDetailsDto.getMemberNo());
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/orders/mypage/list/subscription");
+
+        return "mypage/order/my-subscription-list";
     }
 }
