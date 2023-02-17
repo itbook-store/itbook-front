@@ -70,17 +70,17 @@ public class OrderController {
     }
 
     @GetMapping("/details/{orderNo}")
-    public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
+    public String orderDetailsView(@PathVariable("orderNo") String orderNo, Model model) {
 
-        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+//        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+//
+//        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
+//            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
+//
+//        model.addAttribute("orderDetails", orderDetails);
+//        model.addAttribute("totalProductPrice", totalProductPrice);
 
-        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
-            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
-
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("totalProductPrice", totalProductPrice);
-
-        return "mypage/order/orderDetailsForm";
+        return "mypage/order/orderCompletionForm";
     }
 
     @GetMapping("/mypage/list/subscription")
