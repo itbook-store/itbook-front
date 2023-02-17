@@ -405,7 +405,7 @@ pointApplyBtn.addEventListener("click", function () {
 
             this.disabled = true;
             document.querySelector("#point_cancel_btn").disabled = false;
-
+            document.querySelector("#point_apply_input").readOnly = true;
 
 
             // if (myPoint >= orderRealAmountPrice) {
@@ -467,6 +467,7 @@ pointCancelBtn.addEventListener("click", function () {
 
             pointApplyInput.value = '';
             document.querySelector("#point_apply_btn").disabled = false;
+            document.querySelector("#point_apply_input").readOnly = false;
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
