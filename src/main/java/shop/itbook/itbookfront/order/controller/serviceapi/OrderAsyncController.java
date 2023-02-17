@@ -54,8 +54,14 @@ public class OrderAsyncController {
         if (Objects.nonNull(userDetailsDto)) {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
+        OrderPaymentDto orderPaymentDto = null;
+        try {
+            orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
+        } catch (BadRequestException e) {
 
-        return orderService.addOrder(orderAddRequestDto, memberNo);
+        }
+
+        return orderPaymentDto;
     }
 
     /**

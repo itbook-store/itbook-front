@@ -221,7 +221,7 @@
                                 <input type="number"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                        name="decreasePoint"
-                                       id="point_apply_input" value=0 >
+                                       id="point_apply_input" value=0>
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>
@@ -243,7 +243,7 @@
 
                     <p class="product_amount_plainText">총 배송비</p>
                     <p id="deliveryFee" class="product_delivery_price">3,000</p>
-<!--                    <p id="delveryFee" class="product_delivery_price" th:text="${deliveryFee}">3,000</p>-->
+                    <!--                    <p id="delveryFee" class="product_delivery_price" th:text="${deliveryFee}">3,000</p>-->
                     <p class="product_amount_plainText">원</p>
 
                     <i class="fa-solid fa-minus"></i>
@@ -499,7 +499,7 @@
                 i++;
             }
 
-            if(document.getElementById("point_apply_input") != null) {
+            if (document.getElementById("point_apply_input") != null) {
                 decreasePoint = document.getElementById("point_apply_input").value;
             }
 
@@ -543,21 +543,20 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.isSuccess) {
-                        doPaymentProcessByCard(data.result);
-                        return;
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
                     }
-                    Swal.fire({
-                        icon: 'warning',
-                        title: data.result,
-                    })
+                    response.json()
                 })
-                .catch(function (error) {
-                    
+                .then(data => {
+                    doPaymentProcessByCard(data.result);
+                })
+                .catch(error  => {
+                    Swal.fire('error','구독결제 실패! 주문등록 실패!');
                 })
         }
+
 
         async function createOrderForPayment(orderAddRequestDto) {
 
@@ -569,9 +568,16 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
+                    }
+                    response.json()})
                 .then(data => {
                     doPaymentProcessByCard(data);
+                })
+                .catch(error  => {
+                    Swal.fire('error','결제 실패, 주문등록 실패!');
                 })
         }
 
@@ -585,9 +591,16 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
+                    }
+                    response.json()})
                 .then(data => {
                     doPaymentProcessByCard(data);
+                })
+                .catch(error  => {
+                    Swal.fire('error','결제 실패, 주문등록 실패!');
                 })
         }
 
