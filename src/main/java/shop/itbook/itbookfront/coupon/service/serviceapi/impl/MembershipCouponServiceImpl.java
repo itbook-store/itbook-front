@@ -18,7 +18,7 @@ public class MembershipCouponServiceImpl implements MembershipCouponService{
     private final MembershipCouponAdaptor membershipCouponAdaptor;
 
     @Override
-    public List<MembershipCouponResponseDto> findAvailableMembershipCoupon(String membershipCouponListUrl){
+    public List<List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl){
 
         return membershipCouponAdaptor.getUserAllCouponIssueList(membershipCouponListUrl);
     }
