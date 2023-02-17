@@ -44,7 +44,6 @@ function showProductSubMenu(eventTarget) {
                 </a>
             </button>
         `;
-
 }
 
 function selectHowToShowCoupon(eventTarget) {
@@ -122,6 +121,28 @@ function selectWriterSideMenu(eventTarget) {
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
                 <a href="/admin/members/register/writer" style="text-decoration: none; color:inherit;">
                     작가등록
+                </a>
+            </button>
+        `;
+}
+
+function selectOrderSideMenu(eventTarget) {
+    eventTarget.outerHTML =
+        `
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    주문 관리
+            </button><br/>
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
+                <a href="/admin/orders/list" style="text-decoration: none; color:inherit;">
+                    일반상품 주문 관리
+                </a>
+            </button>
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
+                <a href="/admin/orders/list/subscription" style="text-decoration: none; color:inherit;">
+                    구독상품 주문 관리
                 </a>
             </button>
         `;

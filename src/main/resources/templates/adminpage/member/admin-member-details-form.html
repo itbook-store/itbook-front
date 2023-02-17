@@ -19,7 +19,7 @@
                         <tr>
                             <th></th>
                             <th>
-                                <h2 th:text="${member.memberId}"><small>Lorraine Stokes</small></h2>
+                                <h2 th:text="${member.memberId}"></h2>
                             </th>
                         </tr>
                         </thead>
@@ -72,6 +72,9 @@
                             <td class="field">이메일</td>
                             <td><span th:text="${member.email}"></span></td>
                         </tr>
+                        <tr class="divider">
+                            <td colspan="2"></td>
+                        </tr>
                         <tr>
                             <td class="field">회원등급</td>
                             <td>
@@ -108,6 +111,7 @@
                     </table>
                 </div>
                 <!-- end table -->
+                <hr>
             </div>
             <div th:if="${member.memberStatusName} != '차단회원'">
                 <div th:if="${member.memberStatusName} != '탈퇴회원'">

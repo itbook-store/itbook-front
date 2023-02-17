@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.coupon.controller.serviceapi;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,8 +33,12 @@ public class CouponIssueController {
     @GetMapping("/all")
     public String findAllCouponIssueListByMemberId(Model model,
                                                    @AuthenticationPrincipal UserDetailsDto userDetailsDto,
-                                                   @PageableDefault Pageable pageable){
-
+                                                   @PageableDefault Pageable pageable,
+                                                   RedirectAttributes redirectAttributes){
+        if (Objects.isNull(userDetailsDto)) {
+            redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
         PageResponse<UserCouponIssueListResponseDto> userCouponIssueList =
             couponIssueService.findUserAllCouponIssueList(String.format("/api/coupon-issues/%d?page=%d&size=%d",
                 userDetailsDto.getMemberNo(),pageable.getPageNumber(), pageable.getPageSize()));

@@ -49,7 +49,7 @@ public class CouponMainController {
     @GetMapping("/membership")
     public String couponOfMembership(Model model) {
 
-        List<MembershipCouponResponseDto> membershipCouponList =
+        List<List<MembershipCouponResponseDto>> membershipCouponList =
             membershipCouponService.findAvailableMembershipCoupon(
                 "/api/membership-coupons/list");
 
@@ -57,8 +57,8 @@ public class CouponMainController {
         return DIRECTORY_NAME + "/membership-coupon-event";
     }
 
-    @GetMapping("/download")
-    public String couponDownloadPage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+    @GetMapping("/month/download")
+    public String monthCouponDownloadPage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
                                 @RequestParam("couponNo") Long couponNo,
                                 RedirectAttributes redirectAttributes,
                                 HttpServletRequest request) {
@@ -71,11 +71,35 @@ public class CouponMainController {
             couponIssueService.addCouponIssueByCouponType(
                 String.format("/api/coupon-issues/%d/%d/add", couponNo,
                     userDetailsDto.getMemberNo()));
-        } catch (AlreadyAddedCouponIssueMemberCouponException | UnableToCreateCouponException e) {
+        } catch (BadRequestException e) {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:"+request.getHeader("Referer");
         }
         redirectAttributes.addFlashAttribute("success", true);
         return "redirect:"+request.getHeader("Referer");
     }
+
+    @GetMapping("/membership/download")
+    public String membershipCouponDownloadPage(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                     @RequestParam("couponNo") Long couponNo,
+                                     RedirectAttributes redirectAttributes,
+                                     HttpServletRequest request) {
+        if (Objects.isNull(userDetailsDto)) {
+            redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
+        try {
+
+            couponIssueService.addCouponIssueByCouponType(
+                String.format("/api/membership-coupons/%d/%d/add", couponNo,
+                    userDetailsDto.getMemberNo()));
+        } catch (BadRequestException e) {
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:"+request.getHeader("Referer");
+        }
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:"+request.getHeader("Referer");
+    }
+
 }

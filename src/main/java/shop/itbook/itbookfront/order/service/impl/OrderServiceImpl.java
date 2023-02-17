@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.order.service.impl;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,8 @@ import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionAdminListDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
 /**
@@ -25,6 +28,7 @@ import shop.itbook.itbookfront.order.service.OrderService;
  * @author 정재원
  * @since 1.0
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -143,5 +147,38 @@ public class OrderServiceImpl implements OrderService {
             .build();
 
         return orderAdaptor.findOrderAdminListView(uriComponents.toUri());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void orderPurchaseComplete(Long orderNo) {
+        orderAdaptor.orderPurchaseComplete(orderNo);
+    }
+
+    @Override
+    public PageResponse<OrderSubscriptionAdminListDto> orderSubscriptionListByAdmin(Pageable pageable) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/admin/orders/list/subscription"))
+            .queryParam(String.format("page=%d&size=%d", pageable.getPageNumber(),
+                pageable.getPageSize()))
+            .build();
+
+        return orderAdaptor.orderSubscriptionListByAdmin(uriComponents.toUri());
+    }
+
+    @Override
+    public PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable,
+                                                                                Long memberNo) {
+
+        PageResponse<OrderSubscriptionListDto> pageResponse =
+            orderAdaptor.orderSubscriptionListByMember(pageable, memberNo);
+
+        log.info("pageResponse {}", pageResponse);
+
+        return pageResponse;
     }
 }

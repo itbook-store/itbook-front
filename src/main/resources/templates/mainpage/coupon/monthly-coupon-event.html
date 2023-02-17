@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>쿠폰 다운 페이지</title>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 <body>
@@ -14,9 +13,9 @@
 
     <div class="pull-right pull-top">
         <a th:href="@{/coupons/month}"
-           class="btn btn-coupon-register btn-custom btn-sm align-middle" ><h4 style="margin-top: 10px">이달의 쿠폰</h4></a>
+           class="btn btn-coupon-register btn-custom btn-sm align-middle"><h4 style="margin-top: 10px">이달의 쿠폰</h4></a>
         <a th:href="@{/coupons/membership}"
-           class="btn btn-coupon-register btn-custom btn-sm align-middle" ><h4 style="margin-top: 10px">등급별 쿠폰</h4></a>
+           class="btn btn-coupon-register btn-custom btn-sm align-middle"><h4 style="margin-top: 10px">등급별 쿠폰</h4></a>
     </div>
     <h1 class="main_title"
         style="font-size: 42px; padding-bottom: 10px; border-bottom: solid 3px lightgrey; margin-top:15px; margin-bottom: 30px">
@@ -29,80 +28,98 @@
 
                         <div class="col-md-6 ">
                             <div class="panel widget rounded-lg" style="border:solid lavender; margin-right: 10px">
-                                <div class="row row-table row-flush" >
-
-                                <div class="col-xs-5">
-                                    <picture class="lateral-picture">
-                                        <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
-                                    </picture>
-                                </div>
-                                <div class="col-xs-7 align-middle p-lg">
-                                    <div class="pull-right pull-top">
-                                        <a th:href="@{/coupons/download(couponNo=${coupon.couponNo})}"
-                                           class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
-                                    </div><br>
-                                    <p>
-                                        <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
-                                        th:text="${coupon.name}"></h1>
-                                    </p>
-                                    <p>
-                                    <th:block th:if="${coupon.amount!=0}">
-                                        <span th:text="${coupon.amount} + '원 할인'"></span>
-                                    </th:block>
-                                    <th:block th:if="${coupon.percent!=0}">
-                                        <span th:text="${coupon.percent} +'% 할인'"></span>
-                                    </th:block>
-                                    <th:block th:if="${coupon.point!=0}">
-                                        <span th:text="${coupon.point} + ' 포인트 적립'"></span>
-                                    </th:block>
-                                    </p>
-                                    <p>
-                                        <span th:text="${#temporals.format(coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
-                                        다운 가능
-                                    </p>
-
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 " >
-                            <th:block th:if="${couponStat.index +1 != couponStat.size}">
-
-                            <div class="panel widget rounded-lg" style="border:solid lavenderblush; margin-left: 10px">
-                                    <div class="row row-table row-flush" >
+                                <div class="row row-table row-flush">
 
                                     <div class="col-xs-5">
                                         <picture class="lateral-picture">
-                                            <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png" alt="">
+                                            <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png"
+                                                 alt="">
                                         </picture>
                                     </div>
                                     <div class="col-xs-7 align-middle p-lg">
-                                        <div class="pull-right pull-top">
-                                            <a th:href="@{/coupons/download(couponNo=${couponList[couponStat.index+1].couponNo})}"
-                                               class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
-                                        </div><br>
+                                        <div class="d-flex justify-content-between">
+                                            <div th:if="${coupon.totalQuantity} != 0 and ${coupon.totalQuantity} == ${coupon.issuedQuantity}">
+                                                <b class="btn btn-coupon-register btn-secondary btn-sm">재고소진</b>
+                                            </div>
+                                            <div th:unless="${coupon.totalQuantity} != 0 and ${coupon.totalQuantity} == ${coupon.issuedQuantity}">
+                                            </div>
+                                            <div>
+                                                <a th:href="@{/coupons/month/download(couponNo=${coupon.couponNo})}"
+                                                   class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
+                                            </div>
+                                        </div>
                                         <p>
                                         <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
-                                            th:text="${couponList[couponStat.index+1].name}"></h1>
+                                            th:text="${coupon.name}"></h1>
                                         </p>
                                         <p>
-                                        <th:block th:if="${couponList[couponStat.index+1].amount!=0}">
-                                            <span th:text="${couponList[couponStat.index+1].amount} + '원 할인'"></span>
-                                        </th:block>
-                                        <th:block th:if="${couponList[couponStat.index+1].percent!=0}">
-                                            <span th:text="${couponList[couponStat.index+1].percent} +'% 할인'"></span>
-                                        </th:block>
-                                        <th:block th:if="${couponList[couponStat.index+1].point!=0}">
-                                            <span th:text="${couponList[couponStat.index+1].point} + ' 포인트 적립'"></span>
-                                        </th:block>
+                                            <th:block th:if="${coupon.amount!=0}">
+                                                <span th:text="${coupon.amount} + '원 할인'"></span>
+                                            </th:block>
+                                            <th:block th:if="${coupon.percent!=0}">
+                                                <span th:text="${coupon.percent} +'% 할인'"></span>
+                                            </th:block>
+                                            <th:block th:if="${coupon.point!=0}">
+                                                <span th:text="${coupon.point} + ' 포인트 적립'"></span>
+                                            </th:block>
                                         </p>
                                         <p>
                                             <span th:text="${#temporals.format(coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
                                             다운 가능
                                         </p>
+
                                     </div>
                                 </div>
+                            </div>
                         </div>
+                        <div class="col-md-6 ">
+                            <th:block th:if="${couponStat.index +1 != couponStat.size}">
+
+                                <div class="panel widget rounded-lg"
+                                     style="border:solid lavenderblush; margin-left: 10px">
+                                    <div class="row row-table row-flush">
+
+                                        <div class="col-xs-5">
+                                            <picture class="lateral-picture">
+                                                <img src="https://icons.veryicon.com/png/256/business/pdf-dedicated-color-e-commerce-icon/coupon-4.png"
+                                                     alt="">
+                                            </picture>
+                                        </div>
+                                        <div class="col-xs-7 align-middle p-lg">
+                                            <div class="d-flex justify-content-between">
+                                                <div th:if="${coupon.totalQuantity} != 0 and ${coupon.totalQuantity} == ${coupon.issuedQuantity}">
+                                                    <b class="btn btn-coupon-register btn-secondary btn-sm">재고소진</b>
+                                                </div>
+                                                <div th:unless="${coupon.totalQuantity} != 0 and ${coupon.totalQuantity} == ${coupon.issuedQuantity}">
+                                                </div>
+                                                <div>
+                                                    <a th:href="@{/coupons/month/download(couponNo=${couponList[couponStat.index+1].couponNo})}"
+                                                       class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <p>
+                                            <h1 style="font-weight: bold; font-size: 20px; padding-bottom: 5px; border-bottom: solid 2px lavender; margin-top:10px; margin-bottom:5px"
+                                                th:text="${couponList[couponStat.index+1].name}"></h1>
+                                            </p>
+                                            <p>
+                                                <th:block th:if="${couponList[couponStat.index+1].amount!=0}">
+                                                    <span th:text="${couponList[couponStat.index+1].amount} + '원 할인'"></span>
+                                                </th:block>
+                                                <th:block th:if="${couponList[couponStat.index+1].percent!=0}">
+                                                    <span th:text="${couponList[couponStat.index+1].percent} +'% 할인'"></span>
+                                                </th:block>
+                                                <th:block th:if="${couponList[couponStat.index+1].point!=0}">
+                                                    <span th:text="${couponList[couponStat.index+1].point} + ' 포인트 적립'"></span>
+                                                </th:block>
+                                            </p>
+                                            <p>
+                                                <span th:text="${#temporals.format(coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
+                                                다운 가능
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </th:block>
                         </div>
                     </div>
@@ -114,22 +131,21 @@
 
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
+
         if (failMessage != null) {
-            swal(
-                '쿠폰을 받을 수 없습니다!',
-                `${failMessage}`,
-                'warning'
-            );
+            Swal.fire({
+                icon: 'warning',
+                title: failMessage,
+                text: '쿠폰을 받을 수 없습니다!',
+            })
         }
-    </script>
-    <script th:inline="javascript">
         let success = [[${success}]];
         if (success === true) {
-            swal(
-                '쿠폰 다운로드 완료!',
-                `쿠폰함에서 확인 가능합니다.`,
-                'success'
-            );
+            Swal.fire({
+                icon: 'success',
+                title: '쿠폰 다운로드 완료!',
+                text: `쿠폰함에서 확인 가능합니다.`,
+            })
         }
     </script>
 </div>

@@ -3,11 +3,11 @@ table {
 }
 
 table, tr, td {
-    text-align: center;
+    text-align: start;
 }
 
 th {
-    text-align: center;
+    text-align: start;
 }
 
 td {

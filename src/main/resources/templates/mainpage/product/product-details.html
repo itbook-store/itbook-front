@@ -23,6 +23,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="/bookmark/js/bookmarkAdd.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
 
 </head>
 <body>
@@ -144,8 +151,7 @@
                                         <div class="modal-body">비회원으로 주문하시겠습니까?</div>
                                         <div class="modal-footer">
                                             <a th:if="!${product.isSubscription}" class="btn btn-info" id="modalY">예</a>
-                                            <a th:if="${product.isSubscription}" class="btn btn-info"
-                                               id="modalSubsY">예</a>
+                                            <a th:if="${product.isSubscription}" class="btn btn-info" id="modalSubsY">예</a>
                                             <a class="btn btn-dark block" id="modalN" type="button"
                                                data-dismiss="modal">취소</a>
                                         </div>
@@ -238,39 +244,62 @@
         <th:block th:include="component/pageFooter"></th:block>
     </section>
 
-    <section class="mt-3">
-        <div class="container">
-            <div class="container bootstrap snippets bootdey">
-                <h4>도서 리뷰</h4>
-                별점 : <span th:if="${reviewPageResponse.getContent().size() != 0}" th:text="${avgStarPoint}"></span>
-                <span th:if="${reviewPageResponse.getContent().size() == 0}">0</span> / 5
-                <hr>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="main-box no-header clearfix">
-                            <div class="main-box-body clearfix">
-                                <div class="table-responsive">
-                                    <table th:if="${not #lists.isEmpty(reviewPageResponse.content)}" class="table user-list">
-                                        <thead>
-                                        <tr>
-                                            <th><span>사진</span></th>
-                                            <th><span>내용</span></th>
-                                            <th><span>별점</span></th>
-                                            <th><span></span></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr  th:each="review : ${reviewPageResponse.getContent()}">
-                                            <td class="text-center"><img width="100px;" th:src="${review.image}">
-                                            </td>
-                                            <td><span th:text="${review.content}"></span></td>
-                                            <td><span th:text="${review.starPoint}"></span> / 5</td>
-                                            <td>
-                                                <button class="btn btn-primary"
-                                                        th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
-                                                    상세보기
-                                                </button>
-                                            </td>
+    <section>
+        <div>
+            <p></p>
+            <h4>상품 리뷰</h4>
+            <div id="starAvg">
+                <span class="fa fa-star" id="star1"></span>
+                <span class="fa fa-star" id="star2"></span>
+                <span class="fa fa-star" id="star3"></span>
+                <span class="fa fa-star" id="star4"></span>
+                <span class="fa fa-star" id="star5"></span>
+            </div>
+            <hr>
+            <div>
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box no-header clearfix">
+                                <div class="main-box-body clearfix">
+                                    <div class="table-responsive">
+                                        <table class="table user-list" style="margin-left:auto; margin-right:auto;">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-left"><span>사진</span></th>
+                                                <th><span>내용</span></th>
+                                                <th><span>별점</span></th>
+                                                <th class="text-right"><span>작성자</span></th>
+                                                <th class="text-center"><span></span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="review : ${reviewPageResponse.getContent()}">
+                                                <td class="text-center"><img style="text-align: center;" width="100px;" th:src="${review.image}">
+                                                </td>
+                                                <td style="width: 20%;"><span th:text="${review.content}"></span></td>
+                                                <td><div id="individualStar">
+                                                        <span class="fa fa-star" id="individualStar1"></span>
+                                                        <span class="fa fa-star" id="individualStar2"></span>
+                                                        <span class="fa fa-star" id="individualStar3"></span>
+                                                        <span class="fa fa-star" id="individualStar4"></span>
+                                                        <span class="fa fa-star" id="individualStar5"></span>
+                                                    </div>
+                                                    <script>
+                                                        if($('#individualStar') && [[${reviewPageResponse.getContent().size()}]] > 0) {
+                                                            for(let i = 1; i <= [[${review.starPoint}]]; i++) {
+                                                                document.getElementById('individualStar' + String(i)).className += ' checked';
+                                                            }
+                                                        }
+                                                    </script>
+                                                    </td>
+                                                <td class="text-right"><span th:text="${review.memberId}"></span></td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-primary"
+                                                            th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
+                                                        상세보기
+                                                    </button>
+                                                </td>
 
                                         </tr>
                                         </tbody>
@@ -290,6 +319,7 @@
         <div class="container">
             <p></p>
             <h4>상품 문의</h4>
+            <button sec:authorize="isAuthenticated()" class="btn btn-primary" th:onclick="|location.href= '@{/product-inquiries/{memberNo}/{productNo}/add(memberNo=${memberNo}, productNo = ${product.productNo})}'|">문의하기</button>
             <hr>
             <div>
                 <div class="container bootstrap snippets bootdey">
@@ -298,7 +328,8 @@
                             <div class="main-box no-header clearfix">
                                 <div class="main-box-body clearfix">
                                     <div class="table-responsive">
-                                        <table th:if="${not #lists.isEmpty(productInquiryPageResponse.content)}"> class="table user-list">
+                                        <table th:if="${not #lists.isEmpty(productInquiryPageResponse.content)}"
+                                               style="margin-left:auto; margin-right:auto;" class="table user-list">
                                             <thead>
                                             <tr>
                                                 <th class="text-left"><span>답변여부</span></th>
@@ -326,13 +357,13 @@
                                                     <span th:text="${productInquiry.memberId}"></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <button th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
+                                                    <button sec:authorize="!hasAuthority('ADMIN')" th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
                                                             class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                         상세보기
                                                     </button>
                                                     <div sec:authorize="hasAuthority('ADMIN')">
-                                                        <button th:if="${productInquiry.isPublic} == false"
+                                                        <button
                                                                 class="btn btn-primary"
                                                                 th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                             상세보기
@@ -498,7 +529,23 @@
 
         }
     </script>
-
+    <script th:inline="javascript">
+        let failMessage = [[${failMessage}]];
+        if (failMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: failMessage,
+                text: '다시 시도해 주세요!',
+            })
+        }
+    </script>
+    <script>
+        if($('#starAvg') && [[${reviewPageResponse.getContent().size()}]] > 0) {
+            for(let i = 1; i <= [[${avgStarPoint}]]; i++) {
+                document.getElementById('star' + String(i)).className += ' checked';
+            }
+        }
+    </script>
 </div>
 </body>
 </html>

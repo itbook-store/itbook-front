@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.payment.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -12,8 +13,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class PaymentCardResponseDto {
 
     private String cardSerialNo;
+    private String cardType;
     private Long totalAmount;
+    private String paymentStatus;
 }

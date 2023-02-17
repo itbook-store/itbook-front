@@ -7,13 +7,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div>
         <p></p>
         <h2>작성한 리뷰</h2>
-        <hr>
         <table class="table">
             <thead>
             <tr>
@@ -29,14 +35,26 @@
             </tbody>
         </table>
         <hr>
-        별점 : <span th:text="${reviewResponseDto.starPoint}"></span> / 5<br><br>
+        <div id="star">
+            <span class="fa fa-star fa-2xl" id="star1"></span>
+            <span class="fa fa-star fa-2xl" id="star2"></span>
+            <span class="fa fa-star fa-2xl" id="star3"></span>
+            <span class="fa fa-star fa-2xl" id="star4"></span>
+            <span class="fa fa-star fa-2xl" id="star5"></span>
+        </div>
+        <p>&nbsp;</p>
         <img style="width: 400px;" th:src="${reviewResponseDto.image}"><br>
         <br>
         <h5>내용</h5>
-        <p th:text="${reviewResponseDto.content}"></p>
+        <p style="overflow: auto;" th:text="${reviewResponseDto.content}"></p>
         <br><br><br>
         <button class="btn btn-dark" onclick="history.back()">뒤로가기</button>
     </div>
+    <script>
+        for(let i = 1; i <= [[${reviewResponseDto.starPoint}]]; i++) {
+            document.getElementById('star' + String(i)).className += ' checked';
+        }
+    </script>
 </div>
 </body>
 </html>

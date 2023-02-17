@@ -21,4 +21,6 @@ public class CouponListResponseDto {
     private Long point;
     private LocalDateTime couponCreatedAt;
     private LocalDateTime couponExpiredAt;
+    private Integer totalQuantity;
+    private Integer issuedQuantity;
 }

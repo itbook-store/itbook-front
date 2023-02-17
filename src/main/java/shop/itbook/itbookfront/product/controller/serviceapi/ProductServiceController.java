@@ -198,6 +198,7 @@ public class ProductServiceController {
                     memberService.findMember(userDetailsDto.getMemberNo()).getName());
                 model.addAttribute("memberIsWriter",
                     memberService.findMember(userDetailsDto.getMemberNo()).getIsWriter());
+                model.addAttribute("memberNo", userDetailsDto.getMemberNo());
             }
             PageResponse<ProductInquiryResponseDto> productInquiryResponse =
                 productInquiryService.findProductInquiryListByProductNo(

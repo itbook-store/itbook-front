@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import shop.itbook.itbookfront.payment.dto.response.PaymentCardResponseDto;
@@ -13,11 +14,18 @@ import shop.itbook.itbookfront.payment.dto.response.PaymentCardResponseDto;
 @Getter
 public class OrderDetailsResponseDto {
 
+    private Long orderNo;
     private List<OrderProductDetailResponseDto> orderProductDetailResponseDtoList;
-    private List<OrderDestinationDto> orderDestinationDtoList;
+    private OrderDestinationDto orderDestinationDto;
     private PaymentCardResponseDto paymentCardResponseDto;
     private String orderStatus;
+    private LocalDateTime orderCreatedAt;
+    private Long deliveryFee;
+    private String trackingNo;
 
-
+//    private String couponType;
+//    private String couponName;
+//    private LocalDateTime couponUsageCreatedAt;
+//    private LocalDateTime couponIssueCreatedAt;
     // TODO: 2023/02/10 포인트, 쿠폰 관련 정보
 }

@@ -218,11 +218,10 @@
                                 <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                             </div>
                             <div class="point_apply_box">
-                                <input type="text"
+                                <input type="number"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                        name="decreasePoint"
-                                       id="point_apply_input"
-                                >
+                                       id="point_apply_input" value="0">
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>
@@ -233,7 +232,6 @@
                         </th:block>
                     </div>
                 </div>
-
 
                 <div class="product_amount_box">
                     <p class="product_amount_plainText">주문상품금액</p>
@@ -514,7 +512,7 @@
                 "recipientAddressDetails": document.getElementsByName("recipientAddressDetails")[0].value,
                 "selectedDeliveryDate": document.getElementsByName("selectedDeliveryDate")[0].value,
                 "deliveryFee": 0,
-                "isSubscription": temp.subscriptionPeriod,
+                "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
                 "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
@@ -536,8 +534,6 @@
 
         async function orderSubscription(orderAddRequestDto) {
 
-            console.log("제발제발제발요");
-
             await fetch(`/async/orders/subscription/payment-start`, {
 
                 method: "POST",
@@ -548,7 +544,14 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    doPaymentProcessByCard(data);
+                    if(data.isSuccess) {
+                        doPaymentProcessByCard(data.result);
+                        return;
+                    }
+                    Swal.fire({
+                        icon: 'warning',
+                        title: data.result,
+                    })
                 })
         }
 

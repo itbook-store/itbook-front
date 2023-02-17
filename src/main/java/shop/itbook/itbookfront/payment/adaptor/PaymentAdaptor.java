@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.payment.dto.request.PaymentApproveRequestDto;
@@ -43,7 +42,6 @@ public class PaymentAdaptor {
                 gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay/" + orderNo,
                 HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                 });
-
         return Objects.requireNonNull(response.getBody()).getResult();
     }
 

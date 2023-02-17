@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/mypage/default-layout}">
+      layout:decorate="~{layout/mainpage/default-layout}">
 <head>
     <meta charset="UTF-8">
     <title>상품문의 상세보기</title>
@@ -11,16 +11,34 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="content">
-        <h2>작성한 상품문의</h2>
-        <hr>
-        <hr>
-        <h5>제목</h5>
-        <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
-        <h5>내용</h5>
-        <p th:text="${productInquiryResponseDto.content}"></p>
+    <div class="content" style="overflow-x: hidden;
+    overflow-y: auto;">
         <p></p>
+        <h2>상품문의</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>상품명</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center"><img width="100px;" th:src="${productInquiryResponseDto.thumbnailUrl}"></td>
+                <td th:text="${productInquiryResponseDto.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <h4>제목</h4>
+        <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
+        <p>&nbsp;</p>
+        <h4>내용</h4>
+        <p th:text="${productInquiryResponseDto.content}"></p>
+        <p></p><br>
         <div>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
             <h2>문의 답변</h2>
             <hr>
             <div>

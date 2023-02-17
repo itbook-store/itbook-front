@@ -23,10 +23,12 @@
         등급별 쿠폰</h1>
     <div class="container">
         <div class="row">
-            <th:block th:each="membershipCoupon : ${membershipCouponList}">
-                <div th:if="${membershipCouponStat.index%3==0}" class="panel widget">
-                    <div class="row row-table row-flush">
+            <th:block th:each="couponList : ${membershipCouponList}">
+                <th:block th:each="membershipCoupon : ${couponList}">
+                    <h4 th:text="${membershipCoupon.membershipGrade}"></h4>
 
+                    <div th:if="${membershipCouponStat.index%3==0}" class="panel widget">
+                    <div class="row row-table row-flush">
                         <div class="col-md-4 ">
                             <div class="panel widget rounded-lg" style="border:solid lavender; margin-right: 10px">
                                 <div class="row row-table row-flush">
@@ -38,7 +40,7 @@
                                     </div>
                                     <div class="col-xs-7 align-middle p-lg">
                                         <div class="pull-right pull-top">
-                                            <a th:href="@{/coupons/download(couponNo=${membershipCoupon.coupon.couponNo})}"
+                                            <a th:href="@{/coupons/membership/download(couponNo=${membershipCoupon.coupon.couponNo})}"
                                                class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
                                         </div>
                                         <br>
@@ -80,7 +82,7 @@
                                         </div>
                                         <div class="col-xs-7 align-middle p-lg">
                                             <div class="pull-right pull-top">
-                                                <a th:href="@{/coupons/download(couponNo=${membershipCouponList[membershipCouponStat.index+1].coupon.couponNo})}"
+                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+1].coupon.couponNo})}"
                                                    class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
                                             </div>
                                             <br>
@@ -122,7 +124,7 @@
                                         </div>
                                         <div class="col-xs-7 align-middle p-lg">
                                             <div class="pull-right pull-top">
-                                                <a th:href="@{/coupons/download(couponNo=${membershipCouponList[membershipCouponStat.index+2].coupon.couponNo})}"
+                                                <a th:href="@{/coupons/membership/download(couponNo=${membershipCouponList[membershipCouponStat.index+2].coupon.couponNo})}"
                                                    class="btn btn-coupon-register btn-primary btn-sm">다운로드</a>
                                             </div>
                                             <br>
@@ -154,27 +156,28 @@
                 </div>
                 <!-- END widget-->
             </th:block>
+            </th:block>
         </div>
+
     </div>
 
     <script th:inline="javascript">
         let failMessage = [[${failMessage}]];
+
         if (failMessage != null) {
-            swal(
-                '쿠폰을 받을 수 없습니다!',
-                `${failMessage}`,
-                'warning'
-            );
+            Swal.fire({
+                icon: 'warning',
+                title: failMessage,
+                text: '쿠폰을 받을 수 없습니다!',
+            })
         }
-    </script>
-    <script th:inline="javascript">
         let success = [[${success}]];
         if (success === true) {
-            swal(
-                '쿠폰 다운로드 완료!',
-                `쿠폰함에서 확인 가능합니다.`,
-                'success'
-            );
+            Swal.fire({
+                icon: 'success',
+                title: '쿠폰 다운로드 완료!',
+                text: `쿠폰함에서 확인 가능합니다.`,
+            })
         }
     </script>
 </div>
