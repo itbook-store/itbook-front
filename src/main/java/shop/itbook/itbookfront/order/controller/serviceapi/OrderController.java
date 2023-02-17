@@ -66,7 +66,7 @@ public class OrderController {
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("totalProductPrice", totalProductPrice);
 
-        return "mainpage/order/orderDetailsForm";
+        return "mainpage/order/orderCompletionForm";
     }
 
     @GetMapping("/details/{orderNo}")
@@ -80,7 +80,7 @@ public class OrderController {
 //        model.addAttribute("orderDetails", orderDetails);
 //        model.addAttribute("totalProductPrice", totalProductPrice);
 
-        return "mypage/order/orderCompletionForm";
+        return "mypage/order/orderDetailsForm";
     }
 
     @GetMapping("/mypage/list/subscription")
