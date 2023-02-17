@@ -42,7 +42,6 @@ public class PointHistoryMyDetailsGetController {
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGift(
                     "/api/point-histories/" + pointHistoryNo + "/my-gift-details/member-no/" + userDetailsDto.getMemberNo());
 
-
             model.addAttribute("details", pointHistoryDetailsGiftResponseDto);
             model.addAttribute("memberPointHistoryPage", session.getAttribute("memberPointHistoryPage"));
 
