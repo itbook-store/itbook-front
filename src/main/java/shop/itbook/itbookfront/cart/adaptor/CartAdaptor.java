@@ -71,7 +71,7 @@ public class CartAdaptor {
 
         ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> exchange =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/products/" + productNo,
+                gatewayConfig.getGatewayServer() + "/api/admin/products/" + productNo,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
