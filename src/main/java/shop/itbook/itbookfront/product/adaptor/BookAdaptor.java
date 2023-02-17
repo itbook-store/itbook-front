@@ -50,17 +50,10 @@ public class BookAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        try {
-            restTemplate.exchange(
-                gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
-                HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
-                });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
-                throw new InvalidInputException();
-            }
-        }
-
+        restTemplate.exchange(
+            gateway.getGatewayServer() + "/api/admin/products/books/" + productNo,
+            HttpMethod.PUT, uploadEntity, new ParameterizedTypeReference<>() {
+            });
 
     }
 
@@ -77,17 +70,11 @@ public class BookAdaptor {
 
         HttpEntity<?> uploadEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response = null;
-        try {
-            response =
-                restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
-                    HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
-                    });
-        } catch (BadRequestException e) {
-            if (Objects.equals(e.getMessage(), InvalidInputException.MESSAGE)) {
-                throw new InvalidInputException();
-            }
-        }
+        ResponseEntity<CommonResponseBody<ProductNoResponseDto>> response =
+            restTemplate.exchange(gateway.getGatewayServer() + "/api/admin/products/books",
+                HttpMethod.POST, uploadEntity, new ParameterizedTypeReference<>() {
+                });
+
         return Objects.requireNonNull(response.getBody()).getResult().getProductNo();
 
     }

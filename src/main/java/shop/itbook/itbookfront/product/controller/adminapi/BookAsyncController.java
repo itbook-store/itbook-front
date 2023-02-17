@@ -31,23 +31,44 @@ public class BookAsyncController {
 
     @GetMapping
     public SearchBookDetailsDto searchBookDetailsInAladin(@RequestParam String isbn) {
-        SearchBookDetailsDto searchBookDetailsDto =
-            bookService.searchBook("/api/admin/products/books?isbn=" + isbn);
+
+        SearchBookDetailsDto searchBookDetailsDto;
+        try {
+            searchBookDetailsDto =
+                bookService.searchBook("/api/admin/products/books?isbn=" + isbn);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            throw e;
+        }
         return searchBookDetailsDto;
     }
 
     @GetMapping("/exist-db")
     public ProductBooleanResponseDto checkIsbnExistsInDb(@RequestParam String isbn) {
 
-        return bookService.checkIsbnExists(
-            "/api/admin/products/books/check-exist-db?isbn=" + isbn);
+        ProductBooleanResponseDto productBooleanResponseDto;
+        try {
+            productBooleanResponseDto = bookService.checkIsbnExists(
+                "/api/admin/products/books/check-exist-db?isbn=" + isbn);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+        return productBooleanResponseDto;
     }
 
     @GetMapping("/exist-aladin")
     public ProductBooleanResponseDto checkIsbnExistsInAladin(@RequestParam String isbn) {
 
-        return bookService.checkIsbnExists(
-            "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
+        ProductBooleanResponseDto productBooleanResponseDto;
+        try {
+            productBooleanResponseDto = bookService.checkIsbnExists(
+                "/api/admin/products/books/check-exist-aladin?isbn=" + isbn);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+        return productBooleanResponseDto;
     }
 
 }

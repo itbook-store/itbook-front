@@ -41,13 +41,12 @@ public class ProductAsyncController {
         @RequestParam String sortingCriteria, RedirectAttributes redirectAttributes) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
         List<ProductSalesRankResponseDto> content = null;
-
         try {
             content =
                 productService.findSalesRankProductList(pageable, sortingCriteria).getContent();
         } catch (BadRequestException e) {
             log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            throw e;
         }
         return content;
     }
@@ -56,14 +55,13 @@ public class ProductAsyncController {
     public List<CategoryDetailsResponseDto> getCategories(
         @PathVariable Long productNo, RedirectAttributes redirectAttributes) {
         List<CategoryDetailsResponseDto> categoryDetailsResponseDtos = null;
-
         try {
             categoryDetailsResponseDtos = productService.getCategoryList(
                 String.format("/api/admin/products?page=%d&size=%d&productNo=%d",
                     PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT, productNo)).getContent();
         } catch (BadRequestException e) {
             log.error(e.getMessage());
-            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            throw e;
         }
         return categoryDetailsResponseDtos;
     }

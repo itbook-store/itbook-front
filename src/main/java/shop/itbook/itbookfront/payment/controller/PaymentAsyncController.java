@@ -24,10 +24,14 @@ public class PaymentAsyncController {
     @PostMapping("async/payment/cancel")
     public OrderResponseDto requestCancelPayment(
         @RequestBody PaymentCanceledRequestDto paymentCanceledRequestDto) {
-
-        OrderResponseDto orderResponseDto =
-            paymentService.requestCanceledPayment(paymentCanceledRequestDto);
-
+        OrderResponseDto orderResponseDto = null;
+        try {
+            orderResponseDto =
+                paymentService.requestCanceledPayment(paymentCanceledRequestDto);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            throw e;
+        }
         return orderResponseDto;
     }
 }

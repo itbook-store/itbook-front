@@ -104,14 +104,16 @@ public class ProductServiceController {
                                            @RequestParam String productTypeName,
                                            Model model, @PageableDefault Pageable pageable,
                                            RedirectAttributes redirectAttributes) {
+
+        PageResponse<CategoryListResponseDto> pageResponse =
+            categoryService.findCategoryList(
+                String.format("/api/admin/categories?page=%d&size=%d",
+                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+        model.addAttribute("mainCategoryList", mainCategoryList);
+
         try {
-            PageResponse<CategoryListResponseDto> pageResponse =
-                categoryService.findCategoryList(
-                    String.format("/api/admin/categories?page=%d&size=%d",
-                        PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-            List<MainCategory> mainCategoryList =
-                CategoryUtil.getMainCategoryList(pageResponse.getContent());
-            model.addAttribute("mainCategoryList", mainCategoryList);
 
             List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
                 "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
@@ -173,7 +175,7 @@ public class ProductServiceController {
 
             PageResponse<ProductDetailsResponseDto> relationProductList =
                 productService.getProductList(
-                    String.format("/api/products/relation/%d?page=%d&size=%d",
+                    String.format("/api/admin/products/relation/%d?page=%d&size=%d",
                         productNo, pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", relationProductList);
 

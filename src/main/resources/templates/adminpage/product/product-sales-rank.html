@@ -21,17 +21,16 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <h2>상품 판매현황</h2>
-        <hr>
-
         <div class="container">
+            <h2>상품 판매현황</h2>
+            <hr>
             <div class="row my-2">
                 <div class="col-lg-5">
                     <div class="card bg-light mb-3">
                         <div class="card-body">
                             <canvas id="productStatisticsCanceled"></canvas>
                         </div>
-                        <div class="card-footer text-center"><span>취소(건) - 환불 완료, 주문 취소</span>
+                        <div class="card-footer text-center"><span>환불 및 주문 취소(건)</span>
                             <a href="/admin/products/sales-rank?sortingCriteria=취소건"
                                class="btn btn-sm btn-dark">상세보기</a></div>
                     </div>
@@ -41,7 +40,7 @@
                         <div class="card-body">
                             <canvas id="productStatisticsCompleted"></canvas>
                         </div>
-                        <div class="card-footer text-center"><span>완료(건) - 구매 확정</span>
+                        <div class="card-footer text-center"><span>결제 완료(건)</span>
                             <a href="/admin/products/sales-rank?sortingCriteria=완료건"
                                class="btn btn-sm btn-dark">상세보기</a></div>
                     </div>
@@ -53,7 +52,7 @@
                         <div class="card-body">
                             <canvas id="productStatisticsTotalAmount"></canvas>
                         </div>
-                        <div class="card-footer text-center"><span>매출 합계 - 구매 확정</span>
+                        <div class="card-footer text-center"><span>매출 합계</span>
                             <a href="/admin/products/sales-rank?sortingCriteria=매출합계"
                                class="btn btn-sm btn-dark">상세보기</a></div>
                     </div>
@@ -63,7 +62,7 @@
                         <div class="card-body">
                             <canvas id="productStatisticsSellingPrice"></canvas>
                         </div>
-                        <div class="card-footer text-center"><span>판매 금액 - 구매 확정</span>
+                        <div class="card-footer text-center"><span>판매 금액</span>
                             <a href="/admin/products/sales-rank?sortingCriteria=판매금액"
                                class="btn btn-sm btn-dark">상세보기</a></div>
                     </div>
@@ -127,7 +126,7 @@
                 .then(response => response.json())
                 .then(data => {
                     data.some(productList => {
-                        if (canceledProductName.length >= 5) {
+                        if (completedProductName.length >= 5) {
                             return true
                         }
                         completedProductName.push(productList.productName + " (" + productList.productNo + ")");
@@ -221,17 +220,6 @@
                 }
             });
         }
-
-
-            let failMessage = [[${failMessage}]];
-            if (failMessage != null) {
-            swal(
-                '쿠폰을 받을 수 없습니다!',
-                `${failMessage}`,
-                'warning'
-            );
-        }
-
     </script>
 </div>
 </div>
