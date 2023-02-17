@@ -37,6 +37,7 @@ public class PaymentController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return "redirect:/";
         }
         return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
@@ -46,8 +47,8 @@ public class PaymentController {
                                  @RequestParam String orderId, @PathVariable Long orderNo,
                                  RedirectAttributes redirectAttributes) {
 
-        log.error("payment failure! code: {}, message: {}, orderId: {}, orderNo: {}", code, message,
-            orderId, orderNo);
+        log.error("payment failure! code: {}, message: {}, orderId: {}, orderNo: {}",
+            code, message, orderId, orderNo);
         redirectAttributes.addFlashAttribute("failMessage", "결제에 실패하였습니다.");
 
         return "redirect:/";

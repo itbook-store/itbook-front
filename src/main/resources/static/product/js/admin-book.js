@@ -69,6 +69,21 @@ function notSelectEbook() {
     ebookDiv.style.display = "none";
 }
 
+function isValidDate(inputDate) {
+    let dates = inputDate.split('-');
+
+    let yyyy = Number(dates[0]);
+    let mm = Number(dates[1]);
+    let dd = Number(dates[2]);
+
+    if (yyyy > 9999 || mm > 12 || dd > 31) {
+        return false;
+    } else {
+        return true;
+    }
+
+}
+
 async function showSearchResults(event) {
 
     event.preventDefault();
@@ -176,6 +191,8 @@ function addBookSubmit() {
     let isEbookValue = $('input[name="isEbook"]:checked').val();
     let pageCount = document.getElementById("pageCount").value;
     let ebookFile = document.getElementById("fileEbook").value;
+    let thumbnailsFile = document.getElementById("fileThumbnails").value;
+    let inputDate = document.getElementById("bookCreatedAt").value;
 
     console.log(discountPercent);
     console.log(discountPercent.length);
@@ -185,13 +202,18 @@ function addBookSubmit() {
         return false;
     }
 
-    if (!checkStringLengthDownTo255(name)) {
+    if (!checkStringLengthDown(name, 255)) {
         Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
 
-    if (!checkStringLengthDownTo255(simpleDescription)) {
+    if (!checkStringLengthDown(simpleDescription, 255)) {
         Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if(!isValidDate(inputDate)) {
+        Swal.fire('입력 가능한 최대 일자는 31일입니다!', '', 'error');
         return false;
     }
 
@@ -249,6 +271,10 @@ function addBookSubmit() {
         return false;
     }
 
+    if (!thumbnailsFile) {
+        Swal.fire('썸네일 사진은 필수입니다!', '', 'error');
+        return false;
+    }
 
     if (!checkStringLengthDownTo255(authorName)) {
         Swal.fire('저자는 255자 이하여야 합니다!', '', 'error');
@@ -283,6 +309,7 @@ function modifyBookSubmit() {
     let isEbookValue = $('input[name="isEbook"]:checked').val();
     let pageCount = document.getElementById("pageCount").value;
     let ebookFile = document.getElementById("fileEbook").value;
+    let inputDate = document.getElementById("bookCreatedAt").value;
 
     console.log(discountPercent);
     console.log(discountPercent.length);
@@ -292,12 +319,14 @@ function modifyBookSubmit() {
         return false;
     }
 
-    if (!checkStringLengthDownTo255(name)) {
+    if (!checkStringLengthDown(name, 255)) {
+
         Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
 
-    if (!checkStringLengthDownTo255(simpleDescription)) {
+
+    if (!checkStringLengthDown(simpleDescription, 255)) {
         Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
@@ -314,6 +343,11 @@ function modifyBookSubmit() {
             return false;
         }
 
+    }
+
+    if(!isValidDate(inputDate)) {
+        Swal.fire('입력 가능한 최대 일자는 31일입니다!', '', 'error');
+        return false;
     }
 
     if (isEbookValue == "true") {
@@ -356,12 +390,12 @@ function modifyBookSubmit() {
     }
 
 
-    if (!checkStringLengthDownTo255(authorName)) {
+    if (!checkStringLengthDown(authorName, 255)) {
         Swal.fire('저자는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
 
-    if (!checkStringLengthDownTo20(publisherName)) {
+    if (!checkStringLengthDown(publisherName, 20)) {
         Swal.fire('출판사 명은 20자 이하여야 합니다!', '', 'error');
         return false;
     }

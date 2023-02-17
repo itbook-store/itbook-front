@@ -27,7 +27,7 @@ import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 @RequiredArgsConstructor
 public class PaymentAdaptor {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
     public OrderResponseDto requestApprovePayment(
@@ -39,17 +39,10 @@ public class PaymentAdaptor {
         HttpEntity<PaymentApproveRequestDto> httpEntity =
             new HttpEntity<>(requestDto, headers);
         ResponseEntity<CommonResponseBody<OrderResponseDto>> response =
-            null;
-        try {
-            response =
-                restTemplate.exchange(
-                    gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay/" + orderNo,
-                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-                    });
-
-        } catch (BadRequestException e) {
-            log.info(e.getMessage());
-        }
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay/" + orderNo,
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
 
         return Objects.requireNonNull(response.getBody()).getResult();
     }
@@ -65,17 +58,10 @@ public class PaymentAdaptor {
             new HttpEntity<>(paymentCanceledRequestDto, headers);
 
         ResponseEntity<CommonResponseBody<OrderResponseDto>> response =
-            null;
-        try {
-            response =
-                restTemplate.exchange(
-                    gatewayConfig.getGatewayServer() + "/api/admin/payment/request-cancel",
-                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-                    });
-
-        } catch (BadRequestException e) {
-            log.info(e.getMessage());
-        }
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/payment/request-cancel",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
 
         return Objects.requireNonNull(response.getBody()).getResult();
     }

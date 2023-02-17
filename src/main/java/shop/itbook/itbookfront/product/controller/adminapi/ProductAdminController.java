@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.product.controller.adminapi;
 import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
 import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
+import java.net.BindException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +27,10 @@ import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.product.ProductSuccessMessage;
 import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.product.exception.InvalidInputException;
 import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 
@@ -45,7 +47,7 @@ import shop.itbook.itbookfront.product.service.impl.ProductServiceImpl;
 public class ProductAdminController {
     private final ProductServiceImpl productService;
     private final CategoryService categoryService;
-    private static final String PRODUCT_REDIRECT_URL = "redirect:/admin/products";
+    private static final String PRODUCT_ADMIN_PAGE_REDIRECT_URL = "redirect:/admin/products";
 
 
     @GetMapping
@@ -60,7 +62,7 @@ public class ProductAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
 
         model.addAttribute("paginationUrl", "/admin/products");
@@ -68,21 +70,42 @@ public class ProductAdminController {
     }
 
     @GetMapping("/{productNo}/delete")
-    public String deleteProduct(@PathVariable Long productNo) {
-        productService.changeBooleanField(productNo, "delete");
-        return PRODUCT_REDIRECT_URL;
+    public String deleteProduct(@PathVariable Long productNo,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            productService.changeBooleanField(productNo, "delete");
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
+        }
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
     @GetMapping("/{productNo}/force-sold-out")
-    public String forceSoldOutProduct(@PathVariable Long productNo) {
-        productService.changeBooleanField(productNo, "isForceSoldOut");
-        return PRODUCT_REDIRECT_URL;
+    public String forceSoldOutProduct(@PathVariable Long productNo,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            productService.changeBooleanField(productNo, "isForceSoldOut");
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
+        }
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
     @GetMapping("/{productNo}/stop-selled")
-    public String stopSelledProduct(@PathVariable Long productNo) {
-        productService.changeBooleanField(productNo, "isSelled");
-        return PRODUCT_REDIRECT_URL;
+    public String stopSelledProduct(@PathVariable Long productNo,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            productService.changeBooleanField(productNo, "isSelled");
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
+        }
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
     @GetMapping("/add")
@@ -101,15 +124,22 @@ public class ProductAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
         return "adminpage/product/product-add";
     }
 
 
     @GetMapping("/{productNo}/modify")
-    public String getModifyProductForm(Model model, @PathVariable Long productNo) {
-        setUpToModify(model, productNo, productService, categoryService);
+    public String getModifyProductForm(Model model, @PathVariable Long productNo,
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            setUpToModify(model, productNo, productService, categoryService);
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
+        }
 
         return "adminpage/product/product-modify";
     }
@@ -121,12 +151,16 @@ public class ProductAdminController {
                                 MultipartFile thumbnails, RedirectAttributes redirectAttributes) {
         try {
             productService.modifyProduct(productNo, thumbnails, requestDto);
+
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
-        return PRODUCT_REDIRECT_URL;
+        redirectAttributes.addFlashAttribute("successMessage",
+            ProductSuccessMessage.MODIFY_PRODUCT_MESSAGE);
+
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
     @PostMapping("/add")
@@ -139,15 +173,17 @@ public class ProductAdminController {
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
-            return PRODUCT_REDIRECT_URL;
+            return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
         }
-        return PRODUCT_REDIRECT_URL;
+        redirectAttributes.addFlashAttribute("successMessage",
+            ProductSuccessMessage.ADD_PRODUCT_MESSAGE);
+        return PRODUCT_ADMIN_PAGE_REDIRECT_URL;
     }
 
     private void setUpToModify(Model model,
-                               @PathVariable Long productNo,
-                               ProductService productService,
+                               @PathVariable Long productNo, ProductService productService,
                                CategoryService categoryService) {
+
         model.addAttribute("product", productService.getProduct(productNo));
 
         List<CategoryDetailsResponseDto> categoryListByProductNo =

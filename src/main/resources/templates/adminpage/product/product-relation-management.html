@@ -10,42 +10,49 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2> 연관 상품 관리</h2>
-    <div class="content">
-        <table class="table" style="width: 1000px">
-            <colgroup>
-                <col style="width:auto;"/>
-            </colgroup>
-            <tbody>
-            <tr class="thead-light">
-                <th scope="col">상품번호</th>
-                <th scope="col">상품명</th>
-                <th scope="col">연관상품 갯수</th>
-                <th scope="col">상세보기</th>
-            </tr>
-            <tr th:if="${not #lists.isEmpty(pageResponse.content)}" th:each="product : ${pageResponse.content}"
-                style="text-align: center">
-                <td class="table-light">[[ ${product.productNo} ]]</td>
-                <td>[[ ${product.productName} ]]</td>
-                <td>[[ ${product.productRelationCount} ]]</td>
-                <td>
-                    <a th:href="@{|/admin/products/relation/${product.productNo}|}">
-                        <button style="width: auto;" class="btn btn-secondary btn-sm ml-1">상세보기
-                        </button>
-                    </a>
-                </td>
 
-            </tr>
-            <tr th:if="${#lists.isEmpty(pageResponse)}">
-                <td colspan="6" style="text-align: center">
-                    <a th:href="@{|/admin/products/relation|}">
-                        <input style="margin-left: 20px" class="btn btn-secondary"
-                               type="button" value="뒤로가기"/></a>
-                    <div>목록이 비었습니다.</div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="content">
+        <h2> 연관 상품 관리</h2>
+        <hr>
+        <div class="row" th:if="${not #lists.isEmpty(pageResponse.content)}">
+
+            <table class="table" style="width: 1000px; margin-left: 20px">
+                <colgroup>
+                    <col style="width:auto;"/>
+                </colgroup>
+                <tbody>
+                <tr class="thead-light text-center">
+                    <th scope="col">상품번호</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">연관상품 갯수</th>
+                    <th scope="col">상세보기</th>
+                </tr>
+                <tr th:if="${not #lists.isEmpty(pageResponse.content)}" th:each="product : ${pageResponse.content}"
+                    style="text-align: center">
+                    <td class="table-light">[[ ${product.productNo} ]]</td>
+                    <td><a th:href="|@{/products/{productNo}(productNo=${product.productNo})}|"
+                           style="text-decoration: none; color: #000000">
+                        [[ ${product.productName} ]]</a></td>
+                    <td>[[ ${product.productRelationCount} ]]</td>
+                    <td>
+                        <a th:href="@{|/admin/products/relation/${product.productNo}|}">
+                            <button style="width: auto;" class="btn btn-secondary btn-sm ml-1">상세보기
+                            </button>
+                        </a>
+                    </td>
+
+                </tr>
+                <tr th:if="${#lists.isEmpty(pageResponse)}">
+                    <td colspan="6" style="text-align: center">
+                        <a th:href="@{|/admin/products/relation|}">
+                            <input style="margin-left: 20px" class="btn btn-secondary"
+                                   type="button" value="뒤로가기"/></a>
+                        <div>목록이 비었습니다.</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <th:block th:include="component/pageFooter"></th:block>
     </div>
     <script th:inline="javascript">
@@ -53,7 +60,7 @@
         let failMessage = [[${failMessage}]];
         if (failMessage != null) {
             swal(
-                '쿠폰을 받을 수 없습니다!',
+                '요청을 처리할 수 없습니다!',
                 `${failMessage}`,
                 'warning'
             );
