@@ -33,8 +33,8 @@ public class ProductSearchController {
     @GetMapping
     public List<ProductSampleResponseDto> searchProductByName(@RequestParam String name) {
 
-        if(name.length()>100){
-            name = name.substring(0, 100);
+        if(name.length()>30){
+            name = name.substring(0, 30);
         }
 
         List<ProductSampleResponseDto> productList =
