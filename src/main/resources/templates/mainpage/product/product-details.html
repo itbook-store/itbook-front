@@ -7,7 +7,7 @@
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
-    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" href="/mypage/member/css/memberlist.css">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
 
@@ -277,19 +277,20 @@
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
                                                 <td class="text-center"><img style="text-align: center;" width="100px;" th:src="${review.image}">
                                                 </td>
-                                                <td style="width: 20%;"><span th:text="${review.content}"></span></td>
+                                                <td style="width: 20%;">
+                                                    <span style="text-overflow: ellipsis; overflow:hidden; display:block; height:40px;" th:text="${review.content}"></span>
+                                                </td>
                                                 <td><div id="individualStar">
-                                                        <span class="fa fa-star" id="individualStar1"></span>
-                                                        <span class="fa fa-star" id="individualStar2"></span>
-                                                        <span class="fa fa-star" id="individualStar3"></span>
-                                                        <span class="fa fa-star" id="individualStar4"></span>
-                                                        <span class="fa fa-star" id="individualStar5"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar1'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar2'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar3'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar4'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar5'"></span>
                                                     </div>
                                                     <script>
-                                                        if($('#individualStar') && [[${reviewPageResponse.getContent().size()}]] > 0) {
-                                                            for(let i = 1; i <= [[${review.starPoint}]]; i++) {
-                                                                document.getElementById('individualStar' + String(i)).className += ' checked';
-                                                            }
+                                                        for(let i = 1; i <= [[${review.starPoint}]]; i++) {
+                                                            console.log([[${review.starPoint}]]);
+                                                            document.getElementById([[${review.orderProductNo}]] + 'individualStar' + String(i)).className += ' checked';
                                                         }
                                                     </script>
                                                     </td>
