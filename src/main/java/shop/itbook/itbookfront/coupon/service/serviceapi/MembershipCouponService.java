@@ -8,5 +8,5 @@ import shop.itbook.itbookfront.coupon.dto.response.MembershipCouponResponseDto;
  * @since 1.0
  */
 public interface MembershipCouponService {
-    List<MembershipCouponResponseDto> findAvailableMembershipCoupon(String membershipCouponListUrl);
+    List<List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl);
 }
