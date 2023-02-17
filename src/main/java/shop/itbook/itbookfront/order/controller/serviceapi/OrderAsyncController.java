@@ -43,10 +43,9 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderBeforePaymentResponseDto orderPaymentStart(
+    public OrderPaymentDto orderPaymentStart(
         @RequestBody
         OrderAddRequestDto orderAddRequestDto,
-        RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal
         UserDetailsDto userDetailsDto) {
 
@@ -56,12 +55,7 @@ public class OrderAsyncController {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
 
-        try {
-            OrderPaymentDto orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
-            return new OrderBeforePaymentResponseDto<>(true, orderPaymentDto);
-        } catch (BadRequestException e) {
-            return new OrderBeforePaymentResponseDto<>(false, e.getMessage());
-        }
+        return orderService.addOrder(orderAddRequestDto, memberNo);
     }
 
     /**

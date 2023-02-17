@@ -69,4 +69,15 @@ public class DeliveryServiceImpl implements DeliveryService {
         return Objects.requireNonNull(
             deliveryAdaptor.findDeliveryWaitList(uriComponents.toUri()).getBody()).getResult();
     }
+
+    @Override
+    public void completeDeliveryStatus(Long deliveryNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/deliveries/completion/%d", deliveryNo))
+            .build();
+
+        deliveryAdaptor.completeDelivery(uriComponents.toUri());
+    }
 }

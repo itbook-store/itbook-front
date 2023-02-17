@@ -221,7 +221,7 @@
                                 <input type="number"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                        name="decreasePoint"
-                                       id="point_apply_input" value="0">
+                                       id="point_apply_input" value=0 >
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>
@@ -515,7 +515,8 @@
                 "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
-                "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
+                "orderTotalCouponNo": null
+                // "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
@@ -552,6 +553,9 @@
                         icon: 'warning',
                         title: data.result,
                     })
+                })
+                .catch(function (error) {
+                    
                 })
         }
 
