@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.coupon.service.serviceapi.impl;
 
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.coupon.adaptor.serviceapi.impl.MembershipCouponAdaptor;
@@ -18,7 +19,7 @@ public class MembershipCouponServiceImpl implements MembershipCouponService{
     private final MembershipCouponAdaptor membershipCouponAdaptor;
 
     @Override
-    public List<List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl){
+    public Map<String, List<MembershipCouponResponseDto>> findAvailableMembershipCoupon(String membershipCouponListUrl){
 
         return membershipCouponAdaptor.getUserAllCouponIssueList(membershipCouponListUrl);
     }

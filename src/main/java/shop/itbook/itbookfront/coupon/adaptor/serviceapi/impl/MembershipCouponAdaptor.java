@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.coupon.adaptor.serviceapi.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,13 +28,13 @@ public class MembershipCouponAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayConfig gatewayConfig;
 
-    public List<List<MembershipCouponResponseDto>> getUserAllCouponIssueList(
+    public Map<String, List<MembershipCouponResponseDto>> getUserAllCouponIssueList(
         String membershipCouponListUrl) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<CommonResponseBody<List<List<MembershipCouponResponseDto>>>> exchange =
+        ResponseEntity<CommonResponseBody<Map<String, List<MembershipCouponResponseDto>>>> exchange =
             restTemplate.exchange(gatewayConfig.getGatewayServer() + membershipCouponListUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });

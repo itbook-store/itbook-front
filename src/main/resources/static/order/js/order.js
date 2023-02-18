@@ -405,7 +405,7 @@ pointApplyBtn.addEventListener("click", function () {
 
             this.disabled = true;
             document.querySelector("#point_cancel_btn").disabled = false;
-
+            document.querySelector("#point_apply_input").readOnly = true;
 
 
             // if (myPoint >= orderRealAmountPrice) {
@@ -467,6 +467,7 @@ pointCancelBtn.addEventListener("click", function () {
 
             pointApplyInput.value = '';
             document.querySelector("#point_apply_btn").disabled = false;
+            document.querySelector("#point_apply_input").readOnly = false;
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
@@ -576,20 +577,11 @@ function invalidOrderRedirectFunc() {
 /* 배송지 선택 */
 let destinationListBtn = document.querySelector("#destination_list_btn");
 
+let destinationNumberList = [];
+
 destinationListBtn.addEventListener("click", function () {
 
     $('#destinationModal').modal('show');
-
-    let addressArray = [];
-
-    $('input[type=radio][name="destination_info"]').on('change', function() {
-        let selectedInfo = document.querySelector("#destinationModal input[name='destination_info']:checked").parentElement.children[1].children;
-
-        for (let i = 0; i < selectedInfo.length; i++) {
-            addressArray.push(selectedInfo[i].children[1].value);
-        }
-
-    });
 
     let destinationSelectBtn = document.querySelector("#destination_select_btn");
 
@@ -606,12 +598,19 @@ destinationListBtn.addEventListener("click", function () {
             return;
         }
 
-        let actualDestinationInfoList = document.querySelector(".actual_destination").children;
+        let addressArray = [];
 
-        console.log(actualDestinationInfoList)
+        let selectedInfo = document.querySelector("#destinationModal input[name='destination_info']:checked").parentElement.children[2].children;
+
+        for (let i = 0; i < selectedInfo.length; i++) {
+            addressArray.push(selectedInfo[i].children[1].value);
+        }
+
+        let actualDestinationInfoList = document.querySelector(".actual_destination").children;
 
         for (let i = 0; i < actualDestinationInfoList.length; i++) {
             actualDestinationInfoList[i].children[1].readOnly = true;
+            actualDestinationInfoList[i].children[1].value = '';
             actualDestinationInfoList[i].children[1].value = addressArray[i];
         }
 

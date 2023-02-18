@@ -23,4 +23,9 @@ public class CouponListResponseDto {
     private LocalDateTime couponExpiredAt;
     private Integer totalQuantity;
     private Integer issuedQuantity;
+    private Integer categoryNo;
+    private String categoryName;
+    private String parentCategoryName;
+    private Long productNo;
+    private String productName;
 }
