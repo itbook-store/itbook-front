@@ -334,42 +334,83 @@
                     <div class="box-content">
 
                         <div class="destination_container">
-                            <div class="actual_destination">
-                                <div class="destination_box">
-                                    <p class="destination_text">수령인 이름</p>
-                                    <input type="text" placeholder="수령인 이름"
-                                           name="recipientName">
-                                </div>
+                            <th:block th:if="${!#lists.isEmpty(memberDestinationList)}">
+                                <div class="actual_destination">
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 이름</p>
+                                        <input type="text" placeholder="수령인 이름"
+                                               name="recipientName" th:value="${memberDestinationList[0].recipientName}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">수령인 핸드폰번호</p>
-                                    <input type="text" placeholder="수령인 핸드폰번호"
-                                           name="recipientPhoneNumber">
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 핸드폰번호</p>
+                                        <input type="text" placeholder="수령인 핸드폰번호"
+                                               name="recipientPhoneNumber" th:value="${memberDestinationList[0].recipientPhoneNumber}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">우편번호</p>
-                                    <input type="text" placeholder="우편번호"
-                                           id="sample4_postcode"
-                                           name="postcode" readonly>
-                                    <input id="postcodeSearchBtn" class="btn-dark" type="button"
-                                           onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
-                                           style="width: 100px; margin-left: 10px">
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">우편번호</p>
+                                        <input type="text" placeholder="우편번호"
+                                               id="sample4_postcode"
+                                               name="postcode" readonly th:value="${memberDestinationList[0].postcode}">
+                                        <input id="postcodeSearchBtn" class="btn-dark" type="button"
+                                               onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                                               style="width: 100px; margin-left: 10px">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">도로명 주소</p>
-                                    <input type="text" placeholder="도로명 주소"
-                                           id="sample4_roadAddress"
-                                           name="roadNameAddress" readonly>
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">도로명 주소</p>
+                                        <input type="text" placeholder="도로명 주소"
+                                               id="sample4_roadAddress"
+                                               name="roadNameAddress" readonly th:value="${memberDestinationList[0].roadNameAddress}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">상세 주소</p>
-                                    <input type="text" placeholder="상세 주소"
-                                           name="recipientAddressDetails">
+                                    <div class="destination_box">
+                                        <p class="destination_text">상세 주소</p>
+                                        <input type="text" placeholder="상세 주소"
+                                               name="recipientAddressDetails" th:value="${memberDestinationList[0].recipientAddressDetails}">
+                                    </div>
                                 </div>
-                            </div>
+                            </th:block>
+
+                            <th:block th:unless="${!#lists.isEmpty(memberDestinationList)}">
+                                <div class="actual_destination">
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 이름</p>
+                                        <input type="text" placeholder="수령인 이름"
+                                               name="recipientName">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 핸드폰번호</p>
+                                        <input type="text" placeholder="수령인 핸드폰번호"
+                                               name="recipientPhoneNumber">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">우편번호</p>
+                                        <input type="text" placeholder="우편번호"
+                                               id="sample4_postcode"
+                                               name="postcode" readonly>
+                                        <input id="postcodeSearchBtn" class="btn-dark" type="button"
+                                               onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                                               style="width: 100px; margin-left: 10px">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">도로명 주소</p>
+                                        <input type="text" placeholder="도로명 주소"
+                                               id="sample4_roadAddress"
+                                               name="roadNameAddress" readonly>
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">상세 주소</p>
+                                        <input type="text" placeholder="상세 주소"
+                                               name="recipientAddressDetails">
+                                    </div>
+                                </div>
+                            </th:block>
                         </div>
 
                         <!--                        <div class="address-tab">-->
