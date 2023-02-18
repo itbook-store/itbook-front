@@ -293,6 +293,15 @@
             }
 
         });
+
+        let productInquiryReplyFail = [[${productInquiryReplyFail}]];
+        if (productInquiryReplyFail) {
+            Swal.fire({
+                icon: 'error',
+                title: productInquiryReplyFail,
+                text: '다시 시도해 주세요!',
+            })
+        }
     </script>
 
 </div>

@@ -275,10 +275,10 @@
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td class="text-center"><img style="text-align: center;" width="100px;" th:src="${review.image}">
+                                                <td class="text-center"><img style="text-align: center;" height="100px;" th:src="${review.image}">
                                                 </td>
-                                                <td style="width: 20%;">
-                                                    <span style="text-overflow: ellipsis; overflow:hidden; display:block; height:40px;" th:text="${review.content}"></span>
+                                                <td style="width: 50%;">
+                                                    <span style="text-overflow: ellipsis; overflow:hidden; display:block; height:100px;" th:text="${review.content}"></span>
                                                 </td>
                                                 <td><div id="individualStar">
                                                         <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar1'"></span>
@@ -314,6 +314,7 @@
             </div>
             <th:block th:include="component/reviewPageFooter"></th:block>
         </div>
+        </div>
     </section>
 
     <section>
@@ -346,7 +347,7 @@
                                                 <td class="text-left">
                                                     <span th:text="${productInquiry.isReplied} ? '답변완료' : '미답변'"></span>
                                                 </td>
-                                                <td style="width: 20%;">
+                                                <td style="width: 50%;">
                                                     <strong>
                                                         <span th:text="${productInquiry.isPublic} ? ${productInquiry.title} : '비공개 게시글입니다.'"></span>
                                                     </strong>

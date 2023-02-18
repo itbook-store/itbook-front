@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/adminpage/default-layout}">
+      layout:decorate="~{layout/adminpage/default-layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>상품문의 답변 페이지</title>
@@ -31,7 +31,7 @@
         <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
         <h4>내용</h4>
         <p th:text="${productInquiryResponseDto.content}"></p>
-        <div>
+        <div sec:authorize="hasAuthority('ADMIN')">
             <hr>
             <h3>답변 작성</h3>
             <form class="mb-3" id="productInquiryForm" name="productInquiryReplyForm"  method="post"
@@ -48,7 +48,6 @@
                            th:field="*{productInquiryReplyContent}"></textarea>
                 <button class="btn btn-primary" type="button" onclick="submitProductInquiryReply(); ">등록하기</button>
             </form>
-
         </div>
     </div>
 </div>
