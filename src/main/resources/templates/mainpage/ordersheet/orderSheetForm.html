@@ -284,6 +284,7 @@
                                         <div th:each="dst : ${memberDestinationList}">
 
                                             <div class="destination_container">
+                                                <input type="hidden" th:value="${dst.recipientDestinationNo}">
                                                 <input type="radio" name="destination_info" id="destination_info">
                                                 <div>
                                                     <div class="destination_box">
