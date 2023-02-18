@@ -69,8 +69,11 @@
                     </td>
                     <th:block th:unless="${couponIssue.point!=0}">
                     <td th:if="${not #strings.isEmpty(couponIssue.categoryName)}">
+                        <a th:href="@{/products(categoryNo=${couponIssue.categoryNo},categoryName=${couponIssue.categoryName})}"
+                           class="btn btn-coupon-register btn-sm btn-light align-middle">
                         <span th:text="${couponIssue.parentCategoryName}"></span><br>
                         - <span th:text="${couponIssue.categoryName}"></span>
+                        </a>
                     </td>
                     <td th:if="${not #strings.isEmpty(couponIssue.productName)}">
                         <a th:href="@{|/products/${couponIssue.productNo}|}"

@@ -51,7 +51,7 @@ public class CouponIssueController {
                 String.format("/api/coupon-issues/%d?usageStatus=%s&page=%d&size=%d",
                     userDetailsDto.getMemberNo(), usageStatus, pageable.getPageNumber(),
                     pageable.getPageSize()));
-
+        model.addAttribute("usageStatus", usageStatus);
         model.addAttribute("pageResponse", userCouponIssueList);
         model.addAttribute("paginationUrl",
             String.format("/mypage/coupons/coupon-issues/all?usageStatus=%s", usageStatus));

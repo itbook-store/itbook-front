@@ -67,8 +67,11 @@
                     포인트
                 </td>
                 <td th:if="${not #strings.isEmpty(coupon.categoryName)}">
+                    <a th:href="@{/products(categoryNo=${coupon.categoryNo},categoryName=${coupon.categoryName})}"
+                       class="btn btn-coupon-register btn-sm btn-light align-middle">
                     <span th:text="${coupon.parentCategoryName}"></span><br>
                     - <span th:text="${coupon.categoryName}"></span>
+                    </a>
                 </td>
                 <td style="max-width: 15%" th:if="${not #strings.isEmpty(coupon.productName)}">
                     <a th:href="@{|/products/${coupon.productNo}|}"

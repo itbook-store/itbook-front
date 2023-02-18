@@ -52,6 +52,22 @@
                                             th:text="${membershipCoupon.coupon.name}"></h1>
                                         </p>
                                         <p>
+                                        <th:block th:if="${not #strings.isEmpty(membershipCoupon.coupon.categoryName)}">
+                                            <a th:href="@{/products(categoryNo=${membershipCoupon.coupon.categoryNo},categoryName=${membershipCoupon.coupon.categoryName})}"
+                                               class="btn btn-coupon-register btn-sm btn-light align-middle">
+                                                <span th:text="${membershipCoupon.coupon.parentCategoryName}"></span><br>
+                                                - <span th:text="${membershipCoupon.coupon.categoryName}"></span>
+                                            </a><br>
+                                        </th:block>
+                                        <th:block th:if="${not #strings.isEmpty(membershipCoupon.coupon.productName)}">
+                                            <a th:href="@{|/products/${membershipCoupon.coupon.productNo}|}"
+                                               class="btn btn-coupon-register btn-sm btn-light align-middle">
+                                                <span th:text="${membershipCoupon.coupon.productName}"></span></a><br>
+
+                                        </th:block>
+                                        <th:block th:if="${#strings.isEmpty(membershipCoupon.coupon.productName) and #strings.isEmpty(membershipCoupon.coupon.categoryName) and membershipCoupon.coupon.point==0}">
+                                            전체 상품
+                                        </th:block>
                                         <th:block th:if="${membershipCoupon.coupon.amount!=0}">
                                             <span th:text="${membershipCoupon.coupon.amount} + '원 할인'"></span>
                                         </th:block>
