@@ -1,11 +1,14 @@
 package shop.itbook.itbookfront.auth.handler;
 
 import java.io.IOException;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
@@ -23,6 +26,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         throws IOException {
 
         log.error("AccessDenied error {}", accessDeniedException.getMessage());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (Objects.nonNull(authentication)) {
+            log.error("Request URI {}", request.getRequestURI());
+            log.error("Authentication Token Info {}", authentication);
+        }
+
 
         response.sendRedirect("/error/403error");
     }

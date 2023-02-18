@@ -7,7 +7,7 @@
 
 <head>
     <link href="/mainpage/product/css/css/product-details.css" rel="stylesheet">
-    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" href="/mypage/member/css/memberlist.css">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
 
@@ -23,6 +23,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="/bookmark/js/bookmarkAdd.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
 
 </head>
 <body>
@@ -77,12 +84,18 @@
                             <!--                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>-->
                             <!--                            </tr>-->
                             <tr>
-                                <td>구매 수량 선택</td>
+                                <td><span>구매 수량 선택</span></td>
                                 <td>
-                                    <div class="count">
-                                        <button id="minus">-</button>
-                                        <input id="quantity" size="20" type="number" min="1" name="quantity" value="1">
-                                        <button id="plus">+</button>
+                                    <div class="row">
+                                        <div class="count col-5">
+                                            <button id="minus">-</button>
+                                            <input id="quantity" size="20" type="number" min="1" name="quantity"
+                                                   value="1">
+                                            <button id="plus">+</button>
+                                        </div>
+                                        <div class="col-5" style="margin-left: 5%; padding-top: 10px">
+                                            <span>(재고: [[${product.stock}]]개)</span>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -209,17 +222,20 @@
 
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
-            <h4>연관 상품</h4>
-            <div class="row">
-                <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2" th:each="rp: ${pageResponse.content}">
-                    <div class="card-wrapper mb-2">
-                        <div class="card-img"><img class="img-thumbnail-sm" th:src="${rp.fileThumbnailsUrl}" alt="...">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <a th:href="|@{/products/{productNo}(productNo=${rp.productNo})}|">
-                                    <i class="fa-solid fa-magnifying-glass-plus"></i></a>
+            <div class="container bootstrap snippets bootdey">
+                <h4>연관 상품</h4>
+                <div class="row">
+                    <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2"
+                         th:each="rp: ${pageResponse.content}">
+                        <div class="card-wrapper mb-2">
+                            <div class="card-img"><img class="img-thumbnail-sm" th:src="${rp.fileThumbnailsUrl}"
+                                                       alt="...">
                             </div>
+                            <a th:href="|@{/products/{productNo}(productNo=${rp.productNo})}|">
+                                <div class="card-body">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -229,10 +245,16 @@
     </section>
 
     <section>
-        <div class="container">
-            <h4>도서 리뷰</h4>
-            별점 : <span th:if="${reviewPageResponse.getContent().size() != 0}" th:text="${avgStarPoint}"></span>
-            <span th:if="${reviewPageResponse.getContent().size() == 0}">0</span> / 5
+        <div>
+            <p></p>
+            <h4>상품 리뷰</h4>
+            <div id="starAvg">
+                <span class="fa fa-star" id="star1"></span>
+                <span class="fa fa-star" id="star2"></span>
+                <span class="fa fa-star" id="star3"></span>
+                <span class="fa fa-star" id="star4"></span>
+                <span class="fa fa-star" id="star5"></span>
+            </div>
             <hr>
             <div>
                 <div class="container bootstrap snippets bootdey">
@@ -241,43 +263,61 @@
                             <div class="main-box no-header clearfix">
                                 <div class="main-box-body clearfix">
                                     <div class="table-responsive">
-                                        <table class="table user-list">
+                                        <table class="table user-list" style="margin-left:auto; margin-right:auto;">
                                             <thead>
                                             <tr>
-                                                <th><span>사진</span></th>
+                                                <th class="text-left"><span>사진</span></th>
                                                 <th><span>내용</span></th>
                                                 <th><span>별점</span></th>
-                                                <th><span></span></th>
+                                                <th class="text-right"><span>작성자</span></th>
+                                                <th class="text-center"><span></span></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="review : ${reviewPageResponse.getContent()}">
-                                                <td class="text-center"><img width="100px;" th:src="${review.image}">
+                                                <td class="text-center"><img style="text-align: center;" width="100px;" th:src="${review.image}">
                                                 </td>
-                                                <td><span th:text="${review.content}"></span></td>
-                                                <td><span th:text="${review.starPoint}"></span> / 5</td>
-                                                <td>
+                                                <td style="width: 20%;">
+                                                    <span style="text-overflow: ellipsis; overflow:hidden; display:block; height:40px;" th:text="${review.content}"></span>
+                                                </td>
+                                                <td><div id="individualStar">
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar1'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar2'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar3'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar4'"></span>
+                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar5'"></span>
+                                                    </div>
+                                                    <script>
+                                                        for(let i = 1; i <= [[${review.starPoint}]]; i++) {
+                                                            console.log([[${review.starPoint}]]);
+                                                            document.getElementById([[${review.orderProductNo}]] + 'individualStar' + String(i)).className += ' checked';
+                                                        }
+                                                    </script>
+                                                    </td>
+                                                <td class="text-right"><span th:text="${review.memberId}"></span></td>
+                                                <td class="text-center">
                                                     <button class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/review/{orderProductNo}(orderProductNo = ${review.orderProductNo})}'|">
                                                         상세보기
                                                     </button>
                                                 </td>
 
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <p th:unless="${not #lists.isEmpty(reviewPageResponse.content)}"> 리뷰가 존재하지 않습니다.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <th:block th:include="component/reviewPageFooter"></th:block>
             </div>
+            <th:block th:include="component/reviewPageFooter"></th:block>
         </div>
     </section>
+
     <section>
-        <div>
+        <div class="container">
             <p></p>
             <h4>상품 문의</h4>
             <button sec:authorize="isAuthenticated()" class="btn btn-primary" th:onclick="|location.href= '@{/product-inquiries/{memberNo}/{productNo}/add(memberNo=${memberNo}, productNo = ${product.productNo})}'|">문의하기</button>
@@ -289,7 +329,8 @@
                             <div class="main-box no-header clearfix">
                                 <div class="main-box-body clearfix">
                                     <div class="table-responsive">
-                                        <table class="table user-list">
+                                        <table th:if="${not #lists.isEmpty(productInquiryPageResponse.content)}"
+                                               style="margin-left:auto; margin-right:auto;" class="table user-list">
                                             <thead>
                                             <tr>
                                                 <th class="text-left"><span>답변여부</span></th>
@@ -350,6 +391,8 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <p th:unless="${not #lists.isEmpty(productInquiryPageResponse.content)}"> 상품문의가 존재하지 않습니다.</p>
+
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +403,12 @@
             </div>
         </div>
     </section>
-    <script>
+    <script src="/cart/js/cartAddProduct.js"></script>
+    <script th:inline="javascript">
+
+
+        let productStock = Number([[${product.stock}]]);
+
         const minusButton = document.getElementById('minus');
         const plusButton = document.getElementById('plus');
         const inputField = document.getElementById('quantity');
@@ -376,27 +424,38 @@
 
         plusButton.addEventListener('click', event => {
             event.preventDefault();
+
             let currentValue = Number(inputField.value) || 0;
+
             if (currentValue < 1) {
                 currentValue = 0;
             }
             inputField.value = currentValue + 1;
+
+            console.log("현재 선택 수량: " + inputField.value);
+            if (inputField.value > productStock) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '구매 수량이 잘못 되었습니다.',
+                    text: '구매가능 수량: 1 ~ ' + productStock
+                })
+                inputField.value = productStock;
+                return;
+            }
         });
-    </script>
-    <script src="/cart/js/cartAddProduct.js"></script>
-    <script th:inline="javascript">
+
         let productNo = [[${product.productNo}]];
         let productCnt = 1;
 
         function goOrderSheet(typeText) {
             productCnt = document.getElementById('quantity').value;
-            if (productCnt < 1 || productCnt > 9999) {
+            if (productCnt < 1 || productCnt > productStock) {
                 Swal.fire({
                     icon: 'warning',
                     title: '구매 수량이 잘못 되었습니다.',
-                    text: '구매가능: 1 ~ 9,999'
+                    text: '구매가능 수량: 1 ~ ' + productStock
                 })
-                return
+                return;
             }
 
             if (typeText === 'subs') {
@@ -479,6 +538,13 @@
                 title: failMessage,
                 text: '다시 시도해 주세요!',
             })
+        }
+    </script>
+    <script>
+        if($('#starAvg') && [[${reviewPageResponse.getContent().size()}]] > 0) {
+            for(let i = 1; i <= [[${avgStarPoint}]]; i++) {
+                document.getElementById('star' + String(i)).className += ' checked';
+            }
         }
     </script>
 </div>

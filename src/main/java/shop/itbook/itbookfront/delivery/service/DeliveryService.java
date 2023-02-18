@@ -19,4 +19,5 @@ public interface DeliveryService {
 
     PageResponse<DeliveryWithStatusResponseDto> findDeliveryWaitList(Pageable pageable);
 
+    void completeDeliveryStatus(Long deliveryNo);
 }

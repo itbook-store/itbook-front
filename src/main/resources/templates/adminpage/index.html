@@ -4,16 +4,342 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
-    <title>관리자 페이지</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
 </head>
-
 <body>
-
 <div layout:fragment="content">
-    <div class="content">
-        안녕하세요 Itbook 관리자 페이지입니다.
+    <div style="width: 90%; padding-top:5%; margin:auto">
+        <div class="row my-2">
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="membershipStatistics"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>회원 등급 (명)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsCanceled"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>환불 및 주문 취소(건)</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=취소건"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsCompleted"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>결제 완료(건)</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=완료건"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="memberStatusStatistics"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>회원 상태 (명)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsTotalAmount"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>매출 합계</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=매출합계"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsSellingPrice"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>판매 금액</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=판매금액"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <input type="hidden" id="normalCount" th:value="${normalCount}">
+    <input type="hidden" id="blockCount" th:value="${count1.getBlockMemberCount()}">
+    <input type="hidden" id="withdrawCount" th:value="${count1.getWithdrawMemberCount()}">
+    <input type="hidden" id="commonCnt" th:value="${count2.getCommonCnt()}">
+    <input type="hidden" id="whiteCnt" th:value="${count2.getWhiteCnt()}">
+    <input type="hidden" id="silverCnt" th:value="${count2.getSilverCnt()}">
+    <input type="hidden" id="goldCnt" th:value="${count2.getGoldCnt()}">
+    <input type="hidden" id="platinumCnt" th:value="${count2.getPlatinumCnt()}">
+
+    <script th:inline="javascript">
+
+        let failMessage = [[${failMessage}]];
+
+        if (failMessage != null) {
+            swal(
+                '요청을 처리할 수 없습니다!',
+                `${failMessage}`,
+                'error'
+            );
+        }
+
+        drawRankList();
+
+        async function drawRankList() {
+
+            let normalCnt = document.getElementById("normalCount").value * 1;
+            let blockCnt = document.getElementById("blockCount").value * 1;
+            let withdrawCnt = document.getElementById("withdrawCount").value * 1;
+
+            data = {
+                datasets: [{
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(0, 0, 0, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(74, 74, 74, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1,
+                    data: [blockCnt, withdrawCnt, normalCnt]
+                }],
+                labels: ['차단회원', '탈퇴회원', '정상회원']
+            };
+
+            let ctx1 = document.getElementById("memberStatusStatistics");
+
+            new Chart(ctx1, {
+                type: 'pie',
+                data: data,
+                options: {}
+            });
+
+            let ctx2 = document.getElementById('membershipStatistics');
+
+            let commonCnt = document.getElementById('commonCnt').value * 1;
+            let whiteCnt = document.getElementById('whiteCnt').value * 1;
+            let silverCnt = document.getElementById('silverCnt').value * 1;
+            let goldCnt = document.getElementById('goldCnt').value * 1;
+            let platinumCnt = document.getElementById('platinumCnt').value * 1;
+
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['일반', '화이트', '실버', '골드', '플래티넘'],
+                    datasets: [{
+                        label: '회원 등급별 회원 수',
+                        data: [commonCnt, whiteCnt, silverCnt, goldCnt, platinumCnt],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            let canceledProductName = [];
+            let canceledProductCount = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=취소건`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (canceledProductName.length >= 5) {
+                            return true;
+                        }
+                        canceledProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        canceledProductCount.push(productList.count);
+                    });
+                });
+
+            let ctx3 = document.getElementById('productStatisticsCanceled');
+
+            new Chart(ctx3, {
+                type: 'horizontalBar',
+                data: {
+                    labels: canceledProductName,
+                    datasets: [{
+                        label: '취소(건) 수',
+                        data: canceledProductCount,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            let completedProductName = [];
+            let completedProductCount = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=완료건`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (completedProductName.length >= 5) {
+                            return true;
+                        }
+                        completedProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        completedProductCount.push(productList.count);
+                    });
+                });
+
+
+            let ctx4 = document.getElementById('productStatisticsCompleted');
+
+            new Chart(ctx4, {
+                type: 'horizontalBar',
+                data: {
+                    labels: completedProductName,
+                    datasets: [{
+                        label: '완료(건) 수',
+                        data: completedProductCount,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            let totalAmountProductName = [];
+            let totalAmountPrice = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=매출합계`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (totalAmountProductName.length >= 5) {
+                            return true;
+                        }
+                        totalAmountProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        totalAmountPrice.push(productList.price);
+                    });
+                });
+
+            let ctx5 = document.getElementById('productStatisticsTotalAmount');
+
+            new Chart(ctx5, {
+                type: 'doughnut',
+                data: {
+                    labels: totalAmountProductName,
+                    datasets: [{
+                        label: '매출합계',
+                        data: totalAmountPrice,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+
+            let SellingPriceProductName = [];
+            let SellingPricePrice = [];
+
+            await fetch(`/async/products/sales-rank?sortingCriteria=판매금액`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.some(productList => {
+                        if (SellingPriceProductName.length >= 5) {
+                            return true;
+                        }
+                        SellingPriceProductName.push(productList.productName + " (" + productList.productNo + ")");
+                        SellingPricePrice.push(productList.price);
+                    });
+                });
+
+            let ctx6 = document.getElementById('productStatisticsSellingPrice');
+
+            new Chart(ctx6, {
+                type: 'doughnut',
+                data: {
+                    labels: SellingPriceProductName,
+                    datasets: [{
+                        label: '판매금액',
+                        data: SellingPricePrice,
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"]
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        }
+
+
+
+    </script>
+</div>
 </div>
 
+
+</div>
+</div>
 </body>
 </html>

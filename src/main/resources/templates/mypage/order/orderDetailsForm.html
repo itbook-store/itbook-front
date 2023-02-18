@@ -141,7 +141,10 @@
                                 <tr>
                                     <td colspan="2">할인</td>
                                     <td class="text-danger text-end">
-                                        - 0
+                                        -&nbsp;
+                                        <span th:if="${orderDetails.amount != null}"
+                                              th:text="${orderDetails.amount} - ${totalProductPrice}"></span>
+                                        <span th:unless="${orderDetails.amount != null}">0</span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
@@ -150,7 +153,10 @@
                                     <td colspan="2">주문 금액</td>
                                     <td class="text-end">
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
-                                        <span th:text="${totalProductPrice}"></span>
+                                        <span th:if="${orderDetails.amount != null}"
+                                              th:text="${orderDetails.amount} + ${orderDetails.deliveryFee}"></span>
+                                        <span th:unless="${orderDetails.amount != null}"
+                                              th:text="${totalProductPrice} + ${orderDetails.deliveryFee}"></span>
                                         원
                                     </td>
                                 </tr>
@@ -197,11 +203,16 @@
                     <div class="card mb-4">
                         <!-- Shipping information -->
                         <div class="card-body">
-                            <h3 class="h6">운송장 번호</h3>
+                            <div class="flex-content justify-content-between">
+                                <span class="font-weight-bold">배송 정보</span>
+                                <button class="btn btn-info text-white"
+                                        th:onclick="|locaiton.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">
+                                    배송 조회</button>
+                            </div>
                             <!--                            <strong>FedEx</strong>-->
-                            <span><a href="#" class="text-decoration-underline" target="_blank">
+                            <span>
+<!--                                <a href="#" class="text-decoration-underline" target="_blank"></a>-->
                                 <span th:text="${orderDetails.trackingNo}"></span>
-                            </a>
                                 <span th:if="${orderDetails.trackingNo == null}">미발송</span>
                                 <i class="bi bi-box-arrow-up-right"></i> </span>
                             <hr>

@@ -42,7 +42,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" for="isbn">ISBN</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="등록할 상품명을 입력하세요" id="isbn"
+                    <input input type="number" class="form-control" placeholder="등록할 상품명을 입력하세요" id="isbn"
                            name="isbn" aria-label="isbn" aria-describedby="basic-addon1" required="">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="confirmBook"
@@ -67,7 +67,7 @@
                         <span class="input-group-text" for="productName">도서명</span>
                     </div>
                     <input type="text" class="form-control" placeholder="등록할 도서명을 입력하세요" id="productName"
-                           name="productName"
+                           name="productName" maxlength="255" oninput="handleInputLength(this, 255)"
                            aria-label="도서명" aria-describedby="basic-addon1" required="">
                 </div>
 
@@ -102,8 +102,10 @@
                     <label for="simpleDescription">간단 설명</label>
                     <textarea id="simpleDescription" name="simpleDescription"
                               class="form-control input-md" required="" type="text"
-                              placeholder="상품에 대한 간단한 설명을 입력하세요"
+                              placeholder="상품에 대한 간단한 설명을 입력하세요" maxlength="255"
+                              oninput="handleInputLength(this, 255), showInputLength(this, 255)"
                               rows="4" cols="50"></textarea>
+                    <p style="font-size: smaller; color: #2c2c2c; margin-left: 88%" id = "inputLength">0 / 255자</p>
                 </div>
 
 
@@ -162,7 +164,7 @@
                     </div>
                     <div class="col-md-3" id="increasingPoint-div">
                         <label for="increasePointPercent">포인트 적립율(%)</label>
-                        <input id="increasePointPercent" name="increasePointPercent"
+                        <input id="increasePointPercent" name="increasePointPercent" oninput="handleInputLength(this, 3)"
                                class="form-control input-md" input type="number" max="100" min="0"  step="0.1">
                     </div>
 
@@ -174,17 +176,17 @@
 
                     <div class="col-md-4">
                         <label for="rawPrice">매입 원가(원)</label>
-                        <input id="rawPrice" name="rawPrice"
+                        <input id="rawPrice" name="rawPrice" oninput="handleInputLength(this, 8)"
                                class="form-control input-md" required="" input type="number" min="0">
                     </div>
                     <div class="col-md-4">
                         <label for="fixedPrice">정가(원)</label>
                         <input id="fixedPrice" name="fixedPrice" class="form-control input-md" required=""
-                               input type="number" min="0">
+                               input type="number" min="0" oninput="handleInputLength(this, 8)">
                     </div>
                     <div class="col-md-4">
                         <label for="discountPercent">할인율(%)</label>
-                        <input id="discountPercent" name="discountPercent" class="form-control input-md"
+                        <input id="discountPercent" name="discountPercent" class="form-control input-md" oninput="handleInputLength(this, 3)"
                                required="" input type="number" min="0" max="100" step="0.1">
                     </div>
                 </div>
@@ -192,8 +194,8 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="stock">재고(개)</label>
-                        <input id="stock" name="stock" class="form-control input-md" required="" input type="number" min="0"
-                        >
+                        <input id="stock" name="stock" class="form-control input-md" required="" input type="number"
+                               min="0" oninput="handleInputLength(this, 8)">
                     </div>
                     <div class="col-md-4">
                         <label for="pageCount">page 수</label>
@@ -203,7 +205,7 @@
                     <div class="col-md-4">
                         <label for="bookCreatedAt">발간일</label>
                         <input type="date" id="bookCreatedAt" required="" name="bookCreatedAt"
-                               class="form-control input-md">
+                               class="form-control input-md" max="9999-12-31">
                     </div>
                 </div>
 

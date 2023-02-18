@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mypage/default-layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>상품문의 수정</h2>
+        <hr>
+        <div>
+            <form class="mb-3" id="productInquiryModifyForm" name="productInquiryModifyForm" method="post"
+                  th:object="${productInquiryResponseDto}" th:action="@{/product-inquiries/{productInquiryNo}/modify(productInquiryNo=${productInquiryResponseDto.productInquiryNo})}">
+
+                <input type="hidden" name="memberNo" th:value="${productInquiryResponseDto.memberNo}">
+                <input type="hidden" name="productNo" th:value="${productInquiryResponseDto.productNo}">
+                <input type="hidden" id="content" name="content" th:value="${productInquiryResponseDto.content}">
+
+                <div>
+                    <label for="title" class="form-label">제목</label>
+                    <input type="text" class="form-control" id="title" name="title" th:value="${productInquiryResponseDto.title}" maxlength="20"><br/>
+
+                    <div id="editor"></div>
+                    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+                </div>
+                <div>
+                    <div class="form-check form-check-inline mb-0 me-4">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                               id="private"
+                               value="false" th:field="*{isPublic}"/>
+                        <label class="form-check-label" for="private">비공개</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-0 me-4">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                               id="open"
+                               value="true" th:field="*{isPublic}"/>
+                        <label class="form-check-label" for="open">공개</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="button" onclick="productInquiryFormSubmit()">작성 완료</button>
+            </form>
+            <script>
+                const Editor = toastui.Editor;
+
+                let content = $('#content').val();
+                //let content = "test";
+
+                const editor = new Editor({
+                    el: document.querySelector('#editor'),
+                    height: '500px',
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical',
+                    initialValue: content
+                });
+
+                function productInquiryFormSubmit() {
+
+                    const editorBody = editor.getMarkdown();
+                    $('#content').attr('value',editorBody);
+
+                    let title = document.getElementById("title").value;
+
+                    let blank_pattern1 = /^\s+|\s+$/g;
+                    if(editorBody.replace(blank_pattern1, '' ) == "" || title.replace(blank_pattern1, '' ) == "" ){
+                        alert('공백만 입력되었습니다.');
+                        return false;
+                    }
+
+                    if(editorBody.length > 1000) {
+                        alert("1000자 이상 입력할 수 없습니다.")
+                        return false;
+                    }
+
+                    if(document.getElementById("private").checked == false && document.getElementById("open").checked == false) {
+                        alert('공개 여부를 선택해주세요.');
+                        return false;
+                    }
+
+                    alert("상품문의를 성공적으로 수정하였습니다.")
+                    document.getElementById("productInquiryModifyForm").submit();
+                }
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

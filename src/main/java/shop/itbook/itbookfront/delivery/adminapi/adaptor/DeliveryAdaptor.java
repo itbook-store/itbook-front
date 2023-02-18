@@ -50,8 +50,7 @@ public class DeliveryAdaptor {
      *
      * @param uri 게이트웨이 uri
      */
-    public void postDeliveryList(
-        URI uri) {
+    public void postDeliveryList(URI uri) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -69,5 +68,11 @@ public class DeliveryAdaptor {
                 throw new DeliveryNoWaitStatusException();
             }
         }
+    }
+
+    public void completeDelivery(URI uri) {
+        restTemplate.exchange(uri, HttpMethod.POST, null,
+            new ParameterizedTypeReference<>() {
+            });
     }
 }

@@ -34,6 +34,19 @@ public class ProductInquiryServiceImpl implements ProductInquiryService {
     }
 
     @Override
+    public void deleteProductInquiry(Long productInquiryNo) {
+
+        productInquiryAdaptor.deleteProductInquiry(productInquiryNo);
+    }
+
+    @Override
+    public void modifyProductInquiry(Long productInquiryNo,
+                                     ProductInquiryRequestDto productInquiryRequestDto) {
+
+        productInquiryAdaptor.modifyProductInquiry(productInquiryNo, productInquiryRequestDto);
+    }
+
+    @Override
     public ProductInquiryCountResponseDto countProductInquiry() {
 
         return productInquiryAdaptor.countProductInquiry();

@@ -14,6 +14,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderProductDetailResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
 /**
@@ -55,9 +56,17 @@ public class OrderController {
      * @return 사용자에게 보여줄 주문 완료페이지
      */
     @GetMapping("/completion/{orderNo}")
-    public String orderCompletion(@PathVariable("orderNo") String orderNo) {
+    public String orderCompletion(@PathVariable("orderNo") Long orderNo, Model model) {
 
-        return "mainpage/order/orderCompletionForm";
+        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+
+        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
+            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
+
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("totalProductPrice", totalProductPrice);
+
+        return "mainpage/order/orderDetailsForm";
     }
 
     @GetMapping("/details/{orderNo}")
@@ -72,5 +81,20 @@ public class OrderController {
         model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mypage/order/orderDetailsForm";
+    }
+
+    @GetMapping("/mypage/list/subscription")
+    public String subscriptionOrderListByMember(@PageableDefault Pageable pageable,
+                                                @AuthenticationPrincipal
+                                                UserDetailsDto userDetailsDto,
+                                                Model model) {
+
+        PageResponse<OrderSubscriptionListDto> pageResponse =
+            orderService.orderSubscriptionListByMember(pageable, userDetailsDto.getMemberNo());
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("paginationUrl", "/orders/mypage/list/subscription");
+
+        return "mypage/order/my-subscription-list";
     }
 }

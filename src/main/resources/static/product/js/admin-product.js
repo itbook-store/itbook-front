@@ -113,12 +113,18 @@ function addProductSubmit() {
     let stock = document.getElementById("stock").value;
     let isPointApplyingValue = $('input[name="isPointApplying"]:checked').val();
     let isPointApplyingBasedSellingPriceValue = $('input[name="isPointApplyingBasedSellingPrice"]:checked').val();
+    let thumbnailsFile = document.getElementById("fileThumbnails").value;
 
     console.log(discountPercent);
     console.log(discountPercent.length);
 
     if (!checkCheckBoxCountUpTo0(checkBox)) {
         Swal.fire('카테고리는 최소 1개를 지정해야만 합니다!', '', 'error');
+        return false;
+    }
+
+    if (!thumbnailsFile) {
+        Swal.fire('썸네일 사진은 필수입니다!', '', 'error');
         return false;
     }
 
@@ -185,6 +191,23 @@ function addProductSubmit() {
 
 }
 
+function handleInputLength(inputText, max) {
+
+    if(inputText.value.length > max) {
+        inputText.value = inputText.value.substr(0, max);
+    }
+}
+
+function showInputLength(inputText, max) {
+    let inputLengthDiv = document.getElementById("inputLength");
+    inputLengthDiv.innerText = inputText.value.length + "/" + max + "자";
+
+    if(inputText.value.length > max) {
+        inputText.value = inputText.value.substr(0, max);
+    }
+}
+
+
 
 function modifyProductSubmit() {
 
@@ -208,12 +231,12 @@ function modifyProductSubmit() {
         return false;
     }
 
-    if (!checkStringLengthDownTo255(name)) {
+    if (!checkStringLengthDown(name, 255)) {
         Swal.fire('상품 이름 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
 
-    if (!checkStringLengthDownTo255(simpleDescription)) {
+    if (!checkStringLengthDown(simpleDescription, 255)) {
         Swal.fire('간단 설명 길이는 255자 이하여야 합니다!', '', 'error');
         return false;
     }
@@ -252,6 +275,7 @@ function modifyProductSubmit() {
         Swal.fire('재고는 0개 이상이어야 합니다!', '', 'error');
         return false;
     }
+
 
     Swal.fire('상품 수정 성공!', '', 'success');
     return true;

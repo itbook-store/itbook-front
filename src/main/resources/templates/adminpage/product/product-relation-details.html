@@ -12,9 +12,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 <div layout:fragment="content">
 
-    <h2>연관 상품</h2>
+
     <section th:if="${not #lists.isEmpty(pageResponse.content)}">
         <div class="container">
+            <h2>연관 상품</h2>
             <a style="text-decoration: none; " th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
                 <button style="width: auto;" class="btn btn-primary ml-1">수정
                 </button>
@@ -57,7 +58,7 @@
         let failMessage = [[${failMessage}]];
         if (failMessage != null) {
             swal(
-                '쿠폰을 받을 수 없습니다!',
+                '요청을 처리할 수 없습니다!',
                 `${failMessage}`,
                 'warning'
             );

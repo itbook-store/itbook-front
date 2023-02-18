@@ -218,10 +218,12 @@
                                 <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                             </div>
                             <div class="point_apply_box">
-                                <input type="number"
+                                <input type="text"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                        name="decreasePoint"
-                                       id="point_apply_input" value="0">
+                                       pattern="[a-zA-Z0-9]"
+                                       id="point_apply_input" value=0>
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
                             </div>
@@ -243,7 +245,7 @@
 
                     <p class="product_amount_plainText">총 배송비</p>
                     <p id="deliveryFee" class="product_delivery_price">3,000</p>
-<!--                    <p id="delveryFee" class="product_delivery_price" th:text="${deliveryFee}">3,000</p>-->
+                    <!--                    <p id="delveryFee" class="product_delivery_price" th:text="${deliveryFee}">3,000</p>-->
                     <p class="product_amount_plainText">원</p>
 
                     <i class="fa-solid fa-minus"></i>
@@ -282,6 +284,7 @@
                                         <div th:each="dst : ${memberDestinationList}">
 
                                             <div class="destination_container">
+                                                <input type="hidden" th:value="${dst.recipientDestinationNo}">
                                                 <input type="radio" name="destination_info" id="destination_info">
                                                 <div>
                                                     <div class="destination_box">
@@ -331,42 +334,83 @@
                     <div class="box-content">
 
                         <div class="destination_container">
-                            <div class="actual_destination">
-                                <div class="destination_box">
-                                    <p class="destination_text">수령인 이름</p>
-                                    <input type="text" placeholder="수령인 이름"
-                                           name="recipientName">
-                                </div>
+                            <th:block th:if="${!#lists.isEmpty(memberDestinationList)}">
+                                <div class="actual_destination">
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 이름</p>
+                                        <input type="text" placeholder="수령인 이름"
+                                               name="recipientName" th:value="${memberDestinationList[0].recipientName}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">수령인 핸드폰번호</p>
-                                    <input type="text" placeholder="수령인 핸드폰번호"
-                                           name="recipientPhoneNumber">
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 핸드폰번호</p>
+                                        <input type="text" placeholder="수령인 핸드폰번호"
+                                               name="recipientPhoneNumber" th:value="${memberDestinationList[0].recipientPhoneNumber}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">우편번호</p>
-                                    <input type="text" placeholder="우편번호"
-                                           id="sample4_postcode"
-                                           name="postcode" readonly>
-                                    <input id="postcodeSearchBtn" class="btn-dark" type="button"
-                                           onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
-                                           style="width: 100px; margin-left: 10px">
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">우편번호</p>
+                                        <input type="text" placeholder="우편번호"
+                                               id="sample4_postcode"
+                                               name="postcode" readonly th:value="${memberDestinationList[0].postcode}">
+                                        <input id="postcodeSearchBtn" class="btn-dark" type="button"
+                                               onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                                               style="width: 100px; margin-left: 10px">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">도로명 주소</p>
-                                    <input type="text" placeholder="도로명 주소"
-                                           id="sample4_roadAddress"
-                                           name="roadNameAddress" readonly>
-                                </div>
+                                    <div class="destination_box">
+                                        <p class="destination_text">도로명 주소</p>
+                                        <input type="text" placeholder="도로명 주소"
+                                               id="sample4_roadAddress"
+                                               name="roadNameAddress" readonly th:value="${memberDestinationList[0].roadNameAddress}">
+                                    </div>
 
-                                <div class="destination_box">
-                                    <p class="destination_text">상세 주소</p>
-                                    <input type="text" placeholder="상세 주소"
-                                           name="recipientAddressDetails">
+                                    <div class="destination_box">
+                                        <p class="destination_text">상세 주소</p>
+                                        <input type="text" placeholder="상세 주소"
+                                               name="recipientAddressDetails" th:value="${memberDestinationList[0].recipientAddressDetails}">
+                                    </div>
                                 </div>
-                            </div>
+                            </th:block>
+
+                            <th:block th:unless="${!#lists.isEmpty(memberDestinationList)}">
+                                <div class="actual_destination">
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 이름</p>
+                                        <input type="text" placeholder="수령인 이름"
+                                               name="recipientName">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">수령인 핸드폰번호</p>
+                                        <input type="text" placeholder="수령인 핸드폰번호"
+                                               name="recipientPhoneNumber">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">우편번호</p>
+                                        <input type="text" placeholder="우편번호"
+                                               id="sample4_postcode"
+                                               name="postcode" readonly>
+                                        <input id="postcodeSearchBtn" class="btn-dark" type="button"
+                                               onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                                               style="width: 100px; margin-left: 10px">
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">도로명 주소</p>
+                                        <input type="text" placeholder="도로명 주소"
+                                               id="sample4_roadAddress"
+                                               name="roadNameAddress" readonly>
+                                    </div>
+
+                                    <div class="destination_box">
+                                        <p class="destination_text">상세 주소</p>
+                                        <input type="text" placeholder="상세 주소"
+                                               name="recipientAddressDetails">
+                                    </div>
+                                </div>
+                            </th:block>
                         </div>
 
                         <!--                        <div class="address-tab">-->
@@ -499,7 +543,7 @@
                 i++;
             }
 
-            if(document.getElementById("point_apply_input") != null) {
+            if (document.getElementById("point_apply_input") != null) {
                 decreasePoint = document.getElementById("point_apply_input").value;
             }
 
@@ -515,7 +559,8 @@
                 "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
-                "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
+                "orderTotalCouponNo": null
+                // "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
@@ -542,18 +587,20 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.isSuccess) {
-                        doPaymentProcessByCard(data.result);
-                        return;
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
                     }
-                    Swal.fire({
-                        icon: 'warning',
-                        title: data.result,
-                    })
+                    response.json()
+                })
+                .then(data => {
+                    doPaymentProcessByCard(data.result);
+                })
+                .catch(error  => {
+                    Swal.fire('error','구독결제 실패! 주문등록 실패!');
                 })
         }
+
 
         async function createOrderForPayment(orderAddRequestDto) {
 
@@ -565,9 +612,17 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     doPaymentProcessByCard(data);
+                })
+                .catch(error  => {
+                    Swal.fire('error','결제 실패, 주문등록 실패!');
                 })
         }
 
@@ -581,9 +636,16 @@
                 },
                 body: JSON.stringify(orderAddRequestDto)
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
+                    }
+                    response.json()})
                 .then(data => {
                     doPaymentProcessByCard(data);
+                })
+                .catch(error  => {
+                    Swal.fire('error','결제 실패, 주문등록 실패!');
                 })
         }
 

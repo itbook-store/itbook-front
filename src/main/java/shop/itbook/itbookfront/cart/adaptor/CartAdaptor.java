@@ -47,34 +47,36 @@ public class CartAdaptor {
 
     public List<CartProductDetailsResponseDto> getProductListMember(Long memberNo) {
 
-        ResponseEntity<CommonResponseBody<List<CartProductDetailsResponseDto>>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + BASE_API_URL +"/" + memberNo,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<>() {
-            }
-        );
+        ResponseEntity<CommonResponseBody<List<CartProductDetailsResponseDto>>> exchange =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + BASE_API_URL + "/" + memberNo,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
 
         List<CartProductDetailsResponseDto> result =
             Objects.requireNonNull(exchange.getBody()).getResult();
 
         result.forEach(dto -> dto.getProductDetailsResponseDto().setSelledPrice(
-                (long) (dto.getProductDetailsResponseDto().getFixedPrice() *
-                    ((100 - dto.getProductDetailsResponseDto().getDiscountPercent()) * 0.01))
-            ));
+            (long) (dto.getProductDetailsResponseDto().getFixedPrice() *
+                ((100 - dto.getProductDetailsResponseDto().getDiscountPercent()) * 0.01))
+        ));
 
         return result;
     }
 
     public CartProductDetailsResponseDto addCartProduct(Integer productNo) {
 
-        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + "/api/admin/products/" + productNo,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<>() {
-            }
-        );
+        ResponseEntity<CommonResponseBody<ProductDetailsResponseDto>> exchange =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + "/api/admin/products/" + productNo,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
 
         ProductDetailsResponseDto result = Objects.requireNonNull(exchange.getBody()).getResult();
 
@@ -89,7 +91,7 @@ public class CartAdaptor {
 
         try {
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + BASE_API_URL +"/save-all",
+                gatewayConfig.getGatewayServer() + BASE_API_URL + "/save-all",
                 HttpMethod.POST,
                 new HttpEntity<>(redisHashMapList, headers),
                 new ParameterizedTypeReference<>() {

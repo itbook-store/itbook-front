@@ -67,3 +67,25 @@ function clickProductInquiry(eventTarget) {
             </button>
         `;
 }
+
+function clickOrderMenu(eventTarget) {
+    eventTarget.outerHTML =
+        `
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    주문/배송 조회
+            </button><br />
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
+                <a href="/orders/mypage/list" style="text-decoration: none; color:inherit;">
+                    일반상품 주문/배송 조회
+                </a>
+            </button>
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
+                <a href="/orders/mypage/list/subscription" style="text-decoration: none; color:inherit;">
+                    구독상품 주문/배송 조회
+                </a>
+            </button>
+        `;
+}

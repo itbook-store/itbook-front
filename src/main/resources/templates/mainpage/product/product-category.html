@@ -38,8 +38,8 @@
                             <!--                                <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>-->
                             <!--                            </ul>-->
                             <span class="product-discount-label"
-                                  th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                                    품절</span>
+                                  th:if="${product.isEbook == true}">
+                                    Ebook</span>
                             <span th:if="${product.isSubscription == true}" class="product-new-label">구독</span>
                         </div>
 <!--                        <ul class="rating" style="text-align: center">-->

@@ -43,10 +43,9 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderBeforePaymentResponseDto orderPaymentStart(
+    public OrderPaymentDto orderPaymentStart(
         @RequestBody
         OrderAddRequestDto orderAddRequestDto,
-        RedirectAttributes redirectAttributes,
         @AuthenticationPrincipal
         UserDetailsDto userDetailsDto) {
 
@@ -55,13 +54,14 @@ public class OrderAsyncController {
         if (Objects.nonNull(userDetailsDto)) {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
-
         try {
             OrderPaymentDto orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
-            return new OrderBeforePaymentResponseDto<>(true, orderPaymentDto);
+            return orderPaymentDto;
         } catch (BadRequestException e) {
-            return new OrderBeforePaymentResponseDto<>(false, e.getMessage());
+            System.out.println("hi");
+            return null;
         }
+
     }
 
     /**
@@ -75,7 +75,11 @@ public class OrderAsyncController {
     public OrderPaymentDto orderPaymentStart(@PathVariable("orderNo") Long orderNo,
                                              @RequestBody OrderAddRequestDto orderAddRequestDto) {
 
-        return orderService.reOrder(orderAddRequestDto, orderNo);
+        try {
+            return orderService.reOrder(orderAddRequestDto, orderNo);
+        } catch (BadRequestException e) {
+            return null;
+        }
     }
 
     /**
@@ -85,10 +89,10 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/subscription/payment-start")
-    public OrderBeforePaymentResponseDto orderSubscriptionPaymentStart(@RequestBody
-                                                                       OrderAddRequestDto orderAddRequestDto,
-                                                                       @AuthenticationPrincipal
-                                                                       UserDetailsDto userDetailsDto) {
+    public OrderPaymentDto orderSubscriptionPaymentStart(@RequestBody
+                                                         OrderAddRequestDto orderAddRequestDto,
+                                                         @AuthenticationPrincipal
+                                                         UserDetailsDto userDetailsDto) {
 
         Optional<Long> memberNo = Optional.empty();
 
@@ -97,11 +101,9 @@ public class OrderAsyncController {
         }
 
         try {
-            OrderPaymentDto orderPaymentDto =
-                orderService.addOrderSubscription(orderAddRequestDto, memberNo);
-            return new OrderBeforePaymentResponseDto<>(true, orderPaymentDto);
+            return orderService.addOrderSubscription(orderAddRequestDto, memberNo);
         } catch (BadRequestException e) {
-            return new OrderBeforePaymentResponseDto<>(false, e.getMessage());
+            return null;
         }
     }
 
