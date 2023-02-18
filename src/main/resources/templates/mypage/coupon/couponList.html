@@ -7,110 +7,125 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
-    <link href="/adminpage/css/button.css" rel="stylesheet">
-
 </head>
 <body>
-    <div layout:fragment="content">
-        <div class="content">
-            <h2>쿠폰 목록</h2>
-            <hr>
-            <div>
-                <form method="get" th:action="@{/mypage/coupon/usage_status}">
-                    <select name="searchRequirement">
-                        <option value="everything">전체</option>
-                        <option value="notuse">사용전</option>
-                        <option value="alreadyuse">사용완료</option>
-                    </select>
-                </form>
-            </div>
-            <div class="container bootstrap snippets bootdey">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="main-box no-header clearfix">
-                            <div class="main-box-body clearfix">
-                                <div class="table-responsive">
-                                    <table class="table user-list">
-                                        <thead class="text-nowrap">
-                                        <tr>
-                                            <th><span>쿠폰이름</span></th>
-                                            <th><span>쿠폰타입</span></th>
-                                            <th><span>쿠폰혜택</span></th>
-                                            <th><span>적용범위</span></th>
-                                            <th><span>쿠폰사용기간</span></th>
-                                            <th class="text-center"><span>쿠폰상태</span></th>
-                                            <th><span>쿠폰사용</span></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="couponIssue : ${pageResponse.getContent()}">
-                                            <td style="width: 20%;">
-                                                <span th:text="${couponIssue.name}"></span>
-                                            </td>
-                                            <td>
-                                                <span th:text="${couponIssue.couponType}"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.amount!=0}">
-                                                <span th:text="${couponIssue.amount} + '원 할인'"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.percent!=0}">
-                                                <span th:text="${couponIssue.percent} +'% 할인'"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.point!=0}">
-                                                <span th:text="${couponIssue.point} + ' 포인트 적립'"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.point!=0}">
-                                                포인트 쿠폰
-                                            </td>
-                                            <td th:if="${not #strings.isEmpty(couponIssue.categoryName)}">
-                                                <span th:text="${couponIssue.parentCategoryName}"></span><br>
-                                                - <span th:text="${couponIssue.categoryName}"></span>
-                                            </td>
-                                            <td th:if="${not #strings.isEmpty(couponIssue.productName)}">
-                                                <a th:href="@{|/products/${couponIssue.productNo}|}"
-                                                    class="btn btn-coupon-register btn-sm btn-light align-middle"
-                                                ><span th:text="${couponIssue.productName}"></span></a>
+<div layout:fragment="content">
+    <div class="content">
+        <h2>쿠폰 목록</h2>
+        <hr>
+        <div>
+            <form method="get" th:action="@{/mypage/coupons/coupon-issues/all}">
+                <select name="usageStatus" onchange="window.location.replace(this.value)">
+                    <option value="/mypage/coupons/coupon-issues/all">전체</option>
+                    <option value="/mypage/coupons/coupon-issues/all?usageStatus=사용가능"
+                            th:selected="${not #strings.isEmpty(usageStatus) and #strings.equals(usageStatus, '사용가능')}">
+                        사용가능
+                    </option>
+                    <option value="/mypage/coupons/coupon-issues/all?usageStatus=사용불가"
+                            th:selected="${not #strings.isEmpty(usageStatus) and #strings.equals(usageStatus, '사용불가')}">
+                        사용불가
+                    </option>
+                </select>
+            </form>
+        </div>
+        <div class="container bootstrap snippets bootdey">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead class="text-nowrap">
+                                    <tr>
+                                        <th><span>쿠폰이름</span></th>
+                                        <th><span>쿠폰타입</span></th>
+                                        <th><span>쿠폰혜택</span></th>
+                                        <th><span>적용범위</span></th>
+                                        <th><span>쿠폰사용기간</span></th>
+                                        <th class="text-center"><span>쿠폰상태</span></th>
+                                        <th><span>쿠폰사용</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="couponIssue : ${pageResponse.getContent()}">
+                                        <td style="width: 20%;">
+                                            <span th:text="${couponIssue.name}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${couponIssue.couponType}"></span>
+                                        </td>
+                                        <td th:if="${couponIssue.amount!=0}">
+                                            <span th:text="${couponIssue.amount} + '원 할인'"></span>
+                                        </td>
+                                        <td th:if="${couponIssue.percent!=0}">
+                                            <span th:text="${couponIssue.percent} +'% 할인'"></span>
+                                        </td>
+                                        <td th:if="${couponIssue.point!=0}">
+                                            <span th:text="${couponIssue.point} + ' 포인트 적립'"></span>
+                                        </td>
+                                        <td th:if="${couponIssue.point!=0}">
+                                            포인트 쿠폰
+                                        </td>
+                                        <td th:if="${not #strings.isEmpty(couponIssue.categoryName)}">
+                                            <a th:href="@{/products(categoryNo=${couponIssue.categoryNo},categoryName=${couponIssue.categoryName})}"
+                                               class="btn btn-coupon-register btn-sm btn-light align-middle">
+                                            <span th:text="${couponIssue.parentCategoryName}"></span><br>
+                                            - <span th:text="${couponIssue.categoryName}"></span>
+                                            </a>
+                                        </td>
+                                        <td th:if="${not #strings.isEmpty(couponIssue.productName)}">
+                                            <a th:href="@{|/products/${couponIssue.productNo}|}"
+                                               class="btn btn-coupon-register btn-sm btn-light align-middle"
+                                            ><span th:text="${couponIssue.productName}"></span></a>
 
-                                            </td>
-                                            <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName) and couponIssue.point==0}">
-                                                전체 상품
-                                            </td>
-                                            <td>
-                                                <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
-                                                <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.point!=0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
-                                                <span class="badge text-bg-primary" th:text="사용하기" th:onclick="|location.href='@{/mypage/coupons/coupon-issues/{couponIssueNo}/point-coupon-use(couponIssueNo=${couponIssue.couponIssueNo})}'|" style="cursor:pointer"></span>
-                                            </td>
-                                            <td th:if="${couponIssue.point==0 and #strings.equals(couponIssue.usageStatusName, '사용가능')}" class="text-center">
-                                                <span class="badge text-bg-success" th:text="${couponIssue.usageStatusName}"></span>
-                                            </td>
-                                            <td th:if="${#strings.equals(couponIssue.usageStatusName, '사용완료')}" class="text-center">
-                                                <span class="badge text-bg-danger" th:text="${couponIssue.usageStatusName}"></span>
-                                            </td>
-                                            <td style="width: 20%;" th:if="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
-                                                <span th:text="${#temporals.format(couponIssue.couponUsageCreatedAt, 'yyyy년 MM월 dd일')}"></span>
-                                            </td>
-                                            <td style="width: 20%;" th:unless="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
-                                                -
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        </td>
+                                        <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName) and couponIssue.point==0}">
+                                            전체 상품
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
+                                            <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <th:block th:if="${#strings.equals(couponIssue.usageStatusName, '사용가능')}">
+                                                <span th:if="${couponIssue.point==0}" class="badge text-bg-success"
+                                                      th:text="${couponIssue.usageStatusName}"></span>
+
+                                                <span th:unless="${couponIssue.point==0}" class="badge text-bg-primary"
+                                                      th:text="사용하기"
+                                                      th:onclick="|location.href='@{/mypage/coupons/coupon-issues/{couponIssueNo}/point-coupon-use(couponIssueNo=${couponIssue.couponIssueNo})}'|"
+                                                      style="cursor:pointer"></span>
+                                            </th:block>
+                                            <span th:unless="${#strings.equals(couponIssue.usageStatusName, '사용가능')}"
+                                                  class="badge text-bg-danger"
+                                                  th:text="${couponIssue.usageStatusName}"></span>
+                                        </td>
+                                        <td style="width: 20%;"
+                                            th:if="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
+                                            <span th:text="${#temporals.format(couponIssue.couponUsageCreatedAt, 'yyyy년 MM월 dd일')}"></span>
+                                        </td>
+                                        <td style="width: 20%;"
+                                            th:unless="${not #strings.isEmpty(couponIssue.couponUsageCreatedAt)}">
+                                            -
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <th:block th:include="component/pageFooter"></th:block>
         </div>
+        <th:block th:include="component/pageFooter"></th:block>
     </div>
-    <script th:inline="javascript">
-        let failMessage = [[${failMessage}]];
-        if (failMessage) {
-            Swal.fire('failMessage', '', 'error');
-        }
-    </script>
+</div>
+<script th:inline="javascript">
+    let failMessage = [[${failMessage}]];
+    if (failMessage) {
+        Swal.fire('failMessage', '', 'error');
+    }
+</script>
 </body>
 </html>
