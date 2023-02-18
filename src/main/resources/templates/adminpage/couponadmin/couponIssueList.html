@@ -15,12 +15,14 @@
 
         <div class="container">
             <div>
-                <form method="get" th:action="@{/mypage/coupon/usage_status}">
-                    <select name="searchRequirement">
-                        <option value="everything">전체</option>
-                        <option value="notuse">사용전</option>
-                        <option value="alreadyuse">사용완료</option>
+                <form  method="get" th:action="@{/admin/coupon/coupon-issues/search}">
+                    <select id="searchTarget" name="searchTarget">
+                        <option value="memberId">아이디</option>
+                        <option value="couponCode">쿠폰코드</option>
+                        <option value="couponName">쿠폰이름</option>
                     </select>
+                    <input style="width: 190px;" type="text" id="keyword" name="keyword">
+                    <button class="btn btn-secondary" type="submit">검색</button>
                 </form>
             </div>
             <table class="table table-striped" style="text-align: center">
