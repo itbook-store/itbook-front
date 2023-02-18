@@ -58,10 +58,8 @@ public class OrderAsyncController {
             OrderPaymentDto orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
             return orderPaymentDto;
         } catch (BadRequestException e) {
-            System.out.println("hi");
             return null;
         }
-
     }
 
     /**
