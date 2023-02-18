@@ -218,9 +218,11 @@
                                 <p style="margin-left: 3px !important; font-weight: bold; font-size: 20px">P</p>
                             </div>
                             <div class="point_apply_box">
-                                <input type="number"
+                                <input type="text"
                                        onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                        name="decreasePoint"
+                                       pattern="[a-zA-Z0-9]"
                                        id="point_apply_input" value=0>
                                 <button type="button" id="point_apply_btn" class="btn">적용하기</button>
                                 <button type="button" id="point_cancel_btn" class="btn" disabled>적용해제</button>
@@ -282,6 +284,7 @@
                                         <div th:each="dst : ${memberDestinationList}">
 
                                             <div class="destination_container">
+                                                <input type="hidden" th:value="${dst.recipientDestinationNo}">
                                                 <input type="radio" name="destination_info" id="destination_info">
                                                 <div>
                                                     <div class="destination_box">
