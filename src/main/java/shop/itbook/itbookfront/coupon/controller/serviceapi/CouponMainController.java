@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.coupon.controller.serviceapi;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class CouponMainController {
     @GetMapping("/membership")
     public String couponOfMembership(Model model) {
 
-        List<List<MembershipCouponResponseDto>> membershipCouponList =
+        Map<String, List<MembershipCouponResponseDto>> membershipCouponList =
             membershipCouponService.findAvailableMembershipCoupon(
                 "/api/membership-coupons/list");
 
