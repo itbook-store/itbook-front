@@ -59,13 +59,6 @@ public interface OrderService {
                                          Optional<Long> memberNo);
 
     /**
-     * Complete order subscription.
-     *
-     * @param orderNo the order no
-     */
-    void completeOrderSubscription(Long orderNo);
-
-    /**
      * Re order order payment dto.
      *
      * @param orderAddRequestDto the order add request dto

@@ -89,18 +89,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void completeOrderSubscription(Long orderNo) {
-
-        UriComponents uriComponents = UriComponentsBuilder
-            .fromUriString(gatewayConfig.getGatewayServer())
-            .path("/api/orders/subscription/completion")
-            .queryParam("orderNo", orderNo)
-            .build();
-
-        orderAdaptor.postNullBodyReturnVoid(uriComponents.toUri());
-    }
-
-    @Override
     public OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto, Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
