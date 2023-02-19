@@ -166,8 +166,8 @@
                                         <th><span>받는분 연락처</span></th>
                                         <th><span>주문상태</span></th>
                                         <th><span>송장번호</span></th>
-                                        <th style="text-align: center">구독기간</th>
-                                        <th style="text-align: center">상세보기</th>
+                                        <th class="text-center">구독기간</th>
+                                        <th class="text-center">상세보기</th>
                                         <th>주문취소</th>
                                     </tr>
                                     </thead>
@@ -201,14 +201,17 @@
                                             </a>
                                             </span>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
                                             <!--                                            <a-->
                                             <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                            <button th:orderNo="${ord.orderNo}"
+                                            <button th:if="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}" th:orderNo="${ord.orderNo}"
                                                     class="btn btn-danger"
                                                     onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
                                             </button>
+                                            <span th:unless="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}"
+                                                  class="text-center">불가
+                                            </span>
                                             <!--                                            </a>-->
                                         </td>
                                         <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->

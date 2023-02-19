@@ -222,8 +222,8 @@
             <div class="card-body">
               <div class="flex-content justify-content-between">
                 <span class="font-weight-bold">배송 정보</span>
-                <button class="btn btn-info text-white">
-                  <!--                                        th:onclick="|locaiton.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">-->
+                <button th:if="${orderDetails.orderStatus == '배송중'}" class="btn btn-info text-white"
+                        th:onclick="|location.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">
                   배송 조회
                 </button>
               </div>
