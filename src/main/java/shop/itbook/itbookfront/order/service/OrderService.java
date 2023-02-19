@@ -3,6 +3,8 @@ package shop.itbook.itbookfront.order.service;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
+import shop.itbook.itbookfront.order.dto.AsyncResponseDto;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
@@ -30,9 +32,6 @@ public interface OrderService {
                                          Optional<Long> memberNo);
 
     void completeOrderSubscription(Long orderNo);
-
-    OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto,
-                            Long orderNo);
 
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
 
@@ -65,4 +64,6 @@ public interface OrderService {
      */
     PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable,
                                                                          Long memberNo);
+
+    SuccessfulResponseDto deleteAndStockRollBack(Long orderNo);
 }

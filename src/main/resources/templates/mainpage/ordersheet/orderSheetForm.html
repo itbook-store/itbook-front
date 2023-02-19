@@ -573,10 +573,6 @@
                 return;
             }
 
-            if (canceledOrderNo) {
-                reOrderForPayment(orderAddRequestDto, canceledOrderNo);
-                return;
-            }
             createOrderForPayment(orderAddRequestDto);
         }
 
@@ -593,30 +589,6 @@
                 .then(response => {
                     return response.json();
                 })
-                .then(data => {
-                    if (data.isSuccessful) {
-                        doPaymentProcessByCard(data.result);
-                    } else {
-                        throw new Error(data.message)
-                    }
-                })
-                .catch(error => {
-                    Swal.fire('error', error.message);
-                })
-        }
-
-        async function reOrderForPayment(orderAddRequestDto, orderNo) {
-
-            await fetch(`/async/orders/payment-restart/${orderNo}`, {
-
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderAddRequestDto)
-            }).then(response => {
-                return response.json();
-            })
                 .then(data => {
                     if (data.isSuccessful) {
                         doPaymentProcessByCard(data.result);
@@ -666,10 +638,8 @@
                 successUrl: data.successUrl,
                 failUrl: data.failUrl,
             })
-                .catch(function (error) {
-
-                    canceledOrderNo = data.orderNo;
-
+                .catch(error => {
+                    deleteOrderAndStockIncrease(data.orderNo);
                     if (error.code === 'USER_CANCEL') {
                         Swal.fire(
                             '결제가 취소되었습니다.',
@@ -707,19 +677,25 @@
                 })
         }
 
-        async function cancelOrderForPayment(orderNo) {
-            await fetch(`async/orders/payment-cancel/${orderNo}`, {
+        async function deleteOrderAndStockIncrease(orderNo) {
+            return await fetch(`async/orders/${orderNo}/with-stock-rollback`, {
 
-                method: "POST",
+                method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-                // 성공적으로 취소 되었다면 204(void 반환값이 204). ok 범위는 200~299
                 .then(response => {
-                    if (response.ok) {
-                        canceledOrderNo = orderNo;
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.isSuccessful) {
+                        throw new Error(data.message);
                     }
+                    return data;
+                })
+                .catch(error => {
+                    console.log(error.message);
                 });
         }
     </script>

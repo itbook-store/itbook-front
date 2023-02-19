@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.adaptor.OrderAdaptor;
+import shop.itbook.itbookfront.order.dto.AsyncResponseDto;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
@@ -99,22 +101,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto, Long orderNo) {
-
-        UriComponents uriComponents = UriComponentsBuilder
-            .fromUriString(gatewayConfig.getGatewayServer())
-            .path(String.format("/api/orders/re-order/%d", orderNo))
-            .build();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<OrderAddRequestDto> http = new HttpEntity<>(orderAddRequestDto, headers);
-
-        return orderAdaptor.addOrder(uriComponents.toUri(), http);
-    }
-
-    @Override
     public void cancelOrder(Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
@@ -180,5 +166,16 @@ public class OrderServiceImpl implements OrderService {
         log.info("pageResponse {}", pageResponse);
 
         return pageResponse;
+    }
+
+    @Override
+    public SuccessfulResponseDto deleteAndStockRollBack(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path("/api/orders/" + orderNo + "/with-stock-rollback")
+            .build();
+
+        return orderAdaptor.deleteAndStockRollBack(uriComponents.toUri());
     }
 }
