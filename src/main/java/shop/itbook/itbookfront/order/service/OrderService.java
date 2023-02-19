@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
+import shop.itbook.itbookfront.order.dto.AsyncResponseDto;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
@@ -58,22 +60,6 @@ public interface OrderService {
     OrderPaymentDto addOrderSubscription(OrderAddRequestDto orderAddRequestDto,
                                          Optional<Long> memberNo);
 
-    /**
-     * Re order order payment dto.
-     *
-     * @param orderAddRequestDto the order add request dto
-     * @param orderNo            the order no
-     * @return the order payment dto
-     */
-    OrderPaymentDto reOrder(OrderAddRequestDto orderAddRequestDto,
-                            Long orderNo);
-
-    /**
-     * Find order details order details response dto.
-     *
-     * @param orderNo the order no
-     * @return the order details response dto
-     */
     OrderDetailsResponseDto findOrderDetails(Long orderNo);
 
     /**
@@ -111,6 +97,8 @@ public interface OrderService {
      */
     PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable,
                                                                          Long memberNo);
+
+    SuccessfulResponseDto deleteAndStockRollBack(Long orderNo);
 
     /**
      * 주문 구독의 상세 정보를 조회합니다.
