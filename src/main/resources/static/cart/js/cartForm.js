@@ -47,6 +47,9 @@ async function changeProductCount(productNo, input) {
 
     if(!input.value.match(/[0-9]/)) {
         input.value = '1';
+        let totalPrice = input.parentElement.parentElement.parentElement.parentElement.querySelector(".total_price");
+        let productPrice = Number(input.parentElement.parentElement.parentElement.parentElement.querySelector(".discount_price").innerHTML);
+        totalPrice.value = Number(input.value) * productPrice;
         Swal.fire({
             icon: 'warning',
             title: '수량은 숫자만 입력 가능합니다.'
@@ -56,6 +59,9 @@ async function changeProductCount(productNo, input) {
 
     if (input.value > productStock){
         input.value = '1';
+        let totalPrice = input.parentElement.parentElement.parentElement.parentElement.querySelector(".total_price");
+        let productPrice = Number(input.parentElement.parentElement.parentElement.parentElement.querySelector(".discount_price").innerHTML);
+        totalPrice.value = Number(input.value) * productPrice;
         Swal.fire({
             icon: 'warning',
             title: '상품의 재고보다 많이 구매하실 수 없습니다.'

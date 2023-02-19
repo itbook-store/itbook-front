@@ -104,7 +104,9 @@
 
                         </td>
                         <td>
-                            <button class="go_payment btn btn-success">주문하기</button>
+                            <button class="go_payment btn btn-success"
+                            th:onclick="|location.href='@{/order-sheet/subscription/select-period(productNo=${dto.productDetailsResponseDto.productNo},productCnt=${dto.productCount})}'|">
+                                주문하기</button>
                         </td>
                     </tr>
                 </th:block>

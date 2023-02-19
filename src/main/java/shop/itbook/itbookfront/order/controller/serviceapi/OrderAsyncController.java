@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,11 +15,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
+import shop.itbook.itbookfront.order.dto.AsyncResponseDto;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
 import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
 import shop.itbook.itbookfront.order.dto.response.OrderBeforePaymentResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.service.OrderService;
+import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 
 /**
  * 주문의 결제 처리를 위한 비동기 요청을 담당합니다.
@@ -43,7 +47,7 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/payment-start")
-    public OrderPaymentDto orderPaymentStart(
+    public AsyncResponseDto<OrderPaymentDto> orderPaymentStart(
         @RequestBody
         OrderAddRequestDto orderAddRequestDto,
         @AuthenticationPrincipal
@@ -54,31 +58,12 @@ public class OrderAsyncController {
         if (Objects.nonNull(userDetailsDto)) {
             memberNo = Optional.of(userDetailsDto.getMemberNo());
         }
+
         try {
             OrderPaymentDto orderPaymentDto = orderService.addOrder(orderAddRequestDto, memberNo);
-            return orderPaymentDto;
+            return new AsyncResponseDto<>(Boolean.TRUE, orderPaymentDto, "결제준비 완료!");
         } catch (BadRequestException e) {
-            System.out.println("hi");
-            return null;
-        }
-
-    }
-
-    /**
-     * 결제 대기 상태의 주문의 결제를 재진행합니다.
-     *
-     * @param orderNo            주문 번호
-     * @param orderAddRequestDto 주문 테이블에 저장할 정보
-     * @return 결제 요청을 위한 정보를 담고 있는 Dto
-     */
-    @PostMapping("/payment-restart/{orderNo}")
-    public OrderPaymentDto orderPaymentStart(@PathVariable("orderNo") Long orderNo,
-                                             @RequestBody OrderAddRequestDto orderAddRequestDto) {
-
-        try {
-            return orderService.reOrder(orderAddRequestDto, orderNo);
-        } catch (BadRequestException e) {
-            return null;
+            return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
         }
     }
 
@@ -89,9 +74,9 @@ public class OrderAsyncController {
      * @return 결제 요청을 위한 정보를 담고 있는 Dto
      */
     @PostMapping("/subscription/payment-start")
-    public OrderPaymentDto orderSubscriptionPaymentStart(@RequestBody
+    public AsyncResponseDto<OrderPaymentDto> orderSubscriptionPaymentStart(@RequestBody
                                                          OrderAddRequestDto orderAddRequestDto,
-                                                         @AuthenticationPrincipal
+                                                                            @AuthenticationPrincipal
                                                          UserDetailsDto userDetailsDto) {
 
         Optional<Long> memberNo = Optional.empty();
@@ -101,9 +86,10 @@ public class OrderAsyncController {
         }
 
         try {
-            return orderService.addOrderSubscription(orderAddRequestDto, memberNo);
+            OrderPaymentDto orderPaymentDto = orderService.addOrderSubscription(orderAddRequestDto, memberNo);
+            return new AsyncResponseDto<>(Boolean.TRUE, orderPaymentDto, "결제준비 완료!");
         } catch (BadRequestException e) {
-            return null;
+            return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
         }
     }
 
@@ -123,5 +109,16 @@ public class OrderAsyncController {
     @PostMapping("/purchase-complete/{orderNo}")
     public void orderPurchaseComplete(@PathVariable("orderNo") Long orderNo) {
         orderService.orderPurchaseComplete(orderNo);
+    }
+
+    @DeleteMapping("/{orderNo}/with-stock-rollback")
+    public AsyncResponseDto<SuccessfulResponseDto> orderDeleteAndStockRollBack(@PathVariable Long orderNo) {
+
+        try {
+            SuccessfulResponseDto successfulResponseDto = orderService.deleteAndStockRollBack(orderNo);
+            return new AsyncResponseDto<>(successfulResponseDto.getIsSuccessful(), null, "주문 삭제 및 재고 롤백 완료!");
+        } catch (BadRequestException e) {
+            return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
+        }
     }
 }

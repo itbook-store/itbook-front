@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.order.adaptor;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
@@ -21,6 +23,7 @@ import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionAdminListDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 
 /**
@@ -126,7 +129,6 @@ public class OrderAdaptor {
             new ParameterizedTypeReference<>() {
             }
         );
-
     }
 
     public PageResponse<OrderSubscriptionAdminListDto> orderSubscriptionListByAdmin(URI uri) {
@@ -143,13 +145,37 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable, Long memberNo) {
+    public PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable,
+                                                                                Long memberNo) {
 
-        ResponseEntity<CommonResponseBody<PageResponse<OrderSubscriptionListDto>>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + ORDER_SUBSCRIPTION_MEMBER_LIST_API
-                + memberNo + String.format("?page=%d&size=%d", pageable.getPageNumber(),
+        ResponseEntity<CommonResponseBody<PageResponse<OrderSubscriptionListDto>>> exchange =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + ORDER_SUBSCRIPTION_MEMBER_LIST_API
+                    + memberNo + String.format("?page=%d&size=%d", pageable.getPageNumber(),
                     pageable.getPageSize()),
-            HttpMethod.GET,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public List<OrderSubscriptionDetailsResponseDto> orderSubscriptionDetailsResponseDto(URI uri) {
+        ResponseEntity<CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public SuccessfulResponseDto deleteAndStockRollBack(URI toUri) {
+        ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange = restTemplate.exchange(toUri,
+            HttpMethod.DELETE,
             null,
             new ParameterizedTypeReference<>() {
             }

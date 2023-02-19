@@ -21,9 +21,9 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     @GetMapping("/completion/{deliveryNo}")
-    public String deliveryStatusCompletion(@PathVariable String deliveryNo) {
+    public String deliveryStatusCompletion(@PathVariable Long deliveryNo) {
 
-//        DeliveryService.
+        deliveryService.completeDeliveryStatus(deliveryNo);
 
         return "redirect:#";
     }

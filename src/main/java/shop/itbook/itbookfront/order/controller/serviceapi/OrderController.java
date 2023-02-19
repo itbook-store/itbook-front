@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.controller.serviceapi;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,6 +15,7 @@ import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderProductDetailResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -74,13 +76,20 @@ public class OrderController {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
-        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
-            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
-
         model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mypage/order/orderDetailsForm";
+    }
+
+    @GetMapping("/mypage/details-sub/{orderNo}")
+    public String orderSubscriptionDetails(@PathVariable Long orderNo, Model model) {
+
+        List<OrderSubscriptionDetailsResponseDto> orderSubscriptionDetailsList =
+            orderService.findOrderSubscriptionDetails(orderNo);
+
+        model.addAttribute("detailsList", orderSubscriptionDetailsList);
+
+        return "mypage/order/orderSubDetailsForm";
     }
 
     @GetMapping("/mypage/list/subscription")

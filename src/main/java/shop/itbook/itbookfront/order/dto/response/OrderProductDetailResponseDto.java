@@ -15,4 +15,12 @@ public class OrderProductDetailResponseDto {
     private Integer count;
     private Long productPrice;
     private String fileThumbnailsUrl;
+
+    private String couponName;
+    private Long couponAmount;
+    private Integer couponPercent;
+
+    private Long fixedPrice;
+    private Double discountPercent;
+    private Long sellingPrice;
 }
