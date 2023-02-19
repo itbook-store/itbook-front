@@ -161,7 +161,7 @@ public class ProductAdaptor {
         HttpEntity<ProductRelationRequestDto> entity = new HttpEntity(requestDto, headers);
         restTemplate.exchange(
             gateway.getGatewayServer() +
-                String.format("/api/products/relation/%d/edit", basedProductNo),
+                String.format("/api/admin/products/relation/%d/edit", basedProductNo),
             HttpMethod.POST,
             entity, new ParameterizedTypeReference<>() {
             });
