@@ -25,4 +25,6 @@ public class OrderDetailsResponseDto {
     private Integer totalCouponPercent;
     private OrderDestinationDto orderDestinationDto;
     private List<OrderProductDetailResponseDto> orderProductDetailResponseDtoList;
+
+    private Long sellingAmount;
 }
