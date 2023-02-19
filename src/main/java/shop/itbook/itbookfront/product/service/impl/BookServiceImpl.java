@@ -4,12 +4,13 @@ import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
 import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.product.adaptor.BookAdaptor;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
@@ -68,7 +69,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Cacheable(value = "productTypeList", key = "#productTypeNo")
     public List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo,
-                                                              Long memberNo) {
+                                                              Optional<UserDetailsDto> member) {
         switch (productTypeNo) {
             case 1:
                 return this.getNewBookList();
@@ -77,10 +78,10 @@ public class BookServiceImpl implements BookService {
             case 3:
                 return this.getBestSellerList();
             case 4:
-                if (Objects.isNull(memberNo)) {
+                if (member.isEmpty()) {
                     return this.getRecommendationList();
                 } else {
-                    return this.getPersonalRecommendationList(memberNo);
+                    return this.getPersonalRecommendationList(member.get().getMemberNo());
                 }
             case 5:
                 return this.getPopularBookList();

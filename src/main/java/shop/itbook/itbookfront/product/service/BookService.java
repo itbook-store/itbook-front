@@ -1,7 +1,9 @@
 package shop.itbook.itbookfront.product.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
@@ -26,5 +28,6 @@ public interface BookService {
 
     List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo);
 
-    List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo, Long memberNo);
+    List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo,
+                                                       Optional<UserDetailsDto> member);
 }
