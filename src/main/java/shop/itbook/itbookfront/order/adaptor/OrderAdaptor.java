@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
@@ -126,7 +127,6 @@ public class OrderAdaptor {
             new ParameterizedTypeReference<>() {
             }
         );
-
     }
 
     public PageResponse<OrderSubscriptionAdminListDto> orderSubscriptionListByAdmin(URI uri) {
@@ -150,6 +150,17 @@ public class OrderAdaptor {
                 + memberNo + String.format("?page=%d&size=%d", pageable.getPageNumber(),
                     pageable.getPageSize()),
             HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public SuccessfulResponseDto deleteAndStockRollBack(URI toUri) {
+        ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange = restTemplate.exchange(toUri,
+            HttpMethod.DELETE,
             null,
             new ParameterizedTypeReference<>() {
             }
