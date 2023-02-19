@@ -1,6 +1,7 @@
 package shop.itbook.itbookfront.order.adaptor;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,6 +23,7 @@ import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSheetResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionAdminListDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 
 /**
@@ -143,17 +145,30 @@ public class OrderAdaptor {
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
-    public PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable, Long memberNo) {
+    public PageResponse<OrderSubscriptionListDto> orderSubscriptionListByMember(Pageable pageable,
+                                                                                Long memberNo) {
 
-        ResponseEntity<CommonResponseBody<PageResponse<OrderSubscriptionListDto>>> exchange = restTemplate.exchange(
-            gatewayConfig.getGatewayServer() + ORDER_SUBSCRIPTION_MEMBER_LIST_API
-                + memberNo + String.format("?page=%d&size=%d", pageable.getPageNumber(),
+        ResponseEntity<CommonResponseBody<PageResponse<OrderSubscriptionListDto>>> exchange =
+            restTemplate.exchange(
+                gatewayConfig.getGatewayServer() + ORDER_SUBSCRIPTION_MEMBER_LIST_API
+                    + memberNo + String.format("?page=%d&size=%d", pageable.getPageNumber(),
                     pageable.getPageSize()),
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<>() {
-            }
-        );
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
+
+        return Objects.requireNonNull(exchange.getBody()).getResult();
+    }
+
+    public List<OrderSubscriptionDetailsResponseDto> orderSubscriptionDetailsResponseDto(URI uri) {
+        ResponseEntity<CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>>> exchange =
+            restTemplate.exchange(
+                uri,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }

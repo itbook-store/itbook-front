@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.order.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import shop.itbook.itbookfront.order.dto.response.OrderListAdminViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionAdminListDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -89,18 +91,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void completeOrderSubscription(Long orderNo) {
-
-        UriComponents uriComponents = UriComponentsBuilder
-            .fromUriString(gatewayConfig.getGatewayServer())
-            .path("/api/orders/subscription/completion")
-            .queryParam("orderNo", orderNo)
-            .build();
-
-        orderAdaptor.postNullBodyReturnVoid(uriComponents.toUri());
-    }
-
-    @Override
     public void cancelOrder(Long orderNo) {
 
         UriComponents uriComponents = UriComponentsBuilder
@@ -144,7 +134,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageResponse<OrderSubscriptionAdminListDto> orderSubscriptionListByAdmin(Pageable pageable) {
+    public PageResponse<OrderSubscriptionAdminListDto> orderSubscriptionListByAdmin(
+        Pageable pageable) {
 
         UriComponents uriComponents = UriComponentsBuilder
             .fromUriString(gatewayConfig.getGatewayServer())
@@ -166,6 +157,17 @@ public class OrderServiceImpl implements OrderService {
         log.info("pageResponse {}", pageResponse);
 
         return pageResponse;
+    }
+
+    @Override
+    public List<OrderSubscriptionDetailsResponseDto> findOrderSubscriptionDetails(Long orderNo) {
+
+        UriComponents uriComponents = UriComponentsBuilder
+            .fromUriString(gatewayConfig.getGatewayServer())
+            .path(String.format("/api/orders/details-sub/%d", orderNo))
+            .build();
+
+        return orderAdaptor.orderSubscriptionDetailsResponseDto(uriComponents.toUri());
     }
 
     @Override
