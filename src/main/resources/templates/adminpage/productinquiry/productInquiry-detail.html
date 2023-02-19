@@ -30,7 +30,7 @@
         <h4>제목</h4>
         <span th:text="${productInquiryResponseDto.title}"></span><br /><br />
         <h4>내용</h4>
-        <p th:text="${productInquiryResponseDto.content}"></p>
+        <p style="overflow: auto;" th:text="${productInquiryResponseDto.content}"></p>
         <div sec:authorize="hasAuthority('ADMIN')">
             <hr>
             <h3>답변 작성</h3>
@@ -41,11 +41,11 @@
                 <input type="hidden" name="memberNo" value="-1">
 
                 <label for="title" class="form-label">답변제목</label>
-                <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}"><br/>
+                <input type="text" class="form-control" id="title" th:field="*{productInquiryReplyTitle}" maxlength="20"><br/>
 
                 <label for="content" class="form-label">답변내용</label>
                 <textarea class="col-auto form-control" type="text" id="content"
-                           th:field="*{productInquiryReplyContent}"></textarea>
+                           th:field="*{productInquiryReplyContent}" maxlength="1000"></textarea>
                 <button class="btn btn-primary" type="button" onclick="submitProductInquiryReply(); ">등록하기</button>
             </form>
         </div>

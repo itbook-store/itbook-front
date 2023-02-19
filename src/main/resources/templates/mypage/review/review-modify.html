@@ -47,7 +47,7 @@
                 <div>
                     <h5>어떤 점이 좋았나요?</h5>
                     <textarea class="col-auto form-control" type="text" id="reviewContents" name="content"
-                              placeholder="리뷰를 남겨주세요!" th:text="${reviewResponseDto.content}"></textarea>
+                              placeholder="리뷰를 남겨주세요!" th:text="${reviewResponseDto.content}" maxlength="1000"></textarea>
                 </div>
                 <div class="row gx-3 mb-3">
                     <h5>사진 첨부하기</h5>

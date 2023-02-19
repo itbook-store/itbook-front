@@ -64,7 +64,7 @@ public class MemberAdminController {
             String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()));
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/admin/members/block");
+        model.addAttribute("paginationUrl", "/admin/members/writer");
 
         return "adminpage/member/admin-member-writer-list";
     }
