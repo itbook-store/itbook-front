@@ -28,7 +28,7 @@
             <!--            </ul>-->
 
             <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse)}">
-                <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
+                <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center; margin-inline: 5px">
                     <a style="text-decoration: none; " th:href="@{|/products/${product.productNo}|}">
                         <div class="product-image4">
                             <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
