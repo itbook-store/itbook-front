@@ -3,6 +3,7 @@ let totalDiscountPrice = 0;
 let orderProductTotalPriceBeforeDiscount = 0;
 const deliveryFeePolicy = 20000;
 let deliveryFee = Number(document.querySelector("#deliveryFee").innerHTML.replaceAll(',', ''));
+let currentMyPoint = Number(document.querySelector("#myPoint").innerText);
 
 document.addEventListener("DOMContentLoaded", function () {
     orderProductTotalPriceBeforeDiscount = getOrderProductTotalPriceBeforeDiscount();
@@ -468,6 +469,7 @@ pointCancelBtn.addEventListener("click", function () {
             pointApplyInput.value = '';
             document.querySelector("#point_apply_btn").disabled = false;
             document.querySelector("#point_apply_input").readOnly = false;
+            this.disabled = true;
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();
