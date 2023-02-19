@@ -142,8 +142,10 @@
                                     <td colspan="2">할인</td>
                                     <td class="text-danger text-end">
                                         -&nbsp;
-                                        <span th:if="${orderDetails.amount != null}"
-                                              th:text="${orderDetails.amount} - ${totalProductPrice}"></span>
+                                        <span th:if="${orderDetails.amount != null}">
+<!--                                              th:text="${orderDetails.amount} - ${totalProductPrice}">-->
+
+                                        </span>
                                         <span th:unless="${orderDetails.amount != null}">0</span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
@@ -164,18 +166,22 @@
                             </table>
                         </div>
                     </div>
-                    <!-- Payment -->
-                    <div class="card mb-4" th:if="${orderDetails.paymentCardResponseDto != null}">
+                    <!-- Coupon -->
+                    <div class="card mb-4" th:if="${orderDetails.couponName != null}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h3 class="h6">결제 정보</h3>
-                                    <p><span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"></span><br>
+                                    <h3 class="h6">쿠폰 정보</h3>
+                                    <p>
+                                        <span th:if="${orderDetails.couponName != null}">
+                                        <span th:text="${orderDetails.couponName}"></span><br>
                                         결제 가격:
-                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>
+                                        <span th:if="${orderDetails.totalCouponAmount != 0}" th:text="${orderDetails.totalCouponAmount}"></span><br>
                                         원
-                                        <span class="badge bg-success rounded-pill"
-                                              th:text="${orderDetails.paymentCardResponseDto.paymentStatus}"></span>
+                                        <span th:if="${orderDetails.totalCouponPercent != 0}" th:text="${orderDetails.totalCouponPercent}"></span>
+                                        원
+                                        </span>
+
                                     </p>
                                 </div>
                                 <!--                                <div class="col-lg-6">-->
@@ -205,8 +211,8 @@
                         <div class="card-body">
                             <div class="flex-content justify-content-between">
                                 <span class="font-weight-bold">배송 정보</span>
-                                <button class="btn btn-info text-white"
-                                        th:onclick="|locaiton.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">
+                                <button class="btn btn-info text-white">
+<!--                                        th:onclick="|locaiton.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">-->
                                     배송 조회</button>
                             </div>
                             <!--                            <strong>FedEx</strong>-->
