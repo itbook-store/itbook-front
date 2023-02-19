@@ -511,7 +511,6 @@
 
         let temp = [[${orderSheetFormDto}]];
 
-        // for문
         let productNoList = temp.productNoList;
         let productCntList = temp.productCntList;
 
@@ -559,8 +558,8 @@
                 "isSubscription": temp.isSubscription,
                 "subscriptionPeriod": temp.subscriptionPeriod,
                 "decreasePoint": decreasePoint,
-                "orderTotalCouponNo": null
-                // "orderTotalCouponNo": document.getElementById("orderTotalCouponNo").value
+                "orderTotalCouponNo": $("#orderTotalCouponNo").val()
+                // "orderTotalCouponNo": document.querySelector("#orderTotalCouponNo").value
             }
 
             console.log(orderAddRequestDto);
@@ -572,7 +571,7 @@
 
             if (canceledOrderNo) {
                 reOrderForPayment(orderAddRequestDto, canceledOrderNo);
-                return
+                return;
             }
             createOrderForPayment(orderAddRequestDto);
         }
@@ -591,13 +590,13 @@
                     if (response==null) {
                         throw new Error(response.statusText)
                     }
-                    response.json()
+                    return response.json()
                 })
                 .then(data => {
                     doPaymentProcessByCard(data.result);
                 })
                 .catch(error  => {
-                    Swal.fire('error','구독결제 실패! 주문등록 실패!');
+                    Swal.fire('error','구독결제 실패! 주문등록 실패! 1');
                 })
         }
 
@@ -622,7 +621,7 @@
                     doPaymentProcessByCard(data);
                 })
                 .catch(error  => {
-                    Swal.fire('error','결제 실패, 주문등록 실패!');
+                    Swal.fire('error', "결제 실패");
                 })
         }
 
@@ -640,12 +639,12 @@
                     if (response==null) {
                         throw new Error(response.statusText)
                     }
-                    response.json()})
+                    return response.json()})
                 .then(data => {
                     doPaymentProcessByCard(data);
                 })
                 .catch(error  => {
-                    Swal.fire('error','결제 실패, 주문등록 실패!');
+                    Swal.fire('error','결제 실패, 주문등록 실패!3');
                 })
         }
 
