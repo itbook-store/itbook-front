@@ -62,11 +62,7 @@ public class OrderController {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
-        Long totalProductPrice = orderDetails.getOrderProductDetailResponseDtoList().stream()
-            .mapToLong(OrderProductDetailResponseDto::getProductPrice).sum();
-
         model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("totalProductPrice", totalProductPrice);
 
         return "mainpage/order/orderDetailsForm";
     }

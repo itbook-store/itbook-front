@@ -86,7 +86,7 @@
                                 <tr>
                                     <td colspan="2">상품 금액</td>
                                     <td class="text-end">
-                                        <!--                    <span th:text="${totalProductPrice}"></span>-->
+                                        <span th:text="${detailsList.get(0).productPrice}"></span>
                                         원
                                     </td>
                                 </tr>
@@ -100,10 +100,9 @@
                                 <tr>
                                     <td colspan="2">할인</td>
                                     <td class="text-danger text-end">
-                                        -&nbsp;
                                         <span th:if="${detailsList.get(0).amount != null}">
 <!--                          th:text="${detailsList.get(0)} - ${totalProductPrice}">-->
-                    </span>
+                                        </span>
                                         <span th:unless="${detailsList.get(0).amount != null}">0</span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
@@ -114,7 +113,7 @@
                                     <td class="text-end">
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         <span th:if="${detailsList.get(0).amount != null}"
-                                              th:text="${detailsList.get(0).amount} + ${detailsList.get(0).deliveryFee}"></span>
+                                              th:text="${detailsList.get(0).amount}></span>
                                         <span th:unless="${detailsList.get(0).amount != null}">
 <!--                          th:text="${totalProductPrice} + ${orderDetails.deliveryFee}">-->
                     </span>

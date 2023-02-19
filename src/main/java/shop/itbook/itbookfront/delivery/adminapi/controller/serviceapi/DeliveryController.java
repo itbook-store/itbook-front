@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.delivery.adminapi.controller.serviceapi;
 
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +22,11 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     @GetMapping("/completion/{deliveryNo}")
-    public String deliveryStatusCompletion(@PathVariable Long deliveryNo) {
+    public String deliveryStatusCompletion(@PathVariable Long deliveryNo,
+                                           HttpServletRequest request) {
 
         deliveryService.completeDeliveryStatus(deliveryNo);
 
-        return "redirect:#";
+        return "redirect:" + request.getHeader("Referer");
     }
 }
