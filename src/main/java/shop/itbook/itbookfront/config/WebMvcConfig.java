@@ -29,10 +29,23 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+
         registry.addViewController("/admin/category-addition")
             .setViewName("adminpage/categoryadmin/categoryAddSelect");
+
         registry.addViewController("/admin/products/select-add-product-type")
             .setViewName("adminpage/product/select-add-form");
+
+        registry.addViewController("/non-member/order-details/show-select-form")
+            .setViewName("mainpage/order/nonMemberOrderDetailsSelectForm");
+
+        registry.addViewController("/non-member/order-details/show-form")
+            .setViewName("mainpage/order/nonMemberOrderDetailsForm");
+
+        registry.addViewController("/non-member/subscription-order-details/show-form")
+            .setViewName("mainpage/order/nonMemberSubscriptionOrderDetailsForm");
+
+
         registry.addViewController("/error/403error").setViewName("/error/403error");
     }
 
@@ -51,5 +64,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns(loginPath)
             .excludePathPatterns("/logout")
             .excludePathPatterns(staticResourcesPath);
+
     }
 }
