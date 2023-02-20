@@ -62,27 +62,27 @@ jobs:
           script_stop: true
           script: "./startup.sh"
 
-      - name: Sleep for 80 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '80s'
+#      - name: Sleep for 80 seconds
+#        uses: jakejarvis/wait-action@master
+#        with:
+#          time: '80s'
 
         ### phase 2
 
-      - name : ready for deploy seconds server (excute shell script)
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_IP2 }}
-          username: ${{ secrets.SSH_ID2 }}
-          key: ${{ secrets.SSH_KEY2 }}
-          port: ${{ secrets.SSH_PORT2 }}
-          script_stop: true
-          script: "./ready_server2.sh"
-
-      - name: Sleep for 60 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '60s'
+#      - name : ready for deploy seconds server (excute shell script)
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SSH_IP2 }}
+#          username: ${{ secrets.SSH_ID2 }}
+#          key: ${{ secrets.SSH_KEY2 }}
+#          port: ${{ secrets.SSH_PORT2 }}
+#          script_stop: true
+#          script: "./ready_server2.sh"
+#
+#      - name: Sleep for 60 seconds
+#        uses: jakejarvis/wait-action@master
+#        with:
+#          time: '60s'
 
       - name : upload file
         uses: appleboy/scp-action@master
