@@ -64,5 +64,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns(loginPath)
             .excludePathPatterns("/logout")
             .excludePathPatterns(staticResourcesPath);
+
     }
 }

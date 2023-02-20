@@ -219,6 +219,8 @@ function addCouponSubmit() {
     let couponCreatedAt = document.getElementById("couponCreatedAt").value;
     let couponExpiredAt = document.getElementById("couponExpiredAt").value;
     let usagePeriod = document.getElementById("usagePeriod").value;
+    let min = document.getElementById("min").value;
+    let max = document.getElementById("max").value;
     let pointRadio = document.getElementById("pointRadio").checked;
     let percentRadio = document.getElementById("percentRadio").checked;
     let amountRadio = document.getElementById("amountRadio").checked;
@@ -295,6 +297,17 @@ function addCouponSubmit() {
         Swal.fire('쿠폰 종류를 선택해주세요', '', 'error');
         return false;
 
+    }
+
+    if (!checkNumberDownToNum(10000000, min)) {
+
+        Swal.fire('최소 이용 가능 금액은 최대 천만원까지 입니다.', '무제한으로 하시려면 공백으로 해주세요.', 'error');
+        return false;
+    }
+    if (!checkNumberDownToNum(10000000, max)) {
+
+        Swal.fire('최대 할인 금액은 최대 천만원까지 입니다.', '무제한으로 하시려면 공백으로 입력해주세요.', 'error');
+        return false;
     }
 
     if (pointCoverageRadio === true || allProductRadio === true) {
