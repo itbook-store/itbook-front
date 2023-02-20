@@ -19,6 +19,10 @@
                 </a> 주문
                     #<span th:text="${detailsList.get(0).orderNo}" }></span>
                 </h2>
+                <div th:if="${detailsList.get(0).nonMemberOrderCode != null}">
+                    &nbsp;&nbsp;&nbsp;비회원 주문 코드:&nbsp;
+                    <span th:text="${detailsList.get(0).nonMemberOrderCode}"></span>
+                </div>
             </div>
 
             <!-- Main content -->
