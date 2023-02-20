@@ -10,7 +10,7 @@ import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.interceptor.SessionInterceptor;
 import shop.itbook.itbookfront.auth.interceptor.TokenReissueInterceptor;
 import shop.itbook.itbookfront.cart.interceptor.CartInterceptor;
-//import shop.itbook.itbookfront.category.interceptor.CategoryInterceptor;
+import shop.itbook.itbookfront.category.interceptor.CategoryInterceptor;
 import shop.itbook.itbookfront.category.service.CategoryService;
 
 /**
@@ -22,7 +22,7 @@ import shop.itbook.itbookfront.category.service.CategoryService;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthAdaptor authAdaptor;
-//    private final CategoryService categoryService;
+    private final CategoryService categoryService;
 
     private static final List<String> staticResourcesPath =
         List.of("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.map");
@@ -55,10 +55,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns("/logout")
             .excludePathPatterns(staticResourcesPath);
 
-//        registry.addInterceptor(new CategoryInterceptor(categoryService))
-//            .addPathPatterns("/**")
-//            .excludePathPatterns(staticResourcesPath)
-//            .excludePathPatterns("/admin/**")
-//            .excludePathPatterns("/mypage/**");
+        registry.addInterceptor(new CategoryInterceptor(categoryService))
+            .addPathPatterns("/**")
+            .excludePathPatterns(staticResourcesPath)
+            .excludePathPatterns("/admin/**")
+            .excludePathPatterns("/mypage/**")
+            .excludePathPatterns("/login")
+            .excludePathPatterns("/logout");
     }
 }
