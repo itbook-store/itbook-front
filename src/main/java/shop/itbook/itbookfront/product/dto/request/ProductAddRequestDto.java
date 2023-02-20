@@ -48,7 +48,7 @@ public class ProductAddRequestDto {
 
     @Min(value = 0, message = "적립율은 0% 이상이어야 합니다.")
     @Max(value = 100, message = "적립율은 최대 100%입니다.")
-    private Integer increasePointPercent;
+    private Double increasePointPercent;
 
     private Boolean isPointApplyingBasedSellingPrice;
 

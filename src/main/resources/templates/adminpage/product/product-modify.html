@@ -138,7 +138,6 @@
                             <input id="increasePointPercent" name="increasePointPercent"
                                    class="form-control input-md" oninput="handleInputLength(this, 3)"
                                    th:value="${product.increasePointPercent}" input type="number" max="100"
-                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                                    min="0" step="0.1">
                         </div>
 

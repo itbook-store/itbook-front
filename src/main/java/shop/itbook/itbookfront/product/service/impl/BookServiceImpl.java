@@ -34,14 +34,12 @@ public class BookServiceImpl implements BookService {
     private final ProductService productService;
 
     @Override
-    @CacheEvict(value = "products", allEntries = true)
     public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
                         BookAddRequestDto requestDto) {
         return bookAdaptor.addBook(thumbnails, ebook, requestDto);
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#productNo")
     public void modifyBook(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
                            BookModifyRequestDto requestDto) {
         bookAdaptor.modifyBook(productNo, thumbnails, ebook, requestDto);

@@ -35,7 +35,7 @@ public class ProductDetailsResponseDto {
 
     private List<CategoryNoResponseDto> categoryList;
 
-    private Integer increasePointPercent;
+    private Double increasePointPercent;
 
     private Long rawPrice;
 
