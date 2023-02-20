@@ -4,94 +4,92 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminpage/default-layout}">
 <head>
-  <meta charset="UTF-8">
-  <title>categoryAddForm</title>
+    <meta charset="UTF-8">
+    <title>categoryAddForm</title>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 </head>
 
 <div layout:fragment="content">
-<!--    <div style="width: auto;margin: auto">-->
-<!--      <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/main-category'">대분류 추가하기</button>-->
-<!--      <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/sub-category/select-form'">소분류 추가하기</button>-->
-<!--    </div>-->
+    <!--    <div style="width: auto;margin: auto">-->
+    <!--      <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/main-category'">대분류 추가하기</button>-->
+    <!--      <button style=" margin: auto; display: inline-block;" class="btn btn-primary mt-5" onclick="location.href='/admin/categories/category-addition/sub-category/select-form'">소분류 추가하기</button>-->
+    <!--    </div>-->
     <div class="content">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="container bootstrap snippets bootdey">
-                <div class="col-md-12">
-                    <h2>
-                        등록할 카테고리 분류 선택
-                    </h2>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="/admin/categories/category-addition/main-category" style="text-decoration: none; color:#000000">
-                                <div class="card bg-dark text-white " style="padding:20px">
-                                    <div class="card-heading">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <i class="fa fa-book fa-5x"></i>
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <p class="announcement-heading">&nbsp;</p>
-                                                <p class="announcement-text">대분류</p>
-                                            </div>
-                                        </div>
+        <h2>등록할 카테고리 분류 선택</h2>
+        <hr>
+        <div class="snippets bootdey">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/admin/categories/category-addition/main-category"
+                       style="text-decoration: none; color:#000000">
+                        <div class="card bg-dark text-white " style="padding:20px">
+                            <div class="card-heading">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <i class="fa fa-book fa-5x"></i>
                                     </div>
-                                    <div class="card-body announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">등록하러 가기</div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
+                                    <div class="col-xs-6 text-right">
+                                        <p class="announcement-heading">&nbsp;</p>
+                                        <p class="announcement-text">대분류</p>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="/admin/categories/category-addition/sub-category/select-form" style="text-decoration: none; color:#000000">
-                                <div class="card bg-success text-white " style="padding:20px">
-                                    <div class="card-heading">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <i class="fa fa-book fa-5x"></i>
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <p class="announcement-heading">&nbsp;</p>
-                                                <p class="announcement-text">소분류</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">등록하러 가기</div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="card-body announcement-bottom">
+                                <div class="row">
+                                    <div class="col-xs-6">등록하러 가기</div>
+                                    <div class="col-xs-6 text-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/admin/categories/category-addition/sub-category/select-form"
+                       style="text-decoration: none; color:#000000">
+                        <div class="card bg-success text-white " style="padding:20px">
+                            <div class="card-heading">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <i class="fa fa-book fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-6 text-right">
+                                        <p class="announcement-heading">&nbsp;</p>
+                                        <p class="announcement-text">소분류</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body announcement-bottom">
+                                <div class="row">
+                                    <div class="col-xs-6">등록하러 가기</div>
+                                    <div class="col-xs-6 text-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 
 
-    <script th:inline="javascript">
-        let failMessage = [[${failMessage}]];
-        if (failMessage) {
-            Swal.fire({
-                icon: 'error',
-                title: failMessage,
-                text: '다시 시도해 주세요!',
-            })
-        }
-    </script>
+<script th:inline="javascript">
+    let failMessage = [[${failMessage}]];
+    if (failMessage) {
+        Swal.fire({
+            icon: 'error',
+            title: failMessage,
+            text: '다시 시도해 주세요!',
+        })
+    }
+</script>
 </div>
 
 </html>

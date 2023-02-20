@@ -9,62 +9,66 @@
 </head>
 
 <div layout:fragment="content">
+    <div class="content">
+        <h2>카테고리 관리</h2>
+        <div class="snippets bootdey">
+            <table class="table table-striped" style="text-align: center; width: 90%">
+                <thead>
+                <tr>
+                    <th style="width: auto">구분</th>
+                    <th style="width: auto">카테고리명</th>
+                    <th style="width: auto">상품 개수</th>
+                    <th style="width: auto">숨김상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${pageResponse.content}">
+                    <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
+                    <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
+                    <td th:text="${category.categoryName}"></td>
+                    <td th:text="${category.count}"></td>
+                    <td th:text="${category.isHidden}"></td>
+                    <td>
+                        <button style="width: auto; margin-left: 10px" class="btn btn-primary"
+                                th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modify/hidden(categoryNo=${category.categoryNo})}'|">
+                            숨김여부변경
+                        </button>
+                    </td>
+                    <td th:if="${#strings.equals(category.level, 0)}">
+                        <button style="width: auto; margin-left: 10px" class="btn btn-primary"
+                                th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/main-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
+                            노출위치변경
+                        </button>
+                    </td>
+                    <td th:unless="${#strings.equals(category.level, 0)}">
+                        <button style="width: auto; margin-left: 10px" class="btn btn-primary"
+                                th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/sub-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
+                            노출위치변경
+                        </button>
+                    </td>
+                    <td>
+                        <button style="width: auto; margin-left: 10px" class="btn btn-danger"
+                                th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-deletion(categoryNo=${category.categoryNo})}'|">
+                            삭제
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-    <h1 style="text-align: center">전체 카테고리 목록</h1>
-    <div class="container">
-        <table class="table table-striped" style="text-align: center">
-            <thead>
-            <tr>
-                <th style="width: auto">구분</th>
-                <th style="width: auto">카테고리명</th>
-                <th style="width: auto">상품 개수</th>
-                <th style="width: auto">숨김상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category : ${pageResponse.content}">
-                <td th:if="${#strings.equals(category.level, 0)}">대분류</td>
-                <td th:unless="${#strings.equals(category.level, 0)}"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ㄴ소분류</td>
-                <td th:text="${category.categoryName}"></td>
-                <td th:text="${category.count}"></td>
-                <td th:text="${category.isHidden}"></td>
-                <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modify/hidden(categoryNo=${category.categoryNo})}'|">
-                        숨김여부변경
-                    </button>
-                </td>
-                <td th:if="${#strings.equals(category.level, 0)}">
-                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/main-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
-                        노출위치변경
-                    </button>
-                </td>
-                <td th:unless="${#strings.equals(category.level, 0)}">
-                    <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/modify-form/sub-category-sequence(categoryNo=${category.categoryNo}, categoryName=${category.categoryName})}'|">
-                        노출위치변경
-                    </button>
-                </td>
-                <td>
-                    <button style="width: auto; margin-left: 10px" class="btn btn-danger" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-deletion(categoryNo=${category.categoryNo})}'|">
-                        삭제
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            <th:block th:include="component/pageFooter"></th:block>
+        </div>
 
-        <th:block th:include="component/pageFooter"></th:block>
+        <script th:inline="javascript">
+            let failMessage = [[${failMessage}]];
+            if (failMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: failMessage,
+                    text: '다시 시도해 주세요!',
+                })
+            }
+        </script>
     </div>
-
-    <script th:inline="javascript">
-        let failMessage = [[${failMessage}]];
-        if (failMessage) {
-            Swal.fire({
-                icon: 'error',
-                title: failMessage,
-                text: '다시 시도해 주세요!',
-            })
-        }
-    </script>
 </div>
-
 </html>

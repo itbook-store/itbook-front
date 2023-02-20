@@ -21,51 +21,49 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <div class="container">
-            <h2>상품 판매현황</h2>
-            <hr>
-            <div class="row my-2">
-                <div class="col-lg-5">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            <canvas id="productStatisticsCanceled"></canvas>
-                        </div>
-                        <div class="card-footer text-center"><span>환불 및 주문 취소(건)</span>
-                            <a href="/admin/products/sales-rank?sortingCriteria=취소건"
-                               class="btn btn-sm btn-dark">상세보기</a></div>
+        <h2>상품 판매현황</h2>
+        <hr>
+        <div class="row my-2">
+            <div class="col-lg-5">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsCanceled"></canvas>
                     </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            <canvas id="productStatisticsCompleted"></canvas>
-                        </div>
-                        <div class="card-footer text-center"><span>결제 완료(건)</span>
-                            <a href="/admin/products/sales-rank?sortingCriteria=완료건"
-                               class="btn btn-sm btn-dark">상세보기</a></div>
-                    </div>
+                    <div class="card-footer text-center"><span>환불 및 주문 취소(건)</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=취소건"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
                 </div>
             </div>
-            <div class="row my-2">
-                <div class="col-lg-5">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            <canvas id="productStatisticsTotalAmount"></canvas>
-                        </div>
-                        <div class="card-footer text-center"><span>매출 합계</span>
-                            <a href="/admin/products/sales-rank?sortingCriteria=매출합계"
-                               class="btn btn-sm btn-dark">상세보기</a></div>
+            <div class="col-lg-5">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsCompleted"></canvas>
                     </div>
+                    <div class="card-footer text-center"><span>결제 완료(건)</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=완료건"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
                 </div>
-                <div class="col-lg-5">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            <canvas id="productStatisticsSellingPrice"></canvas>
-                        </div>
-                        <div class="card-footer text-center"><span>판매 금액</span>
-                            <a href="/admin/products/sales-rank?sortingCriteria=판매금액"
-                               class="btn btn-sm btn-dark">상세보기</a></div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-lg-5">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsTotalAmount"></canvas>
                     </div>
+                    <div class="card-footer text-center"><span>매출 합계</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=매출합계"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <canvas id="productStatisticsSellingPrice"></canvas>
+                    </div>
+                    <div class="card-footer text-center"><span>판매 금액</span>
+                        <a href="/admin/products/sales-rank?sortingCriteria=판매금액"
+                           class="btn btn-sm btn-dark">상세보기</a></div>
                 </div>
             </div>
         </div>
