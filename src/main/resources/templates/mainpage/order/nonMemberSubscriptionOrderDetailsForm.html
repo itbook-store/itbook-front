@@ -13,27 +13,20 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container ml-1 mt-5">
-        <div class="card" style="width: 30rem;">
+    <div class="container ml-1 mt-5 d-flex justify-content-center align-content-center">
+        <div class="card border-success" style="width: 30rem;">
             <div class="card-body">
-                <h5 class="card-title">비회원 구독 주문 상세조회</h5>
+                <h5 class="card-title text-center">비회원 구독 주문 상세조회</h5>
                 <form class="form" method="post" action="/non-member/subscription-order-details"
                       onsubmit="return findOrderSubmit()">
                     주문번호 : <input name="orderNo" type="number" id="orderNo" required="" placeholder="주문번호"/> <br>
-                    주문코드 : <input name="orderCode" type="text" id="orderCode" required="" placeholder="주문코드"/> <br>
-                    <input type="submit" id="submit" value="조회"/>
+                    주문코드 : <input name="orderCode" type="text" id="orderCode" required="" placeholder="36자리"
+                class="mt-2"/> <br>
+                    <input class="btn btn-primary rounded-3" type="submit" id="submit" value="조회"/>
                 </form>
             </div>
         </div>
 
-        <!--    <div id="form-div">-->
-        <!--        <h1></h1>-->
-        <!--        <form class="form" method="post" action="/non-member/subscription-order-details" onsubmit="return findOrderSubmit()" >-->
-        <!--            주문번호 : <input name="orderNo" type="number" id="orderNo" placeholder="주문번호"/> <br>-->
-        <!--            주문코드 : <input name="orderCode" type="text" id="orderCode" placeholder="주문코드"/> <br>-->
-        <!--            <input type="submit" id="submit" value="조회" />-->
-        <!--        </form>-->
-        <!--    </div>-->
     </div>
 </div>
 </body>
