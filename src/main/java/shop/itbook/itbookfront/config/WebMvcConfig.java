@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
@@ -24,7 +25,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private static final List<String> staticResourcesPath =
         List.of("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.map");
 
-    private final List<String> loginPath = List.of("/login", "/auth/login", "/api/members/oauth/login/find");
+    private final List<String> loginPath =
+        List.of("/login", "/auth/login", "/api/members/oauth/login/find");
 
 
     @Override
@@ -51,5 +53,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns(loginPath)
             .excludePathPatterns("/logout")
             .excludePathPatterns(staticResourcesPath);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+            .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

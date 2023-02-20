@@ -43,12 +43,12 @@
 </head>
 <body>
 <div layout:fragment="content" style="width: 100%!important; margin-inline: 0!important">
-    <div th:if="${not #lists.isEmpty(newBooks)}" style="height: 548px; margin: 0">
+    <div th:if="${not #lists.isEmpty(discountBooks)}" style="height: 548px; margin: 0">
 
         <div class="position-relative overflow-hidden p-md-5 text-center bg-light" style="height: 88%">
             <!--            <div class="fade-custom" th:each="num : ${#numbers.sequence(0,2)}">-->
-            <div class="fade-custom" th:each="product : ${newBooks}">
-                <span class="product-type-label">금주의 신간</span>
+            <div class="fade-custom" th:each="product : ${discountBooks}">
+                <span class="product-type-label">할인 도서</span>
                 <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
                     <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal"
                         th:text="${product.productName}"></h1>
@@ -115,9 +115,9 @@
             </div>
         </div>
 
-        <div class="row product-grid4" th:if="${not #lists.isEmpty(discountBooks)}">
-            <h2 style="text-align: left"> 할인 도서
-                <a th:href="@{/products(productTypeNo=${2}, productTypeName=${'할인'})}"
+        <div class="row product-grid4" th:if="${not #lists.isEmpty(newBooks)}">
+            <h2 style="text-align: left"> 신간 도서
+                <a th:href="@{/products(productTypeNo=${1}, productTypeName=${'신간'})}"
                    style="text-decoration-line: none; color: #000000">
                     <i class="fa-solid fa-circle-plus"></i>
                 </a></h2>
