@@ -18,8 +18,8 @@
             <div class="card-body">
                 <h5 class="card-title">비회원 일반 주문 상세조회</h5>
                 <form class="form" method="post" action="/non-member/order-details" onsubmit="return findOrderSubmit()">
-                    주문번호 : <input name="orderNo" type="number" id="orderNo" placeholder="주문번호"/> <br>
-                    주문코드 : <input name="orderCode" type="text" id="orderCode" placeholder="주문코드"/> <br>
+                    주문번호 : <input name="orderNo" type="number" id="orderNo" required="" placeholder="주문번호"/> <br>
+                    주문코드 : <input name="orderCode" type="text" id="orderCode" required="" placeholder="주문코드"/> <br>
                     <input type="submit" id="submit" value="조회"/>
                 </form>
             </div>

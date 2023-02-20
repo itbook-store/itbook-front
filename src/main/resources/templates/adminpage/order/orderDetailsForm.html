@@ -19,7 +19,7 @@
                 </a> 주문
                     #<span th:text="${orderDetails.orderNo}" }></span>
                 </h2>
-                <div th:if="${orderDetails.nonMemberOrderCode}">
+                <div th:if="${orderDetails.nonMemberOrderCode != null}">
                     &nbsp;&nbsp;&nbsp;비회원 주문 코드:&nbsp;
                     <span th:text="${orderDetails.nonMemberOrderCode}"></span>
                 </div>

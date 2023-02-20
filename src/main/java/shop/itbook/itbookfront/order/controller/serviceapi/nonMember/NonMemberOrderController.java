@@ -26,20 +26,26 @@ public class NonMemberOrderController {
     private final NonMemberOrderService nonMemberOrderService;
 
     @PostMapping("/order-details")
-    public String findNonMemberOrderDetails(@Valid @ModelAttribute NonMemberOrderDetailsSearchDto nonMemberOrderDetailsSearchDto, Model model) {
+    public String findNonMemberOrderDetails(
+        @Valid @ModelAttribute NonMemberOrderDetailsSearchDto nonMemberOrderDetailsSearchDto,
+        Model model) {
 
         OrderDetailsResponseDto orderDetails =
             nonMemberOrderService.findNonMemberOrderDetails(nonMemberOrderDetailsSearchDto);
 
         model.addAttribute("orderDetails", orderDetails);
+
         return "mainpage/order/orderDetailsForm";
     }
 
     @PostMapping("/subscription-order-details")
-    public String findSubscriptionOrderDetails(@Valid @ModelAttribute NonMemberOrderDetailsSearchDto nonMemberOrderDetailsSearchDto, Model model) {
+    public String findSubscriptionOrderDetails(
+        @Valid @ModelAttribute NonMemberOrderDetailsSearchDto nonMemberOrderDetailsSearchDto,
+        Model model) {
 
         List<OrderSubscriptionDetailsResponseDto> orderSubscriptionDetailsList =
-            nonMemberOrderService.findNonMemberSubscriptionOrderDetails(nonMemberOrderDetailsSearchDto);
+            nonMemberOrderService.findNonMemberSubscriptionOrderDetails(
+                nonMemberOrderDetailsSearchDto);
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
         return "mainpage/order/orderSubDetailsForm";
