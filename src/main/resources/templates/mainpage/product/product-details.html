@@ -93,8 +93,13 @@
                                                    value="1">
                                             <button id="plus">+</button>
                                         </div>
-                                        <div class="col-5" style="margin-left: 5%; padding-top: 10px">
+                                        <div th:if="${product.isSubscription == false}" class="col-5"
+                                             style="margin-left: 5%; padding-top: 10px">
                                             <span>(재고: [[${product.stock}]]개)</span>
+                                        </div>
+                                        <div th:unless="${product.isSubscription == false}" class="col-5"
+                                             style="margin-left: 5%; padding-top: 10px">
+                                            <span>(구독 상품)</span>
                                         </div>
                                     </div>
                                 </td>
@@ -151,7 +156,8 @@
                                         <div class="modal-body">비회원으로 주문하시겠습니까?</div>
                                         <div class="modal-footer">
                                             <a th:if="!${product.isSubscription}" class="btn btn-info" id="modalY">예</a>
-                                            <a th:if="${product.isSubscription}" class="btn btn-info" id="modalSubsY">예</a>
+                                            <a th:if="${product.isSubscription}" class="btn btn-info"
+                                               id="modalSubsY">예</a>
                                             <a class="btn btn-dark block" id="modalN" type="button"
                                                data-dismiss="modal">취소</a>
                                         </div>
@@ -280,20 +286,26 @@
                                                 <td style="width: 50%;">
                                                     <span style="text-overflow: ellipsis; overflow:hidden; display:block; height:100px;" th:text="${review.content}"></span>
                                                 </td>
-                                                <td><div id="individualStar">
-                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar1'"></span>
-                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar2'"></span>
-                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar3'"></span>
-                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar4'"></span>
-                                                        <span class="fa fa-star" th:id="${review.orderProductNo} + 'individualStar5'"></span>
+                                                <td>
+                                                    <div id="individualStar">
+                                                        <span class="fa fa-star"
+                                                              th:id="${review.orderProductNo} + 'individualStar1'"></span>
+                                                        <span class="fa fa-star"
+                                                              th:id="${review.orderProductNo} + 'individualStar2'"></span>
+                                                        <span class="fa fa-star"
+                                                              th:id="${review.orderProductNo} + 'individualStar3'"></span>
+                                                        <span class="fa fa-star"
+                                                              th:id="${review.orderProductNo} + 'individualStar4'"></span>
+                                                        <span class="fa fa-star"
+                                                              th:id="${review.orderProductNo} + 'individualStar5'"></span>
                                                     </div>
                                                     <script>
-                                                        for(let i = 1; i <= [[${review.starPoint}]]; i++) {
+                                                        for (let i = 1; i <= [[${review.starPoint}]]; i++) {
                                                             console.log([[${review.starPoint}]]);
                                                             document.getElementById([[${review.orderProductNo}]] + 'individualStar' + String(i)).className += ' checked';
                                                         }
                                                     </script>
-                                                    </td>
+                                                </td>
                                                 <td class="text-right"><span th:text="${review.memberId}"></span></td>
                                                 <td class="text-center">
                                                     <button class="btn btn-primary"
@@ -321,7 +333,10 @@
         <div class="container">
             <p></p>
             <h4>상품 문의</h4>
-            <button sec:authorize="isAuthenticated()" class="btn btn-primary" th:onclick="|location.href= '@{/product-inquiries/{memberNo}/{productNo}/add(memberNo=${memberNo}, productNo = ${product.productNo})}'|">문의하기</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-primary"
+                    th:onclick="|location.href= '@{/product-inquiries/{memberNo}/{productNo}/add(memberNo=${memberNo}, productNo = ${product.productNo})}'|">
+                문의하기
+            </button>
             <hr>
             <div>
                 <div class="container bootstrap snippets bootdey">
@@ -359,7 +374,8 @@
                                                     <span th:text="${productInquiry.memberId}"></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <button sec:authorize="!hasAuthority('ADMIN')" th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
+                                                    <button sec:authorize="!hasAuthority('ADMIN')"
+                                                            th:if="${memberIsWriter} == true or ${productInquiry.isPublic} == true or (${productInquiry.isPublic} == false and ${productInquiry.memberId} == ${memberIdLoggedIn})"
                                                             class="btn btn-primary"
                                                             th:onclick="|location.href= '@{/product-inquiries/view/{productInquiryNo}(productInquiryNo = ${productInquiry.productInquiryNo})}'|">
                                                         상세보기
@@ -392,7 +408,8 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p th:unless="${not #lists.isEmpty(productInquiryPageResponse.content)}"> 상품문의가 존재하지 않습니다.</p>
+                                        <p th:unless="${not #lists.isEmpty(productInquiryPageResponse.content)}"> 상품문의가
+                                            존재하지 않습니다.</p>
 
                                     </div>
                                 </div>
@@ -542,8 +559,8 @@
         }
     </script>
     <script>
-        if($('#starAvg') && [[${reviewPageResponse.getContent().size()}]] > 0) {
-            for(let i = 1; i <= [[${avgStarPoint}]]; i++) {
+        if ($('#starAvg') && [[${reviewPageResponse.getContent().size()}]] > 0) {
+            for (let i = 1; i <= [[${avgStarPoint}]]; i++) {
                 document.getElementById('star' + String(i)).className += ' checked';
             }
         }

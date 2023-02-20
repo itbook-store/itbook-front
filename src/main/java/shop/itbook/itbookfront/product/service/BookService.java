@@ -1,10 +1,9 @@
 package shop.itbook.itbookfront.product.service;
 
 import java.util.List;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
+import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
-import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
@@ -27,22 +26,8 @@ public interface BookService {
     Long addBook(MultipartFile thumbnails, MultipartFile ebook,
                  BookAddRequestDto requestDto);
 
-    List<ProductDetailsResponseDto> getProductTypeListByTypeNo(Integer productTypeNo,
-                                                               Long memberNo);
-
-//    List<ProductDetailsResponseDto> getNewBookList();
-//
-//    List<ProductDetailsResponseDto> getDiscountBookList();
-//
-//    List<ProductDetailsResponseDto> getBestSellerList();
-//
-//    List<ProductDetailsResponseDto> getRecommendationList();
-//
-//    List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo);
-//
-//    List<ProductDetailsResponseDto> getPopularBookList();
-
     List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo);
 
-    List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo);
+    List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo,
+                                                       Optional<UserDetailsDto> member);
 }

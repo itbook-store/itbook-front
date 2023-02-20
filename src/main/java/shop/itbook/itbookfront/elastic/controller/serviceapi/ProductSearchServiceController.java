@@ -43,18 +43,14 @@ public class ProductSearchServiceController {
     @GetMapping
     public String searchProductByName(@RequestParam String name, Model model,
                                       @PageableDefault Pageable pageable) {
-        if(name.length()>30){
+        if (name.length() > 30) {
             name = name.substring(0, 30);
             String searchTermsIgnored = name.substring(23);
             model.addAttribute("searchTermsIgnored", searchTermsIgnored);
         }
 
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
         PageResponse<ProductSampleResponseDto> productList =

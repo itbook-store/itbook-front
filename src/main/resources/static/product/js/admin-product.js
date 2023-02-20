@@ -73,9 +73,6 @@ function checkLimitCategory(element) {
     } else {
         if (cnt > 3) {
             Swal.fire("카테고리는 최대 3개까지 지정 가능합니다.", '', 'error');
-            checkBox.forEach((cb) => {
-                cb.checked = true;
-            })
             element.checked = false;
             return false;
         } else
@@ -142,6 +139,11 @@ function addProductSubmit() {
 
         if (!checkNumberOfPercent(increasePointPercent)) {
             Swal.fire('포인트 적립율은 0 ~ 100%이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        if (increasePointPercent == null) {
+            Swal.fire('포인트 적립 설정 시 포인트 적립율 설정은 필수 항목입니다!', '', 'error');
             return false;
         }
 
@@ -245,6 +247,11 @@ function modifyProductSubmit() {
 
         if (!checkNumberOfPercent(increasePointPercent)) {
             Swal.fire('포인트 적립율은 0 ~ 100%이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        if (increasePointPercent == null) {
+            Swal.fire('포인트 적립 설정 시 포인트 적립율 설정은 필수 항목입니다!', '', 'error');
             return false;
         }
 

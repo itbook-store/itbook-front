@@ -1,30 +1,22 @@
 package shop.itbook.itbookfront.product.controller.serviceapi;
 
-import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
-import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
-
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
-import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
 import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
 import shop.itbook.itbookfront.category.util.CategoryUtil;
@@ -32,14 +24,11 @@ import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
-import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
-import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 import shop.itbook.itbookfront.product.service.ProductService;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
 import shop.itbook.itbookfront.productinquiry.service.ProductInquiryService;
 import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
-import shop.itbook.itbookfront.review.exception.ReviewNotFoundException;
 import shop.itbook.itbookfront.review.service.ReviewService;
 
 /**
@@ -67,16 +56,12 @@ public class ProductServiceController {
                                         Model model, @PageableDefault Pageable pageable,
                                         RedirectAttributes redirectAttributes) {
         try {
-            PageResponse<CategoryListResponseDto> pageResponse =
-                categoryService.findCategoryList(
-                    String.format("/api/admin/categories?page=%d&size=%d",
-                        PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
+
             List<MainCategory> mainCategoryList =
-                CategoryUtil.getMainCategoryList(pageResponse.getContent());
+                CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
             model.addAttribute("mainCategoryList", mainCategoryList);
 
-            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-                "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList();
             model.addAttribute("productTypeList", productTypeList);
 
             PageResponse<ProductDetailsResponseDto> productList =
@@ -105,18 +90,13 @@ public class ProductServiceController {
                                            Model model, @PageableDefault Pageable pageable,
                                            RedirectAttributes redirectAttributes) {
 
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(
-                String.format("/api/admin/categories?page=%d&size=%d",
-                    PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
         try {
 
-            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-                "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+            List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList();
             model.addAttribute("productTypeList", productTypeList);
 
             if (Optional.ofNullable(userDetailsDto).isPresent()) {
@@ -158,15 +138,11 @@ public class ProductServiceController {
 
         productService.checkCookieForDailyHits(productNo, request, response);
 
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList();
         model.addAttribute("productTypeList", productTypeList);
 
         try {
@@ -175,7 +151,7 @@ public class ProductServiceController {
 
             PageResponse<ProductDetailsResponseDto> relationProductList =
                 productService.getProductList(
-                    String.format("/api/admin/products/relation/%d?page=%d&size=%d",
+                    String.format("/api/products/relation/%d?page=%d&size=%d",
                         productNo, pageable.getPageNumber(), pageable.getPageSize()));
             model.addAttribute("pageResponse", relationProductList);
 
