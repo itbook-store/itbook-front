@@ -59,6 +59,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .addPathPatterns("/**")
             .excludePathPatterns(staticResourcesPath)
             .excludePathPatterns("/admin/**")
-            .excludePathPatterns("/mypage/**");
+            .excludePathPatterns("/mypage/**")
+            .excludePathPatterns("/login")
+            .excludePathPatterns("/logout");
     }
 }

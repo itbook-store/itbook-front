@@ -32,7 +32,7 @@ public class CategoryInterceptor implements HandlerInterceptor {
         HttpServletRequest request,
         HttpServletResponse response,
         Object handler,
-        ModelAndView modelAndView) {
+        ModelAndView modelAndView) throws Exception{
 
         PageResponse<CategoryListResponseDto> pageResponse =
             categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
