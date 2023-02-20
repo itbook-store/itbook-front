@@ -28,7 +28,7 @@ public class BookDetailsResponseDto {
 
     private Integer stock;
 
-    private Integer increasePointPercent;
+    private Double increasePointPercent;
 
     private Long rawPrice;
 

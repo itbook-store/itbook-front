@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,6 +32,20 @@ import shop.itbook.itbookfront.cart.service.CartService;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+
+        "/swagger-resources/**",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/webjars/**"
+    };
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+            .antMatchers(AUTH_WHITELIST);
+    }
+
     /**
      * Security filter chain security filter chain.
      *
@@ -39,6 +54,7 @@ public class SecurityConfig {
      * @throws Exception the exception
      * @author 강명관
      */
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -155,7 +171,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil, CartService cartService) {
+    public AuthenticationSuccessHandler customOAuthSuccessHandler(AuthUtil authUtil,
+                                                                  CartService cartService) {
         return new CustomOAuthSuccessHandler(authUtil, cartService);
     }
 
