@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.category.service;
 
+import java.util.List;
 import shop.itbook.itbookfront.category.dto.request.CategoryModifyRequestDto;
 import shop.itbook.itbookfront.category.dto.request.CategoryRequestDto;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
@@ -14,6 +15,8 @@ public interface CategoryService {
     void addCategory(CategoryRequestDto categoryRequestDto);
 
     PageResponse<CategoryListResponseDto> findCategoryList(String url);
+
+    List<CategoryListResponseDto> findCategoryListForUser();
 
     void deleteCategory(String categoryNo);
 

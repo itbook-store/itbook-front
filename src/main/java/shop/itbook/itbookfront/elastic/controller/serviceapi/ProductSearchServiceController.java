@@ -42,7 +42,7 @@ public class ProductSearchServiceController {
     @GetMapping
     public String searchProductByName(@RequestParam String name, Model model,
                                       @PageableDefault Pageable pageable) {
-        if(name.length()>30){
+        if (name.length() > 30) {
             name = name.substring(0, 30);
             String searchTermsIgnored = name.substring(23);
             model.addAttribute("searchTermsIgnored", searchTermsIgnored);

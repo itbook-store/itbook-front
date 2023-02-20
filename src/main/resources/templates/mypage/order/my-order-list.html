@@ -135,7 +135,7 @@
     <meta charset="UTF-8">
     <title>마이페이지 - 주문/배송 조회</title>
 
-    <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
+    <link rel="stylesheet" href="/mainpage/member/css/memberlist.css">
 </head>
 <body>
 <div layout:fragment="content">
@@ -164,11 +164,11 @@
                                     <tr>
                                         <th><span>주문번호</span></th>
                                         <th><span>받는분</span></th>
-                                        <th><span>받는분 연락처</span></th>
+                                        <th><span>주문일시</span></th>
                                         <th><span>주문상태</span></th>
                                         <th><span>송장번호</span></th>
-                                        <th>상세보기</th>
-                                        <th>주문취소</th>
+                                        <th class="text-center">상세보기</th>
+                                        <th class="text-center">주문취소</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -178,7 +178,7 @@
                                             <span th:text="${ord.recipientName}"></span>
                                         </td>
                                         <td>
-                                            <span th:text="${ord.recipientPhoneNumber}"></span>
+                                            <span th:text="${#temporals.format(ord.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                         </td>
                                         <td>
                                             <span class="badge text-bg-primary"
@@ -190,7 +190,7 @@
                                             </span>
                                             <span th:text="${ord.trackingNo}"></span>
                                         </td>
-                                        <td style="width: 20%;">
+                                        <td style="width: 10%;">
                                             <span class="fa-stack">
                                         <a th:href="@{/orders/details/{orderNo}(orderNo=${ord.orderNo})}">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -198,14 +198,16 @@
                                             </a>
                                             </span>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
                                             <!--                                            <a-->
                                             <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                            <button th:orderNo="${ord.orderNo}"
+                                            <button th:if="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}" th:orderNo="${ord.orderNo}"
                                                     class="btn btn-danger"
                                                     onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
                                             </button>
+                                            <span th:unless="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}">불가
+                                            </span>
                                             <!--                                            </a>-->
                                         </td>
                                         <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
@@ -268,6 +270,8 @@
                                                     title: `결제 취소가 성공적으로 완료되었습니다.`,
                                                 })
                                             }
+
+                                            location.reload();
                                         })
 
                                     }

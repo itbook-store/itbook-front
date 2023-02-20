@@ -7,7 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    @CacheEvict(value = "products", allEntries = true)
     public Long addProduct(MultipartFile thumbnails,
                            ProductAddRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, requestDto);
@@ -47,15 +49,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageResponse<ProductDetailsResponseDto> getProductList(String url) {
+
         return productAdaptor.findProductList(url);
     }
 
     @Override
     public PageResponse<CategoryDetailsResponseDto> getCategoryList(String url) {
+        productAdaptor.findCategoryList(url);
         return productAdaptor.findCategoryList(url);
     }
 
     @Override
+    @CacheEvict(value = "products", key = "#productNo")
     public void modifyProduct(Long productNo, MultipartFile thumbnails,
                               ProductModifyRequestDto requestDto) {
         productAdaptor.modifyProduct(productNo, thumbnails, requestDto);
@@ -68,13 +73,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", key = "#productNo")
     public ProductDetailsResponseDto getProduct(Long productNo) {
         return productAdaptor.findProduct(productNo);
     }
 
     @Override
-    public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
-        return productAdaptor.findProductTypeList(url);
+    @Cacheable(value = "productTypes")
+    public List<ProductTypeResponseDto> findProductTypeList() {
+        return productAdaptor.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
     }
 
     @Override
@@ -89,11 +97,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = "products", key = "#productNo")
     public void changeBooleanField(Long productNo, String fieldName) {
         productAdaptor.changeBooleanField(productNo, fieldName);
     }
 
     @Override
+    @CacheEvict(value = "products", key = "#productNo")
     public void updateDailyHits(Long productNo) {
         productAdaptor.changeDailyHits(productNo);
     }
