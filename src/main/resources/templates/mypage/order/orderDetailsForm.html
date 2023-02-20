@@ -11,53 +11,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <!-- 여기는 비회원도 볼 수 있고 관리자도 볼 수 있는 페이지이므로 mypage 말고 따로 꾸미면 좋을듯 -->
-    <!--    <div class="container ml-1 mt-5">-->
-    <!--        <div class="card" style="width: 30rem;">-->
-    <!--            <div class="card-body">-->
-    <!--                <h5 class="card-title">제품 정보</h5>-->
-    <!--                <div th:if="${orderDetails.orderProductDetailResponseDtoList != null}">-->
-    <!--                    <th:block th:each="product : ${orderDetails.orderProductDetailResponseDtoList}">-->
-    <!--                        <div class="card-subtitle mb-2 text-muted">제발</div>-->
-    <!--                        <div class="card-columns">-->
-    <!--                            <span>이름: </span>-->
-    <!--                            <span th:text="${product.productName}"></span>-->
-    <!--                        </div>-->
-    <!--                        <div class="card-columns">-->
-    <!--                            <span>수량: </span>-->
-    <!--                            <span th:text="${product.count}"></span>-->
-    <!--                        </div>-->
-    <!--                        <div class="card-columns">-->
-    <!--                            <span>상품 금액: </span>-->
-    <!--                            <span th:text="${product.productPrice}"></span>-->
-    <!--                        </div>-->
-    <!--                    </th:block>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-
-    <!--        <div class="card mt-3" style="width: 30rem;">-->
-    <!--            <div class="card-body">-->
-    <!--                <h5 class="card-title">결제 정보</h5>-->
-    <!--                <div th:if="${orderDetails.paymentCardResponseDto != null}">-->
-    <!--                    <div class="card-columns">-->
-    <!--                        <span>카드번호: </span>-->
-    <!--                        <span th:text="${orderDetails.paymentCardResponseDto.cardSerialNo}"></span>-->
-    <!--                    </div>-->
-    <!--                    <div class="card-columns">-->
-    <!--                        <span>결제 금액: </span>-->
-    <!--                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-
-    <!--&lt;!&ndash;        <button th:orderNo="${ord.orderNo}"&ndash;&gt;-->
-    <!--&lt;!&ndash;                class="btn btn-danger"&ndash;&gt;-->
-    <!--&lt;!&ndash;                onclick="getInputCancelReason(this.getAttribute('orderNo'))">결제 취소&ndash;&gt;-->
-    <!--&lt;!&ndash;        </button>&ndash;&gt;-->
-    <!--    </div>-->
-
 
     <div class="container-fluid">
         <div class="container">
@@ -76,15 +29,18 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-3 d-flex justify-content-between">
-                                <div>
+                                <div class="">
                                     <span class="me-3"
                                           th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
+                                    <button th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
+                                            th:orderNo="${orderDetails.getOrderNo()}"
+                                            class="btn btn-danger"
+                                            onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
+                                    </button>
                                 </div>
                                 <div class="d-flex">
-                                    <!--                                    <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i-->
-                                    <!--                                            class="bi bi-download"></i> <span class="text">영수증 보기</span></button>-->
                                     <div class="dropdown">
                                         <button class="btn btn-link p-0 text-muted" type="button"
                                                 data-bs-toggle="dropdown">
@@ -111,7 +67,6 @@
                                             <div class="flex-lg-grow-1 ms-3">
                                                 <h6 class="small mb-0"><a href="#" class="text-reset"
                                                                           th:text="${product.productName}"></a></h6>
-                                                <!--                                                <span class="small">Color: Black</span>-->
                                             </div>
                                         </div>
                                     </td>
@@ -146,14 +101,12 @@
                                               th:text="${orderDetails.sellingAmount + orderDetails.deliveryFee - orderDetails.amount}">
                                         </span>
                                         <span th:unless="${orderDetails.amount != null}">0</span>
-                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
                                 </tr>
                                 <tr class="fw-bold">
                                     <td colspan="2">주문 금액</td>
                                     <td class="text-end">
-                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         <span th:if="${orderDetails.amount != null}"
                                               th:text="${orderDetails.amount}"></span>
                                         <span th:unless="${orderDetails.amount != null}"
@@ -195,15 +148,7 @@
 
                                     </p>
                                 </div>
-                                <!--                                <div class="col-lg-6">-->
-                                <!--                                    <h3 class="h6">Billing address</h3>-->
-                                <!--                                    <address>-->
-                                <!--                                        <strong>John Doe</strong><br>-->
-                                <!--                                        1355 Market St, Suite 900<br>-->
-                                <!--                                        San Francisco, CA 94103<br>-->
-                                <!--                                        <abbr title="Phone">P:</abbr> (123) 456-7890-->
-                                <!--                                    </address>-->
-                                <!--                                </div>-->
+
                             </div>
                         </div>
                     </div>
@@ -222,8 +167,8 @@
                         <div class="card-body">
                             <div class="flex-content justify-content-between">
                                 <span class="font-weight-bold">배송 정보</span>
-                                <button class="btn btn-info text-white">
-                                    <!--                                        th:onclick="|locaiton.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">-->
+                                <button th:if="${orderDetails.orderStatus == '배송중'}" class="btn btn-info text-white"
+                                        th:onclick="|location.href='@{/deliveries/completion/{deliveryNo}(deliveryNo=${orderDetails.deliveryNo})}'|">
                                     배송 조회
                                 </button>
                             </div>

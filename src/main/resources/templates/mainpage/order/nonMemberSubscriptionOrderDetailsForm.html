@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/mainpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>비회원 일반주문 상세</title>
+    <script src="/order/js/order.js"></script>
+    <script src="/category/js/category.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="form-div">
+        <h1>비회원 구독주문 상세조회</h1>
+        <form class="form" method="post" action="/non-member/subscription-order-details" onsubmit="return findOrderSubmit()" >
+            주문번호 : <input name="orderNo" type="number" id="orderNo" placeholder="주문번호"/> <br>
+            주문코드 : <input name="orderCode" type="text" id="orderCode" placeholder="주문코드"/> <br>
+            <input type="submit" id="submit" value="조회" />
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -183,4 +183,26 @@ public class OrderAdaptor {
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
+
+    public OrderDetailsResponseDto findNonMemberOrderDetails(String requestUrl) {
+
+        ResponseEntity<CommonResponseBody<OrderDetailsResponseDto>> exchange = restTemplate.exchange(requestUrl, HttpMethod.GET, null,
+            new ParameterizedTypeReference<>() {
+            });
+
+        CommonResponseBody<OrderDetailsResponseDto> body = exchange.getBody();
+        assert body != null;
+        return body.getResult();
+    }
+
+    public List<OrderSubscriptionDetailsResponseDto> findNonMemberSubscriptionOrderDetails(String requestUrl) {
+
+        ResponseEntity<CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>>> exchange = restTemplate.exchange(requestUrl, HttpMethod.GET, null,
+            new ParameterizedTypeReference<>() {
+            });
+
+        CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>> body = exchange.getBody();
+        assert body != null;
+        return body.getResult();
+    }
 }
