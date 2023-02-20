@@ -77,7 +77,7 @@ public class ProductRelationController {
             return PRODUCT_RELATION_REDIRECT_URL;
         }
 
-        model.addAttribute("basedProductNo", productNo);
+        model.addAttribute("product", productService.getProduct(productNo));
 
         model.addAttribute("paginationUrl",
             String.format("/admin/products/relation/%d", productNo));

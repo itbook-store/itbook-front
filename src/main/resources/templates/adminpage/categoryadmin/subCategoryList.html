@@ -9,34 +9,35 @@
 </head>
 
 <div layout:fragment="content">
-
-    <h1 style="text-align: center" th:text="${parentCategoryName}"></h1>
-    <div class="container">
-        <table class="table table-striped" style="text-align: center">
-            <thead>
-            <tr>
-                <th style="width: auto">카테고리명</th>
-                <th style="width: auto">상품 개수</th>
-                <th style="width: auto">숨김상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category : ${pageResponse.content}">
-                <th:block th:unless="${#strings.equals(category.level, 0)}">
-                    <td th:text="${category.categoryName}"></td>
-                    <td th:text="${category.count}"></td>
-                    <td th:text="${category.isHidden}"></td>
-                    <td>
-                        <button style="width: auto; margin-left: 10px" class="btn btn-primary" th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modification(categoryNo=${category.categoryNo}, categoryName=${category.categoryName}, isHidden=${category.isHidden})}'|">
-                            수정
-                        </button>
-                    <td>
-                </th:block>
-            </tr>
-            </tbody>
-        </table>
-        <th:block th:include="component/pageFooter"></th:block>
+    <div class="content">
+        <h2 th:text="${parentCategoryName}"></h2>
+        <div class="snippets bootdey">
+            <table class="table table-striped" style="text-align: center; width: 90%">
+                <thead>
+                <tr>
+                    <th style="width: auto">카테고리명</th>
+                    <th style="width: auto">상품 개수</th>
+                    <th style="width: auto">숨김상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${pageResponse.content}">
+                    <th:block th:unless="${#strings.equals(category.level, 0)}">
+                        <td th:text="${category.categoryName}"></td>
+                        <td th:text="${category.count}"></td>
+                        <td th:text="${category.isHidden}"></td>
+                        <td>
+                            <button style="width: auto; margin-left: 10px" class="btn btn-primary"
+                                    th:onclick="|location.href='@{/admin/categories/{categoryNo}/category-modification(categoryNo=${category.categoryNo}, categoryName=${category.categoryName}, isHidden=${category.isHidden})}'|">
+                                수정
+                            </button>
+                        <td>
+                    </th:block>
+                </tr>
+                </tbody>
+            </table>
+            <th:block th:include="component/pageFooter"></th:block>
+        </div>
     </div>
 </div>
-
 </html>
