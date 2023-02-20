@@ -11,7 +11,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-
     <div class="container-fluid">
         <div class="container">
             <!-- Title -->
@@ -20,6 +19,10 @@
                 </a> 주문
                     #<span th:text="${orderDetails.orderNo}" }></span>
                 </h2>
+                <div th:if="${orderDetails.nonMemberOrderCode}">
+                    &nbsp;&nbsp;&nbsp;비회원 주문 코드:&nbsp;
+                    <span th:text="${orderDetails.nonMemberOrderCode}"></span>
+                </div>
             </div>
 
             <!-- Main content -->
