@@ -2,6 +2,7 @@ package shop.itbook.itbookfront.order.controller.serviceapi;
 
 import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,13 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
-import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.order.dto.request.OrderAddRequestDto;
-import shop.itbook.itbookfront.order.dto.request.OrderSheetFormDto;
-import shop.itbook.itbookfront.order.dto.response.OrderBeforePaymentResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderPaymentDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
@@ -119,7 +116,12 @@ public class OrderAsyncController {
      * @author 강명관
      */
     @PostMapping("/purchase-complete/{orderNo}")
-    public void orderPurchaseComplete(@PathVariable("orderNo") Long orderNo) {
-        orderService.orderPurchaseComplete(orderNo);
+    public void orderPurchaseComplete(@PathVariable("orderNo") Long orderNo,
+                                      HttpServletResponse response) {
+        try {
+            orderService.orderPurchaseComplete(orderNo);
+        } catch (BadRequestException e) {
+            response.setStatus(400);
+        }
     }
 }

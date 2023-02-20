@@ -34,6 +34,7 @@ public class ControllerAdvisor {
         MethodArgumentNotValidException.class})
     public String badRequestException400(Exception e, RedirectAttributes redirectAttributes) {
         log.error("badRequestException400 {}", e.getMessage());
+        e.printStackTrace();
         redirectAttributes.addFlashAttribute(BAD_REQUEST, BAD_REQUEST_MESSAGE);
         return "redirect:/";
     }
@@ -41,6 +42,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {JwtExpirationException.class})
     public String jwtException(Exception e) {
         log.error("jwtExpirationException {}", e.getMessage());
+        e.printStackTrace();
         return "redirect:/logout";
     }
 
@@ -49,6 +51,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {MemberForbiddenException.class})
     public String forbiddenException403(Exception e) {
         log.error("forbiddenException403 {}", e.getMessage());
+        e.printStackTrace();
         return "/error/403error";
     }
 
@@ -60,6 +63,7 @@ public class ControllerAdvisor {
     })
     public String internalErrorException500(Exception e, Model model) {
         log.error("internalErrorException500 {}", e.getMessage());
+        e.printStackTrace();
 
         model.addAttribute(MESSAGE, INTERNAL_ERROR_MESSAGE);
         return "/error/500error";

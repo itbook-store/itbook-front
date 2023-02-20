@@ -544,7 +544,17 @@
 
             if (document.getElementById("point_apply_input") != null) {
                 decreasePoint = document.getElementById("point_apply_input").value;
+
+                if (decreasePoint === '' || decreasePoint === null || decreasePoint === undefined) {
+                    decreasePoint = 0;
+                }
             }
+
+            if (!appliedPointBoolean) {
+                decreasePoint = 0;
+            }
+
+            console.log(decreasePoint);
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
@@ -560,7 +570,7 @@
                 "decreasePoint": decreasePoint,
                 "orderTotalCouponNo": $("#orderTotalCouponNo").val()
                 // "orderTotalCouponNo": document.querySelector("#orderTotalCouponNo").value
-            }
+            };
 
             console.log(orderAddRequestDto);
 
