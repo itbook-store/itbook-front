@@ -622,7 +622,6 @@ destinationListBtn.addEventListener("click", function () {
 
 });
 
-
 function checkValidAddress() {
 
     let addressInputList = document.querySelectorAll(".actual_destination input");
@@ -644,4 +643,23 @@ function checkValidAddress() {
     }
 
     return result;
+}
+
+function findOrderSubmit() {
+
+    let orderNo = document.getElementById("orderNo").value;
+    let orderCode = document.getElementById("orderCode").value;
+
+    if (!checkStringLengthDown(orderNo, 19)) {
+        Swal.fire('주문번호는 19자 이하여야 합니다!', '', 'error');
+        return false;
+    }
+
+    if (orderCode.length > 36) {
+        Swal.fire('주문코드 길이는 36자 보다 작아야 합니다!', '', 'error');
+        return false;
+    }
+
+    return true;
+
 }
