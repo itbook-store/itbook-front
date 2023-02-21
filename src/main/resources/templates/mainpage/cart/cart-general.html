@@ -28,8 +28,8 @@
                     <th style="min-width: 80px;"></th>
                     <th style="min-width: 350px;">상품명</th>
                     <th style="min-width: 150px;">판매가</th>
-<!--                    <th style="">재고</th>-->
-<!--                    <th style="min-width: 200px;">수량</th>-->
+                    <th style="">재고</th>
+                    <th style="min-width: 200px;">수량</th>
                     <th style="min-width: 110px;">주문 금액</th>
                 </tr>
 
@@ -53,7 +53,6 @@
                         <div class="product_titleBox">
                             <input type="hidden" name="productNo" th:value="${dto.productDetailsResponseDto.productNo}">
                             <input type="hidden" name="productNoList" th:value="${dto.productDetailsResponseDto.productNo}">
-                            <input type="hidden" value="1" name="productCount">
                             <a th:href="@{|/products/${dto.productDetailsResponseDto.productNo}|}" style="display: flex; align-items: center; text-decoration: none; color: black">
                                 <img class="product_img" th:src="${dto.productDetailsResponseDto.fileThumbnailsUrl}" alt="" >
                             <p class="product_title" th:text="${dto.productDetailsResponseDto.productName}"></p>
@@ -66,34 +65,34 @@
                             <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
                         </div>
                     </td>
-<!--                    <td>-->
+                    <td>
 
-<!--                        <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
-<!--                            <p class="product_isSelled badge bg-danger">품절</p>-->
-<!--                        </th:block>-->
+                        <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                            <p class="product_isSelled badge bg-danger">품절</p>
+                        </th:block>
 
-<!--                        <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
-<!--                        <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>-->
-<!--                        </th:block>-->
+                        <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                        <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>
+                        </th:block>
 
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">-->
+                    </td>
+                    <td>
+                        <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
 
-<!--                            <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
-<!--                                <p class="product_isSelled badge bg-danger">품절</p>-->
-<!--                            </th:block>-->
+                            <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <p class="product_isSelled badge bg-danger">품절</p>
+                            </th:block>
 
-<!--                            <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
-<!--                                <div class="form-outline">-->
-<!--                                    <input min="1" max="100" name="productCntList" th:value="${dto.productCount}"  class="quantity" type="number"-->
-<!--                                           onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"-->
-<!--                                           oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"-->
-<!--                                           th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>-->
-<!--                                </div>-->
-<!--                            </th:block>-->
-<!--                        </div>-->
-<!--                    </td>-->
+                            <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
+                                <div class="form-outline">
+                                    <input min="1" max="100" name="productCntList" th:value="${dto.productCount}"  class="quantity" type="number"
+                                           onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
+                                           th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
+                                </div>
+                            </th:block>
+                        </div>
+                    </td>
                     <td>
 
                         <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">

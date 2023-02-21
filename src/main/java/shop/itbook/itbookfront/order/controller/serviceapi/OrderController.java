@@ -73,6 +73,12 @@ public class OrderController {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
+        List<Integer> productNoList = orderDetails.getOrderProductDetailResponseDtoList().stream()
+            .map(dto -> dto.getProductNo().intValue())
+            .collect(Collectors.toList());
+
+        cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
+
         model.addAttribute("orderDetails", orderDetails);
 
         return "mainpage/order/orderDetailsForm";
