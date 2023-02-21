@@ -83,7 +83,7 @@
                             <!--                                <td>배송료</td>-->
                             <!--                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>-->
                             <!--                            </tr>-->
-                            <tr th:if="${product.isSubscription == false}">
+                            <tr th:if="${product.isSubscription == true}" hidden>
                                 <td><span>구매 수량 선택</span></td>
                                 <td>
                                     <div class="row">
@@ -106,6 +106,30 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr th:unless="${product.isSubscription == true}" hidden>
+                                <td><span>구매 수량 선택</span></td>
+                                <td>
+                                    <div class="row">
+                                        <div class="count col-5">
+                                            <button id="minus">-</button>
+                                            <input id="quantity" size="20" type="number" min="1" name="quantity"
+                                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                                   oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
+                                                   value="1">
+                                            <button id="plus">+</button>
+                                        </div>
+                                        <div th:if="${product.isSubscription == false}" class="col-5"
+                                             style="margin-left: 5%; padding-top: 10px">
+                                            <span>(재고: [[${product.stock}]]개)</span>
+                                        </div>
+                                        <div th:unless="${product.isSubscription == false}" class="col-5"
+                                             style="margin-left: 5%; padding-top: 10px">
+                                            <span>(구독 상품)</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
                             </tbody>
                         </table>
                         <!--                        <div class="product-rating mb-2">-->
