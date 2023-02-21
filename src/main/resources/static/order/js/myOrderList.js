@@ -10,20 +10,23 @@ async function purchaseComplete(orderNo) {
                 method: "POST",
             })
                 .then((response) => {
-                    if (response.status >= 400 && response.status < 600) {
-                        Swal.fire({
-                            title: '구매확정 실패!',
-                            icon: "error"
-                        })
-                        throw Error();
-                    }
 
                     return response.json();
                 })
                 .then((data) => {
-                    Swal.fire({
-                        title: '구매 확정'
-                    })
+                    console.log(data);
+
+                    if (!data.isSuccessful) {
+                        Swal.fire({
+                            title: '구매확정 실패!',
+                            text: '배송완료 상품만 구매확정 하실 수 있습니다.',
+                            icon: "error"
+                        })
+                    } else {
+                        Swal.fire({
+                            title: '구매 확정'
+                        });
+                    }
                 })
                 .catch((err) => {
                     Swal.fire({
