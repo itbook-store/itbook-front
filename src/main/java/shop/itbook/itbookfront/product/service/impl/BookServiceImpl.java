@@ -40,6 +40,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict(value = "productTypeList", allEntries = true)
     public void modifyBook(Long productNo, MultipartFile thumbnails, MultipartFile ebook,
                            BookModifyRequestDto requestDto) {
         bookAdaptor.modifyBook(productNo, thumbnails, ebook, requestDto);

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/mainpage/default-layout}">
 <head>
 
@@ -18,31 +19,38 @@
     <div class="row">
 
         <div class="col-sm-8 col-md-12">
-            <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse.getContent())}">
-                <div class="col-md-2" th:each="product : ${pageResponse.content}" style="text-align: center">
+            <div class="row product-grid4" th:if="${not #lists.isEmpty(pageResponse)}">
+                <div class="col-md-2" th:each="product : ${pageResponse.content}"
+                     style="margin-inline: 19px; text-align: center">
                     <div class="product-image4">
-                        <a href="#">
-                            <img class="pic-1" th:src="${product.thumbnailUrl}">
+                        <a th:href="@{|/products/${product.productNo}|}">
+                            <img class="img-thumbnail" th:src="${product.thumbnailUrl}">
                         </a>
-                        <span class="product-discount-label"
-                              th:if="${product.isForceSoldOut == true or product.stock == 0}">
-                                    품절</span>
-                        <span class="product-new-label">[[${product.discountPercent}]]%</span>
+                        <ul class="social">
+                            <!--                                                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>-->
+                            <th:block sec:authorize="isAnonymous()">
+                                <li><a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a></li>
+                            </th:block>
+
+                            <th:block sec:authorize="isAuthenticated()">
+                                <li th:attr="productNo=${product.productNo}, memberNo=${#authentication.principal.memberNo}"
+                                    th:onclick="bookmarkAdd(this.getAttribute('memberNo'), this.getAttribute('productNo'))">
+                                    <a data-tip="위시리스트에 담기"><i class="fa fa-shopping-bag"></i></a>
+                                </li>
+                            </th:block>
+
+                            <li class="addCartBtn" th:attr="productNo=${product.productNo}"
+                                th:onclick="addProduct(this.getAttribute('productNo'))">
+                                <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="rating">
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                        <li class="fa fa-star"></li>
-                    </ul>
                     <div class="product-content">
-                        <h3 class="title"><a
-                                th:href="@{|/products/${product.productNo}|}">[[${product.name}]]</a></h3>
-                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                        <h3 class="title">[[${product.name}]]</h3>
+                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA')}]]원
+                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA')}]]원</span>
+                            <span>([[${product.discountPercent}]]%)</span>
                         </div>
-                        <a class="add-to-cart" href="">+ Add To Cart</a>
                     </div>
                 </div>
             </div>
@@ -56,7 +64,9 @@
 
         </div>
         <th:block th:include="component/pageFooter"></th:block>
-
+        <script src="/mainpage/js/category.js"></script>
+        <script src="/bookmark/js/bookmarkAdd.js"></script>
+        <script src="/cart/js/cartAddProduct.js"></script>
     </div>
     <script src="/mainpage/js/category.js"></script>
 </div>
