@@ -32,29 +32,17 @@ public class ProductTypeAdminController {
 
     @GetMapping(params = {"productTypeNo", "productTypeName"})
     public String productListByProductTypeForAdmin(
-        @AuthenticationPrincipal UserDetailsDto userDetailsDto,
         @RequestParam Integer productTypeNo,
         @RequestParam String productTypeName,
         Model model, @PageableDefault Pageable pageable,
         RedirectAttributes redirectAttributes) {
 
         try {
-            if (Optional.ofNullable(userDetailsDto).isPresent()) {
-                Long memberNo = userDetailsDto.getMemberNo();
-                PageResponse<ProductDetailsResponseDto> productList =
-                    productService.getProductList(
-                        String.format(
-                            "/api/admin/products?productTypeNo=%d&memberNo=%d&page=%d&size=%d",
-                            productTypeNo, memberNo, pageable.getPageNumber(),
-                            pageable.getPageSize()));
-                model.addAttribute("pageResponse", productList);
-            } else {
-                PageResponse<ProductDetailsResponseDto> productList =
-                    productService.getProductList(
-                        String.format("/api/products?page=%d&size=%d&productTypeNo=%d",
-                            pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
-                model.addAttribute("pageResponse", productList);
-            }
+            PageResponse<ProductDetailsResponseDto> productList =
+                productService.getProductList(
+                    String.format("/api/admin/products?page=%d&size=%d&productTypeNo=%d",
+                        pageable.getPageNumber(), pageable.getPageSize(), productTypeNo));
+            model.addAttribute("pageResponse", productList);
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
@@ -63,7 +51,7 @@ public class ProductTypeAdminController {
 
         model.addAttribute("productTypeName", productTypeName);
         model.addAttribute("paginationUrl",
-            String.format("/admin/products?productTypeNo=%d&productName=%s", productTypeNo,
+            String.format("/admin/products?productTypeNo=%d&productTypeName=%s", productTypeNo,
                 productTypeName));
         return "adminpage/product/product-management";
     }
