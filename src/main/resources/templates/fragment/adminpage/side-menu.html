@@ -7,53 +7,50 @@
 <div th:fragment="side-menu-fragment">
     <div class="h-100 flex-shrink-0 p-3" style="width: 280px;">
         <div>
-            <h3><a style="text-decoration : none; color: black;" href="/adminpage">Itbook 관리자 페이지</a></h3>
+            <h3><a style="text-decoration : none; color: black;" href="/adminpage">ITBOOK <br> 관리자 페이지</a></h3>
         </div>
         <ul class="list-unstyled ps-0">
             <li class="border-top my-3"></li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="selectMemberSideMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectMemberSideMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     회원 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="selectWriterSideMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectWriterSideMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     작가 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="showProductSubMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="showProductSubMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     상품(도서) 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="selectOrderSideMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="selectOrderSideMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     주문 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" th:onclick="|location.href='@{/admin/deliveries}'|">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/admin/deliveries">배송 관리</a>
+                    배송 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="selectHowToShowCategories(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false"
-                        onclick="selectHowToShowCategories(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     카테고리 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" th:onclick="|location.href='@{/admin/product-inquiries/list}'|">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/admin/product-inquiries/list">
-                        상품 문의
-                    </a>
+                    상품 문의
                 </button>
             </li>
             <li class="mb-1">
@@ -63,32 +60,31 @@
                     쿠폰 관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" th:onclick="|location.href='@{/admin/point-histories/show-content/admin-point-list}'|">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false"
-                        onclick="location.href='/admin/point-histories/show-content/admin-point-list'">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     포인트 관리
                 </button>
             </li>
-<!--            <li class="mb-1">-->
-<!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
-<!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
-<!--                    매출 관리-->
-<!--                </button>-->
-<!--            </li>-->
-<!--            <li class="mb-1">-->
-<!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
-<!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
-<!--                    판매 현황-->
-<!--                </button>-->
-<!--            </li>-->
-<!--            <li class="mb-1">-->
-<!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
-<!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
-<!--                    찜 현황-->
-<!--                </button>-->
+            <!--            <li class="mb-1">-->
+            <!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
+            <!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
+            <!--                    매출 관리-->
+            <!--                </button>-->
+            <!--            </li>-->
+            <!--            <li class="mb-1">-->
+            <!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
+            <!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
+            <!--                    판매 현황-->
+            <!--                </button>-->
+            <!--            </li>-->
+            <!--            <li class="mb-1">-->
+            <!--                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"-->
+            <!--                        data-bs-target="#dashboard-collapse" aria-expanded="false">-->
+            <!--                    찜 현황-->
+            <!--                </button>-->
 
-<!--            </li>-->
+            <!--            </li>-->
 
             <li class="border-top my-3"></li>
         </ul>

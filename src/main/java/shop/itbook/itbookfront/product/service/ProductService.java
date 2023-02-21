@@ -4,23 +4,18 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.multipart.MultipartFile;
 import shop.itbook.itbookfront.category.dto.response.CategoryDetailsResponseDto;
 import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
-import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductModifyRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductRelationRequestDto;
 import shop.itbook.itbookfront.product.dto.request.ProductAddRequestDto;
-import shop.itbook.itbookfront.product.dto.response.ProductBooleanResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductRelationResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductSalesRankResponseDto;
 import shop.itbook.itbookfront.product.dto.response.ProductTypeResponseDto;
-import shop.itbook.itbookfront.product.dto.response.SearchBookDetailsDto;
 
 /**
  * @author 이하늬
@@ -36,7 +31,7 @@ public interface ProductService {
 
     PageResponse<CategoryDetailsResponseDto> getCategoryList(String url);
 
-    PageResponse<ProductTypeResponseDto> findProductTypeList(String url);
+    List<ProductTypeResponseDto> findProductTypeList();
 
     PageResponse<ProductRelationResponseDto> findRelationProductList(String url);
 

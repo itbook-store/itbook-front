@@ -4,11 +4,13 @@ import static shop.itbook.itbookfront.home.HomeController.PAGE_OF_ALL_CONTENT;
 import static shop.itbook.itbookfront.home.HomeController.SIZE_OF_ALL_CONTENT;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.product.adaptor.BookAdaptor;
 import shop.itbook.itbookfront.product.dto.request.BookAddRequestDto;
 import shop.itbook.itbookfront.product.dto.request.BookModifyRequestDto;
@@ -30,7 +32,6 @@ public class BookServiceImpl implements BookService {
 
     private final BookAdaptor bookAdaptor;
     private final ProductService productService;
-    private final Integer MAIN_EXPOSED_LIMIT_NUM = 6;
 
     @Override
     public Long addBook(MultipartFile thumbnails, MultipartFile ebook,
@@ -56,29 +57,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<ProductDetailsResponseDto> getProductTypeListByTypeNo(
-        Integer productTypeNo, Long memberNo) {
-        switch (productTypeNo) {
-            case 1:
-                return getNewBookList();
-            case 2:
-                return getDiscountBookList();
-            case 3:
-                return getBestSellerList();
-            case 4:
-                if (Objects.isNull(memberNo)) {
-                    return getRecommendationList();
-                } else {
-                    return getPersonalRecommendationList(memberNo);
-                }
-            case 5:
-                return getPopularBookList();
-            default:
-                return null;
-        }
-    }
-
-    @Override
     @Cacheable(value = "personalRecommendationList", key = "#memberNo")
     public List<ProductDetailsResponseDto> getPersonalRecommendationList(Long memberNo) {
         return productService.getProductList(
@@ -88,7 +66,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Cacheable(value = "productTypeList", key = "#productTypeNo")
-    public List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo) {
+    public List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo,
+                                                              Optional<UserDetailsDto> member) {
         switch (productTypeNo) {
             case 1:
                 return this.getNewBookList();
@@ -97,7 +76,11 @@ public class BookServiceImpl implements BookService {
             case 3:
                 return this.getBestSellerList();
             case 4:
-                return this.getRecommendationList();
+                if (member.isEmpty()) {
+                    return this.getRecommendationList();
+                } else {
+                    return this.getPersonalRecommendationList(member.get().getMemberNo());
+                }
             case 5:
                 return this.getPopularBookList();
             default:

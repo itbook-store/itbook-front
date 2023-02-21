@@ -339,13 +339,15 @@
                                     <div class="destination_box">
                                         <p class="destination_text">수령인 이름</p>
                                         <input type="text" placeholder="수령인 이름"
-                                               name="recipientName" th:value="${memberDestinationList[0].recipientName}">
+                                               name="recipientName"
+                                               th:value="${memberDestinationList[0].recipientName}">
                                     </div>
 
                                     <div class="destination_box">
                                         <p class="destination_text">수령인 핸드폰번호</p>
                                         <input type="text" placeholder="수령인 핸드폰번호"
-                                               name="recipientPhoneNumber" th:value="${memberDestinationList[0].recipientPhoneNumber}">
+                                               name="recipientPhoneNumber"
+                                               th:value="${memberDestinationList[0].recipientPhoneNumber}">
                                     </div>
 
                                     <div class="destination_box">
@@ -362,13 +364,15 @@
                                         <p class="destination_text">도로명 주소</p>
                                         <input type="text" placeholder="도로명 주소"
                                                id="sample4_roadAddress"
-                                               name="roadNameAddress" readonly th:value="${memberDestinationList[0].roadNameAddress}">
+                                               name="roadNameAddress" readonly
+                                               th:value="${memberDestinationList[0].roadNameAddress}">
                                     </div>
 
                                     <div class="destination_box">
                                         <p class="destination_text">상세 주소</p>
                                         <input type="text" placeholder="상세 주소"
-                                               name="recipientAddressDetails" th:value="${memberDestinationList[0].recipientAddressDetails}">
+                                               name="recipientAddressDetails"
+                                               th:value="${memberDestinationList[0].recipientAddressDetails}">
                                     </div>
                                 </div>
                             </th:block>
@@ -554,8 +558,6 @@
                 decreasePoint = 0;
             }
 
-            console.log(decreasePoint);
-
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
                 "postcode": parseInt(document.getElementsByName("postcode")[0].value),
@@ -579,11 +581,32 @@
                 return;
             }
 
-            if (canceledOrderNo) {
-                reOrderForPayment(orderAddRequestDto, canceledOrderNo);
-                return;
-            }
             createOrderForPayment(orderAddRequestDto);
+        }
+
+        async function createOrderForPayment(orderAddRequestDto) {
+
+            await fetch(`/async/orders/payment-start`, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderAddRequestDto)
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.isSuccessful) {
+                        doPaymentProcessByCard(data.result);
+                    } else {
+                        throw new Error(data.message)
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('error', error.message);
+                })
         }
 
         async function orderSubscription(orderAddRequestDto) {
@@ -597,64 +620,17 @@
                 body: JSON.stringify(orderAddRequestDto)
             })
                 .then(response => {
-                    if (response==null) {
-                        throw new Error(response.statusText)
-                    }
                     return response.json()
                 })
                 .then(data => {
-                    doPaymentProcessByCard(data.result);
-                })
-                .catch(error  => {
-                    Swal.fire('error','구독결제 실패! 주문등록 실패! 1');
-                })
-        }
-
-
-        async function createOrderForPayment(orderAddRequestDto) {
-
-            await fetch(`/async/orders/payment-start`, {
-
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderAddRequestDto)
-            })
-                .then(response => {
-                    if (response==null) {
-                        throw new Error(response.statusText)
+                    if (data.isSuccessful) {
+                        doPaymentProcessByCard(data.result);
+                    } else {
+                        throw new Error(data.message)
                     }
-                    return response.json();
                 })
-                .then(data => {
-                    doPaymentProcessByCard(data);
-                })
-                .catch(error  => {
-                    Swal.fire('error', "결제 실패");
-                })
-        }
-
-        async function reOrderForPayment(orderAddRequestDto, orderNo) {
-
-            await fetch(`/async/orders/payment-restart/${orderNo}`, {
-
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderAddRequestDto)
-            })
-                .then(response => {
-                    if (response==null) {
-                        throw new Error(response.statusText)
-                    }
-                    return response.json()})
-                .then(data => {
-                    doPaymentProcessByCard(data);
-                })
-                .catch(error  => {
-                    Swal.fire('error','결제 실패, 주문등록 실패!3');
+                .catch(error => {
+                    Swal.fire('error', error.message);
                 })
         }
 
@@ -670,10 +646,8 @@
                 successUrl: data.successUrl,
                 failUrl: data.failUrl,
             })
-                .catch(function (error) {
-
-                    canceledOrderNo = data.orderNo;
-
+                .catch(error => {
+                    deleteOrderAndStockIncrease(data.orderNo);
                     if (error.code === 'USER_CANCEL') {
                         Swal.fire(
                             '결제가 취소되었습니다.',
@@ -711,19 +685,25 @@
                 })
         }
 
-        async function cancelOrderForPayment(orderNo) {
-            await fetch(`async/orders/payment-cancel/${orderNo}`, {
+        async function deleteOrderAndStockIncrease(orderNo) {
+            return await fetch(`async/orders/${orderNo}/with-stock-rollback`, {
 
-                method: "POST",
+                method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-                // 성공적으로 취소 되었다면 204(void 반환값이 204). ok 범위는 200~299
                 .then(response => {
-                    if (response.ok) {
-                        canceledOrderNo = orderNo;
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.isSuccessful) {
+                        throw new Error(data.message);
                     }
+                    return data;
+                })
+                .catch(error => {
+                    console.log(error.message);
                 });
         }
     </script>

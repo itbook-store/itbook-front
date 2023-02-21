@@ -7,7 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageResponse<ProductDetailsResponseDto> getProductList(String url) {
+
         return productAdaptor.findProductList(url);
     }
 
     @Override
     public PageResponse<CategoryDetailsResponseDto> getCategoryList(String url) {
+        productAdaptor.findCategoryList(url);
         return productAdaptor.findCategoryList(url);
     }
 
@@ -73,8 +76,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductTypeResponseDto> findProductTypeList(String url) {
-        return productAdaptor.findProductTypeList(url);
+    @Cacheable(value = "productTypes")
+    public List<ProductTypeResponseDto> findProductTypeList() {
+        return productAdaptor.findProductTypeList(
+            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
     }
 
     @Override

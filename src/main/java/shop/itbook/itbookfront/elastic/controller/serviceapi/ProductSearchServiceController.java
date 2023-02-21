@@ -32,7 +32,6 @@ import shop.itbook.itbookfront.elastic.service.ProductSearchService;
 @RequiredArgsConstructor
 public class ProductSearchServiceController {
     private final ProductSearchService productSearchService;
-    private final CategoryService categoryService;
 
     /**
      * 이름으로 상품을 검색하여 리스트를 반환하는 메소드입니다.
@@ -43,19 +42,11 @@ public class ProductSearchServiceController {
     @GetMapping
     public String searchProductByName(@RequestParam String name, Model model,
                                       @PageableDefault Pageable pageable) {
-        if(name.length()>30){
+        if (name.length() > 30) {
             name = name.substring(0, 30);
             String searchTermsIgnored = name.substring(23);
             model.addAttribute("searchTermsIgnored", searchTermsIgnored);
         }
-
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/admin/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-
-        List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
-        model.addAttribute("mainCategoryList", mainCategoryList);
 
         PageResponse<ProductSampleResponseDto> productList =
             productSearchService.findProductPageList(

@@ -224,6 +224,11 @@ function addBookSubmit() {
             return false;
         }
 
+        if (increasePointPercent == null) {
+            Swal.fire('포인트 적립 설정 시 포인트 적립율 설정은 필수 항목입니다!', '', 'error');
+            return false;
+        }
+
         if (isPointApplyingBasedSellingPriceValue == null) {
             Swal.fire('포인트 적립 시 포인트 적립 기준 체크는 필수 항목입니다!', '', 'error');
             return false;
@@ -335,6 +340,11 @@ function modifyBookSubmit() {
 
         if (!checkNumberOfPercent(increasePointPercent)) {
             Swal.fire('포인트 적립율은 0 ~ 100%이어야 합니다!', '', 'error');
+            return false;
+        }
+
+        if (increasePointPercent == null) {
+            Swal.fire('포인트 적립 설정 시 포인트 적립율 설정은 필수 항목입니다!', '', 'error');
             return false;
         }
 

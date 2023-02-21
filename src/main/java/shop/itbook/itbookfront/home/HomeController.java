@@ -67,40 +67,30 @@ public class HomeController {
             return "signuppage/oauth-signup";
         }
 
-
-        PageResponse<CategoryListResponseDto> pageResponse =
-            categoryService.findCategoryList(String.format("/api/categories?page=%d&size=%d",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT));
-
         List<MainCategory> mainCategoryList =
-            CategoryUtil.getMainCategoryList(pageResponse.getContent());
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
 
-        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList(
-            "/api/products/product-types?page=0&size=" + Integer.MAX_VALUE).getContent();
+        List<ProductTypeResponseDto> productTypeList = productService.findProductTypeList();
         model.addAttribute("productTypeList", productTypeList);
 
+        Optional<UserDetailsDto> member = Optional.ofNullable(userDetailsDto);
 
-        List<ProductDetailsResponseDto> newBooks = bookService.getProductTypeList(1);
+        List<ProductDetailsResponseDto> newBooks = bookService.getProductTypeList(1, member);
         model.addAttribute("newBooks", newBooks);
 
-        List<ProductDetailsResponseDto> discountBooks = bookService.getProductTypeList(2);
+        List<ProductDetailsResponseDto> discountBooks = bookService.getProductTypeList(2, member);
         model.addAttribute("discountBooks", discountBooks);
 
-        List<ProductDetailsResponseDto> bestSeller = bookService.getProductTypeList(3);
+        List<ProductDetailsResponseDto> bestSeller = bookService.getProductTypeList(3, member);
         model.addAttribute("bestSeller", bestSeller);
 
-        List<ProductDetailsResponseDto> recommendation;
-        if (Objects.nonNull(userDetailsDto)) {
-            recommendation =
-                bookService.getPersonalRecommendationList(userDetailsDto.getMemberNo());
-        } else {
-            recommendation = bookService.getProductTypeList(4);
-        }
+        List<ProductDetailsResponseDto> recommendation =
+            bookService.getProductTypeList(4, member);
         model.addAttribute("recommendationList", recommendation);
 
-        List<ProductDetailsResponseDto> popularBooks = bookService.getProductTypeList(5);
+        List<ProductDetailsResponseDto> popularBooks = bookService.getProductTypeList(5, member);
         model.addAttribute("popularBooks", popularBooks);
 
         String remoteAddr = httpServletRequest.getHeader("X-Forwarded-For");
