@@ -83,7 +83,7 @@
                             <!--                                <td>배송료</td>-->
                             <!--                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>-->
                             <!--                            </tr>-->
-                            <tr>
+                            <tr th:if="${product.isSubscription == false}">
                                 <td><span>구매 수량 선택</span></td>
                                 <td>
                                     <div class="row">
@@ -467,7 +467,14 @@
         let productCnt = 1;
 
         function goOrderSheet(typeText) {
-            productCnt = document.getElementById('quantity').value;
+
+            let productNo = [[${product.productNo}]];
+            let productCnt = 1;
+
+            if(document.getElementById('quantity')) {
+                productCnt = document.getElementById('quantity').value
+            }
+
             if (productCnt < 1 || productCnt > productStock) {
                 Swal.fire({
                     icon: 'warning',
