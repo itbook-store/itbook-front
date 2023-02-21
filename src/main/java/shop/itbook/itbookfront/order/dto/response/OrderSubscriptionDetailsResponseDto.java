@@ -14,9 +14,13 @@ import lombok.Getter;
 public class OrderSubscriptionDetailsResponseDto {
     private Long orderNo;
     private Long orderProductNo;
+    private Long productNo;
     private String productName;
     private Integer count;
     private Long productPrice;
+    private Long fixedPrice;
+    private Double discountPercent;
+    private Long sellingAmount;
     private String fileThumbnailsUrl;
     private OrderDestinationDto orderDestinationDto;
     private String orderStatus;

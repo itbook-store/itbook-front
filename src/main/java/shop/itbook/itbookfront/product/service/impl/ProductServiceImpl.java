@@ -59,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = "productTypeList", allEntries = true)
     public void modifyProduct(Long productNo, MultipartFile thumbnails,
                               ProductModifyRequestDto requestDto) {
         productAdaptor.modifyProduct(productNo, thumbnails, requestDto);
@@ -94,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = "productTypeList", allEntries = true)
     public void changeBooleanField(Long productNo, String fieldName) {
         productAdaptor.changeBooleanField(productNo, fieldName);
     }

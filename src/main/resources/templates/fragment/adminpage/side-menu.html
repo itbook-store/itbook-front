@@ -7,7 +7,7 @@
 <div th:fragment="side-menu-fragment">
     <div class="h-100 flex-shrink-0 p-3" style="width: 280px;">
         <div>
-            <h3><a style="text-decoration : none; color: black;" href="/adminpage">ITBOOK <br> 관리자 페이지</a></h3>
+            <h3><a style="text-decoration : none; color: black;" href="/adminpage">관리자 페이지</a></h3>
         </div>
         <ul class="list-unstyled ps-0">
             <li class="border-top my-3"></li>
@@ -53,10 +53,9 @@
                     상품 문의
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="selectHowToShowCoupon(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false"
-                        onclick="selectHowToShowCoupon(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     쿠폰 관리
                 </button>
             </li>

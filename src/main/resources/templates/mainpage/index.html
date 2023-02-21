@@ -27,8 +27,25 @@
             -webkit-transition-duration: 500ms;
             -moz-transition-duration: 500ms;
             -ms-transition-duration: 500ms;
-
         }
+
+        .ellipsis-content {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .ellipsis-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+
     </style>
     <!--    <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Custom styles for this template -->
@@ -50,9 +67,11 @@
             <div class="fade-custom" th:each="product : ${discountBooks}">
                 <span class="product-type-label">할인 도서</span>
                 <div class="col-md-6 p-lg-5 mx-auto my-5" style="z-index: 2; margin-inline: 0%;!important;">
-                    <h1 style="font-size: 40pt; font-weight: bold!important;" class="display-4 fw-normal"
+                    <h1 class = "ellipsis-title"
+                            style="font-size: 40pt; font-weight: bold!important;"
                         th:text="${product.productName}"></h1>
-                    <p class="lead fw-normal" th:text="${product.simpleDescription}"></p>
+                    <p class="lead fw-normal ellipsis-content"
+                       th:text="${product.simpleDescription}"></p>
                     <a class="btn btn-outline-dark" th:href="@{|/products/${product.productNo}|}"
                     >바로가기</a>
                 </div>
@@ -99,7 +118,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-<!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
+                    <!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
                     <span th:if="${product.isSubscription == true}" class="product-discount-label">구독</span>
                 </div>
                 </a>
@@ -145,7 +164,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-<!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
+                    <!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
                     <span th:if="${product.isSubscription == true}" class="product-discount-label">구독</span>
                 </div>
                 </a>
@@ -190,7 +209,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-<!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
+                    <!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
                     <span th:if="${product.isSubscription == true}" class="product-discount-label">구독</span>
                 </div>
                 </a>
@@ -235,7 +254,7 @@
                             <a data-tip="장바구니 담기"><i class="fa fa-shopping-cart"></i></a>
                         </li>
                     </ul>
-<!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
+                    <!--                    <span class="product-discount-label" th:if="${product.isEbook == true}"> Ebook</span>-->
                     <span th:if="${product.isSubscription == true}" class="product-discount-label">구독</span>
                 </div>
                 </a>
@@ -293,6 +312,15 @@
             }
 
         });
+
+        let productInquiryReplyFail = [[${productInquiryReplyFail}]];
+        if (productInquiryReplyFail) {
+            Swal.fire({
+                icon: 'error',
+                title: productInquiryReplyFail,
+                text: '다시 시도해 주세요!',
+            })
+        }
     </script>
 
 </div>
