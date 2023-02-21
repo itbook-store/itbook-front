@@ -31,39 +31,40 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
       integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 <div layout:fragment="content">
-
-    <section th:if="${not #lists.isEmpty(pageResponse.content)}">
-        <div class="container">
-            <h2 th:if="${not #lists.isEmpty(existingList)}">연관 상품 수정</h2>
-            <h2 th:unless="${not #lists.isEmpty(existingList)}">연관 상품 등록</h2>
-            <form class="form-horizontal" name="form" method="post"
-                  th:action="@{|/admin/products/relation/${basedProductNo}/edit|}">
-                <div class="row">
-                    <div class="col-sm-3 col-lg-2 mb-2-6" style="margin-inline: 5px"
-                         th:each="rp: ${pageResponse.content}">
-                        <input type="checkbox" name="relationList" th:value="${rp.productNo}">
-                        <div class="card-wrapper mb-2">
-                            <div class="card-img">
-                                <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+    <div class="container mt-3">
+        <section th:if="${not #lists.isEmpty(pageResponse.content)}">
+            <div class="container">
+                <h2 th:if="${not #lists.isEmpty(existingList)}">연관 상품 수정</h2>
+                <h2 th:unless="${not #lists.isEmpty(existingList)}">연관 상품 등록</h2>
+                <form class="form-horizontal" name="form" method="post"
+                      th:action="@{|/admin/products/relation/${basedProductNo}/edit|}">
+                    <div class="row">
+                        <div class="col-sm-3 col-lg-2 mb-2-6" style="margin: 5px"
+                             th:each="rp: ${pageResponse.content}">
+                            <input type="checkbox" name="relationList" th:value="${rp.productNo}">
+                            <div class="card-wrapper mb-2">
+                                <div class="card-img">
+                                    <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h5 class="h6 mb-2">[[${rp.productName}]]</a></h5>
+                                <h5 class="h6 mb-2">[[${rp.authorName}]] - [[${rp.publisherName}]] </a></h5>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <h5 class="h6 mb-2">[[${rp.productName}]]</a></h5>
-                            <h5 class="h6 mb-2">[[${rp.authorName}]] - [[${rp.publisherName}]] </a></h5>
-                        </div>
                     </div>
-                </div>
-<!--                <th:block th:include="component/pageFooter"></th:block>-->
-                <input style="margin-left: 20px" class="btn btn-secondary" type="submit" id="submit" value="확인"/>
-                <a th:href="@{|/admin/products/relation/${basedProductNo}|}">
-                    <input style="margin-left: 20px" class="btn btn-secondary"
-                           type="button" id="editButton" value="취소"/></a>
-            </form>
-        </div>
-    </section>
-    <section th:if="${#lists.isEmpty(pageResponse.content)}">
-        <p>처리할 수 없습니다.</p>
-    </section>
+                    <!--                <th:block th:include="component/pageFooter"></th:block>-->
+                    <input style="margin-left: 20px" class="btn btn-secondary" type="submit" id="submit" value="확인"/>
+                    <a th:href="@{|/admin/products/relation/${basedProductNo}|}">
+                        <input style="margin-left: 20px" class="btn btn-secondary"
+                               type="button" id="editButton" value="취소"/></a>
+                </form>
+            </div>
+        </section>
+        <section th:if="${#lists.isEmpty(pageResponse.content)}">
+            <p>처리할 수 없습니다.</p>
+        </section>
+    </div>
 </div>
 </body>
 </html>

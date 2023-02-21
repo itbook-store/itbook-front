@@ -4,60 +4,83 @@ window.addEventListener("load", () => {
 function selectHowToShowCategories(eventTarget) {
 
     eventTarget.outerHTML =
-        `                     
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+        `                          
+                          <ul class="list-unstyled ps-0">        
+                                <li>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                             data-bs-target="#dashboard-collapse" aria-expanded="false">
                         카테고리 관리
                     </button>
-                    <button style="margin-left: 10%" class="btn btn-toggle" onclick="location.href='/admin/categories'">카테고리 전체 조회</button>
-                    <button style="margin-left: 10%" class="btn btn-toggle mt-1" onclick="location.href='/admin/categories/main-categories'">카테고리 분류별 조회</button>
-                    <button style="margin-left: 10%" class="btn btn-toggle mt-1" onclick="location.href='/admin/category-addition'">카테고리 추가</button>
-        `;
+                    </li>
+                                            <li onclick="location.href='/admin/categories'">
+
+                    <button style="margin-left: 10%" class="btn btn-toggle" >카테고리 전체 조회</button>
+                    </li>
+                                            <li onclick="location.href='/admin/categories/main-categories'">
+
+                    <button style="margin-left: 10%" class="btn btn-toggle mt-1" >카테고리 분류별 조회</button>
+                    </li>
+                                            <li onclick="location.href='/admin/category-addition'">
+
+                    <button style="margin-left: 10%" class="btn btn-toggle mt-1" >카테고리 추가</button>
+                    </li>
+</ul>        
+`;
 }
 
 function showProductSubMenu(eventTarget) {
 
     eventTarget.outerHTML =
-        `                     
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+        `   
+   <ul class="list-unstyled ps-0">        
+            <li ><button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false">
-                상품 관리
-            </button><br />
+                상품(도서) 관리
+            </button></li>  
+            <li onclick="location.href='/admin/products'">
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="/admin/products" style="text-decoration: none; color:inherit;">
-                    상품 목록
-                </a>
-            </button>
-            
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
-                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="/admin/products/relation" style="text-decoration: none; color:inherit;">
-                    연관상품 관리
-                </a>
-            </button>
+            상품 목록
+            </button></li>  
 
+            <li onclick="location.href='/admin/products/relation'">
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="/admin/products/sales-rank" style="text-decoration: none; color:inherit;">
+                    연관상품 관리
+            </button></li>  
+
+            <li onclick="location.href='/admin/products/sales-rank'">
+            <button class="btn btn-toggle" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
                     상품 판매현황
-                </a>
-            </button>
+            </button></li>
+            </ul>
         `;
 }
 
 function selectHowToShowCoupon(eventTarget) {
 
     eventTarget.outerHTML =
-        `                     
+        `   <ul class="list-unstyled ps-0">        
+            <li>            
                     <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                             data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-right: 20%">
                         쿠폰 관리
                     </button>
-                    <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupons/list';">쿠폰 전체 조회</a></button>
-                    <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupon/coupon-issues/list';">쿠폰 발급 내역 조회</a></button>
-                    <button class="btn btn-toggle mt-1" style="margin-left: 10%" onclick="location.href='/admin/coupons/coupon-addition';">쿠폰 추가</a></button>
-        `;
+                    </li>
+                                            <li onclick="location.href='/admin/coupons/list'">
+<button class="btn btn-toggle mt-1" style="margin-left: 10%">쿠폰 전체 조회</a></button>
+</li>                        <li onclick="location.href='/admin/coupon/coupon-issues/list'">
+
+                    <button class="btn btn-toggle mt-1" style="margin-left: 10%">쿠폰 발급 내역 조회</a></button>
+                    </li>
+                                            <li onclick="location.href='/admin/coupons/coupon-addition'">
+
+                    <button class="btn btn-toggle mt-1" style="margin-left: 10%" >쿠폰 추가</a></button>
+                    </li>
+</li>
+</ul>        
+`;
 }
 
 ``
@@ -66,84 +89,95 @@ function selectMemberSideMenu(eventTarget) {
 
     eventTarget.outerHTML =
         `
-            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+<ul class="list-unstyled ps-0">        
+            <li>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false">
                 회원 관리
-            </button><br />
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </button>
+            </li>
+                                    <li onclick="location.href='/admin/members'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="/admin/members" style="text-decoration: none; color:inherit;">
                     정상회원목록
-                </a>
             </button>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </li>
+                                    <li onclick="location.href='/admin/members/block'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%;">
-                <a href="/admin/members/block" style="text-decoration: none; color:inherit;">
                     차단회원목록
-                </a>
             </button>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </li>
+                                    <li onclick="location.href='/admin/members/withdraw'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/members/withdraw" style="text-decoration: none; color:inherit;">
                     탈퇴회원목록
-                </a>
             </button>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </li>
+                                    <li onclick="location.href='/admin/members/count'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/members/count" style="text-decoration: none; color:inherit;">
                     회원통계
-                </a>
             </button>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </li>
+                                    <li onclick="location.href='/admin/members/membership/count'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/members/membership/count" style="text-decoration: none; color:inherit;">
                     회원등급별통계
-                </a>
             </button>
+            </li>
+            </ul>
         `;
 }
 
 function selectWriterSideMenu(eventTarget) {
 
     eventTarget.outerHTML =
-        `
+        `<ul class="list-unstyled ps-0">        
+            <li>
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
                     작가 관리
-            </button><br/>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </button>
+            </li>
+                                    <li onclick="location.href='/admin/members/writer'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/members/writer" style="text-decoration: none; color:inherit;">
                     작가목록
-                </a>
             </button>
+            </li>
+                        <li onclick="location.href='/admin/members/register/writer'">
             <button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/members/register/writer" style="text-decoration: none; color:inherit;">
                     작가등록
-                </a>
             </button>
+            </li>
+            </ul>
+           
         `;
 }
 
 function selectOrderSideMenu(eventTarget) {
     eventTarget.outerHTML =
-        `
+        `<ul class="list-unstyled ps-0">        
+            <li>
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
                     주문 관리
-            </button><br/>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </button></li>
+                                    <li onclick="location.href='/admin/orders/list'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/orders/list" style="text-decoration: none; color:inherit;">
                     일반상품 주문 관리
-                </a>
             </button>
-            <button class="btn btn-toggle" data-bs-toggle="collapse"
+            </li>
+            
+                                    <li onclick="location.href='/admin/orders/list/subscription'">
+<button class="btn btn-toggle" data-bs-toggle="collapse"
                 data-bs-target="#dashboard-collapse" aria-expanded="false" style="margin-left: 20%">
-                <a href="/admin/orders/list/subscription" style="text-decoration: none; color:inherit;">
                     구독상품 주문 관리
-                </a>
             </button>
+            </li>
+            </ul>
         `;
 }

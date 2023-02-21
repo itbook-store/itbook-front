@@ -12,13 +12,13 @@
 <body>
 <div layout:fragment="content">
     <div class="content">
-        <h2>상품 문의 리스트</h2>
-        <hr>
-        <div>
-            전체 상품 문의 수 : <span th:text="${productInquiryCountResponseDto.getProductInquiryCount()}"></span><br>
-            답변된 상품 문의 수 : <span th:text="${productInquiryCountResponseDto.getRepliedProductInquiryCount()}"></span><br>
+        <div class="row">
+            <div class="col-8"><h2>상품 문의 리스트</h2></div>
+            <div class="col-3" >
+                <div style="width: 93%"> 전체 상품 문의 수 : [[${productInquiryCountResponseDto.getProductInquiryCount()}]]<br>
+                    답변된 상품 문의 수 : [[${productInquiryCountResponseDto.getRepliedProductInquiryCount()}]]<br></div>
+            </div>
         </div>
-        <hr>
         <!--<div>
             &lt;!&ndash; TODO 검색 기능 구현 &ndash;&gt;
             <form method="get">
@@ -37,7 +37,7 @@
                 <button class="btn btn-secondary" type="submit">검색</button>
             </form>
         </div>-->
-        <div class="container bootstrap snippets bootdey">
+        <div class="snippets bootdey mt-3" style="width: 90%">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-box no-header clearfix">
@@ -46,27 +46,28 @@
                                 <table class="table user-list">
                                     <thead style="text-align: center">
                                     <tr style="text-align: center!important;">
-                                        <th >상품문의번호</th>
-                                        <th >문의제목</th>
-                                        <th >문의회원</th>
-                                        <th >공개여부</th>
-                                        <th >답변여부</th>
+                                        <th>상품문의번호</th>
+                                        <th>문의제목</th>
+                                        <th>문의회원</th>
+                                        <th>공개여부</th>
+                                        <th>답변여부</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:if="${not #lists.isEmpty(pageResponse)}"
                                         th:each="productInquiry : ${pageResponse.content}">
-                                        <td style="text-align: center" th:text="${productInquiry.productInquiryNo}"></td>
+                                        <td style="text-align: center"
+                                            th:text="${productInquiry.productInquiryNo}"></td>
                                         <td><strong>
                                             <span style="text-align: left" th:text="${productInquiry.title}"></span>
                                         </strong>
                                         </td>
                                         <td><span th:text="${productInquiry.memberId}"></span></td>
-<!--                                        <td>-->
-<!--                                            <span th:text="${productInquiry.name}"-->
-<!--                                                  th:onclick="|location.href='@{/products/{productNo}(productNo=${productInquiry.productNo})}'|"></span>-->
-<!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <span th:text="${productInquiry.name}"-->
+                                        <!--                                                  th:onclick="|location.href='@{/products/{productNo}(productNo=${productInquiry.productNo})}'|"></span>-->
+                                        <!--                                        </td>-->
                                         <td>
                                             <span th:text="${productInquiry.isPublic} ? '공개' : '비공개'"></span>
                                         </td>
@@ -75,7 +76,9 @@
                                         </td>
                                         <td>
                                             <button th:if="${productInquiry.isReplied} == false" class="btn btn-primary"
-                                            th:onclick="|location.href='@{/admin/product-inquiries/view/{productInquiryNo}(productInquiryNo=${productInquiry.productInquiryNo})}'|">답변하기</button>
+                                                    th:onclick="|location.href='@{/admin/product-inquiries/view/{productInquiryNo}(productInquiryNo=${productInquiry.productInquiryNo})}'|">
+                                                답변하기
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>

@@ -3,6 +3,8 @@ package shop.itbook.itbookfront.common.advisor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,9 +33,11 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(value = {
         BadRequestException.class,
-        MethodArgumentNotValidException.class})
+        MethodArgumentNotValidException.class,
+        BindException.class})
     public String badRequestException400(Exception e, RedirectAttributes redirectAttributes) {
         log.error("badRequestException400 {}", e.getMessage());
+        e.printStackTrace();
         redirectAttributes.addFlashAttribute(BAD_REQUEST, BAD_REQUEST_MESSAGE);
         return "redirect:/";
     }
@@ -41,6 +45,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {JwtExpirationException.class})
     public String jwtException(Exception e) {
         log.error("jwtExpirationException {}", e.getMessage());
+        e.printStackTrace();
         return "redirect:/logout";
     }
 
@@ -49,6 +54,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(value = {MemberForbiddenException.class})
     public String forbiddenException403(Exception e) {
         log.error("forbiddenException403 {}", e.getMessage());
+        e.printStackTrace();
         return "/error/403error";
     }
 
@@ -60,6 +66,7 @@ public class ControllerAdvisor {
     })
     public String internalErrorException500(Exception e, Model model) {
         log.error("internalErrorException500 {}", e.getMessage());
+        e.printStackTrace();
 
         model.addAttribute(MESSAGE, INTERNAL_ERROR_MESSAGE);
         return "/error/500error";

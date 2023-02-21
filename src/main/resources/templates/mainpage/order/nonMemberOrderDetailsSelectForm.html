@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/mainpage/default-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>비회원 주문상세 종류 선택</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="content mt-5">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="container bootstrap snippets bootdey">
+                <div class="col-md-12">
+                    <h1 class="text-center">
+                        비회원 주문 조회
+                    </h1>
+                    <hr>
+                    <div class="row d-flex justify-content-center align-content-center">
+                        <div class="col-md-3">
+                            <a href="/non-member/order-details/show-form"
+                               style="text-decoration: none; color:#000000">
+                                <div class="card bg-light text-dark " style="padding:20px">
+                                <div class="card-heading">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <i class="fa fa-table-list fa-5x"></i>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <p class="announcement-heading">&nbsp;</p>
+                                                <h5 class="announcement-text">일반 주문</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="announcement-bottom">
+                                        <div class="row">
+                                            <div class="col-xs-6">조회하러 가기</div>
+                                            <div class="col-xs-6 text-right">
+                                                <i class="fa fa-arrow-circle-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/non-member/subscription-order-details/show-form"
+                               style="text-decoration: none; color:#000000">
+                                <div class="card bg-light text-dark " style="padding:20px">
+                                <div class="card-heading">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <i class="fa-solid fa-calendar-days fa-5x"></i>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <p class="announcement-heading">&nbsp;</p>
+                                                <h5 class="announcement-text">구독 주문</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="announcement-bottom">
+                                        <div class="row">
+                                            <div class="col-xs-6">조회하러 가기</div>
+                                            <div class="col-xs-6 text-right">
+                                                <i class="fa fa-arrow-circle-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

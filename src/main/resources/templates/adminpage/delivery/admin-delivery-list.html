@@ -9,43 +9,52 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="content">
-        <h3>Itbook 배송 관리</h3>
-        <div class="btn-box">
-            <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries}'|">전체 보기</button>
-            <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries/wait-list}'|">대기 상태
-            </button>
-            <button class="btn btn-danger right-btn" th:onclick="|location.href='@{/admin/deliveries/registration}'|">일괄 배송
-            </button>
+    <div class="content" style="width: 90%">
+        <h2>배송 관리</h2>
+        <div class="snippets bootdey">
+            <div class="btn-box mb-3">
+                <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries}'|">구독 주문</button>
+                <button class="btn btn-secondary" th:onclick="|location.href='@{/admin/deliveries/wait-list}'|">일반 주문
+                </button>
+                <button class="btn btn-danger right-btn"
+                        th:onclick="|location.href='@{/admin/deliveries/registration}'|">일괄 배송 접수
+                </button>
+            </div>
+            <table class="table table-hover" style="text-align: center">
+                <thead>
+                <tr class="thead-light">
+                    <th>배송 번호</th>
+                    <th>주문 번호</th>
+                    <th>운송장 번호</th>
+                    <th>배송 상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${!#lists.isEmpty(pageResponse.content)}"
+                    th:each="deliveryWait : ${pageResponse.content}">
+                    <td th:text="${deliveryWait.deliveryNo}"></td>
+                    <td th:text="${deliveryWait.orderNo}"></td>
+                    <td th:if="${deliveryWait.trackingNo}!=null" th:text="${deliveryWait.trackingNo}"></td>
+                    <td th:unless="${deliveryWait.trackingNo}!=null">발급 전</td>
+                    <td th:text="${deliveryWait.deliveryStatus}"></td>
+                </tr>
+                <tr th:unless="${!#lists.isEmpty(pageResponse.content)}">
+                    <td colspan='4'> 접수 가능한 주문 목록이 없습니다.</td>
+                </tr>
+                </tbody>
+            </table>
+            <th:block th:include="component/pageFooter"></th:block>
+            <div>
+
+            </div>
+            <script th:inline="javascript">
+                let failMessage = [[${failMessage}]];
+                if (failMessage) {
+                    alert(failMessage);
+                }
+            </script>
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr class="thead-light">
-                <th>배송 번호</th>
-                <th>주문 번호</th>
-                <th>운송장 번호</th>
-                <th>배송 상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="deliveryWait : ${pageResponse.content}">
-                <td th:text="${deliveryWait.deliveryNo}"></td>
-                <td th:text="${deliveryWait.orderNo}"></td>
-                <td th:text="${deliveryWait.trackingNo}"></td>
-                <td th:text="${deliveryWait.deliveryStatus}"></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <th:block th:include="component/pageFooter"></th:block>
-
     </div>
-    <script th:inline="javascript">
-        let failMessage = [[${failMessage}]];
-        if (failMessage) {
-            alert(failMessage);
-        }
-    </script>
 </div>
 </body>
 </html>

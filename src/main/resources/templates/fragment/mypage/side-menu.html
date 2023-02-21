@@ -7,80 +7,68 @@
 <div th:fragment="side-menu-fragment">
     <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
         <div>
-            <h3><a style="text-decoration : none; color: black;" href="/mypage">Itbook 마이 페이지</a></h3>
+            <h3><a style="text-decoration : none; color: black;" href="/mypage">마이페이지</a></h3>
         </div>
-        <ul class="list-unstyled ps-0">
+        <ul class="list-unstyled ps-0" style="color: #000000">
             <li class="border-top my-3"></li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/members/me/info'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/members/me/info">
-                        회원정보수정
-                    </a>
+                    회원정보수정
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/membership/history'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/membership/history">
-                        등급조회
-                    </a>
+                    등급조회
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/members/me/destinations'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/members/me/destinations">
-                        배송지관리
-                    </a>
+                    배송지관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="clickOrderMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="clickOrderMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     주문/배송조회
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="clickReviewMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="clickReviewMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     리뷰관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="clickProductInquiry(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="clickProductInquiry(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     상품문의관리
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/bookmark'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/bookmark">
                     즐겨찾기
-                    </a>
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="clickPointMenu(this)">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false" onclick="clickPointMenu(this)">
+                        data-bs-target="#dashboard-collapse" aria-expanded="false">
                     포인트
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/coupons/coupon-issues/all'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/coupons/coupon-issues/all">
                     쿠폰
-                    </a>
                 </button>
             </li>
-            <li class="mb-1">
+            <li class="mb-1" onclick="location.href='/mypage/members/withdraw'">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
                         data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    <a href="/mypage/members/withdraw">
-                        회원탈퇴
-                    </a>
+                    회원탈퇴
                 </button>
             </li>
             <li class="border-top my-3"></li>

@@ -9,49 +9,57 @@
     <title>연관상품 상세</title>
 </head>
 <body>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+      integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous"/>
 <div layout:fragment="content">
 
-
-    <section th:if="${not #lists.isEmpty(pageResponse.content)}">
-        <div class="container">
-            <h2>연관 상품</h2>
-            <a style="text-decoration: none; " th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
-                <button style="width: auto;" class="btn btn-primary ml-1">수정
-                </button>
-            </a>
-            <a style="text-decoration: none; " th:href="@{|/admin/products/relation|}">
-                <input style="margin-left: 20px" class="btn btn-secondary"
-                       type="button" id="editButton" value="뒤로가기"/></a>
-            <div class="row" style="margin-top: 20px">
-                <div class="col-sm-3 col-lg-2 mb-2-6" style="margin-inline: 5px" th:each="rp: ${pageResponse.content}">
-                    <div class="card-wrapper mb-2" >
-                        <div class="card-img">
-                            <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+    <div class="container mt-3">
+        <h2>[[${product.productName}]] 연관 상품</h2>
+        <section th:if="${not #lists.isEmpty(pageResponse.content)}">
+            <div class="container">
+                <div style="margin-block: 20px">
+                    <a style="text-decoration: none; "
+                       th:href="@{|/admin/products/relation/${product.productNo}/edit|}">
+                        <button style="width: auto;" class="btn btn-primary ml-1">수정
+                        </button>
+                    </a>
+                    <a style="text-decoration: none; " th:href="@{|/admin/products/relation|}">
+                        <input style="margin-left: 20px" class="btn btn-secondary"
+                               type="button" id="editButton" value="뒤로가기"/></a>
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-sm-3 col-lg-2 mb-2-6" style="margin-inline: 5px"
+                         th:each="rp: ${pageResponse.content}">
+                        <div class="card-wrapper mb-2">
+                            <div class="card-img">
+                                <img class="img-thumbnail" th:src="${rp.fileThumbnailsUrl}" alt="...">
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <h5 class="h6 mb-2"><a style="text-decoration: none; "
-                                               th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
-                            [[${rp.productName}]]</a></h5>
-                        <h5 class="h6 mb-2">[[${rp.authorName}]]</a></h5>
-                        <h5 class="h6 mb-2"><[[${rp.publisherName}]]></a></h5>
+                        <div class="text-center">
+                            <h5 class="h6 mb-2"><a style="text-decoration: none; "
+                                                   th:href="@{|/products/${rp.productNo}|}" class="text-secondary">
+                                [[${rp.productName}]]</a></h5>
+                            <h5 class="h6 mb-2">[[${rp.authorName}]]</a></h5>
+                            <h5 class="h6 mb-2"><[[${rp.publisherName}]]></a></h5>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <th:block th:include="component/pageFooter"></th:block>
-    </section>
-    <section th:if="${#lists.isEmpty(pageResponse.content)}">
-        <a th:href="@{|/admin/products/relation|}">
-            <a th:href="@{|/admin/products/relation/${basedProductNo}/edit|}">
-                <button style="width: auto;" class="btn btn-primary ml-1">등록
-                </button>
-            </a>
-            <input style="margin-left: 20px" class="btn btn-secondary"
-                   type="button" value="뒤로가기"/></a>
-        <p>연관상품이 없습니다.</p>
-    </section>
+            <th:block th:include="component/pageFooter"></th:block>
+        </section>
+        <section th:if="${#lists.isEmpty(pageResponse.content)}">
+            <div style="margin-block: 20px">
+                <a th:href="@{|/admin/products/relation/${product.productNo}/edit|}">
+                    <button style="width: auto;" class="btn btn-primary ml-1">등록
+                    </button>
+                </a>
+                <a th:href="@{|/admin/products/relation|}">
+                    <input style="margin-left: 20px" class="btn btn-secondary"
+                           type="button" value="뒤로가기"/></a>
+            </div>
+            <h5>연관상품이 없습니다.</h5>
+        </section>
+    </div>
 
     <script th:inline="javascript">
 

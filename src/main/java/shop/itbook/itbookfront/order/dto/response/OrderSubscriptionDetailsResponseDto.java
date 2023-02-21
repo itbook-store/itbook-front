@@ -14,9 +14,13 @@ import lombok.Getter;
 public class OrderSubscriptionDetailsResponseDto {
     private Long orderNo;
     private Long orderProductNo;
+    private Long productNo;
     private String productName;
     private Integer count;
     private Long productPrice;
+    private Long fixedPrice;
+    private Double discountPercent;
+    private Long sellingAmount;
     private String fileThumbnailsUrl;
     private OrderDestinationDto orderDestinationDto;
     private String orderStatus;
@@ -26,7 +30,7 @@ public class OrderSubscriptionDetailsResponseDto {
     private Long deliveryNo;
     private LocalDate selectedDeliveryDate;
     private String trackingNo;
-    
+
     // 주문 총액 쿠폰
     private String totalCouponName;
     private Long totalCouponAmount;
@@ -36,4 +40,7 @@ public class OrderSubscriptionDetailsResponseDto {
     private String couponName;
     private Long couponAmount;
     private Integer couponPercent;
+
+    // 비회원
+    private String nonMemberOrderCode;
 }

@@ -41,7 +41,6 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    @CacheEvict(value = "products", allEntries = true)
     public Long addProduct(MultipartFile thumbnails,
                            ProductAddRequestDto requestDto) {
         return productAdaptor.addProduct(thumbnails, requestDto);
@@ -60,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#productNo")
+    @CacheEvict(value = "productTypeList", allEntries = true)
     public void modifyProduct(Long productNo, MultipartFile thumbnails,
                               ProductModifyRequestDto requestDto) {
         productAdaptor.modifyProduct(productNo, thumbnails, requestDto);
@@ -73,7 +72,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "products", key = "#productNo")
     public ProductDetailsResponseDto getProduct(Long productNo) {
         return productAdaptor.findProduct(productNo);
     }
@@ -97,13 +95,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#productNo")
+    @CacheEvict(value = "productTypeList", allEntries = true)
     public void changeBooleanField(Long productNo, String fieldName) {
         productAdaptor.changeBooleanField(productNo, fieldName);
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#productNo")
     public void updateDailyHits(Long productNo) {
         productAdaptor.changeDailyHits(productNo);
     }

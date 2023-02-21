@@ -46,7 +46,6 @@ public class CachingConfig {
 
         Map<String, RedisCacheConfiguration> configurations = new HashMap<>();
         configurations.put("productTypeList", defaultConfig.entryTtl(Duration.ofDays(1)));
-        configurations.put("products", defaultConfig.entryTtl(Duration.ofDays(1)));
         configurations.put("categories", defaultConfig.entryTtl(Duration.ofDays(1)));
         configurations.put("productTypes", defaultConfig.entryTtl(Duration.ofDays(7)));
         configurations.put("personalRecommendationList",

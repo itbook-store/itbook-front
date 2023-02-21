@@ -61,7 +61,7 @@ public class PointHistoryAdminPageGetController {
                 format);
 
             model.addAttribute("pageResponse", pageResponse);
-            model.addAttribute("paginationUrl", "/admin/point-histories/show-content/admin-point-list");
+            model.addAttribute("paginationUrl", "/admin/point-histories/show-content/admin-point-list?content=" + content);
             model.addAttribute("content", content);
         } catch (BadRequestException e) {
             log.error(e.getMessage());

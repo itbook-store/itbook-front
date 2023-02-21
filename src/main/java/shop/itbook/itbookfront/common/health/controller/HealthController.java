@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
@@ -32,14 +33,15 @@ public class HealthController {
         return ResponseEntity.internalServerError().build();
     }
 
-    @PutMapping(value = "/monitor/l7check")
-    public ResponseEntity<CommonResponseBody<Void>> healthStatusModify(@RequestParam(required = false) String healthStatus) {
+    @GetMapping(value = "/monitor/l7check/change/ok")
+    public ResponseEntity<CommonResponseBody<Void>> changeHealthStatusOk() {
 
-        if (Objects.isNull(healthStatus)) {
-            this.isOk = OK;
-            return ResponseEntity.ok(new CommonResponseBody<>(new CommonResponseBody.CommonHeader(
-                OK_MESSAGE), null));
-        }
+        this.isOk = OK;
+        return ResponseEntity.ok(new CommonResponseBody<>(new CommonResponseBody.CommonHeader(OK_MESSAGE), null));
+    }
+
+    @GetMapping(value = "/monitor/l7check/change/error")
+    public ResponseEntity<CommonResponseBody<Void>> changeHealthStatusError() {
 
         this.isOk = INTERNAL;
         return ResponseEntity.ok(new CommonResponseBody<>(new CommonResponseBody.CommonHeader(INTERNAL_MESSAGE), null));
