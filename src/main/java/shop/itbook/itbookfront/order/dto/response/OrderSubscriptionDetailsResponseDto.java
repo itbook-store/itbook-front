@@ -18,6 +18,9 @@ public class OrderSubscriptionDetailsResponseDto {
     private String productName;
     private Integer count;
     private Long productPrice;
+    private Long fixedPrice;
+    private Double discountPercent;
+    private Long sellingAmount;
     private String fileThumbnailsUrl;
     private OrderDestinationDto orderDestinationDto;
     private String orderStatus;
