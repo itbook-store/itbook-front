@@ -105,12 +105,13 @@ public class OrderAsyncController {
      * @author 강명관
      */
     @PostMapping("/purchase-complete/{orderNo}")
-    public void orderPurchaseComplete(@PathVariable("orderNo") Long orderNo,
+    public AsyncResponseDto<Void> orderPurchaseComplete(@PathVariable("orderNo") Long orderNo,
                                       HttpServletResponse response) {
         try {
             orderService.orderPurchaseComplete(orderNo);
+            return new AsyncResponseDto(Boolean.TRUE, null, "구매확정 완료!");
         } catch (BadRequestException e) {
-            response.setStatus(400);
+            return new AsyncResponseDto(Boolean.FALSE, null, "구매확정 실패!");
         }
     }
 
