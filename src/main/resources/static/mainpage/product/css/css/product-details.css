@@ -512,3 +512,15 @@ body{
     -moz-appearance: textfield;
 }
 /* input number 화살표 지우기 */
+
+/* 기본 구조 */
+.wrap {margin-bottom:20px; margin-top:10px;}
+
+/* 가로 스크롤 적용 */
+.scroll__wrap {overflow-x:auto; white-space:nowrap; font-size:0}
+.scroll--element {display:inline-block; width:150px; height:150px; background:#fff; font-size:16px; line-height:150px; text-align:center;}
+.scroll--element + .scroll--element {margin-left:15px;}
+
+
+
+Resources

@@ -68,16 +68,26 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME)Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME) Cookie cartCookie,
                                   Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
-        List<Integer> productNoList = orderDetails.getOrderProductDetailResponseDtoList().stream()
-            .map(dto -> dto.getProductNo().intValue())
-            .collect(Collectors.toList());
+        try {
+            log.info("cookeValue {}", cartCookie.getValue());
+            List<Integer> productNoList =
+                orderDetails.getOrderProductDetailResponseDtoList().stream()
+                    .map(dto -> dto.getProductNo().intValue())
+                    .collect(Collectors.toList());
 
-        cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
+            log.info("productNo List {}", productNoList);
+
+            cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
+        } catch (Exception e) {
+            log.error("주문 후 장바구니 삭제 로직 에러 {}", e.getMessage());
+            e.printStackTrace();
+        }
+
 
         model.addAttribute("orderDetails", orderDetails);
 
