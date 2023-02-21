@@ -552,11 +552,16 @@
                 if (decreasePoint === '' || decreasePoint === null || decreasePoint === undefined) {
                     decreasePoint = 0;
                 }
+
+
+                if(appliedPointBoolean !== null || appliedPointBoolean !== undefined) {
+                    if (!appliedPointBoolean) {
+                        decreasePoint = 0;
+                    }
+                }
             }
 
-            if (!appliedPointBoolean) {
-                decreasePoint = 0;
-            }
+
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
