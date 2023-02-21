@@ -87,6 +87,7 @@
                                 <div class="form-outline">
                                     <input min="1" max="100" name="productCntList" th:value="${dto.productCount}"  class="quantity" type="number"
                                            onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                            th:attr="productNo=${dto.productDetailsResponseDto.productNo}, data-stock=${dto.productDetailsResponseDto.stock}" th:onchange="changeProductCount(this.getAttribute('productNo') , this)"/>
                                 </div>
                             </th:block>

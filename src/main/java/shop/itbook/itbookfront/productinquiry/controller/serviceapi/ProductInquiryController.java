@@ -19,6 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
+import shop.itbook.itbookfront.member.dto.response.MemberInfoResponseDto;
+import shop.itbook.itbookfront.member.dto.response.MemberRoleResponseDto;
+import shop.itbook.itbookfront.member.service.adminapi.MemberAdminService;
+import shop.itbook.itbookfront.member.service.serviceapi.MemberService;
 import shop.itbook.itbookfront.productinquiry.dto.request.ProductInquiryRequestDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryOrderProductResponseDto;
 import shop.itbook.itbookfront.productinquiry.dto.response.ProductInquiryResponseDto;
@@ -39,6 +43,10 @@ public class ProductInquiryController {
 
     private final ProductInquiryService productInquiryService;
     private final ProductInquiryReplyService productInquiryReplyService;
+
+    private final MemberService memberService;
+
+    private final MemberAdminService memberAdminService;
 
     @GetMapping("/{memberNo}/{productNo}/add")
     public String productInquiryAddForm(
@@ -220,7 +228,30 @@ public class ProductInquiryController {
     }
 
     @GetMapping("/view/writer/{productInquiryNo}")
-    public String productInquiryDetailsForWriter(@PathVariable("productInquiryNo") Long productInquiryNo, Model model) {
+    public String productInquiryDetailsForWriter(@PathVariable("productInquiryNo") Long productInquiryNo,
+                                                 Model model,
+                                                 RedirectAttributes redirectAttributes,
+                                                 @AuthenticationPrincipal UserDetailsDto userDetailsDto) {
+
+        MemberInfoResponseDto memberInfoResponseDto = memberService.findMember(userDetailsDto.getMemberNo());
+
+        List<MemberRoleResponseDto> memberRoles = memberAdminService.findMemberRoles(
+            userDetailsDto.getMemberNo());
+
+        boolean hasAdmin = false;
+
+        for (MemberRoleResponseDto memberRoleResponseDto : memberRoles) {
+            if (memberRoleResponseDto.getRole().equals("ADMIN")) {
+                hasAdmin = true;
+                break;
+            }
+        }
+
+        if(!hasAdmin && Boolean.FALSE.equals(memberInfoResponseDto.getIsWriter())) {
+            log.error("작가 계정이나 관리자만 답변을 달 수 있습니다.");
+            redirectAttributes.addFlashAttribute("productInquiryReplyFail", "작가 계정이나 관리자만 답변을 달 수 있습니다.");
+            return "redirect:/";
+        }
 
         ProductInquiryResponseDto productInquiryResponseDto = productInquiryService.findProductInquiry(productInquiryNo);
 
@@ -229,6 +260,5 @@ public class ProductInquiryController {
 
         return "mypage/productinquiry/productInquiry-details-writer";
     }
-
 
 }
