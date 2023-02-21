@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 상세</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -38,7 +39,8 @@
                                           th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
-                                    <button style="float: right;" th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
+                                    <button style="float: right;"
+                                            th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
                                             th:orderNo="${orderDetails.getOrderNo()}"
                                             class="btn btn-danger btn-sm"
                                             onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
@@ -69,7 +71,8 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}" class="text-reset"
+                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}"
+                                                                          class="text-reset"
                                                                           th:text="${product.productName}"></a></h6>
                                             </div>
                                         </div>
@@ -98,7 +101,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인(쿠폰 + 포인트) </td>
+                                    <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
                                         &nbsp;
                                         <span th:if="${orderDetails.amount != null}"
@@ -129,26 +132,53 @@
                                 <div class="col-lg-6">
                                     <h3 class="h6">쿠폰 정보</h3>
                                     <p>
-                                        <span th:if="${orderDetails.couponName != null}">
+                                    <div th:if="${orderDetails.couponName != null}">
                                         <span th:text="${orderDetails.couponName}"></span><br>
                                         할인 가격:
-                                        <span th:if="${orderDetails.totalCouponAmount != 0}"
-                                              th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
-                                        <span th:if="${orderDetails.totalCouponPercent != 0}"
-                                              th:text="${orderDetails.totalCouponPercent}"></span>
-                                        </span> <br>
-
-                                        <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
-                                            <span th:if="${item.couponName != null}">
-                                                <span th:text="${item.couponName}"></span><br>
-                                                할인 가격:
-                                                <span th:if="${item.couponAmount != 0}"
-                                                      th:text="${item.couponAmount}"></span> 원<br>
-
-                                                <span th:if="${item.couponPercent != 0}"
-                                                      th:text="${item.couponPercent}"></span><br>
-                                            </span>
+                                        <th:block th:if="${orderDetails.totalCouponAmount != 0}">
+                                            <span th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
                                         </th:block>
+                                        <th:block th:if="${orderDetails.totalCouponPercent != 0}">
+                                            <span id="totalAmount"></span> 원<br>
+                                            <script>
+                                                let sellingAmount = [[${orderDetails.sellingAmount}]];
+                                                let accountPercent = [[${orderDetails.totalCouponPercent}]];
+                                                let totalAmount = sellingAmount / accountPercent;
+
+                                                console.log(sellingAmount);
+                                                console.log(accountPercent);
+                                                console.log(totalAmount);
+
+                                                document.getElementById('totalAmount').innerText = totalAmount;
+                                            </script>
+                                        </th:block>
+                                    </div>
+                                    <br>
+
+                                    <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
+                                        <div th:if="${item.couponName != null}">
+                                            <span th:text="${item.couponName}"></span><br>
+                                            할인 가격:
+                                            <div th:if="${item.couponAmount != 0}">
+                                                <span th:text="${item.couponAmount}"></span> 원<br>
+                                            </div>
+                                            <div th:if="${item.couponPercent != 0}">
+                                                <span></span> 원<br>
+
+                                                <script>
+                                                    let sellingAmount = [[${orderDetails.sellingAmount}]];
+                                                    let accountPercent = [[${item.couponPercent}]];
+                                                    let totalAmount = sellingAmount - (sellingAmount / accountPercent);
+
+                                                    console.log(sellingAmount);
+                                                    console.log(accountPercent);
+                                                    console.log(totalAmount);
+
+                                                    document.getElementById('totalAmount').innerText = totalAmount;
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </th:block>
 
                                     </p>
                                 </div>

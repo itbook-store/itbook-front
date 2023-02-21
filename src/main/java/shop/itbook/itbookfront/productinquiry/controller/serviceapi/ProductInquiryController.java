@@ -175,7 +175,7 @@ public class ProductInquiryController {
 
         model.addAttribute("memberNo", userDetailsDto.getMemberNo());
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/admin/product-inquiries/list");
+        model.addAttribute("paginationUrl", "/product-inquiries/writable/list");
 
         return "mypage/productinquiry/productInquiry-writable-list";
     }
@@ -189,7 +189,7 @@ public class ProductInquiryController {
             String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()), userDetailsDto.getMemberNo());
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/admin/product-inquiries/list");
+        model.addAttribute("paginationUrl", "/product-inquiries/list");
 
         return "mypage/productinquiry/productInquiry-list";
     }
