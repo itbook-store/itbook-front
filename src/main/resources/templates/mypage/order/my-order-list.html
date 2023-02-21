@@ -216,11 +216,11 @@
                                             </div>
                                         </td>
                                         <td>
-<!--                                            <div th:if="${#strings.equals(ord.orderStatus, '배송완료')}">-->
+                                            <div th:if="${#strings.equals(ord.orderStatus, '배송완료')}">
                                                 <button class="btn btn-primary"
                                                         th:orderNo="${ord.orderNo}"
                                                         onclick="purchaseComplete(this.getAttribute('orderNo'))">구매확정</button>
-<!--                                            </div>-->
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>
