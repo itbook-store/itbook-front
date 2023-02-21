@@ -3,6 +3,7 @@ let totalDiscountPrice = 0;
 let orderProductTotalPriceBeforeDiscount = 0;
 const deliveryFeePolicy = 20000;
 let deliveryFee = Number(document.querySelector("#deliveryFee").innerHTML.replaceAll(',', ''));
+let currentMyPoint = Number(document.querySelector("#myPoint").innerText);
 
 document.addEventListener("DOMContentLoaded", function () {
     orderProductTotalPriceBeforeDiscount = getOrderProductTotalPriceBeforeDiscount();
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* 새로운 쿠폰 로직 모달 새롭게 생성해서 사용 */
+
+let couponIssueNoSet = new Set();
 function couponModalFunc(trigger) {
     let url = $(trigger).data("url");
     let productNo = Number($(trigger).data("no"));
@@ -38,6 +41,10 @@ function couponModalFunc(trigger) {
             let temp = '';
 
             for (let i = 0; i < res.length; i++) {
+
+                if (couponIssueNoSet.has(Number(res[i].couponIssueNo))) {
+                    continue;
+                }
 
                 let html;
 
@@ -171,7 +178,11 @@ function couponModalFunc(trigger) {
 
                 setPointApplyTag();
 
+                couponIssueNoSet.delete(Number(couponNoInput.value));
                 couponNoInput.value = document.querySelector("#product_coupon_modal input[name='selected_coupon']:checked").value;
+                couponIssueNoSet.add(Number(couponNoInput.value));
+
+                console.log(couponIssueNoSet);
                 couponApplyNameInput.value = couponName;
                 couponApplyPriceInput.value = discountApplyPrice;
 
@@ -360,6 +371,8 @@ function getOrderProductTotalPriceBeforeDiscount() {
 
 let pointApplyBtn = document.querySelector("#point_apply_btn");
 
+let appliedPointBoolean = false;
+
 pointApplyBtn.addEventListener("click", function () {
     Swal.fire({
         title: '포인트를 사용하시겠습니까?',
@@ -406,6 +419,7 @@ pointApplyBtn.addEventListener("click", function () {
             this.disabled = true;
             document.querySelector("#point_cancel_btn").disabled = false;
             document.querySelector("#point_apply_input").readOnly = true;
+            appliedPointBoolean = true;
 
 
             // if (myPoint >= orderRealAmountPrice) {
@@ -468,6 +482,8 @@ pointCancelBtn.addEventListener("click", function () {
             pointApplyInput.value = '';
             document.querySelector("#point_apply_btn").disabled = false;
             document.querySelector("#point_apply_input").readOnly = false;
+            this.disabled = true;
+            appliedPointBoolean = false;
 
             setOrderRealAmountTag();
             setTotalDiscountPriceTag();

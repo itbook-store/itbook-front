@@ -65,7 +65,7 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a href="#" class="text-reset">
+                                                <h6 class="small mb-0"><a th:href="@{|/products/${orderDetails.productNo}|}" class="text-reset">
                                                     <span th:text="${orderDetails.productName}"></span>
                                                     &nbsp;
                                                     <span th:text="${orderDetails.selectedDeliveryDate.getMonthValue()}"></span>월호
@@ -102,7 +102,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인</td>
+                                    <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
                                         <span th:if="${detailsList.get(0).amount != null}"
                                               th:text="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount}">

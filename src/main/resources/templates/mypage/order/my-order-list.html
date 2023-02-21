@@ -204,7 +204,7 @@
                                             <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
                                             <button th:if="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}" th:orderNo="${ord.orderNo}"
                                                     class="btn btn-danger"
-                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
+                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
                                             </button>
                                             <span th:unless="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}">불가
                                             </span>
@@ -215,6 +215,13 @@
                                         <td>
                                             <div th:if="${ord.orderStatus} == '입금완료'">
                                                 <button class="btn btn-primary">리뷰쓰기</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div th:if="${#strings.equals(ord.orderStatus, '배송완료')}">
+                                                <button class="btn btn-primary"
+                                                        th:orderNo="${ord.orderNo}"
+                                                        onclick="purchaseComplete(this.getAttribute('orderNo'))">구매확정</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -283,6 +290,8 @@
                 </div>
             </div>
         </div>
+
+        <script src="/order/js/myOrderList.js"></script>
 
     </div>
     <th:block th:include="component/pageFooter"></th:block>
