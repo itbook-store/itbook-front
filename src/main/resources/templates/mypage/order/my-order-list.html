@@ -204,7 +204,7 @@
                                             <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
                                             <button th:if="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}" th:orderNo="${ord.orderNo}"
                                                     class="btn btn-danger"
-                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
+                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
                                             </button>
                                             <span th:unless="${#strings.contains('결제완료배송대기배송완료',ord.orderStatus)}">불가
                                             </span>
