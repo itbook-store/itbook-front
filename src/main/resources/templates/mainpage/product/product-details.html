@@ -230,10 +230,10 @@
         <div class="container">
             <div class="container bootstrap snippets bootdey">
                 <h4>연관 상품</h4>
-                <div class="row">
-                    <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2"
-                         th:each="rp: ${pageResponse.content}">
-                        <div class="card-wrapper mb-2">
+                <div class="wrap">
+                    <div class="scroll__wrap">
+                        <!--                        <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2"-->
+                        <div class="scroll--element card-wrapper" th:each="rp: ${pageResponse.content}">
                             <div class="card-img"><img class="img-thumbnail-sm" th:src="${rp.fileThumbnailsUrl}"
                                                        alt="...">
                             </div>
@@ -247,7 +247,6 @@
                 </div>
             </div>
         </div>
-        <th:block th:include="component/pageFooter"></th:block>
     </section>
 
     <section>
@@ -319,8 +318,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p th:unless="${not #lists.isEmpty(reviewPageResponse.content)}"> 리뷰가 존재하지
-                                            않습니다.</p>
+                                        <p th:unless="${not #lists.isEmpty(reviewPageResponse.content)}" style="text-align: center"> 리뷰가 존재하지 않습니다.</p>
                                     </div>
                                 </div>
                             </div>

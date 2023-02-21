@@ -152,7 +152,7 @@ public class ProductServiceController {
             PageResponse<ProductDetailsResponseDto> relationProductList =
                 productService.getProductList(
                     String.format("/api/products/relation/%d?page=%d&size=%d",
-                        productNo, pageable.getPageNumber(), pageable.getPageSize()));
+                        productNo, 0, Integer.MAX_VALUE));
             model.addAttribute("pageResponse", relationProductList);
 
             PageResponse<ReviewResponseDto> reviewPageResponse =
