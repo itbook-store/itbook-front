@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>마이페이지 - 회원등급</title>
     <link rel="stylesheet" href="/mypage/member/css/member-membership.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <script>
         function showMembershipList() {
 
@@ -22,7 +23,21 @@
         <h2>나의 등급 조회</h2>
         <hr>
         회원님의 등급은
-
+        <th:block th:if="${myMembership} == '일반'">
+            <i class="fa-solid fa-crown" style="color: yellowgreen"></i>
+        </th:block>
+        <th:block th:if="${myMembership} == '화이트'">
+            <i class="fa-solid fa-crown" style="color: saddlebrown"></i>
+        </th:block>
+        <th:block th:if="${myMembership} == '실버'">
+            <i class="fa-solid fa-crown" style="color: silver"></i>
+        </th:block>
+        <th:block th:if="${myMembership} == '골드'">
+            <i class="fa-solid fa-crown" style="color: gold"></i>
+        </th:block>
+        <th:block th:if="${myMembership} == '플레티넘'">
+            <i class="fa-solid fa-crown" style="color: aqua"></i>
+        </th:block>
         <span th:text="${myMembership}"></span> 등급입니다.<br/>
         <br>
         <button class="btn btn-dark" onclick="showMembershipList()">등급 리스트 확인</button>
