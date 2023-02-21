@@ -73,11 +73,18 @@ public class OrderController {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
-        List<Integer> productNoList = orderDetails.getOrderProductDetailResponseDtoList().stream()
-            .map(dto -> dto.getProductNo().intValue())
-            .collect(Collectors.toList());
+        try {
+            List<Integer> productNoList =
+                orderDetails.getOrderProductDetailResponseDtoList().stream()
+                    .map(dto -> dto.getProductNo().intValue())
+                    .collect(Collectors.toList());
 
-        cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
+            cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
+        } catch (Exception e) {
+            log.error("주문 후 장바구니 삭제 로직 에러 {}", e.getMessage());
+            e.printStackTrace();
+        }
+
 
         model.addAttribute("orderDetails", orderDetails);
 
