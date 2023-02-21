@@ -217,6 +217,13 @@
                                                 <button class="btn btn-primary">리뷰쓰기</button>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div th:if="${#strings.equals(ord.orderStatus, '배송완료')}">
+                                                <button class="btn btn-primary"
+                                                        th:orderNo="${ord.orderNo}"
+                                                        onclick="purchaseComplete(this.getAttribute('orderNo'))">구매확정</button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -283,6 +290,8 @@
                 </div>
             </div>
         </div>
+
+        <script src="/order/js/myOrderList.js"></script>
 
     </div>
     <th:block th:include="component/pageFooter"></th:block>

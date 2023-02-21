@@ -90,6 +90,8 @@
                                         <div class="count col-5">
                                             <button id="minus">-</button>
                                             <input id="quantity" size="20" type="number" min="1" name="quantity"
+                                                   onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
+                                                   oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
                                                    value="1">
                                             <button id="plus">+</button>
                                         </div>
