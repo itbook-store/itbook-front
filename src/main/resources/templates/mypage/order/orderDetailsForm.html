@@ -33,15 +33,15 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-3 d-flex justify-content-between">
-                                <div class="">
+                                <div class="" style="width:100%;">
                                     <span class="me-3"
                                           th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
-                                    <button th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
+                                    <button style="float: right;" th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
                                             th:orderNo="${orderDetails.getOrderNo()}"
-                                            class="btn btn-danger"
-                                            onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
+                                            class="btn btn-danger btn-sm"
+                                            onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
                                     </button>
                                 </div>
                                 <div class="d-flex">
@@ -69,7 +69,7 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a href="#" class="text-reset"
+                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}" class="text-reset"
                                                                           th:text="${product.productName}"></a></h6>
                                             </div>
                                         </div>
@@ -98,7 +98,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인</td>
+                                    <td colspan="2">할인(쿠폰 + 포인트) </td>
                                     <td class="text-danger text-end">
                                         &nbsp;
                                         <span th:if="${orderDetails.amount != null}"

@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 public class OrderProductDetailResponseDto {
     private Long orderProductNo;
+    private Long productNo;
     private String productName;
     private Integer count;
     private Long productPrice;

@@ -10,6 +10,6 @@ function submitProductInquiryReply() {
         return false;
     }
 
-    alert("리뷰 작성 완료하였습니다.");
+    alert("상품문의 답글 작성 완료하였습니다.");
     document.getElementById("productInquiryForm").submit();
 }
