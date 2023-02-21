@@ -26,6 +26,7 @@ async function purchaseComplete(orderNo) {
                         Swal.fire({
                             title: '구매 확정'
                         });
+                        location.reload();
                     }
                 })
                 .catch((err) => {
