@@ -90,7 +90,7 @@
                                 <tr>
                                     <td colspan="2">상품 금액</td>
                                     <td class="text-end">
-                                        <span th:text="${detailsList.get(0).productPrice}"></span>
+                                        <span th:text="${detailsList.get(0).sellingAmount}"></span>
                                         원
                                     </td>
                                 </tr>
@@ -104,11 +104,10 @@
                                 <tr>
                                     <td colspan="2">할인</td>
                                     <td class="text-danger text-end">
-                                        <span th:if="${detailsList.get(0).amount != null}">
-<!--                          th:text="${detailsList.get(0)} - ${totalProductPrice}">-->
+                                        <span th:if="${detailsList.get(0).amount != null}"
+                                              th:text="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount}">
                                         </span>
-                                        <span th:unless="${detailsList.get(0).amount != null}"></span>
-                                        0
+                                        <span th:unless="${detailsList.get(0).amount != null}">0</span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
@@ -120,8 +119,8 @@
                                         <span th:if="${detailsList.get(0).amount != null}"
                                               th:text="${detailsList.get(0).amount}"></span>
                                         <span th:unless="${detailsList.get(0).amount != null}">
-<!--                          th:text="${totalProductPrice} + ${orderDetails.deliveryFee}">-->
-                    </span>
+                                        0
+                                        </span>
                                         원
                                     </td>
                                 </tr>
