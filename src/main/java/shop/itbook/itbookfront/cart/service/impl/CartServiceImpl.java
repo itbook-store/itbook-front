@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -84,16 +83,6 @@ public class CartServiceImpl implements CartService {
             cartProductDetailsResponseDto.setProductCount(productCount);
             redisTemplate.opsForHash().put(cookieValue, String.valueOf(productNo), cartProductDetailsResponseDto);
         }
-
-    }
-
-    @Override
-    public void clearCartOfOrderComplete(String cookieValue) {
-        Set<Object> keys = redisTemplate.opsForHash().keys(cookieValue);
-
-        keys.forEach(key ->
-            redisTemplate.opsForHash().delete(cookieValue, key)
-        );
 
     }
 

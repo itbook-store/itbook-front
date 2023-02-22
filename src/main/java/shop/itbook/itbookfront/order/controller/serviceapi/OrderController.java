@@ -68,12 +68,13 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME)Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME, required = false)Cookie cartCookie,
                                   Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
         try {
+            log.info("cookieValue {}", cartCookie.getValue());
             List<Integer> productNoList =
                 orderDetails.getOrderProductDetailResponseDtoList().stream()
                     .map(dto -> dto.getProductNo().intValue())

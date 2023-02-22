@@ -68,13 +68,5 @@ public interface CartService {
      */
     void loadCartProductForMember(String cookieValue, Long memberNo);
 
-
-    /**
-     * 구매 후, 장바구니의 상품을 지우는 메서드 입니다.
-     *
-     * @param cookieValue cookie Value
-     * @author 강명관
-     */
-    void clearCartOfOrderComplete(String cookieValue);
 }
 

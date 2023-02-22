@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
-import shop.itbook.itbookfront.product.exception.ProductNotFoundException;
 
 /**
  * 장바구니에 대한 비동기 통신을 하는 컨트롤러입니다.
@@ -51,7 +50,6 @@ public class CartAsyncController {
 
         cartService.deleteCartProduct(cookie.getValue(), productNo);
     }
-//
     @PostMapping("/delete/all-product")
     public void productDeleteAllToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                        @RequestParam(value = "productNo") List<Integer> productNoList) {

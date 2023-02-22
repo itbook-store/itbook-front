@@ -27,31 +27,34 @@ public class CartInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 
-
         Cookie[] cookies = request.getCookies();
 
         if (Objects.isNull(cookies) || cookies.length == 0) {
-            Cookie newCookie = new Cookie(COOKIE_NAME, "CID=" + UUID.randomUUID());
-            newCookie.setMaxAge(ONE_DAY);
-            response.addCookie(newCookie);
+            createNewCookie(response);
             return true;
         }
 
-        Cookie cartCookie = getCartCookie(cookies);
+        getCartCookie(cookies, response);
 
-        if (Objects.isNull(cartCookie)) {
-            Cookie newCookie = new Cookie(COOKIE_NAME, "CID="+ UUID.randomUUID());
-            newCookie.setMaxAge(ONE_DAY);
-            response.addCookie(newCookie);
-        }
         return true;
     }
 
-    private static Cookie getCartCookie(Cookie[] cookies) {
+    private static Cookie createNewCookie(HttpServletResponse response) {
+        Cookie newCookie = new Cookie(COOKIE_NAME, "CID="+ UUID.randomUUID());
+        newCookie.setMaxAge(ONE_DAY);
+        newCookie.setSecure(true);
+        newCookie.setHttpOnly(true);
+
+        response.addCookie(newCookie);
+
+        return newCookie;
+    }
+
+    private static Cookie getCartCookie(Cookie[] cookies, HttpServletResponse response) {
 
         return Arrays.stream(cookies)
             .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
             .findFirst()
-            .orElse(null);
+            .orElseGet(() -> createNewCookie(response));
     }
 }
