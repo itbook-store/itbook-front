@@ -14,6 +14,7 @@ import lombok.Getter;
 public class OrderDetailsResponseDto {
 
     private Long orderNo;
+    private LocalDateTime orderStatusCreatedAt;
     private String orderStatus;
     private LocalDateTime orderCreatedAt;
     private Long amount;

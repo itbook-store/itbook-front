@@ -36,7 +36,7 @@
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
                                     <span class="me-3"
-                                          th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
+                                          th:text="${#temporals.format(orderDetails.orderStatusCreatedAt)}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
                                 </div>
@@ -67,9 +67,10 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a href="#" class="text-reset"
-                                                                          th:text="${product.productName}"></a></h6>
-                                                <!--                                                <span class="small">Color: Black</span>-->
+                                                <h6 class="small mb-0"><a
+                                                        th:href="@{|/products/${product.productNo}|}" class="text-reset"
+                                                        th:text="${product.productName}"></a>
+                                                </h6>
                                             </div>
                                         </div>
                                     </td>
@@ -205,6 +206,22 @@
                                 <abbr title="Phone"
                                       th:text="${orderDetails.orderDestinationDto.recipientPhoneNumber}"></abbr>
                             </address>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="font-weight-bold">주문 일시</div>
+                            <div class="d-flex justify-content-between">
+                                <span class="me-3"
+                                      th:text="${#temporals.format(orderDetails.orderCreatedAt)}"></span>
+                                <button style="float: right;"
+                                        th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
+                                        th:orderNo="${orderDetails.getOrderNo()}"
+                                        class="btn btn-danger btn-sm rounded-4"
+                                        onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
