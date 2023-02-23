@@ -87,7 +87,6 @@ public class OrderController {
             e.printStackTrace();
         }
 
-
         model.addAttribute("orderDetails", orderDetails);
 
         return "mainpage/order/orderDetailsForm";

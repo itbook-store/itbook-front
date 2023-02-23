@@ -132,9 +132,10 @@
                                         <span th:text="${orderDetails.couponName}"></span><br>
                                         할인 가격:
                                         <span th:if="${orderDetails.totalCouponAmount != 0}"
-                                              th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
+                                              th:text="${orderDetails.totalCouponAmount}"> 원</span>
+
                                         <span th:if="${orderDetails.totalCouponPercent != 0}"
-                                              th:text="${orderDetails.totalCouponPercent}"></span>
+                                              th:text="${orderDetails.totalCouponPercent}"> 원</span>
                                         </span> <br>
 
                                         <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">

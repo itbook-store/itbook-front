@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.itbook.itbookfront.category.dto.response.CategoryListResponseDto;
+import shop.itbook.itbookfront.category.model.MainCategory;
 import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.response.PageResponse;
 
@@ -36,5 +38,16 @@ public class CategoryAsyncController {
             log.error(e.getMessage());
             throw e;
         }
+    }
+
+    @GetMapping("/async/mainpage/category-bar")
+    public List<MainCategory> mainPageCategoryBar(Model model) {
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
+
+        model.addAttribute("mainCategoryList", mainCategoryList);
+
+        return mainCategoryList;
     }
 }
