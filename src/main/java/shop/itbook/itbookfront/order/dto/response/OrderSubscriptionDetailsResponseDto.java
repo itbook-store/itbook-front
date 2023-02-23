@@ -18,8 +18,12 @@ public class OrderSubscriptionDetailsResponseDto {
     private String productName;
     private Integer count;
     private Long productPrice;
+    private Long fixedPrice;
+    private Double discountPercent;
+    private Long sellingAmount;
     private String fileThumbnailsUrl;
     private OrderDestinationDto orderDestinationDto;
+    private LocalDateTime orderStatusCreatedAt;
     private String orderStatus;
     private LocalDateTime orderCreatedAt;
     private Long amount;
@@ -40,4 +44,5 @@ public class OrderSubscriptionDetailsResponseDto {
 
     // 비회원
     private String nonMemberOrderCode;
+
 }

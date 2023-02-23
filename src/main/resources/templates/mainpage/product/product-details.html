@@ -83,7 +83,7 @@
                             <!--                                <td>배송료</td>-->
                             <!--                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>-->
                             <!--                            </tr>-->
-                            <tr>
+                            <tr th:if="${product.isSubscription == false}">
                                 <td><span>구매 수량 선택</span></td>
                                 <td>
                                     <div class="row">
@@ -106,15 +106,10 @@
                                     </div>
                                 </td>
                             </tr>
+
                             </tbody>
                         </table>
-                        <!--                        <div class="product-rating mb-2">-->
-                        <!--                            <i class="fas fa-star"></i>-->
-                        <!--                            <i class="fas fa-star"></i>-->
-                        <!--                            <i class="fas fa-star"></i>-->
-                        <!--                            <i class="fas fa-star"></i>-->
-                        <!--                            <i class="fas fa-star mr-0"></i>-->
-                        <!--                        </div>-->
+
                         <div style="text-align: center">
                             <th:block th:if="${product.isForceSoldOut == false or product.stock != 0}">
                                 <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title=""
@@ -151,7 +146,7 @@
                             </button>
 
                             <div class="modal fade" id="nonMemberModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:32%">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header"></div>
@@ -232,10 +227,10 @@
         <div class="container">
             <div class="container bootstrap snippets bootdey">
                 <h4>연관 상품</h4>
-                <div class="row">
-                    <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2"
-                         th:each="rp: ${pageResponse.content}">
-                        <div class="card-wrapper mb-2">
+                <div class="wrap">
+                    <div class="scroll__wrap">
+                        <!--                        <div style="margin-inline: 5px" class="col-sm-2 col-lg-2 mb-2"-->
+                        <div class="scroll--element card-wrapper" th:each="rp: ${pageResponse.content}">
                             <div class="card-img"><img class="img-thumbnail-sm" th:src="${rp.fileThumbnailsUrl}"
                                                        alt="...">
                             </div>
@@ -249,7 +244,6 @@
                 </div>
             </div>
         </div>
-        <th:block th:include="component/pageFooter"></th:block>
     </section>
 
     <section>
@@ -429,46 +423,59 @@
 
         let productStock = Number([[${product.stock}]]);
 
-        const minusButton = document.getElementById('minus');
-        const plusButton = document.getElementById('plus');
-        const inputField = document.getElementById('quantity');
+        let minusButton;
+        let plusButton;
+        let inputField;
+        if(document.getElementById('quantity')) {
+            minusButton = document.getElementById('minus');
+            plusButton = document.getElementById('plus');
 
-        minusButton.addEventListener('click', event => {
-            event.preventDefault();
-            let currentValue = Number(inputField.value) || 0;
-            if (currentValue <= 1) {
-                currentValue = 2;
-            }
-            inputField.value = currentValue - 1;
-        });
+            inputField = document.getElementById('quantity');
 
-        plusButton.addEventListener('click', event => {
-            event.preventDefault();
+            minusButton.addEventListener('click', event => {
+                event.preventDefault();
+                let currentValue = Number(inputField.value) || 0;
+                if (currentValue <= 1) {
+                    currentValue = 2;
+                }
+                inputField.value = currentValue - 1;
+            });
 
-            let currentValue = Number(inputField.value) || 0;
+            plusButton.addEventListener('click', event => {
+                event.preventDefault();
 
-            if (currentValue < 1) {
-                currentValue = 0;
-            }
-            inputField.value = currentValue + 1;
+                let currentValue = Number(inputField.value) || 0;
 
-            console.log("현재 선택 수량: " + inputField.value);
-            if (inputField.value > productStock) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '구매 수량이 잘못 되었습니다.',
-                    text: '구매가능 수량: 1 ~ ' + productStock
-                })
-                inputField.value = productStock;
-                return;
-            }
-        });
+                if (currentValue < 1) {
+                    currentValue = 0;
+                }
+                inputField.value = currentValue + 1;
+
+                console.log("현재 선택 수량: " + inputField.value);
+                if (inputField.value > productStock) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '구매 수량이 잘못 되었습니다.',
+                        text: '구매가능 수량: 1 ~ ' + productStock
+                    })
+                    inputField.value = productStock;
+                    return;
+                }
+            });
+        }
 
         let productNo = [[${product.productNo}]];
         let productCnt = 1;
 
         function goOrderSheet(typeText) {
-            productCnt = document.getElementById('quantity').value;
+
+            let productNo = [[${product.productNo}]];
+            // let productCnt = 1;
+
+            if(document.getElementById('quantity')) {
+                productCnt = document.getElementById('quantity').value
+            }
+
             if (productCnt < 1 || productCnt > productStock) {
                 Swal.fire({
                     icon: 'warning',
@@ -547,7 +554,6 @@
 
             parentCategoryNameDiv.textContent = parentCategoryName;
             childCategoryNameDiv.textContent = childCategoryList;
-
         }
     </script>
     <script th:inline="javascript">

@@ -245,7 +245,7 @@
                                                     "cancelReason": cancelReason
                                                 }
 
-                                                await fetch(`/async/payment/cancel`, {
+                                                await fetch(`/async/payment/cancel?isSubscription=true`, {
 
                                                     method: "POST",
                                                     headers: {
@@ -274,6 +274,8 @@
                                                     title: `결제 취소가 성공적으로 완료되었습니다.`,
                                                 })
                                             }
+
+                                            location.reload();
                                         })
 
                                     }

@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.cart.service.CartService;
+import shop.itbook.itbookfront.category.model.MainCategory;
+import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
-import shop.itbook.itbookfront.order.dto.response.OrderProductDetailResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionListDto;
 import shop.itbook.itbookfront.order.service.OrderService;
@@ -40,6 +42,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final CartService cartService;
+    private final CategoryService categoryService;
 
     /**
      * 마이페이지에서 해당 회원의 주문 목록을 불러옵니다.
@@ -68,24 +71,30 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME, required = false)Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME, required = false)
+                                  Cookie cartCookie,
                                   Model model) {
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
+        model.addAttribute("mainCategoryList", mainCategoryList);
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
         try {
-            log.info("cookieValue {}", cartCookie.getValue());
+            log.info("cookeValue {}", cartCookie.getValue());
             List<Integer> productNoList =
                 orderDetails.getOrderProductDetailResponseDtoList().stream()
                     .map(dto -> dto.getProductNo().intValue())
                     .collect(Collectors.toList());
+
+            log.info("productNo List {}", productNoList);
 
             cartService.deleteAllCartProduct(cartCookie.getValue(), productNoList);
         } catch (Exception e) {
             log.error("주문 후 장바구니 삭제 로직 에러 {}", e.getMessage());
             e.printStackTrace();
         }
-
 
         model.addAttribute("orderDetails", orderDetails);
 

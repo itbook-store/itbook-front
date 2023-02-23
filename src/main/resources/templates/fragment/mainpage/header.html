@@ -39,7 +39,7 @@
                 <th:block sec:authorize="isAnonymous()">
                     <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">로그인</a></li>
                     <li class="nav-item"><a href="/signup" class="nav-link link-dark px-2">회원가입</a></li>
-                    <div class="border rounded-4 nav-item"><a href="/non-member/order-details/show-select-form" class="nav-link link-dark px-2">비회원 주문조회</a></div>
+                    <div class="nav-item"><a href="/non-member/order-details/show-select-form" class="nav-link link-dark px-2">비회원 주문조회</a></div>
                 </th:block>
 
                 <th:block sec:authorize="isAuthenticated()">
@@ -106,6 +106,19 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/cart/js/cartHeader.js"></script>
+<!--    <script>-->
+<!--        initCategory();-->
+<!--        async function initCategory() {-->
+
+<!--            await fetch(`/async/mainpage/category-bar`, {-->
+<!--                method: "GET"-->
+<!--            })-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    [[${mainCategoryList}]] = data;-->
+<!--                });-->
+<!--        }-->
+<!--    </script>-->
 </nav>
 
 </html>
