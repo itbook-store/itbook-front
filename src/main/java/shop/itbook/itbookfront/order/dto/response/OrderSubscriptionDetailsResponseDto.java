@@ -43,4 +43,5 @@ public class OrderSubscriptionDetailsResponseDto {
 
     // 비회원
     private String nonMemberOrderCode;
+    
 }

@@ -95,7 +95,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인</td>
+                                    <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
                                         &nbsp;
                                         <span th:if="${orderDetails.amount != null}"
@@ -130,11 +130,11 @@
                                     <p>
                                         <span th:if="${orderDetails.couponName != null}">
                                         쿠폰 이름: <span th:text="${orderDetails.couponName}"></span><br>
-                                        총액쿠폰 할인 적용:
+                                        총액쿠폰 할인 가격:
                                         <span th:if="${orderDetails.totalCouponAmount != 0}"
                                               th:text="${orderDetails.totalCouponAmount}"></span>
                                         <span th:if="${orderDetails.totalCouponPercent != 0}">
-                                        <span th:text="${orderDetails.totalCouponPercent}"></span>%
+                                        <span th:text="${orderDetails.couponAmount}"></span>원
                                             </span>
                                         </span> <br>
                                         -----------------------------------<br>
@@ -143,10 +143,10 @@
                                                 쿠폰 이름: <span th:text="${item.couponName}"></span><br>
                                                상품 및 카테고리쿠폰 할인 가격:
                                                 <span th:if="${item.couponAmount != 0}"
-                                                      th:text="${item.couponAmount}"></span> 원<br>
+                                                      th:text="${item.couponAmount}"></span>
 
                                                 <span th:if="${item.couponPercent != 0}"
-                                                      th:text="${item.couponPercent}"></span><br>
+                                                      th:text="${item.sellingPrice - item.productPrice}"></span>원<br>
                                             </span>
                                         </th:block>
 
