@@ -129,18 +129,19 @@
                                     <h3 class="h6">쿠폰 정보</h3>
                                     <p>
                                         <span th:if="${orderDetails.couponName != null}">
-                                        <span th:text="${orderDetails.couponName}"></span><br>
-                                        할인 가격:
+                                        쿠폰 이름: <span th:text="${orderDetails.couponName}"></span><br>
+                                        총액쿠폰 할인 적용:
                                         <span th:if="${orderDetails.totalCouponAmount != 0}"
-                                              th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
-                                        <span th:if="${orderDetails.totalCouponPercent != 0}"
-                                              th:text="${orderDetails.totalCouponPercent}"></span>
+                                              th:text="${orderDetails.totalCouponAmount}"></span>
+                                        <span th:if="${orderDetails.totalCouponPercent != 0}">
+                                        <span th:text="${orderDetails.totalCouponPercent}"></span>%
+                                            </span>
                                         </span> <br>
-
+                                        -----------------------------------<br>
                                         <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
                                             <span th:if="${item.couponName != null}">
-                                                <span th:text="${item.couponName}"></span><br>
-                                                할인 가격:
+                                                쿠폰 이름: <span th:text="${item.couponName}"></span><br>
+                                               상품 및 카테고리쿠폰 할인 가격:
                                                 <span th:if="${item.couponAmount != 0}"
                                                       th:text="${item.couponAmount}"></span> 원<br>
 
