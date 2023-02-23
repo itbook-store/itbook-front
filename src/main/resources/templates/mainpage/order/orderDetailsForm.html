@@ -65,8 +65,10 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a href="#" class="text-reset"
-                                                                          th:text="${product.productName}"></a></h6>
+                                                <h6 class="small mb-0"><a
+                                                        th:href="@{|/products/${product.productNo}|}"
+                                                        class="text-reset"
+                                                        th:text="${product.productName}"></a></h6>
                                                 <!--                                                <span class="small">Color: Black</span>-->
                                             </div>
                                         </div>

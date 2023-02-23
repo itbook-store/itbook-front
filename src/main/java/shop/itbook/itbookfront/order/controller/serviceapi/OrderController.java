@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.cart.service.CartService;
+import shop.itbook.itbookfront.category.model.MainCategory;
+import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
@@ -39,6 +42,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final CartService cartService;
+    private final CategoryService categoryService;
 
     /**
      * 마이페이지에서 해당 회원의 주문 목록을 불러옵니다.
@@ -70,6 +74,10 @@ public class OrderController {
                                   @CookieValue(value = COOKIE_NAME, required = false)
                                   Cookie cartCookie,
                                   Model model) {
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
+        model.addAttribute("mainCategoryList", mainCategoryList);
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
