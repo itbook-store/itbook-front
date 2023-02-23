@@ -67,7 +67,8 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME) Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME, required = false)
+                                  Cookie cartCookie,
                                   Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
