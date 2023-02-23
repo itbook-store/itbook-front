@@ -38,7 +38,8 @@
                                           th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
-                                    <button style="float: right;" th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
+                                    <button style="float: right;"
+                                            th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
                                             th:orderNo="${orderDetails.getOrderNo()}"
                                             class="btn btn-danger btn-sm"
                                             onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
@@ -69,7 +70,8 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}" class="text-reset"
+                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}"
+                                                                          class="text-reset"
                                                                           th:text="${product.productName}"></a></h6>
                                             </div>
                                         </div>
@@ -98,7 +100,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">할인(쿠폰 + 포인트) </td>
+                                    <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
                                         &nbsp;
                                         <span th:if="${orderDetails.amount != null}"
@@ -128,8 +130,41 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <h3 class="h6">쿠폰 정보</h3>
-                                    <p>
-                                        <span th:if="${orderDetails.couponName != null}">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <td>쿠폰이름</td>
+                                            <td>할인가격</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td th:if="${orderDetails.couponName != null}">
+                                                <span th:text="${orderDetails.couponName}"></span><br>
+                                            </td>
+                                            <td th:if="${orderDetails.totalCouponAmount != 0}"
+                                                th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
+                                            </td>
+                                            <td th:if="${orderDetails.totalCouponPercent != 0}"
+                                                th:text="${orderDetails.totalCouponPercent}"></span>
+                                            </td>
+                                        </tr>
+                                        <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
+                                            <tr>
+                                            <th:block th:if="${item.couponName != null}">
+                                                <td th:text="${item.couponName}"></td><br>
+                                                할인 가격:
+                                                <td th:if="${item.couponAmount != 0}"
+                                                      th:text="${item.couponAmount} + '원'"></td>
+
+                                                <td th:if="${item.couponPercent != 0}"
+                                                      th:text="${item.couponPercent}"></td>
+                                            </th:block>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                    <span th:if="${orderDetails.couponName != null}">
                                         <span th:text="${orderDetails.couponName}"></span><br>
                                         할인 가격:
                                         <span th:if="${orderDetails.totalCouponAmount != 0}"
@@ -138,7 +173,7 @@
                                               th:text="${orderDetails.totalCouponPercent}"></span>
                                         </span> <br>
 
-                                        <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
+                                    <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
                                             <span th:if="${item.couponName != null}">
                                                 <span th:text="${item.couponName}"></span><br>
                                                 할인 가격:
@@ -148,9 +183,8 @@
                                                 <span th:if="${item.couponPercent != 0}"
                                                       th:text="${item.couponPercent}"></span><br>
                                             </span>
-                                        </th:block>
+                                    </th:block>
 
-                                    </p>
                                 </div>
 
                             </div>
