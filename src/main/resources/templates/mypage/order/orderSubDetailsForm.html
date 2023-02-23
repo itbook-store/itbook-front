@@ -134,35 +134,44 @@
                     </div>
                     <!-- Coupon -->
                     <div class="card mb-4"
-                         th:if="${detailsList.get(0).totalCouponName != null && detailsList.get(0).couponName != null}">
+                         th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h3 class="h6">할인 내역</h3>
-                                    <p>
+                                    <h3 class="h6">쿠폰 정보</h3>
+                                    <table class="table user-list">
+                                        <thead>
+                                        <tr>
+                                            <td>쿠폰이름</td>
+                                            <td>할인가격</td>
+                                            <td>분류</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
                                         <!-- 주문 총액 쿠폰 적용 내역 -->
-                                        <span th:if="${detailsList.get(0).totalCouponName != null}">
-                                        <span th:text="${detailsList.get(0).totalCouponName}"></span><br>
-                                        <span th:if="${detailsList.get(0).totalCouponAmount != 0}"
-                                              th:text="${detailsList.get(0).totalCouponAmount}"></span><br/>
-                                        <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
+                                        <tr th:if="${detailsList.get(0).totalCouponName != null}">
+                                        <td th:text="${detailsList.get(0).totalCouponName}"></td>
+                                        <td th:if="${detailsList.get(0).totalCouponAmount != 0}"
+                                              th:text="${detailsList.get(0).totalCouponAmount}"></td>
+                                        <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
                                               th:text="${#numbers.formatInteger(detailsList.get(0).productPrice
-                                               * (detailsList.get(0).couponPercent * 0.01),3,'COMMA')}"></span>원<br/>
-                                            <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
+                                               * (detailsList.get(0).couponPercent * 0.01),3,'COMMA')}"></td>원
+                                            <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
                                                   th:text="${detailsList.get(0).productPrice
-                                               * (detailsList.get(0).couponPercent * 0.01)}"></span>원<br/>
-                                            <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                                  th:text="${detailsList.get(0).couponPercent}"></span>원<br/>
-                                        </span>
+                                               * (detailsList.get(0).couponPercent * 0.01)}"></td>원
+                                            <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
+                                                  th:text="${detailsList.get(0).couponPercent}"></td>원
+                                        </tr>
                                         <!-- 개별 상품 쿠폰 적용 내역 -->
-                                        <span th:if="${detailsList.get(0).couponName != null}">
-                                        <span th:text="${detailsList.get(0).couponName}"></span><br>
-                                        <span th:if="${detailsList.get(0).couponAmount != 0}"
-                                              th:text="${detailsList.get(0).couponAmount}"></span><br>
-                                        <span th:if="${detailsList.get(0).couponPercent != 0}"
-                                              th:text="${detailsList.get(0).sellingAmount - detailsList.get(0).productPrice}"></span>원<br/>
-                                            </span>
-                                    </p>
+                                        <tr th:if="${detailsList.get(0).couponName != null}">
+                                        <td th:text="${detailsList.get(0).couponName}"></td>
+                                        <td th:if="${detailsList.get(0).couponAmount != 0}"
+                                              th:text="${detailsList.get(0).couponAmount}"></td>
+                                        <td th:if="${detailsList.get(0).couponPercent != 0}"
+                                              th:text="${detailsList.get(0).sellingAmount - detailsList.get(0).productPrice}"></td>원
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <!--                                <div class="col-lg-6">-->
                                 <!--                                    <h3 class="h6">Billing address</h3>-->
