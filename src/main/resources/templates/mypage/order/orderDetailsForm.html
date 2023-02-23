@@ -11,7 +11,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-
     <div class="container-fluid">
         <div class="container">
             <!-- Title -->
@@ -33,19 +32,15 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-3 d-flex justify-content-between">
-                                <div class="" style="width:100%;">
+                                <div>
                                     <span class="me-3"
                                           th:text="${#temporals.format(orderDetails.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
                                     <span class="badge rounded-pill bg-info"
                                           th:text="${orderDetails.orderStatus}"></span>
-                                    <button style="float: right;"
-                                            th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
-                                            th:orderNo="${orderDetails.getOrderNo()}"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
-                                    </button>
                                 </div>
                                 <div class="d-flex">
+                                    <!--                                    <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i-->
+                                    <!--                                            class="bi bi-download"></i> <span class="text">영수증 보기</span></button>-->
                                     <div class="dropdown">
                                         <button class="btn btn-link p-0 text-muted" type="button"
                                                 data-bs-toggle="dropdown">
@@ -70,9 +65,9 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a th:href="@{|/products/${product.productNo}|}"
-                                                                          class="text-reset"
+                                                <h6 class="small mb-0"><a href="#" class="text-reset"
                                                                           th:text="${product.productName}"></a></h6>
+                                                <!--                                                <span class="small">Color: Black</span>-->
                                             </div>
                                         </div>
                                     </td>
@@ -107,12 +102,14 @@
                                               th:text="${orderDetails.sellingAmount + orderDetails.deliveryFee - orderDetails.amount}">
                                         </span>
                                         <span th:unless="${orderDetails.amount != null}">0</span>
+                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
                                 </tr>
                                 <tr class="fw-bold">
                                     <td colspan="2">주문 금액</td>
                                     <td class="text-end">
+                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         <span th:if="${orderDetails.amount != null}"
                                               th:text="${orderDetails.amount}"></span>
                                         <span th:unless="${orderDetails.amount != null}"
@@ -168,25 +165,25 @@
                                         <span th:text="${orderDetails.couponName}"></span><br>
                                         할인 가격:
                                         <span th:if="${orderDetails.totalCouponAmount != 0}"
-                                              th:text="${orderDetails.totalCouponAmount}"></span> 원<br>
-                                        <span th:if="${orderDetails.totalCouponPercent != 0}"
-                                              th:text="${orderDetails.totalCouponPercent}"></span>
+                                              th:text="${orderDetails.totalCouponAmount}"></span>
+                                        <span th:if="${orderDetails.totalCouponPercent != 0}">
+                                        <span th:text="${orderDetails.couponAmount}"></span>원
+                                            </span>
                                         </span> <br>
 
                                     <th:block th:each="item : ${orderDetails.orderProductDetailResponseDtoList}">
                                             <span th:if="${item.couponName != null}">
-                                                <span th:text="${item.couponName}"></span><br>
-                                                할인 가격:
+                                                쿠폰 이름: <span th:text="${item.couponName}"></span><br>
+                                               상품 및 카테고리쿠폰 할인 가격:
                                                 <span th:if="${item.couponAmount != 0}"
-                                                      th:text="${item.couponAmount}"></span> 원<br>
+                                                      th:text="${item.couponAmount}"></span>
 
                                                 <span th:if="${item.couponPercent != 0}"
-                                                      th:text="${item.couponPercent}"></span><br>
+                                                      th:text="${item.sellingPrice - item.productPrice}"></span>원<br>
                                             </span>
                                     </th:block>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>

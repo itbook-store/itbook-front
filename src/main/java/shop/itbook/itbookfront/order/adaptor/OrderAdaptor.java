@@ -174,32 +174,36 @@ public class OrderAdaptor {
     }
 
     public SuccessfulResponseDto deleteAndStockRollBack(URI toUri) {
-        ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange = restTemplate.exchange(toUri,
-            HttpMethod.DELETE,
-            null,
-            new ParameterizedTypeReference<>() {
-            }
-        );
+        ResponseEntity<CommonResponseBody<SuccessfulResponseDto>> exchange =
+            restTemplate.exchange(toUri,
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+            );
 
         return Objects.requireNonNull(exchange.getBody()).getResult();
     }
 
     public OrderDetailsResponseDto findNonMemberOrderDetails(String requestUrl) {
 
-        ResponseEntity<CommonResponseBody<OrderDetailsResponseDto>> exchange = restTemplate.exchange(requestUrl, HttpMethod.GET, null,
-            new ParameterizedTypeReference<>() {
-            });
+        ResponseEntity<CommonResponseBody<OrderDetailsResponseDto>> exchange =
+            restTemplate.exchange(requestUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
 
         CommonResponseBody<OrderDetailsResponseDto> body = exchange.getBody();
         assert body != null;
         return body.getResult();
     }
 
-    public List<OrderSubscriptionDetailsResponseDto> findNonMemberSubscriptionOrderDetails(String requestUrl) {
+    public List<OrderSubscriptionDetailsResponseDto> findNonMemberSubscriptionOrderDetails(
+        String requestUrl) {
 
-        ResponseEntity<CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>>> exchange = restTemplate.exchange(requestUrl, HttpMethod.GET, null,
-            new ParameterizedTypeReference<>() {
-            });
+        ResponseEntity<CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>>> exchange =
+            restTemplate.exchange(requestUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                });
 
         CommonResponseBody<List<OrderSubscriptionDetailsResponseDto>> body = exchange.getBody();
         assert body != null;

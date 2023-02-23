@@ -3,7 +3,10 @@ let totalDiscountPrice = 0;
 let orderProductTotalPriceBeforeDiscount = 0;
 const deliveryFeePolicy = 20000;
 let deliveryFee = Number(document.querySelector("#deliveryFee").innerHTML.replaceAll(',', ''));
-let currentMyPoint = Number(document.querySelector("#myPoint").innerText);
+let currentMyPoint = 0;
+if(Number(document.getElementById("#myPoint"))) {
+    currentMyPoint = Number(document.getElementById("#myPoint").value);
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     orderProductTotalPriceBeforeDiscount = getOrderProductTotalPriceBeforeDiscount();
@@ -368,9 +371,10 @@ function getOrderProductTotalPriceBeforeDiscount() {
 
 
 /* 포인트 적용 */
-
-let pointApplyBtn = document.querySelector("#point_apply_btn");
-
+let pointApplyBtn;
+if(document.querySelector("#point_apply_btn")) {
+    pointApplyBtn = document.querySelector("#point_apply_btn");
+}
 let appliedPointBoolean = false;
 
 pointApplyBtn.addEventListener("click", function () {

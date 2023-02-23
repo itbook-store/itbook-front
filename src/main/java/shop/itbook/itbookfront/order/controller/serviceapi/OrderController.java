@@ -67,7 +67,8 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME) Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME, required = false)
+                                  Cookie cartCookie,
                                   Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
@@ -86,7 +87,6 @@ public class OrderController {
             log.error("주문 후 장바구니 삭제 로직 에러 {}", e.getMessage());
             e.printStackTrace();
         }
-
 
         model.addAttribute("orderDetails", orderDetails);
 

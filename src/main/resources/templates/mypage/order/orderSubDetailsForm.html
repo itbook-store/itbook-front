@@ -142,15 +142,21 @@
                                         <span th:if="${detailsList.get(0).totalCouponAmount != 0}"
                                               th:text="${detailsList.get(0).totalCouponAmount}"></span><br/>
                                         <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                              th:text="${detailsList.get(0).totalCouponPercent}"></span><br/>
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).productPrice
+                                               * (detailsList.get(0).couponPercent * 0.01),3,'COMMA')}"></span>원<br/>
+                                            <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
+                                                  th:text="${detailsList.get(0).productPrice
+                                               * (detailsList.get(0).couponPercent * 0.01)}"></span>원<br/>
+                                            <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
+                                                  th:text="${detailsList.get(0).couponPercent}"></span>원<br/>
                                         </span>
                                         <!-- 개별 상품 쿠폰 적용 내역 -->
                                         <span th:if="${detailsList.get(0).couponName != null}">
                                         <span th:text="${detailsList.get(0).couponName}"></span><br>
-                                        <span th:if="${detailsList.get(0).totalCouponAmount != 0}"
-                                              th:text="${detailsList.get(0).totalCouponAmount}"></span><br>
-                                        <span th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                              th:text="${detailsList.get(0).totalCouponPercent}"></span><br/>
+                                        <span th:if="${detailsList.get(0).couponAmount != 0}"
+                                              th:text="${detailsList.get(0).couponAmount}"></span><br>
+                                        <span th:if="${detailsList.get(0).couponPercent != 0}"
+                                              th:text="${detailsList.get(0).sellingAmount - detailsList.get(0).productPrice}"></span>원<br/>
                                             </span>
                                     </p>
                                 </div>
