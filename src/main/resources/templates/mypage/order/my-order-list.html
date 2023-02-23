@@ -248,7 +248,7 @@
                                                     "cancelReason": cancelReason
                                                 }
 
-                                                await fetch(`/async/payment/cancel`, {
+                                                await fetch(`/async/payment/cancel?isSubscription=false`, {
 
                                                     method: "POST",
                                                     headers: {

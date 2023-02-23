@@ -24,16 +24,16 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @GetMapping(value = "/orders/success/{orderNo}", params = {"paymentKey", "orderId", "amount"})
+    @GetMapping(value = "/orders/success/{orderNo}"
+        , params = {"paymentKey", "orderId", "amount", "orderType"})
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
-                                 @RequestParam Long amount, @PathVariable Long orderNo,
-                                 RedirectAttributes redirectAttributes) {
-
-
-        OrderResponseDto responseDto = null;
+                                 @RequestParam Long amount, RedirectAttributes redirectAttributes,
+                                 @RequestParam String orderType, @PathVariable Long orderNo) {
+        OrderResponseDto responseDto;
         try {
             responseDto =
-                paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo);
+                paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo,
+                    orderType);
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());

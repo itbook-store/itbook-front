@@ -30,7 +30,7 @@ public class PaymentAdaptor {
     private final GatewayConfig gatewayConfig;
 
     public OrderResponseDto requestApprovePayment(
-        PaymentApproveRequestDto requestDto, Long orderNo) {
+        PaymentApproveRequestDto requestDto, Long orderNo, String orderType) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -38,8 +38,9 @@ public class PaymentAdaptor {
         HttpEntity<PaymentApproveRequestDto> httpEntity =
             new HttpEntity<>(requestDto, headers);
         ResponseEntity<CommonResponseBody<OrderResponseDto>> response =
-            restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay/" + orderNo,
+            restTemplate.exchange(String.format(
+                    gatewayConfig.getGatewayServer() + "/api/admin/payment/request-pay/%s/%d",
+                    orderType, orderNo),
                 HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                 });
         return Objects.requireNonNull(response.getBody()).getResult();
@@ -47,7 +48,7 @@ public class PaymentAdaptor {
 
     // 취소한 주문에 대한 정보를 반환
     public OrderResponseDto requestCanceledPayment(
-        PaymentCanceledRequestDto paymentCanceledRequestDto) {
+        PaymentCanceledRequestDto paymentCanceledRequestDto, String orderType) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -57,7 +58,8 @@ public class PaymentAdaptor {
 
         ResponseEntity<CommonResponseBody<OrderResponseDto>> response =
             restTemplate.exchange(
-                gatewayConfig.getGatewayServer() + "/api/admin/payment/request-cancel",
+                gatewayConfig.getGatewayServer() + "/api/admin/payment/request-cancel?orderType=" +
+                    orderType,
                 HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
                 });
 
