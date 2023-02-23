@@ -32,8 +32,7 @@ public class CouponIssueController {
 
     private final CouponIssueService couponIssueService;
     private static final String DIRECTORY_NAME = "mypage/coupon";
-
-
+    
     @GetMapping("/all")
     public String findAllCouponIssueListByMemberId(Model model,
                                                    @AuthenticationPrincipal
@@ -42,10 +41,12 @@ public class CouponIssueController {
                                                    RedirectAttributes redirectAttributes,
                                                    @RequestParam(required = false)
                                                    String usageStatus) {
+
         if (Objects.isNull(userDetailsDto)) {
             redirectAttributes.addFlashAttribute("failMessage", "로그인이 필요합니다.");
             return "redirect:/login";
         }
+
         PageResponse<UserCouponIssueListResponseDto> userCouponIssueList =
             couponIssueService.findUserAllCouponIssueList(
                 String.format("/api/coupon-issues/%d?usageStatus=%s&page=%d&size=%d",
