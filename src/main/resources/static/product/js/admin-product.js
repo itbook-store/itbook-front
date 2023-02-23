@@ -5,11 +5,14 @@ function selectPointApplying() {
     pointBasedDiv.style.display = "block";
 }
 
+
+
 function notSelectPointApplying() {
     let pointPercentDiv = document.getElementById("increasingPoint-div");
     let pointBasedDiv = document.getElementById("increasingPointBase-div");
     pointPercentDiv.style.display = "none";
     pointBasedDiv.style.display = "none";
+
 }
 
 async function showSubCategory(event, categoryNoList) {
