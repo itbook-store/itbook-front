@@ -27,5 +27,5 @@ public class OrderDetailsResponseDto {
     private List<OrderProductDetailResponseDto> orderProductDetailResponseDtoList;
     private Long sellingAmount;
     private String nonMemberOrderCode;
-    private Long totalProductPrice;
+    private Long couponAmount;
 }
