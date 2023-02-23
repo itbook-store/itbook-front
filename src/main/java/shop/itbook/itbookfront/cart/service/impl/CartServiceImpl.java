@@ -1,9 +1,12 @@
 package shop.itbook.itbookfront.cart.service.impl;
 
+import static shop.itbook.itbookfront.cart.util.CartConstant.SUF_FIX;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -90,6 +93,13 @@ public class CartServiceImpl implements CartService {
     public void loadCartProductForMember(String cookieValue, Long memberNo) {
 
         redisTemplate.opsForHash().putIfAbsent(cookieValue, "memberNo", memberNo);
+
+        /* 이걸 통해 cookieValue + SUF_FIX 의 키를 생성하여, 얘를 더 먼저 만료시켜서 기존의 키를 갖고와서 다 넣는다 */
+        redisTemplate.opsForValue().set(cookieValue + SUF_FIX, "");
+        /* 장바구니 기능을 이용하지 않더라도, 해당 데이터는 실제 장바구니 데이터를 가르키는 것 뿐*/
+
+        /* 따라서, 얘는 만료되지 않고 남아있는다면 메모리 낭비이다. */
+        redisTemplate.expire(cookieValue + SUF_FIX, 1, TimeUnit.DAYS);
 
         List<CartProductDetailsResponseDto> allCart = cartAdaptor.getProductListMember(memberNo);
 

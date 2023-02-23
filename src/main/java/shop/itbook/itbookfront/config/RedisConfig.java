@@ -19,7 +19,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
-
 @Configuration
 @ConfigurationProperties(prefix = "redis")
 @EnableRedisHttpSession

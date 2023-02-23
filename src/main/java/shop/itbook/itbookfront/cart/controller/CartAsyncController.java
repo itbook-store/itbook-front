@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.itbook.itbookfront.cart.annotation.Cart;
 import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
@@ -30,6 +31,7 @@ public class CartAsyncController {
 
     private final CartService cartService;
 
+    @Cart
     @PostMapping("/add-product")
     public CartAddResponseDto productAddToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                                @RequestParam(value = "productNo") Integer productNo) {
@@ -44,12 +46,15 @@ public class CartAsyncController {
         return cartAddResponseDto;
     }
 
+    @Cart
     @GetMapping("/delete-product")
     public void productDeleteToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                     @RequestParam(value = "productNo") Integer productNo) {
 
         cartService.deleteCartProduct(cookie.getValue(), productNo);
     }
+
+    @Cart
     @PostMapping("/delete/all-product")
     public void productDeleteAllToCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                        @RequestParam(value = "productNo") List<Integer> productNoList) {
@@ -58,6 +63,7 @@ public class CartAsyncController {
 
     }
 
+    @Cart
     @PostMapping("/change/product-count")
     public void productCountChangeInCart(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                          @RequestParam(value = "productNo") Integer productNo,

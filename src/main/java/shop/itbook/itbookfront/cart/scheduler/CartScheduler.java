@@ -1,5 +1,7 @@
 package shop.itbook.itbookfront.cart.scheduler;
 
+import static shop.itbook.itbookfront.cart.util.CartConstant.PRE_FIX;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class CartScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     public void saveAllCartByRedis() {
 
-        Set<String> keys = redisTemplate.keys("CID=*");
+        Set<String> keys = redisTemplate.keys(PRE_FIX);
 
         List<Map<Object, Object>> redisHashMapList = new ArrayList<>();
 
@@ -56,7 +58,7 @@ public class CartScheduler {
         }
 
         for (Map<Object, Object> map : filteredMapList) {
-             Integer memberNo = (Integer) map.get(MEMBER_NO);
+            Integer memberNo = (Integer) map.get(MEMBER_NO);
             map.remove(MEMBER_NO);
             for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 CartProductDetailsResponseDto value =

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.cart.annotation.Cart;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 
@@ -32,6 +33,7 @@ public class CartController {
     private static final String CART_LIST = "cartList";
     private static final String ROOT_PATH = "mainpage/cart/";
 
+    @Cart
     @GetMapping("/general")
     public String getCartListGeneralProduct(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                             Model model) {
@@ -47,6 +49,7 @@ public class CartController {
         return ROOT_PATH.concat("cart-general");
     }
 
+    @Cart
     @GetMapping("/subscription")
     public String getCartListSubscriptionProduct(@CookieValue(value = COOKIE_NAME) Cookie cookie,
                                                  Model model) {
