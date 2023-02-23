@@ -144,7 +144,7 @@
                                                 </th:block>
                                             </p>
                                             <p>
-                                                <span th:text="${#temporals.format(coupon.couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
+                                                <span th:text="${#temporals.format(couponList[couponStat.index+1].couponExpiredAt, 'yyyy년 MM월 dd일까지')}"></span><br>
                                                 다운 가능
                                             </p>
                                         </div>

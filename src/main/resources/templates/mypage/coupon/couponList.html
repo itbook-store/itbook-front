@@ -5,7 +5,7 @@
       layout:decorate="~{layout/mypage/default-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>쿠폰 목록</title>
     <link rel="stylesheet" href="/adminpage/member/css/memberlist.css">
 </head>
 <body>
@@ -41,6 +41,7 @@
                                         <th><span>쿠폰타입</span></th>
                                         <th><span>쿠폰혜택</span></th>
                                         <th><span>적용범위</span></th>
+                                        <th><span>조건</span></th>
                                         <th><span>쿠폰사용기간</span></th>
                                         <th class="text-center"><span>쿠폰상태</span></th>
                                         <th><span>쿠폰사용</span></th>
@@ -82,6 +83,10 @@
                                         <td th:if="${#strings.isEmpty(couponIssue.productName) and #strings.isEmpty(couponIssue.categoryName) and couponIssue.point==0}">
                                             전체 상품
                                         </td>
+                                        <th>
+                                            <span th:if="not ${#strings.isEmpty(couponIssue.standardAmount)}" th:text="${couponIssue.standardAmount} + '원 주문시'"></span>
+                                            <span th:if="not ${#strings.isEmpty(couponIssue.maxDiscountAmount)}" th:text="${couponIssue.maxDiscountAmount} + '원까지 할인'"></span>
+                                        </th>
                                         <td>
                                             <span th:text="${#temporals.format(couponIssue.couponIssueCreatedAt, 'yyyy년 MM월 dd일 ~')}"></span>
                                             <span th:text="${#temporals.format(couponIssue.couponExpiredAt, 'yyyy년 MM월 dd일')}"></span>
