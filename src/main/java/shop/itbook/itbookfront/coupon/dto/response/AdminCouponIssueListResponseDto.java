@@ -21,6 +21,8 @@ public class AdminCouponIssueListResponseDto {
     private String name;
     private String code;
     private Long point;
+    private Long standardAmount;
+    private Long maxDiscountAmount;
     private String couponType;
     private Long productNo;
     private String productName;
