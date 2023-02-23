@@ -33,8 +33,7 @@
                         <div class="card-body">
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
-                                    <span class="me-3"
-                                          th:text="${#temporals.format(detailsList.get(0).orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
+                                    <span class="me-3"></span>
                                     <!--                  <span class="badge rounded-pill bg-info"-->
                                     <!--                        th:text="${orderDetails.orderStatus}"></span>-->
                                 </div>
@@ -77,6 +76,11 @@
                                     <td>
                                           <span class="badge rounded-pill bg-info"
                                                 th:text="${orderDetails.orderStatus}"></span>
+                                    </td>
+                                    <td>
+                                          <span class="rounded-pill"
+                                                th:text="${#temporals.format(orderDetails.orderStatusCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}">
+                                          </span>
                                     </td>
                                     <!--                  <td th:text="${orderDetails.count}"></td>-->
                                     <!--                  <td class="text-end">-->
@@ -209,6 +213,22 @@
                             </address>
                         </div>
                     </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="font-weight-bold">주문 일시</div>
+                            <div class="d-flex justify-content-between">
+                                <span class="me-3"
+                                      th:text="${#temporals.format(detailsList.get(0).orderCreatedAt)}"></span>
+                                <button style="float: right;"
+                                        th:if="${#strings.contains('결제완료배송대기배송완료',detailsList.get(0).getOrderStatus())}"
+                                        th:orderNo="${detailsList.get(0).getOrderNo()}"
+                                        class="btn btn-danger btn-sm rounded-4"
+                                        onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -262,6 +282,7 @@
                         title: `결제 취소가 성공적으로 완료되었습니다.`,
                     })
                 }
+                location.reload();
             })
 
         }
