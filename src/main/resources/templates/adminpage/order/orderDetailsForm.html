@@ -219,7 +219,7 @@
                                         th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
                                         th:orderNo="${orderDetails.getOrderNo()}"
                                         class="btn btn-danger btn-sm rounded-4"
-                                        onclick="getInputCancelReason(this.getAttribute('orderNo'))">환불
+                                        onclick="getInputCancelReason(this.getAttribute('orderNo'),false)">환불
                                 </button>
                             </div>
                         </div>
