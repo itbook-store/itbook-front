@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout/mypage/default-layout}">
+      layout:decorate="~{layout/adminpage/default-layout}">
 
 <head>
     <meta charset="UTF-8">
@@ -65,7 +65,9 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a th:href="@{|/products/${orderDetails.productNo}|}" class="text-reset">
+                                                <h6 class="small mb-0"><a
+                                                        th:href="@{|/products/${orderDetails.productNo}|}"
+                                                        class="text-reset">
                                                     <span th:text="${orderDetails.productName}"></span>
                                                     &nbsp;
                                                     <span th:text="${orderDetails.selectedDeliveryDate.getMonthValue()}"></span>월호
@@ -135,8 +137,8 @@
                         </div>
                     </div>
                     <!-- Coupon -->
-                    <div class="card mb-4">
-                        <!--                         th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">-->
+                    <div class="card mb-4"
+                         th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -225,7 +227,6 @@
                                 <span class="me-3"
                                       th:text="${#temporals.format(detailsList.get(0).orderCreatedAt)}"></span>
                                 <button style="float: right;"
-                                        sec:authorize="isAnonymous()"
                                         th:if="${#strings.contains('결제완료배송대기배송완료',detailsList.get(0).getOrderStatus())}"
                                         th:orderNo="${detailsList.get(0).getOrderNo()}"
                                         class="btn btn-danger btn-sm rounded-4"

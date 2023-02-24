@@ -49,7 +49,7 @@ public class OrderAdminController {
 
         model.addAttribute("orderDetails", orderDetails);
 
-        return "adminpage/order/orderDetailsForm";
+        return "adminpage/order/adminOrderDetailsForm";
     }
 
     @GetMapping("/details-sub/{orderNo}")
@@ -61,6 +61,6 @@ public class OrderAdminController {
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
 
-        return "adminpage/order/orderSubDetailsForm";
+        return "adminpage/order/adminOrderSubDetailsForm";
     }
 }

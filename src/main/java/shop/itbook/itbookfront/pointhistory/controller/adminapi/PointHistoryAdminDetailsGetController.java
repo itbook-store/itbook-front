@@ -29,20 +29,24 @@ import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 public class PointHistoryAdminDetailsGetController {
 
     private final PointHistoryDetailsGetAdaptor pointHistoryDetailsGetAdaptor;
-    public static final String ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME = "adminpage/pointhistory/details";
+    public static final String ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME =
+        "adminpage/pointhistory/details";
 
     @GetMapping("/{pointHistoryNo}/gift-details")
-    public String giftDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String giftDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                              RedirectAttributes redirectAttributes) {
         try {
             PointHistoryDetailsGiftResponseDto pointHistoryDetailsGiftResponseDto =
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGift(
                     "/api/admin/point-histories/" + pointHistoryNo + "/gift-details");
 
             model.addAttribute("details", pointHistoryDetailsGiftResponseDto);
-            model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
+            model.addAttribute("adminPointHistoryPage",
+                session.getAttribute("adminPointHistoryPage"));
 
             if (pointHistoryDetailsGiftResponseDto.getIsDecrease()) {
-                return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/adminGiftDetailsDecrease");
+                return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+                    "/gift/adminGiftDetailsDecrease");
             }
         } catch (BadRequestException e) {
             log.error(e.getMessage());
@@ -50,15 +54,19 @@ public class PointHistoryAdminDetailsGetController {
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
 
-        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/adminGiftDetailsIncrease");
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/gift/adminGiftDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/order-details")
-    public String orderDetails(@PathVariable Long pointHistoryNo, RedirectAttributes redirectAttributes, Model model) {
+    public String orderDetails(@PathVariable Long pointHistoryNo,
+                               RedirectAttributes redirectAttributes, Model model) {
         try {
-            OrderDetailsResponseDto orderDetails = pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder("/api/admin/point-histories/" + pointHistoryNo + "/order-details");
+            OrderDetailsResponseDto orderDetails =
+                pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder(
+                    "/api/admin/point-histories/" + pointHistoryNo + "/order-details");
             model.addAttribute("orderDetails", orderDetails);
-            return "adminpage/order/orderDetailsForm";
+            return "adminpage/order/adminOrderDetailsForm";
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
@@ -67,7 +75,8 @@ public class PointHistoryAdminDetailsGetController {
     }
 
     @GetMapping("/{pointHistoryNo}/grade-details")
-    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                               RedirectAttributes redirectAttributes) {
 
         try {
             PointHistoryGradeDetailsResponseDto pointHistoryGradeDetailsResponseDto =
@@ -75,8 +84,10 @@ public class PointHistoryAdminDetailsGetController {
                     "/api/admin/point-histories/" + pointHistoryNo + "/grade-details");
 
             model.addAttribute("details", pointHistoryGradeDetailsResponseDto);
-            model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
-            return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/adminGradeDetailsIncrease");
+            model.addAttribute("adminPointHistoryPage",
+                session.getAttribute("adminPointHistoryPage"));
+            return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+                "/grade/adminGradeDetailsIncrease");
 
         } catch (BadRequestException e) {
             log.error(e.getMessage());
@@ -86,7 +97,8 @@ public class PointHistoryAdminDetailsGetController {
     }
 
     @GetMapping("/{pointHistoryNo}/coupon-details")
-    public String couponDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String couponDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                                RedirectAttributes redirectAttributes) {
 
         try {
             PointHistoryCouponDetailsResponseDto pointHistoryCouponDetailsResponseDto =
@@ -94,18 +106,21 @@ public class PointHistoryAdminDetailsGetController {
                     "/api/admin/point-histories/" + pointHistoryNo + "/coupon-details");
 
             model.addAttribute("details", pointHistoryCouponDetailsResponseDto);
-            model.addAttribute("adminPointHistoryPage", session.getAttribute("adminPointHistoryPage"));
+            model.addAttribute("adminPointHistoryPage",
+                session.getAttribute("adminPointHistoryPage"));
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
 
-        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/coupon/adminGradeDetailsIncrease");
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/coupon/adminGradeDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/review-details")
-    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model, RedirectAttributes redirectAttributes) {
+    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model,
+                                RedirectAttributes redirectAttributes) {
 
         try {
             ReviewResponseDto reviewResponseDto =
@@ -119,6 +134,7 @@ public class PointHistoryAdminDetailsGetController {
             return "redirect:/adminpage/point-histories/show-content/admin-point-list";
         }
 
-        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/review/adminReviewDetailsIncrease");
+        return Strings.concat(ADMIN_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/review/adminReviewDetailsIncrease");
     }
 }

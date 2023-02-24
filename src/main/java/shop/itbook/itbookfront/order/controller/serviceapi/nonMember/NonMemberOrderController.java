@@ -3,7 +3,6 @@ package shop.itbook.itbookfront.order.controller.serviceapi.nonMember;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +34,7 @@ public class NonMemberOrderController {
 
         model.addAttribute("orderDetails", orderDetails);
 
-        return "mainpage/order/orderDetailsForm";
+        return "mainpage/order/mainOrderDetailsForm";
     }
 
     @PostMapping("/subscription-order-details")
@@ -48,6 +47,6 @@ public class NonMemberOrderController {
                 nonMemberOrderDetailsSearchDto);
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
-        return "mainpage/order/orderSubDetailsForm";
+        return "mainOrderSubDetailsForm";
     }
 }
