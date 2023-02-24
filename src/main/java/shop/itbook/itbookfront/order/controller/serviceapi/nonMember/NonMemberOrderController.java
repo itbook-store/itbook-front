@@ -47,6 +47,6 @@ public class NonMemberOrderController {
                 nonMemberOrderDetailsSearchDto);
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
-        return "mainOrderSubDetailsForm";
+        return "mainpage/order/mainOrderSubDetailsForm";
     }
 }

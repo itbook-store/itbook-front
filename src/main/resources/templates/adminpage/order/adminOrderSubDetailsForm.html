@@ -113,8 +113,11 @@
                                 <tr>
                                     <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
-                                        <span
+                                        <span th:if="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}"
                                                 th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,3,'COMMA')}">
+                                        </span>
+                                        <span th:unless="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}">
+                                            0
                                         </span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
