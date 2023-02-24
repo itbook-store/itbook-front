@@ -31,22 +31,28 @@ import shop.itbook.itbookfront.review.dto.response.ReviewResponseDto;
 public class PointHistoryMyDetailsGetController {
 
     private final PointHistoryDetailsGetAdaptor pointHistoryDetailsGetAdaptor;
-    public static final String MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME = "mypage/pointhistory/details";
+    public static final String MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME =
+        "mypage/pointhistory/details";
 
     @GetMapping("/{pointHistoryNo}/gift-details")
-    public String giftDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, @AuthenticationPrincipal
-                              UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes) {
+    public String giftDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                              @AuthenticationPrincipal
+                              UserDetailsDto userDetailsDto,
+                              RedirectAttributes redirectAttributes) {
         try {
 
             PointHistoryDetailsGiftResponseDto pointHistoryDetailsGiftResponseDto =
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGift(
-                    "/api/point-histories/" + pointHistoryNo + "/my-gift-details/member-no/" + userDetailsDto.getMemberNo());
+                    "/api/point-histories/" + pointHistoryNo + "/my-gift-details/member-no/" +
+                        userDetailsDto.getMemberNo());
 
             model.addAttribute("details", pointHistoryDetailsGiftResponseDto);
-            model.addAttribute("memberPointHistoryPage", session.getAttribute("memberPointHistoryPage"));
+            model.addAttribute("memberPointHistoryPage",
+                session.getAttribute("memberPointHistoryPage"));
 
             if (pointHistoryDetailsGiftResponseDto.getIsDecrease()) {
-                return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/myGiftDetailsDecrease");
+                return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+                    "/gift/myGiftDetailsDecrease");
             }
         } catch (BadRequestException e) {
             log.error(e.getMessage());
@@ -54,14 +60,20 @@ public class PointHistoryMyDetailsGetController {
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/gift/myGiftDetailsIncrease");
+        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/gift/myGiftDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/order-details")
-    public String orderDetails(@PathVariable Long pointHistoryNo, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes, Model model) {
+    public String orderDetails(@PathVariable Long pointHistoryNo,
+                               @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                               RedirectAttributes redirectAttributes, Model model) {
 
         try {
-            OrderDetailsResponseDto orderDetails = pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder("/api/point-histories/" + pointHistoryNo + "/my-order-details/member-no/" + userDetailsDto.getMemberNo());
+            OrderDetailsResponseDto orderDetails =
+                pointHistoryDetailsGetAdaptor.findPointHistoryDetailsOrder(
+                    "/api/point-histories/" + pointHistoryNo + "/my-order-details/member-no/" +
+                        userDetailsDto.getMemberNo());
             model.addAttribute("orderDetails", orderDetails);
         } catch (BadRequestException e) {
             log.error(e.getMessage());
@@ -69,40 +81,49 @@ public class PointHistoryMyDetailsGetController {
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return "mypage/order/orderDetailsForm";
+        return "mypage/order/myOrderDetailsForm";
     }
 
     @GetMapping("/{pointHistoryNo}/grade-details")
-    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes) {
+    public String gradeDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                               @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                               RedirectAttributes redirectAttributes) {
 
         try {
 
             PointHistoryGradeDetailsResponseDto pointHistoryGradeDetailsResponseDto =
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsGrade(
-                    "/api/point-histories/" + pointHistoryNo + "/my-grade-details/member-no/" + userDetailsDto.getMemberNo());
+                    "/api/point-histories/" + pointHistoryNo + "/my-grade-details/member-no/" +
+                        userDetailsDto.getMemberNo());
 
             model.addAttribute("details", pointHistoryGradeDetailsResponseDto);
-            model.addAttribute("memberPointHistoryPage", session.getAttribute("memberPointHistoryPage"));
+            model.addAttribute("memberPointHistoryPage",
+                session.getAttribute("memberPointHistoryPage"));
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/grade/myGradeDetailsIncrease");
+        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/grade/myGradeDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/coupon-details")
-    public String couponDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes) {
+    public String couponDetails(@PathVariable Long pointHistoryNo, Model model, HttpSession session,
+                                @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                RedirectAttributes redirectAttributes) {
 
         try {
             PointHistoryCouponDetailsResponseDto pointHistoryCouponDetailsResponseDto =
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsCoupon(
-                    "/api/point-histories/" + pointHistoryNo + "/my-coupon-details/member-no/" + userDetailsDto.getMemberNo());
+                    "/api/point-histories/" + pointHistoryNo + "/my-coupon-details/member-no/" +
+                        userDetailsDto.getMemberNo());
 
 
             model.addAttribute("details", pointHistoryCouponDetailsResponseDto);
-            model.addAttribute("memberPointHistoryPage", session.getAttribute("memberPointHistoryPage"));
+            model.addAttribute("memberPointHistoryPage",
+                session.getAttribute("memberPointHistoryPage"));
 
         } catch (BadRequestException e) {
             log.error(e.getMessage());
@@ -110,17 +131,21 @@ public class PointHistoryMyDetailsGetController {
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/coupon/myGradeDetailsIncrease");
+        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/coupon/myGradeDetailsIncrease");
     }
 
     @GetMapping("/{pointHistoryNo}/review-details")
-    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model, @AuthenticationPrincipal UserDetailsDto userDetailsDto, RedirectAttributes redirectAttributes) {
+    public String reviewDetails(@PathVariable Long pointHistoryNo, Model model,
+                                @AuthenticationPrincipal UserDetailsDto userDetailsDto,
+                                RedirectAttributes redirectAttributes) {
 
         try {
 
             ReviewResponseDto reviewResponseDto =
                 pointHistoryDetailsGetAdaptor.findPointHistoryDetailsReview(
-                    "/api/point-histories/" + pointHistoryNo + "/my-review-details/member-no/" + userDetailsDto.getMemberNo());
+                    "/api/point-histories/" + pointHistoryNo + "/my-review-details/member-no/" +
+                        userDetailsDto.getMemberNo());
 
             model.addAttribute("reviewResponseDto", reviewResponseDto);
         } catch (BadRequestException e) {
@@ -129,6 +154,7 @@ public class PointHistoryMyDetailsGetController {
             return "redirect:/point-histories/show-content/my-point-list";
         }
 
-        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME, "/review/myReviewDetailsIncrease");
+        return Strings.concat(MY_PAGE_POINT_HISTORY_DETAILS_DIRECTORY_NAME,
+            "/review/myReviewDetailsIncrease");
     }
 }

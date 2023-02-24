@@ -30,7 +30,7 @@
                                         <th style="width: 7%"><span>송장번호</span></th>
                                         <th style="width: 7%"><span>회원 ID</span></th>
                                         <th>상세</th>
-                                        <th style="width: 7%">주문취소</th>
+<!--                                        <th style="width: 7%">주문취소</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -63,22 +63,22 @@
                                         </td>
                                         <td style="width: 5%; text-align: center;">
                                             <span class="fa-stack">
-                                        <a th:href="@{/orders/details/{orderNo}(orderNo=${ord.orderNo})}">
+                                        <a th:href="@{/admin/orders/details/{orderNo}(orderNo=${ord.orderNo})}">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                             </a>
                                             </span>
                                         </td>
-                                        <td style="text-align: center">
-                                            <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
-                                            <!--                                            <a-->
-                                            <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                            <button th:orderNo="${ord.orderNo}"
-                                                    class="btn btn-danger"
-                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'))">취소
-                                            </button>
-                                            <!--                                            </a>-->
-                                        </td>
+<!--                                        <td style="text-align: center">-->
+<!--                                            &lt;!&ndash;                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"&ndash;&gt;-->
+<!--                                            &lt;!&ndash;                                            <a&ndash;&gt;-->
+<!--                                            &lt;!&ndash;                                               th:href="@{/payment/cancel/ord.orderNo}">&ndash;&gt;-->
+<!--                                            <button th:orderNo="${ord.orderNo}"-->
+<!--                                                    class="btn btn-danger"-->
+<!--                                                    onclick="getInputCancelReason(this.getAttribute('orderNo'),false)">취소-->
+<!--                                            </button>-->
+<!--                                            &lt;!&ndash;                                            </a>&ndash;&gt;-->
+<!--                                        </td>-->
                                         <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
                                         <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
                                         <td style="text-align: center">
@@ -89,60 +89,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
-                                <script type="text/javascript">
-
-                                    function getInputCancelReason(orderNo) {
-
-                                        Swal.fire({
-                                            title: '취소 사유를 입력해주세요.',
-                                            input: 'text',
-                                            inputAttributes: {
-                                                autocapitalize: 'off'
-                                            },
-                                            showCancelButton: true,
-                                            confirmButtonText: '확인',
-                                            showLoaderOnConfirm: true,
-                                            preConfirm: async (cancelReason) => {
-
-                                                let paymentCanceledRequestDto = {
-                                                    "orderNo": orderNo,
-                                                    "cancelReason": cancelReason
-                                                }
-
-                                                await fetch(`/async/payment/cancel`, {
-
-                                                    method: "POST",
-                                                    headers: {
-                                                        'Content-Type': 'application/json'
-                                                    },
-                                                    body: JSON.stringify(paymentCanceledRequestDto)
-                                                })
-                                                    .then(response => {
-                                                        if (response == null) {
-                                                            throw new Error(response.statusText)
-                                                        }
-                                                        return response.json()
-                                                    })
-                                                    .catch(error => {
-                                                        Swal.showValidationMessage(
-                                                            `결제 취소에 실패하였습니다.`
-                                                        )
-                                                    })
-
-                                                // return fetch(requestUrl)
-                                            },
-                                            allowOutsideClick: () => !Swal.isLoading()
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                Swal.fire({
-                                                    title: `결제 취소가 성공적으로 완료되었습니다.`,
-                                                })
-                                            }
-                                        })
-
-                                    }
-                                </script>
 
                             </div>
                         </div>
@@ -158,6 +104,8 @@
             alert(failMessage);
         }
     </script>
+    <script src="/order/js/myOrderList.js"></script>
+
     <th:block th:include="component/pageFooter"></th:block>
 </div>
 </body>

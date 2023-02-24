@@ -1,3 +1,59 @@
+// 환불, 취소 비동기 요청 메서드.
+function getInputCancelReason(orderNo, isSubscription) {
+
+    Swal.fire({
+        title: '취소 사유를 입력해주세요.',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        showLoaderOnConfirm: true,
+        preConfirm: async (cancelReason) => {
+
+            let paymentCanceledRequestDto = {
+                "orderNo": orderNo,
+                "cancelReason": cancelReason
+            }
+
+            let url = `/async/payment/cancel?isSubscription=` + isSubscription;
+
+            await fetch(url, {
+
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentCanceledRequestDto)
+            })
+                .then(response => {
+                    if (response==null) {
+                        throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `결제 취소에 실패하였습니다.`
+                    )
+                })
+
+            // return fetch(requestUrl)
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: `결제 취소가 성공적으로 완료되었습니다.`,
+            })
+        }
+
+        location.reload();
+    })
+}
+
+// 구매 확정 비동기 요청 메서드.
 async function purchaseComplete(orderNo) {
 
     Swal.fire({
