@@ -101,7 +101,7 @@ public class OrderController {
         return "mainpage/order/orderDetailsForm";
     }
 
-    @GetMapping("/details/{orderNo}")
+    @GetMapping("/mypage/details/{orderNo}")
     public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);

@@ -94,24 +94,25 @@
                                 <tr>
                                     <td colspan="2">상품 금액</td>
                                     <td class="text-end">
-                                        <span th:text="${detailsList.get(0).sellingAmount}"></span>
+                                        <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount,3,'COMMA')}"></span>
                                         원
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">배송비</td>
                                     <td class="text-end">
-                                        <span th:text="${detailsList.get(0).deliveryFee}"></span>
+                                        <span th:if="${detailsList.get(0).deliveryFee != 0}"
+                                                th:text="${#numbers.formatInteger(detailsList.get(0).deliveryFee,3,'COMMA')}"></span>
+                                        <span th:unless="${detailsList.get(0).deliveryFee != 0}">0</span>
                                         원
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
-                                        <span th:if="${detailsList.get(0).amount != null}"
-                                              th:text="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount}">
+                                        <span
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,3,'COMMA')}">
                                         </span>
-                                        <span th:unless="${detailsList.get(0).amount != null}">0</span>
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
@@ -121,7 +122,7 @@
                                     <td class="text-end">
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         <span th:if="${detailsList.get(0).amount != null}"
-                                              th:text="${detailsList.get(0).amount}"></span>
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).amount,3,'COMMA')}"></span>
                                         <span th:unless="${detailsList.get(0).amount != null}">
                                         0
                                         </span>
@@ -133,8 +134,8 @@
                         </div>
                     </div>
                     <!-- Coupon -->
-                    <div class="card mb-4"
-                         th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">
+                    <div class="card mb-4">
+<!--                         th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">-->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -152,36 +153,30 @@
                                         <tr th:if="${detailsList.get(0).totalCouponName != null}">
                                         <td th:text="${detailsList.get(0).totalCouponName}"></td>
                                         <td th:if="${detailsList.get(0).totalCouponAmount != 0}"
-                                              th:text="${detailsList.get(0).totalCouponAmount}"></td>
-                                        <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                              th:text="${#numbers.formatInteger(detailsList.get(0).productPrice
-                                               * (detailsList.get(0).couponPercent * 0.01),3,'COMMA')}"></td>원
-                                            <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                                  th:text="${detailsList.get(0).productPrice
-                                               * (detailsList.get(0).couponPercent * 0.01)}"></td>원
-                                            <td th:if="${detailsList.get(0).totalCouponPercent != 0}"
-                                                  th:text="${detailsList.get(0).couponPercent}"></td>원
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).totalCouponAmount,3,'COMMA')}"></td>
+                                        <td th:if="${detailsList.get(0).totalCouponPercent != 0}">
+                                            <span th:text="${#numbers.formatInteger(detailsList.get(0).productPrice
+                                               * (detailsList.get(0).totalCouponPercent * 0.01),3,'COMMA')}"></span>
+                                            원
+                                        </td>
+                                            <td>총액 쿠폰</td>
                                         </tr>
                                         <!-- 개별 상품 쿠폰 적용 내역 -->
                                         <tr th:if="${detailsList.get(0).couponName != null}">
                                         <td th:text="${detailsList.get(0).couponName}"></td>
-                                        <td th:if="${detailsList.get(0).couponAmount != 0}"
-                                              th:text="${detailsList.get(0).couponAmount}"></td>
-                                        <td th:if="${detailsList.get(0).couponPercent != 0}"
-                                              th:text="${detailsList.get(0).sellingAmount - detailsList.get(0).productPrice}"></td>원
-                                            </tr>
+                                        <td th:if="${detailsList.get(0).couponAmount != 0}">
+                                            <span th:text="${#numbers.formatInteger(detailsList.get(0).couponAmount,3,'COMMA')}"></span>
+                                            원
+                                        </td>
+                                        <td th:if="${detailsList.get(0).couponPercent != 0}">
+                                            <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount - detailsList.get(0).productPrice,3,'COMMA')}"></span>
+                                            원
+                                        </td>
+                                            <td>상품 및 카테고리쿠폰</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <!--                                <div class="col-lg-6">-->
-                                <!--                                    <h3 class="h6">Billing address</h3>-->
-                                <!--                                    <address>-->
-                                <!--                                        <strong>John Doe</strong><br>-->
-                                <!--                                        1355 Market St, Suite 900<br>-->
-                                <!--                                        San Francisco, CA 94103<br>-->
-                                <!--                                        <abbr title="Phone">P:</abbr> (123) 456-7890-->
-                                <!--                                    </address>-->
-                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>

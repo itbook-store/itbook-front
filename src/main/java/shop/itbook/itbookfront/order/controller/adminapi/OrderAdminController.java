@@ -1,12 +1,16 @@
 package shop.itbook.itbookfront.order.controller.adminapi;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
+import shop.itbook.itbookfront.order.dto.response.OrderSubscriptionDetailsResponseDto;
 import shop.itbook.itbookfront.order.service.OrderService;
 
 /**
@@ -36,5 +40,27 @@ public class OrderAdminController {
         model.addAttribute("pageResponse", orderService.orderSubscriptionListByAdmin(pageable));
 
         return "adminpage/order/order-subscription-list";
+    }
+
+    @GetMapping("/details/{orderNo}")
+    public String adminOrderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
+
+        OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
+
+        model.addAttribute("orderDetails", orderDetails);
+
+        return "adminpage/order/orderDetailsForm";
+    }
+
+    @GetMapping("/details-sub/{orderNo}")
+    public String adminOrderSubscriptionDetailsView(@PathVariable("orderNo") Long orderNo,
+                                                    Model model) {
+
+        List<OrderSubscriptionDetailsResponseDto> orderSubscriptionDetailsList =
+            orderService.findOrderSubscriptionDetails(orderNo);
+
+        model.addAttribute("detailsList", orderSubscriptionDetailsList);
+
+        return "adminpage/order/orderSubDetailsForm";
     }
 }
