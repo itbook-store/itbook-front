@@ -16,140 +16,137 @@
     <div class="content">
         <h2>구독 상품 주문 관리</h2>
         <div class=" snippets bootdey">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="main-box no-header clearfix">
-                    <div class="main-box-body clearfix">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th><span>주문번호</span></th>
-                                    <th><span>제품명</span></th>
-                                    <th><span>주문일자</span></th>
-                                    <th><span>수령인</span></th>
-                                    <th style="text-align: center"><span>상태</span></th>
-                                    <th style="text-align: center"><span>송장번호</span></th>
-                                    <th><span>회원 ID</span></th>
-                                    <th style="text-align: center">구독기간</th>
-                                    <th>상세</th>
-                                    <th>주문취소</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="ord : ${pageResponse.content}">
-                                    <td th:text="${ord.orderNo}"></td>
-                                    <td>
-                                        <span th:text="${ord.productName}"></span>
-                                    </td>
-                                    <td>
-                                        <span th:text="${#temporals.format(ord.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
-                                    </td>
-                                    <td>
-                                        <span th:text="${ord.recipientName}"></span>
-                                    </td>
-                                    <td style="text-align: center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box no-header clearfix">
+                        <div class="main-box-body clearfix">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th><span>주문번호</span></th>
+                                        <th><span>제품명</span></th>
+                                        <th><span>주문일자</span></th>
+                                        <th><span>수령인</span></th>
+                                        <th style="text-align: center"><span>상태</span></th>
+                                        <th style="text-align: center"><span>송장번호</span></th>
+                                        <th><span>회원 ID</span></th>
+                                        <th style="text-align: center">구독기간</th>
+                                        <th>상세</th>
+                                        <!--                                    <th>주문취소</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ord : ${pageResponse.content}">
+                                        <td th:text="${ord.orderNo}"></td>
+                                        <td>
+                                            <span th:text="${ord.productName}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(ord.orderCreatedAt, 'yyyy년 MM월 dd일 HH:mm:ss')}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${ord.recipientName}"></span>
+                                        </td>
+                                        <td style="text-align: center">
                                             <span class="badge text-bg-primary"
                                                   th:text="${ord.orderStatus}"></span>
-                                    </td>
-                                    <td style="text-align: center">
+                                        </td>
+                                        <td style="text-align: center">
                                             <span th:if="${ord.trackingNo == null}">
                                                 미발급
                                             </span>
-                                        <span th:text="${ord.trackingNo}"></span>
-                                    </td>
-                                    <td>
+                                            <span th:text="${ord.trackingNo}"></span>
+                                        </td>
+                                        <td>
                                             <span th:if="${ord.memberId == null}">
                                                 비회원
                                             </span>
-                                        <span th:text="${ord.memberId}"></span>
-                                    </td>
-                                    <td style="text-align: center; font-weight: bold">
-                                        <p style="margin: 0 !important;" th:text="${ord.subscriptionPeriod}"></p>
-                                    </td>
-                                    <td style="width: 5%;">
+                                            <span th:text="${ord.memberId}"></span>
+                                        </td>
+                                        <td style="text-align: center; font-weight: bold">
+                                            <p style="margin: 0 !important;" th:text="${ord.subscriptionPeriod}"></p>
+                                        </td>
+                                        <td style="width: 5%;">
                                             <span class="fa-stack">
                                         <a th:href="@{/admin/orders/details-sub/{orderNo}(orderNo=${ord.orderNo})}">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                             </a>
                                             </span>
-                                    </td>
-                                    <td>
-                                        <!--                                            <a th:if="${#strings.equals(ord.orderStatus, '결제 완료')}"-->
-                                        <!--                                            <a-->
-                                        <!--                                               th:href="@{/payment/cancel/ord.orderNo}">-->
-                                        <button th:orderNo="${ord.orderNo}"
-                                                class="btn btn-danger"
-                                                onclick="getInputCancelReason(this.getAttribute('orderNo'), true)">취소
-                                        </button>
-                                        <!--                                            </a>-->
-                                    </td>
-                                    <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
-                                    <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
-                                    <td>
-                                        <div th:if="${ord.orderStatus} == '입금완료'">
-                                            <button class="btn btn-primary">리뷰쓰기</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                        </td>
+                                        <td>
+                                            <!--                                        <button th:orderNo="${ord.orderNo}"-->
+                                            <!--                                                class="btn btn-danger"-->
+                                            <!--                                                onclick="getInputCancelReason(this.getAttribute('orderNo'), true)">취소-->
+                                            <!--                                        </button>-->
+                                        </td>
+                                        <!-- TODO 주문상태가 구매확정일때만 리뷰쓰기 버튼 나타나게 수정하기 -->
+                                        <!-- TODO 주문 상세 페이지 만들어지면 그 페이지에서 리뷰쓰기 버튼 활성화 시키기 -->
+                                        <td>
+                                            <div th:if="${ord.orderStatus} == '입금완료'">
+                                                <button class="btn btn-primary">리뷰쓰기</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-                            <script type="text/javascript">
+                                <script type="text/javascript">
 
-                                function getInputCancelReason(orderNo) {
+                                    function getInputCancelReason(orderNo) {
 
-                                    Swal.fire({
-                                        title: '취소 사유를 입력해주세요.',
-                                        input: 'text',
-                                        inputAttributes: {
-                                            autocapitalize: 'off'
-                                        },
-                                        showCancelButton: true,
-                                        confirmButtonText: '확인',
-                                        showLoaderOnConfirm: true,
-                                        preConfirm: async (cancelReason) => {
+                                        Swal.fire({
+                                            title: '취소 사유를 입력해주세요.',
+                                            input: 'text',
+                                            inputAttributes: {
+                                                autocapitalize: 'off'
+                                            },
+                                            showCancelButton: true,
+                                            confirmButtonText: '확인',
+                                            showLoaderOnConfirm: true,
+                                            preConfirm: async (cancelReason) => {
 
-                                            let paymentCanceledRequestDto = {
-                                                "orderNo": orderNo,
-                                                "cancelReason": cancelReason
+                                                let paymentCanceledRequestDto = {
+                                                    "orderNo": orderNo,
+                                                    "cancelReason": cancelReason
+                                                }
+
+                                                await fetch(`/async/payment/cancel`, {
+
+                                                    method: "POST",
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(paymentCanceledRequestDto)
+                                                })
+                                                    .then(response => {
+                                                        if (response == null) {
+                                                            throw new Error(response.statusText)
+                                                        }
+                                                        return response.json()
+                                                    })
+                                                    .catch(error => {
+                                                        Swal.showValidationMessage(
+                                                            `결제 취소에 실패하였습니다.`
+                                                        )
+                                                    })
+
+                                                // return fetch(requestUrl)
+                                            },
+                                            allowOutsideClick: () => !Swal.isLoading()
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: `결제 취소가 성공적으로 완료되었습니다.`,
+                                                })
                                             }
+                                        })
 
-                                            await fetch(`/async/payment/cancel`, {
+                                    }
+                                </script>
 
-                                                method: "POST",
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(paymentCanceledRequestDto)
-                                            })
-                                                .then(response => {
-                                                    if (response==null) {
-                                                        throw new Error(response.statusText)
-                                                    }
-                                                    return response.json()
-                                                })
-                                                .catch(error => {
-                                                    Swal.showValidationMessage(
-                                                        `결제 취소에 실패하였습니다.`
-                                                    )
-                                                })
-
-                                            // return fetch(requestUrl)
-                                        },
-                                        allowOutsideClick: () => !Swal.isLoading()
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            Swal.fire({
-                                                title: `결제 취소가 성공적으로 완료되었습니다.`,
-                                            })
-                                        }
-                                    })
-
-                                }
-                            </script>
-
+                            </div>
                         </div>
                     </div>
                 </div>
