@@ -511,8 +511,6 @@
     </script>
     <script th:inline="javascript">
 
-        let canceledOrderNo = null;
-
         let temp = [[${orderSheetFormDto}]];
 
         let productNoList = temp.productNoList;
@@ -553,14 +551,12 @@
                     decreasePoint = 0;
                 }
 
-
                 if (appliedPointBoolean !== null || appliedPointBoolean !== undefined) {
                     if (!appliedPointBoolean) {
                         decreasePoint = 0;
                     }
                 }
             }
-
 
             let orderAddRequestDto = {
                 "productDetailsDtoList": productDetailList,
