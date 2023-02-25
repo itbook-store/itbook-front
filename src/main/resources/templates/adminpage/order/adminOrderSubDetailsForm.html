@@ -97,7 +97,7 @@
                                 <tr>
                                     <td colspan="2">상품 금액</td>
                                     <td class="text-end">
-                                        <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount,3,'COMMA')}"></span>
+                                        <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount,1,'COMMA')}"></span>
                                         원
                                     </td>
                                 </tr>
@@ -105,7 +105,7 @@
                                     <td colspan="2">배송비</td>
                                     <td class="text-end">
                                         <span th:if="${detailsList.get(0).deliveryFee != 0}"
-                                              th:text="${#numbers.formatInteger(detailsList.get(0).deliveryFee,3,'COMMA')}"></span>
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).deliveryFee,1,'COMMA')}"></span>
                                         <span th:unless="${detailsList.get(0).deliveryFee != 0}">0</span>
                                         원
                                     </td>
@@ -114,7 +114,7 @@
                                     <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
                                         <span th:if="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}"
-                                                th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,3,'COMMA')}">
+                                                th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,1,'COMMA')}">
                                         </span>
                                         <span th:unless="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}">
                                             0
@@ -128,7 +128,7 @@
                                     <td class="text-end">
                                         <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         <span th:if="${detailsList.get(0).amount != null}"
-                                              th:text="${#numbers.formatInteger(detailsList.get(0).amount,3,'COMMA')}"></span>
+                                              th:text="${#numbers.formatInteger(detailsList.get(0).amount,1,'COMMA')}"></span>
                                         <span th:unless="${detailsList.get(0).amount != null}">
                                         0
                                         </span>
@@ -159,10 +159,10 @@
                                         <tr th:if="${detailsList.get(0).totalCouponName != null}">
                                             <td th:text="${detailsList.get(0).totalCouponName}"></td>
                                             <td th:if="${detailsList.get(0).totalCouponAmount != 0}"
-                                                th:text="${#numbers.formatInteger(detailsList.get(0).totalCouponAmount,3,'COMMA')}"></td>
+                                                th:text="${#numbers.formatInteger(detailsList.get(0).totalCouponAmount,1,'COMMA')}"></td>
                                             <td th:if="${detailsList.get(0).totalCouponPercent != 0}">
                                             <span th:text="${#numbers.formatInteger(detailsList.get(0).productPrice
-                                               * (detailsList.get(0).totalCouponPercent * 0.01),3,'COMMA')}"></span>
+                                               * (detailsList.get(0).totalCouponPercent * 0.01),1,'COMMA')}"></span>
                                                 원
                                             </td>
                                             <td>총액 쿠폰</td>
@@ -171,11 +171,11 @@
                                         <tr th:if="${detailsList.get(0).couponName != null}">
                                             <td th:text="${detailsList.get(0).couponName}"></td>
                                             <td th:if="${detailsList.get(0).couponAmount != 0}">
-                                                <span th:text="${#numbers.formatInteger(detailsList.get(0).couponAmount,3,'COMMA')}"></span>
+                                                <span th:text="${#numbers.formatInteger(detailsList.get(0).couponAmount,1,'COMMA')}"></span>
                                                 원
                                             </td>
                                             <td th:if="${detailsList.get(0).couponPercent != 0}">
-                                                <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount - detailsList.get(0).productPrice,3,'COMMA')}"></span>
+                                                <span th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount - detailsList.get(0).productPrice,1,'COMMA')}"></span>
                                                 원
                                             </td>
                                             <td>상품 및 카테고리쿠폰</td>

@@ -33,11 +33,11 @@ public class PaymentAsyncController {
                                                  @AuthenticationPrincipal
                                                  UserDetailsDto userDetailsDto) {
         boolean isMemberOrder = false;
-        if (Optional.ofNullable(userDetailsDto.getMemberNo()).isPresent()) {
+        if (Optional.ofNullable(userDetailsDto).isPresent()) {
             isMemberOrder = true;
         }
 
-        OrderResponseDto orderResponseDto = null;
+        OrderResponseDto orderResponseDto;
         try {
             orderResponseDto =
                 paymentService.requestCanceledPayment(paymentCanceledRequestDto, isMemberOrder,
