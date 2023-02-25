@@ -189,7 +189,7 @@ public class ProductInquiryController {
             String.format("?page=%d&size=%d", pageable.getPageNumber(), pageable.getPageSize()), userDetailsDto.getMemberNo());
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/product-inquiries/list");
+        model.addAttribute("paginationUrl", "/product-inquiries/mypage/list");
 
         return "mypage/productinquiry/productInquiry-list";
     }
