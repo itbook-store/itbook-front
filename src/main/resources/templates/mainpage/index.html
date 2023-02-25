@@ -45,7 +45,6 @@
             -webkit-box-orient: vertical;
         }
 
-
     </style>
     <!--    <link href="/mainpage/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Custom styles for this template -->
@@ -90,12 +89,25 @@
     <div class="main" style="margin-inline: 10%;">
 
         <div class="row product-grid4" th:if="${not #lists.isEmpty(recommendationList)}">
-            <h2 style="text-align: left">추천 도서 <a th:href="@{/products(productTypeNo=${4}, productTypeName=${'추천'})}"
-                                                  style="text-decoration-line: none; color: #000000">
-                <i class="fa-solid fa-circle-plus"></i>
-            </a></h2>
+            <th:block sec:authorize="isAnonymous()">
+                <h2 style="text-align: left">추천 도서
+                    <a th:href="@{/products(productTypeNo=${4}, productTypeName=${'추천'})}"
+                       style="text-decoration-line: none; color: #000000">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </a></h2>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <h2 style="text-align: left" th:with="memberId=${#authentication.principal.memberId}">
+                    잇북 추천요정의 선택 <span> for </span>
+                    <span style="color: #36B3D1; font-weight: bolder">[[${memberId}]]</span>
+                    <a th:href="@{/products(productTypeNo=${4}, productTypeName=${'추천'})}"
+                       style="text-decoration-line: none; color: #000000">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </a>
+                </h2>
+            </th:block>
             <hr>
-            <div class="col-md-2 col-6" th:each="product : ${newBooks}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product : ${recommendationList}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
@@ -141,7 +153,7 @@
                     <i class="fa-solid fa-circle-plus"></i>
                 </a></h2>
             <hr>
-            <div class="col-md-2 col-6" th:each="product : ${discountBooks}" style="text-align: center">
+            <div class="col-md-2 col-6" th:each="product : ${newBooks}" style="text-align: center">
                 <div class="product-image4">
                     <a th:href="@{|/products/${product.productNo}|}">
                         <img class="img-thumbnail img-responsive img-effect" th:src="${product.fileThumbnailsUrl}">
