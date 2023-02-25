@@ -33,7 +33,7 @@
                                         <tbody>
                                         <tr th:each="review : ${pageResponse.getContent()}">
                                             <td><img width="100px;" th:src="${review.image}"></td>
-                                            <td><span th:text="${review.productName}"></span></td>
+                                            <td><a th:onclick="|location.href= '@{/products/{productNo}(productNo = ${review.productNo})}'|"><span th:text="${review.productName}"></span></a></td>
                                             <td><span th:text="${review.starPoint}"></span> / 5</td>
                                             <td>
                                                 <button class="btn btn-light"

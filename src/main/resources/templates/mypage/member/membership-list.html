@@ -30,7 +30,24 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="membership : ${membershipResponseDtoList}">
-                                        <td th:text="${membership.membershipGrade}"></td>
+                                        <td>
+                                            <th:block th:if="${membership.membershipGrade} == '일반'">
+                                                <i class="fa-solid fa-crown" style="color: yellowgreen"></i>
+                                            </th:block>
+                                            <th:block th:if="${membership.membershipGrade} == '화이트'">
+                                                <i class="fa-solid fa-crown" style="color: saddlebrown"></i>
+                                            </th:block>
+                                            <th:block th:if="${membership.membershipGrade} == '실버'">
+                                                <i class="fa-solid fa-crown" style="color: silver"></i>
+                                            </th:block>
+                                            <th:block th:if="${membership.membershipGrade} == '골드'">
+                                                <i class="fa-solid fa-crown" style="color: gold"></i>
+                                            </th:block>
+                                            <th:block th:if="${membership.membershipGrade} == '플레티넘'">
+                                                <i class="fa-solid fa-crown" style="color: aqua"></i>
+                                            </th:block>
+                                            <span th:text="${membership.membershipGrade}"></span>
+                                        </td>
                                         <td th:text="${membership.membershipStandardAmount}"></td>
                                         <td th:text="${membership.membershipPoint}"></td>
                                     </tr>
