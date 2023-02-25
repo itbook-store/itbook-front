@@ -19,19 +19,33 @@ public class TossPaymentServiceImpl implements PaymentService {
 
     @Override
     public OrderResponseDto requestApprovePayment(
-        String paymentKey, String orderId, Long amount, Long orderNo) {
+        String paymentKey, String orderId, Long amount, Long orderNo, String orderType) {
 
         return paymentAdaptor.requestApprovePayment(
-            new PaymentApproveRequestDto(paymentKey, orderId, amount), orderNo);
+            new PaymentApproveRequestDto(paymentKey, orderId, amount), orderNo, orderType);
     }
 
     @Override
     public OrderResponseDto requestCanceledPayment(
-        PaymentCanceledRequestDto requestDto) {
+        PaymentCanceledRequestDto requestDto, boolean isMemberOrder, boolean isSubscription) {
 
         PaymentCanceledRequestDto paymentCanceledRequestDto =
             new PaymentCanceledRequestDto(requestDto.getOrderNo(), requestDto.getCancelReason());
 
-        return paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto);
+        String orderType;
+        if (isSubscription) {
+            if (isMemberOrder) {
+                orderType = "구독회원주문";
+            } else {
+                orderType = "구독비회원주문";
+            }
+        } else {
+            if (isMemberOrder) {
+                orderType = "일반회원주문";
+            } else {
+                orderType = "일반비회원주문";
+            }
+        }
+        return paymentAdaptor.requestCanceledPayment(paymentCanceledRequestDto, orderType);
     }
 }

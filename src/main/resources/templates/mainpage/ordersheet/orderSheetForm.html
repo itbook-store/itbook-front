@@ -554,13 +554,12 @@
                 }
 
 
-                if(appliedPointBoolean !== null || appliedPointBoolean !== undefined) {
+                if (appliedPointBoolean !== null || appliedPointBoolean !== undefined) {
                     if (!appliedPointBoolean) {
                         decreasePoint = 0;
                     }
                 }
             }
-
 
 
             let orderAddRequestDto = {
@@ -642,7 +641,7 @@
         function doPaymentProcessByCard(data) {
             const clientKey = 'test_ck_N5OWRapdA8d7MGGao2Pro1zEqZKL';
             var tossPayments = TossPayments(clientKey);
-
+            console.log(data.successUrl);
             tossPayments.requestPayment('카드', { // 결제 수단 파라미터
                 // 결제 정보 파라미터
                 amount: data.amount,

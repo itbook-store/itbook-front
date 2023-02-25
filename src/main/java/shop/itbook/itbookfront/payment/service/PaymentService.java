@@ -30,17 +30,20 @@ public interface PaymentService {
      * @param orderId    the order id
      * @param amount     the amount
      * @param orderNo    the order no
+     * @param orderType
      * @return the payment response dto . payment data response dto
      */
     OrderResponseDto requestApprovePayment(
-        String paymentKey, String orderId, Long amount, Long orderNo);
+        String paymentKey, String orderId, Long amount, Long orderNo, String orderType);
 
     /**
      * 샵 서버를 통해 토스에 결제 취소 요청을 하는 기능을 담당합니다.
      *
-     * @param requestDto the request dto
+     * @param requestDto     the request dto
+     * @param isMemberOrder
+     * @param isSubscription
      * @return the order no response dto
      */
     OrderResponseDto requestCanceledPayment(
-        PaymentCanceledRequestDto requestDto);
+        PaymentCanceledRequestDto requestDto, boolean isMemberOrder, boolean isSubscription);
 }

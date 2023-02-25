@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.cart.service.CartService;
+import shop.itbook.itbookfront.category.model.MainCategory;
+import shop.itbook.itbookfront.category.service.CategoryService;
+import shop.itbook.itbookfront.category.util.CategoryUtil;
 import shop.itbook.itbookfront.common.response.PageResponse;
 import shop.itbook.itbookfront.order.dto.response.OrderDetailsResponseDto;
 import shop.itbook.itbookfront.order.dto.response.OrderListMemberViewResponseDto;
@@ -39,6 +42,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final CartService cartService;
+    private final CategoryService categoryService;
 
     /**
      * 마이페이지에서 해당 회원의 주문 목록을 불러옵니다.
@@ -67,8 +71,13 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @CookieValue(value = COOKIE_NAME) Cookie cartCookie,
+                                  @CookieValue(value = COOKIE_NAME, required = false)
+                                  Cookie cartCookie,
                                   Model model) {
+
+        List<MainCategory> mainCategoryList =
+            CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
+        model.addAttribute("mainCategoryList", mainCategoryList);
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
@@ -87,20 +96,19 @@ public class OrderController {
             e.printStackTrace();
         }
 
-
         model.addAttribute("orderDetails", orderDetails);
 
-        return "mainpage/order/orderDetailsForm";
+        return "mainpage/order/mainOrderDetailsForm";
     }
 
-    @GetMapping("/details/{orderNo}")
+    @GetMapping("/mypage/details/{orderNo}")
     public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
         model.addAttribute("orderDetails", orderDetails);
 
-        return "mypage/order/orderDetailsForm";
+        return "mypage/order/myOrderDetailsForm";
     }
 
     @GetMapping("/mypage/details-sub/{orderNo}")
@@ -111,7 +119,7 @@ public class OrderController {
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
 
-        return "mypage/order/orderSubDetailsForm";
+        return "mypage/order/myOrderSubDetailsForm";
     }
 
     @GetMapping("/mypage/list/subscription")

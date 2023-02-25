@@ -68,7 +68,7 @@
                     </div>
 
                     <strong><span style="font-size: 30pt; margin-left: 20%" class="mt-5"
-                                  data-th-text="${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}"></span></strong>
+                                  data-th-text="${#numbers.formatInteger(product.selledPrice, 1, 'COMMA') + '원'}"></span></strong>
                     <small style="font-size: 15pt; margin-left: 10%" class="text-success"
                            th:text="|(${product.discountPercent}%off)|"></small>
 
@@ -146,7 +146,7 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star mr-0"></i>
                         </div>
-                        <h6 class="mb-0 text-primary">[[${#numbers.formatInteger(rp.selledPrice, 3, 'COMMA') +
+                        <h6 class="mb-0 text-primary">[[${#numbers.formatInteger(rp.selledPrice, 1, 'COMMA') +
                             '원'}]]([[${rp.discountPercent}]]%)</h6>
                     </div>
                 </div>
