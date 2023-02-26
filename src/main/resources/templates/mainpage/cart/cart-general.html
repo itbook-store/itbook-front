@@ -28,7 +28,7 @@
                     <th style="min-width: 80px;"></th>
                     <th style="min-width: 350px;">상품명</th>
                     <th style="min-width: 150px;">판매가</th>
-                    <th style="">재고</th>
+<!--                    <th style="">재고</th>-->
                     <th style="min-width: 200px;">수량</th>
                     <th style="min-width: 110px;">주문 금액</th>
                 </tr>
@@ -65,17 +65,17 @@
                             <p class="discount_price" th:text="${dto.productDetailsResponseDto.selledPrice}"></p>
                         </div>
                     </td>
-                    <td>
+<!--                    <td>-->
 
-                        <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                            <p class="product_isSelled badge bg-danger">품절</p>
-                        </th:block>
+<!--                        <th:block th:if="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
+<!--                            <p class="product_isSelled badge bg-danger">품절</p>-->
+<!--                        </th:block>-->
 
-                        <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">
-                        <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>
-                        </th:block>
+<!--                        <th:block th:unless="${dto.productDetailsResponseDto.stock == 0 || dto.productDetailsResponseDto.isForceSoldOut}">-->
+<!--                        <p class="product_stock" th:text="${dto.productDetailsResponseDto.stock}"></p>-->
+<!--                        </th:block>-->
 
-                    </td>
+<!--                    </td>-->
                     <td>
                         <div class="d-flex" style="max-width: 300px; align-items: center; justify-content: center;">
 

@@ -1,5 +1,6 @@
 package shop.itbook.itbookfront.cart.service.impl;
 
+import static shop.itbook.itbookfront.cart.util.CartConstant.MEMBER_NO;
 import static shop.itbook.itbookfront.cart.util.CartConstant.SUF_FIX;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import shop.itbook.itbookfront.cart.adaptor.CartAdaptor;
 import shop.itbook.itbookfront.cart.dto.response.CartAddResponseDto;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
+import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 
 /**
@@ -99,7 +101,7 @@ public class CartServiceImpl implements CartService {
         /* 장바구니 기능을 이용하지 않더라도, 해당 데이터는 실제 장바구니 데이터를 가르키는 것 뿐*/
 
         /* 따라서, 얘는 만료되지 않고 남아있는다면 메모리 낭비이다. */
-        redisTemplate.expire(cookieValue + SUF_FIX, 1, TimeUnit.DAYS);
+        redisTemplate.expire(cookieValue + SUF_FIX, 6, TimeUnit.HOURS);
 
         List<CartProductDetailsResponseDto> allCart = cartAdaptor.getProductListMember(memberNo);
 
@@ -110,5 +112,45 @@ public class CartServiceImpl implements CartService {
                     String.valueOf(cart.getProductDetailsResponseDto().getProductNo()),
                     cart)
         );
+    }
+
+    public void saveAllCartDataByRedis(String redisKey) {
+
+        Map<Object, Object> redisHashMapData = redisTemplate.opsForHash().entries(redisKey);
+        Integer memberNo = (Integer) redisHashMapData.remove(MEMBER_NO);
+
+
+        List<CartMemberRequestDto> cartMemberRequestDtoList =
+            getCartMemberRequestDtoList(redisHashMapData, memberNo);
+
+        try {
+            cartAdaptor.saveAllCart(cartMemberRequestDtoList);
+        } catch (Exception e) {
+            log.error("CartUtil saveAllCartDataByRedis() {}", e.getMessage());
+            e.printStackTrace();
+        }
+
+        redisTemplate.expire(redisKey, 1, TimeUnit.SECONDS);
+        /* 팬텀키가 Expire 될 경우는 상관없지만 로그아웃 로직에서도 동일하게 적용되어야 하기 때문 */
+        redisTemplate.expire(redisKey + SUF_FIX, 1, TimeUnit.SECONDS);
+    }
+
+    private static List<CartMemberRequestDto> getCartMemberRequestDtoList(
+        Map<Object, Object> redisHashMapData, Integer memberNo) {
+
+        List<CartMemberRequestDto> cartMemberRequestDtoList = new ArrayList<>();
+
+        for (Map.Entry<Object, Object> entry : redisHashMapData.entrySet()) {
+            CartProductDetailsResponseDto value =
+                (CartProductDetailsResponseDto) entry.getValue();
+
+            cartMemberRequestDtoList.add(new CartMemberRequestDto(
+                memberNo.longValue(),
+                value.getProductDetailsResponseDto().getProductNo(),
+                value.getProductCount()
+            ));
+        }
+
+        return cartMemberRequestDtoList;
     }
 }

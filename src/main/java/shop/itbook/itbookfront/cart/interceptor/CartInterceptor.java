@@ -32,7 +32,7 @@ public class CartInterceptor implements HandlerInterceptor {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private static final Integer ONE_DAY = 60 * 60 * 24;
+    private static final Integer SIX_HOUR = 60 * 60 * 6;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -46,6 +46,7 @@ public class CartInterceptor implements HandlerInterceptor {
         }
 
         Cookie cartCookie = getCartCookieOrElseCreateCookie(cookies, response);
+        cartCookie.setMaxAge(SIX_HOUR);
 
         /* 만약 CartController 에 접근한다면 Redis에 데이터가 존재할 꺼고, 그렇다면 해당 만료시간을 지정해준다.*/
         HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -53,7 +54,7 @@ public class CartInterceptor implements HandlerInterceptor {
         if (Objects.nonNull(methodAnnotation)) {
             /* 만약 레디스에 데이터가 존재하지 않는다면 -2, 존재한다면 하루가 된다.*/
             /* 또한 계속 장바구니쪽을 이용하게 된다면 레디스 시간이 하루로 늘어나게 된다.*/
-            redisTemplate.expire(cartCookie.getValue(), 1, TimeUnit.DAYS);
+            redisTemplate.expire(cartCookie.getValue(), 6, TimeUnit.HOURS);
 
             Long expire = redisTemplate.getExpire(cartCookie.getValue());
 
@@ -70,7 +71,7 @@ public class CartInterceptor implements HandlerInterceptor {
 
     private static Cookie createNewCookie(HttpServletResponse response) {
         Cookie newCookie = new Cookie(COOKIE_NAME, "CID="+ UUID.randomUUID());
-        newCookie.setMaxAge(ONE_DAY);
+        newCookie.setMaxAge(SIX_HOUR);
         newCookie.setSecure(true);
         newCookie.setHttpOnly(true);
         newCookie.setPath("/");
