@@ -223,12 +223,6 @@
                             <div class="d-flex justify-content-between">
                                 <span class="me-3"
                                       th:text="${#temporals.format(orderDetails.orderCreatedAt)}"></span>
-                                <button style="float: right;"
-                                        th:if="${#strings.contains('결제완료배송대기배송완료',orderDetails.orderStatus)}"
-                                        th:orderNo="${orderDetails.getOrderNo()}"
-                                        class="btn btn-danger btn-sm rounded-4"
-                                        onclick="getInputCancelReason(this.getAttribute('orderNo'),false)">환불
-                                </button>
                             </div>
                         </div>
                     </div>
