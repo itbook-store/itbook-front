@@ -3,6 +3,7 @@ package shop.itbook.itbookfront.config;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -21,6 +22,8 @@ import shop.itbook.itbookfront.cart.interceptor.CartInterceptor;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthAdaptor authAdaptor;
+
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private static final List<String> staticResourcesPath =
         List.of("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.map");
@@ -53,8 +56,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new CartInterceptor())
+
+        registry.addInterceptor(new CartInterceptor(redisTemplate))
             .addPathPatterns("/**")
+//            .addPathPatterns("/async/cart/**", "/cart/**")
             .excludePathPatterns(staticResourcesPath);
 
         registry.addInterceptor(new SessionInterceptor())

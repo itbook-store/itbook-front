@@ -13,4 +13,8 @@ public class CartConstant {
     }
 
     public static final String COOKIE_NAME = "ITBOOK_CART";
+    public static final String PRE_FIX = "CID=";
+    public static final String SUF_FIX = ":phantom";
+    public static final Long FIVE_MINUTE = 300L;
+    public static final String MEMBER_NO = "memberNo";
 }

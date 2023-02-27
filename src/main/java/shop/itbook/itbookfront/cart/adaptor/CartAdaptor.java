@@ -1,7 +1,6 @@
 package shop.itbook.itbookfront.cart.adaptor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.itbook.itbookfront.cart.dto.response.CartProductDetailsResponseDto;
-import shop.itbook.itbookfront.cart.dto.response.CartResponseDto;
-import shop.itbook.itbookfront.cart.dto.resquest.CartMemberNoRequestDto;
 import shop.itbook.itbookfront.cart.dto.resquest.CartMemberRequestDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.common.exception.RestApiServerException;
 import shop.itbook.itbookfront.common.response.CommonResponseBody;
-import shop.itbook.itbookfront.common.response.PageResponse;
-import shop.itbook.itbookfront.common.response.SuccessfulResponseDto;
 import shop.itbook.itbookfront.config.GatewayConfig;
 import shop.itbook.itbookfront.product.dto.response.ProductDetailsResponseDto;
 
@@ -42,7 +37,7 @@ public class CartAdaptor {
 
     private static final String BASE_API_URL = "/api/cart";
 
-    private static final String PRODUCT_LIST_ANONYMOUS_API = "/api/products/";
+    private static final String PRODUCT_LIST_API = "/api/products/";
 
 
     public List<CartProductDetailsResponseDto> getProductListMember(Long memberNo) {
@@ -105,6 +100,4 @@ public class CartAdaptor {
 
 
     }
-
-
 }
