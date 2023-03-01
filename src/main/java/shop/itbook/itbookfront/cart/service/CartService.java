@@ -60,7 +60,7 @@ public interface CartService {
     void modifyCart(String cookieValue, Integer productNo, Integer productCount);
 
     /**
-     * RDB에 저장되어있는 회원의 장바구니 리스트를 불러와서 redis에 올려두는 메서드 입니다.
+     * DB에 저장되어있는 회원의 장바구니 리스트를 불러와서 redis에 올려두는 메서드 입니다.
      *
      * @param cookieValue 쿠기의 Value값을 통해 redis에 저장되어 있습니다.
      * @param memberNo 회원번호
@@ -70,11 +70,11 @@ public interface CartService {
 
 
     /**
-     * 구매 후, 장바구니의 상품을 지우는 메서드 입니다.
+     * 레디의에 저장되어있던 데이터를 DB에 저장하는 메서드 입니다.
      *
-     * @param cookieValue cookie Value
+     * @param redisKey redisKey
      * @author 강명관
      */
-    void clearCartOfOrderComplete(String cookieValue);
+    void saveAllCartDataByRedis(String redisKey);
 }
 

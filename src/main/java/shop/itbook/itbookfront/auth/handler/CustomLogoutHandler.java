@@ -1,7 +1,11 @@
 package shop.itbook.itbookfront.auth.handler;
 
+import static shop.itbook.itbookfront.cart.util.CartConstant.COOKIE_NAME;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,6 +19,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
+import shop.itbook.itbookfront.cart.service.CartService;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 
 /**
@@ -28,6 +33,8 @@ import shop.itbook.itbookfront.common.exception.BadRequestException;
 public class CustomLogoutHandler implements LogoutHandler {
 
     private final AuthAdaptor authAdaptor;
+
+    private final CartService cartService;
 
     private static final String MESSAGE = "로그인되지 않은 유저입니다.";
 
@@ -50,9 +57,26 @@ public class CustomLogoutHandler implements LogoutHandler {
         }
 
         UserDetailsDto principal = (UserDetailsDto) authentication.getPrincipal();
-        authAdaptor.requestAuthServerForLogout(principal.getMemberNo());
 
-        log.info("session ITBOOK_SESSIONID {}", session.getAttribute("ITBOOK_SESSIONID"));
+        try {
+            authAdaptor.requestAuthServerForLogout(principal.getMemberNo());
+        } catch (Exception e) {
+            log.error("Auth Server Logout Filter Error {}", e.getMessage());
+            e.printStackTrace();
+        }
+
+        try {
+            Cookie[] cookies = request.getCookies();
+            Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+                .findFirst()
+                .ifPresent(cookie -> cartService.saveAllCartDataByRedis(cookie.getValue()));
+        } catch (Exception e) {
+            log.error("Logout Cart Save Error {}", e.getMessage());
+            e.printStackTrace();
+        }
+
+
         session.removeAttribute("tokenDto");
         session.invalidate();
 

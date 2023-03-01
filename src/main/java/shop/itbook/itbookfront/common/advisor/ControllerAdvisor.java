@@ -55,7 +55,7 @@ public class ControllerAdvisor {
     public String forbiddenException403(Exception e) {
         log.error("forbiddenException403 {}", e.getMessage());
         e.printStackTrace();
-        return "/error/403error";
+        return "error/403error";
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -69,7 +69,7 @@ public class ControllerAdvisor {
         e.printStackTrace();
 
         model.addAttribute(MESSAGE, INTERNAL_ERROR_MESSAGE);
-        return "/error/500error";
+        return "error/500error";
     }
 
 }
