@@ -73,9 +73,9 @@ public class OrderAsyncController {
      */
     @PostMapping("/subscription/payment-start")
     public AsyncResponseDto<OrderPaymentDto> orderSubscriptionPaymentStart(@RequestBody
-                                                         OrderAddRequestDto orderAddRequestDto,
-                                                                            @AuthenticationPrincipal
-                                                         UserDetailsDto userDetailsDto) {
+                                                                           OrderAddRequestDto orderAddRequestDto,
+                                                                           @AuthenticationPrincipal
+                                                                           UserDetailsDto userDetailsDto) {
 
         Optional<Long> memberNo = Optional.empty();
 
@@ -84,7 +84,8 @@ public class OrderAsyncController {
         }
 
         try {
-            OrderPaymentDto orderPaymentDto = orderService.addOrderSubscription(orderAddRequestDto, memberNo);
+            OrderPaymentDto orderPaymentDto =
+                orderService.addOrderSubscription(orderAddRequestDto, memberNo);
             return new AsyncResponseDto<>(Boolean.TRUE, orderPaymentDto, "결제준비 완료!");
         } catch (BadRequestException e) {
             return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
@@ -94,7 +95,6 @@ public class OrderAsyncController {
     @PostMapping("/payment-cancel/{orderNo}")
     public void orderPaymentCancel(@PathVariable("orderNo") Long orderNo) {
 
-        // TODO: 2023/02/11 주문 삭제 처리.
         orderService.cancelOrder(orderNo);
     }
 
@@ -106,7 +106,7 @@ public class OrderAsyncController {
      */
     @PostMapping("/purchase-complete/{orderNo}")
     public AsyncResponseDto<Void> orderPurchaseComplete(@PathVariable("orderNo") Long orderNo,
-                                      HttpServletResponse response) {
+                                                        HttpServletResponse response) {
         try {
             orderService.orderPurchaseComplete(orderNo);
             return new AsyncResponseDto(Boolean.TRUE, null, "구매확정 완료!");
@@ -116,11 +116,14 @@ public class OrderAsyncController {
     }
 
     @DeleteMapping("/{orderNo}/with-stock-rollback")
-    public AsyncResponseDto<SuccessfulResponseDto> orderDeleteAndStockRollBack(@PathVariable Long orderNo) {
+    public AsyncResponseDto<SuccessfulResponseDto> orderDeleteAndStockRollBack(
+        @PathVariable Long orderNo) {
 
         try {
-            SuccessfulResponseDto successfulResponseDto = orderService.deleteAndStockRollBack(orderNo);
-            return new AsyncResponseDto<>(successfulResponseDto.getIsSuccessful(), null, "주문 삭제 및 재고 롤백 완료!");
+            SuccessfulResponseDto successfulResponseDto =
+                orderService.deleteAndStockRollBack(orderNo);
+            return new AsyncResponseDto<>(successfulResponseDto.getIsSuccessful(), null,
+                "주문 삭제 및 재고 롤백 완료!");
         } catch (BadRequestException e) {
             return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
         }

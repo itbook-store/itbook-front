@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.cart.service.CartService;
 import shop.itbook.itbookfront.category.model.MainCategory;
@@ -71,6 +72,7 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
+                                  @RequestParam("orderType") String orderType,
                                   @CookieValue(value = COOKIE_NAME, required = false)
                                   Cookie cartCookie,
                                   Model model) {
@@ -97,6 +99,10 @@ public class OrderController {
         }
 
         model.addAttribute("orderDetails", orderDetails);
+
+        if (orderType.contains("구독")) {
+            return "mainpage/order/mainOrderSubDetailsForm";
+        }
 
         return "mainpage/order/mainOrderDetailsForm";
     }
