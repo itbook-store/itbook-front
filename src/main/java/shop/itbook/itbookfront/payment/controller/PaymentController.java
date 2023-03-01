@@ -39,7 +39,9 @@ public class PaymentController {
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/";
         }
-        return "redirect:/orders/completion/" + responseDto.getOrderNo();
+    
+        return "redirect:/orders/completion/" + responseDto.getOrderNo() + "?orderType=" +
+            orderType;
     }
 
     @GetMapping(value = "/orders/fail/{orderNo}", params = {"code", "message", "orderId"})
