@@ -72,8 +72,8 @@
 <!--                    </ul>-->
                     <div class="product-content">
                         <h3 class="title">[[${product.productName}]]</h3>
-                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 3, 'COMMA') + '원'}]]
-                            <span>[[${#numbers.formatInteger(product.fixedPrice, 3, 'COMMA') + '원'}]]</span>
+                        <div class="price">[[${#numbers.formatInteger(product.selledPrice, 1, 'COMMA') + '원'}]]
+                            <span>[[${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA') + '원'}]]</span>
                         </div>
                     </div>
                 </div>

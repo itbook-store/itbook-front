@@ -98,17 +98,17 @@ public class OrderController {
 
         model.addAttribute("orderDetails", orderDetails);
 
-        return "mainpage/order/orderDetailsForm";
+        return "mainpage/order/mainOrderDetailsForm";
     }
 
-    @GetMapping("/details/{orderNo}")
+    @GetMapping("/mypage/details/{orderNo}")
     public String orderDetailsView(@PathVariable("orderNo") Long orderNo, Model model) {
 
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
         model.addAttribute("orderDetails", orderDetails);
 
-        return "mypage/order/orderDetailsForm";
+        return "mypage/order/myOrderDetailsForm";
     }
 
     @GetMapping("/mypage/details-sub/{orderNo}")
@@ -119,7 +119,7 @@ public class OrderController {
 
         model.addAttribute("detailsList", orderSubscriptionDetailsList);
 
-        return "mypage/order/orderSubDetailsForm";
+        return "mypage/order/myOrderSubDetailsForm";
     }
 
     @GetMapping("/mypage/list/subscription")

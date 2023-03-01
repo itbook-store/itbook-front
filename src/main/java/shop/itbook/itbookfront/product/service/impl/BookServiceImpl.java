@@ -66,7 +66,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Cacheable(value = "productTypeList", key = "#productTypeNo")
     public List<ProductDetailsResponseDto> getProductTypeList(Integer productTypeNo,
                                                               Optional<UserDetailsDto> member) {
         switch (productTypeNo) {
@@ -89,30 +88,35 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Cacheable(value = "productTypeList", key = "1")
     public List<ProductDetailsResponseDto> getNewBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=1", PAGE_OF_ALL_CONTENT,
                 6)).getContent();
     }
 
+    @Cacheable(value = "productTypeList", key = "2")
     public List<ProductDetailsResponseDto> getDiscountBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=2",
                 PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
+    @Cacheable(value = "productTypeList", key = "3")
     public List<ProductDetailsResponseDto> getBestSellerList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=3",
                 PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
+    @Cacheable(value = "productTypeList", key = "4")
     public List<ProductDetailsResponseDto> getRecommendationList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=4",
-                PAGE_OF_ALL_CONTENT, SIZE_OF_ALL_CONTENT)).getContent();
+                PAGE_OF_ALL_CONTENT, 6)).getContent();
     }
 
+    @Cacheable(value = "productTypeList", key = "5")
     public List<ProductDetailsResponseDto> getPopularBookList() {
         return productService.getProductList(
             String.format("/api/products?page=%d&size=%d&productTypeNo=5",
