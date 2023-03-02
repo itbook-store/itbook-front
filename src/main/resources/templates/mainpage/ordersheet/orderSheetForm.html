@@ -686,7 +686,8 @@
         }
 
         async function deleteOrderAndStockIncrease(orderNo) {
-            return await fetch(`async/orders/${orderNo}/with-stock-rollback`, {
+
+            await fetch(`/async/orders/${orderNo}/with-stock-rollback`, {
 
                 method: "DELETE",
                 headers: {

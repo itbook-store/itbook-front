@@ -115,6 +115,8 @@ public class OrderAsyncController {
         }
     }
 
+
+    // TODO : 재고까는건 빠졌음 이름 바꿔야함
     @DeleteMapping("/{orderNo}/with-stock-rollback")
     public AsyncResponseDto<SuccessfulResponseDto> orderDeleteAndStockRollBack(
         @PathVariable Long orderNo) {
@@ -123,7 +125,7 @@ public class OrderAsyncController {
             SuccessfulResponseDto successfulResponseDto =
                 orderService.deleteAndStockRollBack(orderNo);
             return new AsyncResponseDto<>(successfulResponseDto.getIsSuccessful(), null,
-                "주문 삭제 및 재고 롤백 완료!");
+                "주문 삭제 완료!");
         } catch (BadRequestException e) {
             return new AsyncResponseDto<>(Boolean.FALSE, null, e.getMessage());
         }
