@@ -49,20 +49,25 @@ public class CartInterceptor implements HandlerInterceptor {
         cartCookie.setMaxAge(SIX_HOUR);
 
         /* 만약 CartController 에 접근한다면 Redis에 데이터가 존재할 꺼고, 그렇다면 해당 만료시간을 지정해준다.*/
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Annotation methodAnnotation = handlerMethod.getMethodAnnotation(Cart.class);
-        if (Objects.nonNull(methodAnnotation)) {
-            /* 만약 레디스에 데이터가 존재하지 않는다면 -2, 존재한다면 하루가 된다.*/
-            /* 또한 계속 장바구니쪽을 이용하게 된다면 레디스 시간이 하루로 늘어나게 된다.*/
-            redisTemplate.expire(cartCookie.getValue(), 6, TimeUnit.HOURS);
+        try {
 
-            Long expire = redisTemplate.getExpire(cartCookie.getValue());
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Annotation methodAnnotation = handlerMethod.getMethodAnnotation(Cart.class);
+            if (Objects.nonNull(methodAnnotation)) {
+                /* 만약 레디스에 데이터가 존재하지 않는다면 -2, 존재한다면 하루가 된다.*/
+                /* 또한 계속 장바구니쪽을 이용하게 된다면 레디스 시간이 하루로 늘어나게 된다.*/
+                redisTemplate.expire(cartCookie.getValue(), 6, TimeUnit.HOURS);
 
-            if (expire > 0) {
-                /* Phantom Key Set ExpireTime */
-                redisTemplate.expire(cartCookie.getValue() + SUF_FIX, expire - FIVE_MINUTE,
-                    TimeUnit.SECONDS);
+                Long expire = redisTemplate.getExpire(cartCookie.getValue());
+
+                if (expire > 0) {
+                    /* Phantom Key Set ExpireTime */
+                    redisTemplate.expire(cartCookie.getValue() + SUF_FIX, expire - FIVE_MINUTE,
+                        TimeUnit.SECONDS);
+                }
+
             }
+        } catch (Exception e) {
 
         }
 
@@ -70,7 +75,7 @@ public class CartInterceptor implements HandlerInterceptor {
     }
 
     private static Cookie createNewCookie(HttpServletResponse response) {
-        Cookie newCookie = new Cookie(COOKIE_NAME, "CID="+ UUID.randomUUID());
+        Cookie newCookie = new Cookie(COOKIE_NAME, "CID=" + UUID.randomUUID());
         newCookie.setMaxAge(SIX_HOUR);
         newCookie.setSecure(true);
         newCookie.setHttpOnly(true);
@@ -81,7 +86,8 @@ public class CartInterceptor implements HandlerInterceptor {
         return newCookie;
     }
 
-    private static Cookie getCartCookieOrElseCreateCookie(Cookie[] cookies, HttpServletResponse response) {
+    private static Cookie getCartCookieOrElseCreateCookie(Cookie[] cookies,
+                                                          HttpServletResponse response) {
 
         return Arrays.stream(cookies)
             .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
