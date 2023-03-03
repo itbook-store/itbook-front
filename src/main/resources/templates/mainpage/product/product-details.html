@@ -179,8 +179,7 @@
                     id="childCategoryName"></span>
                 <span>
                 <i class="fa-sharp fa-solid fa-eye" style="margin-left: 20px"></i>
-                    <span id="counter">0</span>
-<!--                   [[${product.dailyHits}]] -->
+                   [[${product.dailyHits}]]
                     </span>
             </div>
             <!--            <div class="col-sm-12 col-md-6 col-lg-6">-->
@@ -427,37 +426,6 @@
     </section>
     <script src="/cart/js/cartAddProduct.js"></script>
     <script th:inline="javascript">
-
-        // counter start
-        const $counter = document.querySelector('#counter');
-
-        // 목표수치
-        let dailyHits = [[${product.dailyHits}]];
-
-        counter($counter, dailyHits);
-
-        function counter($counter, dailyHits) {
-            let now = dailyHits;
-
-            const handle = setInterval(() => {
-                $counter.innerHTML = Math.ceil(dailyHits - now);
-
-                // 목표에 도달하면 정지
-                if (now < 1) {
-                    clearInterval(handle);
-                }
-
-                // 적용될 수치, 점점 줄어듬
-                const step = now - 5;
-
-                now -= step;
-            }, 1);
-        }
-
-        window.onload = () => {
-            setTimeout(() => counter($counter, dailyHits), 1000);
-        }
-        // counter end
 
         let productStock = Number([[${product.stock}]]);
 

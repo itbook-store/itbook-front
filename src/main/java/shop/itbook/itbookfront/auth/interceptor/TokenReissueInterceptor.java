@@ -49,10 +49,10 @@ public class TokenReissueInterceptor implements HandlerInterceptor {
         Date now = new Date();
 
 
-        if (!refreshTokenExpirationTime.after(now)) {
-            response.sendRedirect("/logout");
-            return true;
-        }
+//        if (!refreshTokenExpirationTime.after(now)) {
+//            response.sendRedirect("/logout");
+//            return true;
+//        }
 
         if (refreshTokenExpirationTime.after(now) && accessTokenExpirationTime.before(now)) {
             ResponseEntity<CommonResponseBody<TokenDto>> result = authAdaptor.postReissueToken(
