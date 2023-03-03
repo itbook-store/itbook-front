@@ -60,7 +60,7 @@ public class RedisConfig implements BeanClassLoaderAware {
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("ITBOOK_SESSIONID");
+        serializer.setCookieName("ITBOOK");
 
         serializer.setUseSecureCookie(true);
         serializer.setUseHttpOnlyCookie(true);
