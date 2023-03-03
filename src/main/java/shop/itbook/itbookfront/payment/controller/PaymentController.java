@@ -24,8 +24,7 @@ import shop.itbook.itbookfront.payment.service.PaymentService;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @GetMapping(value = "/orders/success/{orderNo}"
-        , params = {"paymentKey", "orderId", "amount", "orderType"})
+    @GetMapping(value = "/orders/success/{orderNo}")
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
                                  @RequestParam Long amount, RedirectAttributes redirectAttributes,
                                  @RequestParam String orderType, @PathVariable Long orderNo) {
