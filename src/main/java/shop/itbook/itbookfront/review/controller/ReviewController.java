@@ -180,7 +180,7 @@ public class ReviewController {
                 userDetailsDto.getMemberNo());
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("paginationUrl", "/review/mypage/list");
+        model.addAttribute("paginationUrl", "/mypage/review/review-writable-list");
         model.addAttribute("memberNo", userDetailsDto.getMemberNo());
 
         return "mypage/review/review-writeable-list";

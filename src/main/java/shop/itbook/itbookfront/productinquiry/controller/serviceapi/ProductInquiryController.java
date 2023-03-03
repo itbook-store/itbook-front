@@ -98,7 +98,7 @@ public class ProductInquiryController {
 
         productInquiryService.addProductInquiry(productInquiryRequestDto);
 
-        return "redirect:/products/" + productInquiryRequestDto.getProductNo();
+        return "redirect:/product-inquiries/mypage/list";
     }
 
     @GetMapping("/{productInquiryNo}/delete")
