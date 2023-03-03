@@ -77,15 +77,12 @@ public class OrderController {
                                   Cookie cartCookie,
                                   Model model) {
 
-        log.error("orderCompletion 들어옴1");
         List<MainCategory> mainCategoryList =
             CategoryUtil.getMainCategoryList(categoryService.findCategoryListForUser());
         model.addAttribute("mainCategoryList", mainCategoryList);
 
-        log.error("orderCompletion 들어옴2");
         OrderDetailsResponseDto orderDetails = orderService.findOrderDetails(orderNo);
 
-        log.error("orderCompletion 들어옴3");
         try {
             log.info("cookeValue {}", cartCookie.getValue());
             List<Integer> productNoList =
@@ -102,12 +99,9 @@ public class OrderController {
             e.printStackTrace();
         }
 
-        log.error("orderCompletion 들어옴5");
         model.addAttribute("orderDetails", orderDetails);
 
-        log.error("orderCompletion 들어옴6");
-        return "redirect:/";
-//        return "mainpage/order/mainOrderDetailsForm";
+        return "mainpage/order/mainOrderDetailsForm";
     }
 
     @GetMapping("/mypage/details/{orderNo}")

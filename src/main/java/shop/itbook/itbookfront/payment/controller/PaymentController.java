@@ -3,11 +3,13 @@ package shop.itbook.itbookfront.payment.controller;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.itbook.itbookfront.auth.dto.UserDetailsDto;
 import shop.itbook.itbookfront.common.exception.BadRequestException;
 import shop.itbook.itbookfront.payment.dto.response.OrderResponseDto;
 import shop.itbook.itbookfront.payment.dto.response.PaymentErrorResponseDto;
@@ -27,25 +29,23 @@ public class PaymentController {
     @GetMapping(value = "/orders/success/{orderNo}")
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
                                  @RequestParam Long amount, RedirectAttributes redirectAttributes,
-                                 @RequestParam(required = false) String orderType, @PathVariable Long orderNo) {
+                                 @RequestParam(required = false) String orderType, @PathVariable Long orderNo, @AuthenticationPrincipal
+                                 UserDetailsDto userDetailsDto) {
         OrderResponseDto responseDto;
 
-        log.error("successHandler 들어옴1");
+        userDetailsDto.getMemberNo();
+
         try {
-            log.error("successHandler 들어옴2");
             responseDto =
                 paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo,
                     orderType);
-            log.error("successHandler 들어옴3");
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/";
         }
 
-        log.error("successHandler 들어옴4");
-//        return "redirect:/orders/completion/" + responseDto.getOrderNo();
-        return "redirect:/";
+        return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
 
     @GetMapping(value = "/orders/fail/{orderNo}", params = {"code", "message", "orderId"})
