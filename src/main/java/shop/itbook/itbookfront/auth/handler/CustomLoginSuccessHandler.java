@@ -27,8 +27,9 @@ import shop.itbook.itbookfront.cart.service.CartService;
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final CartService cartService;
-
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private static final String DEFAULT_SUCCESS_URL = "/";
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -48,9 +49,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         cartService.loadCartProductForMember(cartCookie.getValue(), principal.getMemberNo());
 
-        RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
         redirectStrategy.sendRedirect(request, response, DEFAULT_SUCCESS_URL);
-
     }
 }

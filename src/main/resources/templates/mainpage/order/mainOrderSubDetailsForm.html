@@ -65,9 +65,7 @@
                                                      class="img-fluid">
                                             </div>
                                             <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a
-                                                        th:href="@{|/products/${orderDetails.productNo}|}"
-                                                        class="text-reset">
+                                                <h6 class="small mb-0"><a th:href="@{|/products/${orderDetails.productNo}|}" class="text-reset">
                                                     <span th:text="${orderDetails.productName}"></span>
                                                     &nbsp;
                                                     <span th:text="${orderDetails.selectedDeliveryDate.getMonthValue()}"></span>월호
@@ -113,12 +111,10 @@
                                 <tr>
                                     <td colspan="2">할인(쿠폰 + 포인트)</td>
                                     <td class="text-danger text-end">
-                                       <span th:if="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}"
-                                             th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,1,'COMMA')}">
+                                        <span
+                                                th:text="${#numbers.formatInteger(detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount,1,'COMMA')}">
                                         </span>
-                                        <span th:unless="${detailsList.get(0).sellingAmount + detailsList.get(0).deliveryFee - detailsList.get(0).amount != 0}">
-                                            0
-                                        </span>
+                                        <!--                                        <span th:text="${orderDetails.paymentCardResponseDto.totalAmount}"></span>-->
                                         원
                                     </td>
                                 </tr>
@@ -143,7 +139,7 @@
                          th:if="${detailsList.get(0).totalCouponName != null || detailsList.get(0).couponName != null}">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6">보
                                     <h3 class="h6">쿠폰 정보</h3>
                                     <table class="table user-list">
                                         <thead>

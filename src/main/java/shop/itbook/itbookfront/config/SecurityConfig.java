@@ -81,11 +81,10 @@ public class SecurityConfig {
             .logout()
             .logoutUrl("/logout")
             .deleteCookies("ITBOOK_SESSIONID")
-            .addLogoutHandler(customLogoutHandler(null))
+            .addLogoutHandler(customLogoutHandler(null, null))
             .logoutSuccessUrl("/")
 
             .and()
-//            .addFilterBefore(customExceptionFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterAt(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
@@ -146,8 +145,8 @@ public class SecurityConfig {
      * @author 강명관
      */
     @Bean
-    public CustomLogoutHandler customLogoutHandler(AuthAdaptor authAdaptor) {
-        return new CustomLogoutHandler(authAdaptor);
+    public CustomLogoutHandler customLogoutHandler(AuthAdaptor authAdaptor, CartService cartService) {
+        return new CustomLogoutHandler(authAdaptor, cartService);
     }
 
     /**
