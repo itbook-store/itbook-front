@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shop.itbook.itbookfront.auth.adaptor.AuthAdaptor;
-import shop.itbook.itbookfront.auth.interceptor.SessionInterceptor;
 import shop.itbook.itbookfront.auth.interceptor.TokenReissueInterceptor;
 import shop.itbook.itbookfront.cart.interceptor.CartInterceptor;
 
@@ -62,9 +61,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //            .addPathPatterns("/async/cart/**", "/cart/**")
             .excludePathPatterns(staticResourcesPath);
 
-        registry.addInterceptor(new SessionInterceptor())
-            .addPathPatterns("/**")
-            .excludePathPatterns(staticResourcesPath);
+//        registry.addInterceptor(new SessionInterceptor())
+//            .addPathPatterns("/**")
+//            .excludePathPatterns(staticResourcesPath);
 
         registry.addInterceptor(new TokenReissueInterceptor(authAdaptor))
             .addPathPatterns("/**")
