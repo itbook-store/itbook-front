@@ -80,10 +80,6 @@
                                     <span th:unless="${product.isPointApplyingBasedSellingPrice} == true">&nbsp;(실구매가 기준)</span>
                                 </td>
                             </tr>
-                            <!--                            <tr>-->
-                            <!--                                <td>배송료</td>-->
-                            <!--                                <td><span th:text="|택배 ${#numbers.formatInteger(2500, 1, 'COMMA')}원|"></span></td>-->
-                            <!--                            </tr>-->
                             <tr th:if="${product.isSubscription == false}">
                                 <td><span>구매 수량 선택</span></td>
                                 <td>
