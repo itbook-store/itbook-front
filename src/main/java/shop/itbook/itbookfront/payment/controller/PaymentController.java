@@ -27,7 +27,7 @@ public class PaymentController {
     @GetMapping(value = "/orders/success/{orderNo}")
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
                                  @RequestParam Long amount, RedirectAttributes redirectAttributes,
-                                 @RequestParam String orderType, @PathVariable Long orderNo) {
+                                 @RequestParam(required = false) String orderType, @PathVariable Long orderNo) {
         OrderResponseDto responseDto;
 
         log.error("successHandler 들어옴1");
@@ -44,7 +44,8 @@ public class PaymentController {
         }
 
         log.error("successHandler 들어옴4");
-        return "redirect:/orders/completion/" + responseDto.getOrderNo();
+//        return "redirect:/orders/completion/" + responseDto.getOrderNo();
+        return "redirect:/";
     }
 
     @GetMapping(value = "/orders/fail/{orderNo}", params = {"code", "message", "orderId"})

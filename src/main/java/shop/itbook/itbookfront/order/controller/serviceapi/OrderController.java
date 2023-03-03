@@ -106,7 +106,8 @@ public class OrderController {
         model.addAttribute("orderDetails", orderDetails);
 
         log.error("orderCompletion 들어옴6");
-        return "mainpage/order/mainOrderDetailsForm";
+        return "redirect:/";
+//        return "mainpage/order/mainOrderDetailsForm";
     }
 
     @GetMapping("/mypage/details/{orderNo}")

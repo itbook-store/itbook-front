@@ -82,7 +82,7 @@ public class SecurityConfig {
         http
             .logout()
             .logoutUrl("/logout")
-            .deleteCookies("ITBOOK")
+            .deleteCookies("ITBOOK_SESSIONID")
             .addLogoutHandler(customLogoutHandler(null, null))
             .logoutSuccessUrl("/")
 

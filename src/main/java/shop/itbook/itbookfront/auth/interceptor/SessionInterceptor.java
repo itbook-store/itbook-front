@@ -19,7 +19,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
 
-    private static final String ITBOOK_SESSION = "ITBOOK";
+    private static final String ITBOOK_SESSION = "ITBOOK_SESSIONID";
 
     private static final Integer ONE_DAY = 60 * 60 * 24;
 
