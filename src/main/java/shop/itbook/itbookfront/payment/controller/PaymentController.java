@@ -30,16 +30,21 @@ public class PaymentController {
                                  @RequestParam Long amount, RedirectAttributes redirectAttributes,
                                  @RequestParam String orderType, @PathVariable Long orderNo) {
         OrderResponseDto responseDto;
+
+        log.error("successHandler 들어옴1");
         try {
+            log.error("successHandler 들어옴2");
             responseDto =
                 paymentService.requestApprovePayment(paymentKey, orderId, amount, orderNo,
                     orderType);
+            log.error("successHandler 들어옴3");
         } catch (BadRequestException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute("failMessage", e.getMessage());
             return "redirect:/";
         }
-    
+
+        log.error("successHandler 들어옴4");
         return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
 
