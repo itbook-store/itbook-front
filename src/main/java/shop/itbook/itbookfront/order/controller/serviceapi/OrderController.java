@@ -72,7 +72,7 @@ public class OrderController {
      */
     @GetMapping("/completion/{orderNo}")
     public String orderCompletion(@PathVariable("orderNo") Long orderNo,
-                                  @RequestParam("orderType") String orderType,
+                                  @RequestParam(value = "orderType", required = false) String orderType,
                                   @CookieValue(value = COOKIE_NAME, required = false)
                                   Cookie cartCookie,
                                   Model model) {
@@ -99,10 +99,6 @@ public class OrderController {
         }
 
         model.addAttribute("orderDetails", orderDetails);
-
-        if (orderType.contains("구독")) {
-            return "mainpage/order/mainOrderSubDetailsForm";
-        }
 
         return "mainpage/order/mainOrderDetailsForm";
     }

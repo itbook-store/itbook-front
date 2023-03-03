@@ -40,8 +40,7 @@ public class PaymentController {
             return "redirect:/";
         }
     
-        return "redirect:/orders/completion/" + responseDto.getOrderNo() + "?orderType=" +
-            orderType;
+        return "redirect:/orders/completion/" + responseDto.getOrderNo();
     }
 
     @GetMapping(value = "/orders/fail/{orderNo}", params = {"code", "message", "orderId"})
