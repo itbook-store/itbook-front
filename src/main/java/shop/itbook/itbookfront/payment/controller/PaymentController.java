@@ -29,11 +29,8 @@ public class PaymentController {
     @GetMapping(value = "/orders/success/{orderNo}")
     public String successHandler(@RequestParam String paymentKey, @RequestParam String orderId,
                                  @RequestParam Long amount, RedirectAttributes redirectAttributes,
-                                 @RequestParam(required = false) String orderType, @PathVariable Long orderNo, @AuthenticationPrincipal
-                                 UserDetailsDto userDetailsDto) {
+                                 @RequestParam(required = false) String orderType, @PathVariable Long orderNo) {
         OrderResponseDto responseDto;
-
-        userDetailsDto.getMemberNo();
 
         try {
             responseDto =
